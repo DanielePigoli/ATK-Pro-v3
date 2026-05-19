@@ -659,7 +659,7 @@ $(window).scroll(function(){
 <script>
 if ( Permissions.get('functional') ) {
 	(function() {
-		var u="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS9zJ7v7XIAGpsWV5hxAVikmxJm9dRbvI&callback=initMap";
+        var u="https://maps.googleapis.com/maps/api/js?key=REPLACE_ME&callback=initMap";
 		var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
 		g.async=true; g.src=u; s.parentNode.insertBefore(g,s);
   	})();  
@@ -671,7 +671,7 @@ if ( Permissions.get('functional') ) {
 </script>
 
 <script src="updateCache.php" async defer></script>
-<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS9zJ7v7XIAGpsWV5hxAVikmxJm9dRbvI&callback=initMap" async defer></script> -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=REPLACE_ME&callback=initMap" async defer></script> -->
 
 <script>$(document).trigger("beforeReady"); TRIGGERED_BEFOREREADY=true; </script></body>
 </html>
