@@ -644,17 +644,21 @@ class SafeRotatingFileHandler(RotatingFileHandler):
         except PermissionError:
             pass
 
-# Configurazione logging IMMEDIATA
+# Configurazione logging IMMEDIATA: SEMPRE su file e su console
 _is_frozen = getattr(sys, 'frozen', False)
-ATKPRO_ENV = os.environ.get("ATKPRO_ENV", "development").lower()
-_log_level = logging.WARNING if _is_frozen or ATKPRO_ENV == "production" else logging.DEBUG
-_log_format = "%(levelname)s: %(message)s" if _is_frozen or ATKPRO_ENV == "production" else "DEBUG: %(message)s"
+_log_level = logging.DEBUG  # Sempre DEBUG per diagnosi
+_log_format = "DEBUG: %(message)s"
 log_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'atkpro_debug.log')
+try:
+    if os.path.exists(log_file):
+        with open(log_file, 'w', encoding='utf-8') as f:
+            f.truncate(0)
+except Exception:
+    pass
 handlers = [logging.StreamHandler(sys.stdout)]
-if ATKPRO_ENV != "production":
-    handlers.append(SafeRotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=3, encoding='utf-8', delay=True))
+handlers.append(SafeRotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=3, encoding='utf-8', delay=True))
 logging.basicConfig(level=_log_level, format=_log_format, handlers=handlers)
-logging.info('TEST LOG INIZIO FILE')
+logging.info('LOGGING AVVIATO (sempre su file e console, livello DEBUG - azzerato ad ogni avvio)')
 
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
@@ -833,6 +837,7 @@ class MainWindow(QMainWindow):
             ("── Italia ──", [
                 ("antenati",         "Antenati (Cultura.gov.it)"),
                 ("bnc_roma",         "BNC Roma digitale"),
+                ("bncf_teca",        "BNCF Teca (Firenze)"),
                 ("museogalileo",     "Museo Galileo Digiteca"),
                 ("internetculturale_estense", "Internet Culturale (Estense/ICCU)"),
                 ("brixiana",         "Brixiana (Biblioteca Queriniana Brescia)"),
@@ -1128,6 +1133,20 @@ class MainWindow(QMainWindow):
 
         # Ripristina titlebar nativa
         self.setWindowTitle("ATK-Pro")
+        
+        # Forza Dark Mode per la titlebar nativa in Windows (testo bianco)
+        import sys
+        if sys.platform == "win32":
+            try:
+                import ctypes
+                from ctypes import wintypes
+                hwnd = int(self.winId())
+                DWMWA_USE_IMMERSIVE_DARK_MODE = 20
+                value = ctypes.c_int(1)
+                ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ctypes.byref(value), ctypes.sizeof(value))
+            except Exception as e:
+                import logging
+                logging.debug(f"Impossibile forzare dark mode titlebar: {e}")
 
         # Riga marrone sopra il motto e motto in fondo (widget assoluti)
         self.motto_separator = QLabel(self)
@@ -1176,6 +1195,7 @@ class MainWindow(QMainWindow):
 
         # --- Servizi ---
         servizi_menu = QMenu(gm("Servizi"), self)
+        servizi_menu.addAction(gm("Ricerca assistita AI"), self.apri_ricerca_assistita_ai)
         servizi_menu.addAction(gm("Visualizzazione Immagini"), self.apri_visualizzatore_immagini)
         servizi_menu.addAction(gm("Visualizzazione Metadati JSON"), self.apri_visualizzatore_metadati)
         servizi_menu.addAction(gm("OCR Avanzato"), self.apri_ocr_avanzato)
@@ -1205,22 +1225,11 @@ class MainWindow(QMainWindow):
         impostazioni_menu.addAction(gm("Chiudi"), self.close)
         menubar.addMenu(impostazioni_menu)
 
-        # Su macOS la menubar è nativa (barra in cima allo schermo):
-        # applicare background/color via stylesheet la rende invisibile.
-        # Lo stylesheet viene applicato solo su Windows/Linux.
-        import platform as _platform
-        if _platform.system() != "Darwin":
-            menubar.setStyleSheet(
-                "QMenuBar { background: #d2bb8a; color: #222; font-weight: bold; border: none; } "
-                "QMenuBar::item:selected { background: #e5d3b3; color: #222; } "
-                "QMenu { background: #f5e6c3; color: #222; } "
-            )
-
         # Riga marrone sotto il menu (widget separato, non nel layout centrale)
         self.menu_separator = QLabel(self)
         self.menu_separator.setFixedHeight(4)
         self.menu_separator.setStyleSheet("background: #a67c52;")
-        self.menu_separator.setGeometry(0, menubar.height(), self.width(), 4)
+        self.menu_separator.setGeometry(0, self.menuBar().height(), self.width(), 4)
         self.menu_separator.raise_()
         self.menuBar().installEventFilter(self)
 
@@ -1232,33 +1241,83 @@ class MainWindow(QMainWindow):
         central.setLayout(vlayout)
         self.setCentralWidget(central)
 
-        # Sfondo pergamena responsivo
+        import logging
+        # Sfondo pergamena responsivo (logica storica: fallback png/webp)
         self.bg_label = QLabel(self)
-        bg_pixmap = get_pixmap_cached(asset_path("assets/common/grafici/Sfondo.png"))
+        bg_path_png = asset_path("assets/common/grafici/Sfondo.png")
+        bg_path_webp = asset_path("assets/common/grafici/Sfondo.webp")
+        logging.debug(f"[GUI] Provo a caricare sfondo: {bg_path_png}")
+        bg_pixmap = get_pixmap_cached(bg_path_png)
         if bg_pixmap.isNull():
-            bg_pixmap = get_pixmap_cached(asset_path("assets/common/grafici/Sfondo.webp"))
+            logging.debug(f"[GUI] Sfondo PNG nullo, provo WEBP: {bg_path_webp}")
+            bg_pixmap = get_pixmap_cached(bg_path_webp)
+        if bg_pixmap.isNull():
+            logging.error(f"[GUI] ERRORE: Sfondo non caricato! Entrambi i file nulli: {bg_path_png}, {bg_path_webp}")
+        else:
+            logging.info(f"[GUI] Sfondo caricato: {'WEBP' if bg_pixmap.cacheKey() == get_pixmap_cached(bg_path_webp).cacheKey() else 'PNG'}")
         self.bg_pixmap = bg_pixmap
         self.bg_label.setPixmap(self.bg_pixmap)
         self.bg_label.setScaledContents(True)
         self.bg_label.lower()
         self.bg_label.setGeometry(0, 0, self.width(), self.height())
 
-        # Logo centrale proporzionato
+        # Logo centrale proporzionato (logica storica: fallback png, scaling in resizeEvent)
         self.logo_label = QLabel(central)
-        logo_pixmap = get_pixmap_cached(asset_path("assets/common/grafici/Logo.webp"))
+        logo_path_webp = asset_path("assets/common/grafici/Logo.webp")
+        logo_path_png = asset_path("assets/common/grafici/ATK-Pro-logo.png")
+        logging.debug(f"[GUI] Provo a caricare logo: {logo_path_webp}")
+        logo_pixmap = get_pixmap_cached(logo_path_webp)
         if logo_pixmap.isNull():
-            logo_pixmap = get_pixmap_cached(asset_path("assets/common/grafici/ATK-Pro-logo.png"))
+            logging.debug(f"[GUI] Logo WEBP nullo, provo PNG: {logo_path_png}")
+            logo_pixmap = get_pixmap_cached(logo_path_png)
+        if logo_pixmap.isNull():
+            logging.error(f"[GUI] ERRORE: Logo non caricato! Entrambi i file nulli: {logo_path_webp}, {logo_path_png}")
+        else:
+            logging.info(f"[GUI] Logo caricato: {'PNG' if logo_pixmap.cacheKey() == get_pixmap_cached(logo_path_png).cacheKey() else 'WEBP'}")
         self.logo_pixmap = logo_pixmap
         self.logo_label.setAlignment(Qt.AlignCenter)
-        self.logo_label.setScaledContents(True)
+        self.logo_label.setScaledContents(False)
         self.logo_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.logo_label.setStyleSheet("background: transparent;")
+        # Imposta pixmap iniziale (verrà ridimensionato in resizeEvent)
+        if not logo_pixmap.isNull():
+            w0 = int(self.width() * 0.4)
+            h0 = int(self.height() * 0.3)
+            self.logo_label.setPixmap(logo_pixmap.scaled(w0, h0, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        self.logo_label.raise_()  # Assicura che il logo sia sopra lo sfondo
         vlayout.addStretch(1)
         vlayout.addWidget(self.logo_label, alignment=Qt.AlignCenter)
         vlayout.addStretch(1)
 
         # Applica stile bianco a tutti i QPushButton della finestra principale
         self.setStyleSheet(self.styleSheet() + "\nQPushButton { background-color: #222; color: #fff; border: 1px solid #a67c52; padding: 6px 18px; border-radius: 6px; font-size: 15px; font-weight: bold; } QPushButton:hover { background-color: #333; }")
+
+        # Centra la finestra principale nello schermo
+        from PySide6.QtGui import QGuiApplication
+        screen = QGuiApplication.primaryScreen()
+        if screen:
+            screen_geometry = screen.availableGeometry()
+            window_geometry = self.frameGeometry()
+            window_geometry.moveCenter(screen_geometry.center())
+            self.move(window_geometry.topLeft())
+
+    def apri_ricerca_assistita_ai(self):
+        import logging
+        logging.debug("[GUI] Avvio Ricerca Assistita AI...")
+        try:
+            try:
+                from RicercaAssistitaAI import RicercaAssistitaAIDialog
+            except ImportError:
+                from src.RicercaAssistitaAI import RicercaAssistitaAIDialog
+            dlg = RicercaAssistitaAIDialog(self, glossario=self.glossario_data, lingua=self.lingua)
+            logging.debug("[GUI] RicercaAssistitaAIDialog istanziato, eseguo exec()...")
+            dlg.exec()
+            logging.debug("[GUI] RicercaAssistitaAIDialog chiuso.")
+        except Exception as e:
+            logging.error(f"[GUI] Errore apertura Ricerca Assistita AI: {e}")
+            from PySide6.QtWidgets import QMessageBox
+            QMessageBox.critical(self, "Errore", f"Impossibile aprire Ricerca Assistita AI: {e}")
+
     def resizeEvent(self, event):
         super().resizeEvent(event)
         # Sfondo
@@ -3125,6 +3184,7 @@ def main():
             os.environ.setdefault("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox")
 
     app = QApplication(sys.argv)
+
 
     # Font custom (usa asset_path per supportare bundle macOS/Windows)
     font1_path = asset_path("assets/common/fonts/Aref_Ruqaa/ArefRuqaa-Regular.ttf")

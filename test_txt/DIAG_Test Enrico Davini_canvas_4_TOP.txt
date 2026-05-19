@@ -1,0 +1,16 @@
+N°Casa | N°Fam | Prog | Cognome | Nome | Età | Celibe | Ammogliato | Vedovo | Nubile | Maritata | Vedova | Religione | Patria | Professione | Osservazioni
+5 | 5 | 26 | Bertini | Paolo | 51 | | 1 | | | | | " | " | " | Capo di famiglia
+| | 27 | " | Felice | 54 | | | | | 1 | | " | " | " | 
+| | 28 | " | Giovanni | 34 | | 1 | | | | | " | " | " | 
+| | 29 | " | Rosa | 33 | | | | | 1 | | " | " | " | 
+| | 30 | " | Antonio | 28 | 1 | | | | | | " | " | " | 
+| | 31 | " | Baldessarre | 26 | 1 | | | | | | " | " | " | 
+| | 32 | " | Francesco | 23 | 1 | | | | | | " | " | " | 
+| | 33 | " | Vincenzo | 13 | 1 | | | | | | " | " | " | 
+| | 34 | " | Luigi | 7 | 1 | | | | | | " | " | " | 
+| | 35 | " | Tommaso | 5 | 1 | | | | | | " | " | " | 
+| | 36 | " | Marianna | 19 | | | | 1 | | | " | " | " | 
+| | 37 | " | Maria | 15 | | | | 1 | | | " | " | " | 
+| | 38 | " | Filomena | 2 | | | | 1 | | | " | " | " | 
+6 | 6 | 39 | Baffioni | Luigi | 63 | | 1 | | | | | " | " | " | 
+| | 40 | " | Caterina | 41 | | | | | 1 | | " | " | " |

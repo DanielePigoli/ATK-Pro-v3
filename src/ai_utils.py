@@ -13,10 +13,10 @@ def _model_capability_score(name: str) -> tuple:
     per capacità decrescente. Usato come chiave di sort (più alto = migliore).
     Tier: pro=3, flash=2, flash-lite=1, altri=0
     """
-    # Estrae versione dal nome: es. "gemini-2.5-pro-preview" → (2, 5)
-    m = re.search(r'gemini-(\d+)\.(\d+)', name)
+    # Estrae versione dal nome: es. "gemini-2.5-pro-preview" → (2, 5), "gemini-3-flash" → (3, 0)
+    m = re.search(r'gemini-(\d+)(?:\.(\d+))?', name)
     major = int(m.group(1)) if m else 0
-    minor = int(m.group(2)) if m else 0
+    minor = int(m.group(2)) if m and m.group(2) else 0
 
     name_low = name.lower()
     if 'flash-lite' in name_low or 'flash_lite' in name_low:
@@ -54,17 +54,22 @@ def get_best_gemini_model(api_key, preferred="flash"):
                 continue
             name = m.name.replace('models/', '')
             name_low = name.lower()
-            # Solo modelli Gemini con versione X.Y (es. gemini-2.5-flash)
+            # Supporta modelli Gemini con o senza cifre decimali (es. gemini-2.5, gemini-3)
             # Esclude Gemma, Lyria, robotics, nano-banana, deep-research, ecc.
-            if not re.search(r'^gemini-\d+\.\d+', name_low):
+            if not re.search(r'^gemini-\d+', name_low):
                 continue
+            
+            # Estrae la versione major per gestire i preview
+            v_match = re.search(r'gemini-(\d+)', name_low)
+            major_v = int(v_match.group(1)) if v_match else 0
+            
             # Escludi modelli specializzati o non ancora accessibili
-            if any(tok in name_low for tok in (
-                'exp', 'vision', 'latest', 'preview',  # instabili / non-GA
-                'image',   # generazione immagini
-                'tts',     # text-to-speech
-                'computer', 'customtools',  # agent specializzati
-            )):
+            # Consenti 'preview' solo per versioni >= 3 (come Gemini 3.1 Pro/Flash)
+            tokens_to_exclude = ['exp', 'vision', 'latest', 'image', 'tts', 'computer', 'customtools']
+            if major_v < 3:
+                tokens_to_exclude.append('preview')
+                
+            if any(tok in name_low for tok in tokens_to_exclude):
                 continue
             valid.append(name)
 

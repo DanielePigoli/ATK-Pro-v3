@@ -33,6 +33,12 @@ def build_manifest_url(ark_url: str) -> str:
     Costruisce l'URL del manifest IIIF (fallback se la pagina HTML non è disponibile).
     Nota: il metodo preferito è estrarre dal HTML della pagina di Antenati (come in v1.4.1).
     """
+    # Se non è un URL Antenati, non provare a costruire un manifest ARK
+    if "antenati.cultura.gov.it" not in ark_url:
+        logger.debug(f"[Manifest] Ignoro URL non Antenati in build_manifest_url: {ark_url}")
+        # Restituiamo l'URL invariato o solleviamo un errore gestito
+        return ark_url
+
     ark_full = _parse_ark_from_url(ark_url)
     logger.info(f"[Manifest] ark_full = '{ark_full}'")
 

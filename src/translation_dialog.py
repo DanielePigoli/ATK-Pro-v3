@@ -22,9 +22,14 @@ class TranslationDialog(QDialog):
         self.glossario = glossario_data
         self.lingua = lingua_corrente
         self.setWindowTitle(self.gm("Traduzione Paleografica Assistita (LLM)"))
-        self.resize(1200, 800)
+        self.setMinimumSize(900, 600)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
         self.setup_ui()
-        self.load_settings()
+        try:
+            self.load_settings()
+        except Exception as e:
+            import traceback
+            print(f"[TranslationDialog] Errore in load_settings: {e}\n" + traceback.format_exc())
 
     def gm(self, chiave):
         return get_msg(self.glossario, chiave, self.lingua)
@@ -45,9 +50,188 @@ class TranslationDialog(QDialog):
         """)
 
         main_layout = QVBoxLayout(self)
-        
-        # Header (Top Settings)
-        top_layout = QHBoxLayout()
+        # --- Caveau chiavi (come GenealogyDialog) ---
+        # RIMOSSO pulsante gestione caveau chiavi: già presente Cassaforte accanto all'API Key
+
+
+        # --- Nuova disposizione: 3 righe orizzontali ---
+        # Riga 1: Provider + Modello
+        row1 = QHBoxLayout()
+        lbl_prov = QLabel(self.gm("Provider IA:"))
+        self.combo_prov = QComboBox()
+        self.combo_prov.addItems([
+            "Anthropic / Claude (Miglior Testo)", "OpenAI (GPT-4o)", "Google Gemini", "DeepSeek (Economico/Testo)",
+            "Mistral", "xAI / Grok", "Groq (Veloce)", "Hugging Face (Inference API)", "Ollama (Locale/Privato)"
+        ])
+        self.combo_prov.setMinimumWidth(180)
+        self.combo_prov.setMaximumWidth(220)
+        self.combo_prov.currentIndexChanged.connect(self._toggle_custom_model)
+        self.lbl_custom_model = QLabel("Modello:")
+        self.inp_custom_model = QLineEdit()
+        self.inp_custom_model.setPlaceholderText("Es. gpt-5")
+        self.inp_custom_model.setFixedWidth(110)
+        row1.addWidget(lbl_prov)
+        row1.addWidget(self.combo_prov)
+        row1.addSpacing(10)
+        row1.addWidget(self.lbl_custom_model)
+        row1.addWidget(self.inp_custom_model)
+        row1.addStretch()
+        main_layout.addLayout(row1)
+
+        # Riga 2: Tipologia + Azioni
+        from document_type_manager import DocumentTypeManager
+        self._dtm = DocumentTypeManager()
+        row2 = QHBoxLayout()
+        lbl_type = QLabel(self.gm("Tipologia Documento:"))
+        lbl_type.setStyleSheet("font-weight: bold;")
+        self.combo_type = QComboBox()
+        self.combo_type.addItems(self._dtm.get_labels(service="translation"))
+        self.combo_type.currentIndexChanged.connect(self._on_type_changed_tr)
+        btn_add_type_tr = QPushButton("+")
+        btn_add_type_tr.setObjectName("btn_add_type")
+        btn_add_type_tr.setToolTip(self.gm("Aggiungi tipologia personalizzata"))
+        btn_add_type_tr.setFixedSize(30, 30)
+        btn_add_type_tr.clicked.connect(self._add_custom_type)
+        self.btn_edit_type = QPushButton("\u270f")
+        self.btn_edit_type.setObjectName("btn_edit_type")
+        self.btn_edit_type.setToolTip(self.gm("Modifica tipologia personalizzata selezionata"))
+        self.btn_edit_type.setFixedSize(30, 30)
+        self.btn_edit_type.clicked.connect(self._edit_custom_type)
+        self.btn_edit_type.setVisible(False)
+        self.btn_del_type = QPushButton("\u2715")
+        self.btn_del_type.setObjectName("btn_del_type")
+        self.btn_del_type.setToolTip(self.gm("Elimina tipologia personalizzata selezionata"))
+        self.btn_del_type.setFixedSize(30, 30)
+        self.btn_del_type.clicked.connect(self._delete_custom_type)
+        self.btn_del_type.setVisible(False)
+        row2.addWidget(lbl_type)
+        row2.addWidget(self.combo_type)
+        row2.addSpacing(8)
+        row2.addWidget(btn_add_type_tr)
+        row2.addWidget(self.btn_edit_type)
+        row2.addWidget(self.btn_del_type)
+        row2.addStretch()
+        main_layout.addLayout(row2)
+
+        # Riga 3: API + Cassaforte + Lingua
+        row3 = QHBoxLayout()
+        self.lbl_api = QLabel(self.gm("API Key:"))
+        self.txt_api = QLineEdit()
+        self.txt_api.setEchoMode(QLineEdit.Password)
+        self.txt_api.setFixedWidth(200)
+        btn_key_safe = QPushButton("🔑 " + self.gm("Cassaforte"))
+        btn_key_safe.setStyleSheet("background-color: #2a2a2a; color: #f5f0e8; border: 1px solid #888; padding: 2px 10px; border-radius: 4px; font-size: 11px;")
+        btn_key_safe.clicked.connect(self.open_key_manager)
+        row3.addWidget(self.lbl_api)
+        row3.addWidget(self.txt_api)
+        row3.addWidget(btn_key_safe)
+        row3.addSpacing(20)
+        lbl_target = QLabel(self.gm("Lingua di Destinazione:"))
+        self.combo_lingua = QComboBox()
+        lingue = [
+            "Italiano", "English", "Deutsch", "Français", "Español", "Português",
+            "Русский", "中文", "日本語", "韓国語", "العربية", "हिन्दी", "Türkçe",
+            "Polski", "Nederlands", "Ελληνικά", "Čeština", "Svenska", "Dansk", "Suomi"
+        ]
+        self.combo_lingua.addItems(lingue)
+        row3.addWidget(lbl_target)
+        row3.addWidget(self.combo_lingua)
+        row3.addStretch()
+        main_layout.addLayout(row3)
+
+        self._toggle_custom_model()
+
+        # Splitter main content
+        splitter = QSplitter(Qt.Horizontal)
+
+        # --- LEFT PANE ---
+        left_widget = QWidget()
+        left_ly = QVBoxLayout(left_widget)
+        left_ly.setContentsMargins(0, 10, 5, 0)
+
+        # Origine
+        header_orig = QHBoxLayout()
+        lbl_orig = QLabel(self.gm("Testo Sorgente (Antico/Gregoriano/Dialetto):"))
+        btn_load = QPushButton(self.gm("Carica File TXT"))
+        btn_load.clicked.connect(self.carica_file)
+        header_orig.addWidget(lbl_orig)
+        header_orig.addStretch()
+        header_orig.addWidget(btn_load)
+
+        self.txt_orig = QTextEdit()
+        self.txt_orig.setPlaceholderText(self.gm("Incolla qui la trascrizione cruda o carica un file .txt generato prima..."))
+
+        # Contesto
+        lbl_ctx = QLabel(self.gm("Glossario & Contesto (Opzionale, istruzioni alla IA):"))
+        self.txt_ctx = QTextEdit()
+        self.txt_ctx.setMaximumHeight(80)
+        self.txt_ctx.setPlaceholderText(self.gm("Es. Traduci mantenendo arcaico. Cabella = dazio. Tassano = Nome proprio."))
+
+        left_ly.addLayout(header_orig)
+        left_ly.addWidget(self.txt_orig)
+        left_ly.addWidget(lbl_ctx)
+        left_ly.addWidget(self.txt_ctx)
+
+        # --- RIGHT PANE ---
+        right_widget = QWidget()
+        right_ly = QVBoxLayout(right_widget)
+        right_ly.setContentsMargins(5, 10, 0, 0)
+
+        lbl_dest = QLabel(self.gm("Risultato Tradotto:"))
+        self.txt_dest = QTextEdit()
+        self.txt_dest.setPlaceholderText(self.gm("La traduzione moderna apparirà qui e potrà essere revisionata..."))
+
+        # Export
+        export_ly = QHBoxLayout()
+        btn_save_txt = QPushButton(self.gm("Salva Traduzione (TXT)"))
+        btn_save_txt.clicked.connect(lambda: self.esporta_risultato("txt"))
+        btn_save_docx = QPushButton(self.gm("Esporta in Word (DOCX)"))
+        btn_save_docx.clicked.connect(lambda: self.esporta_risultato("docx"))
+        export_ly.addWidget(btn_save_txt)
+        export_ly.addWidget(btn_save_docx)
+
+        right_ly.addWidget(lbl_dest)
+        right_ly.addWidget(self.txt_dest)
+        right_ly.addLayout(export_ly)
+
+        # Add to splitter
+        splitter.addWidget(left_widget)
+        splitter.addWidget(right_widget)
+
+        # Give them 50/50 ratio
+        splitter.setSizes([500, 500])
+        main_layout.addWidget(splitter, 1) # stretch 1
+
+        # Bottom Bar
+        bottom_ly = QHBoxLayout()
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setVisible(False)
+        self.progress_bar.setRange(0, 0) # Indeterminate spinning
+
+        self.btn_traduci = QPushButton("✨ " + self.gm("Traduci Testo ORA"))
+        self.btn_traduci.setObjectName("btn_traduci")
+        self.btn_traduci.clicked.connect(self.avvia_traduzione)
+
+        bottom_ly.addWidget(self.progress_bar, 1)
+        bottom_ly.addWidget(self.btn_traduci)
+
+        main_layout.addLayout(bottom_ly)
+
+    def open_key_manager_dialog(self):
+        try:
+            from key_manager import KeyManager
+            km = KeyManager()
+            km.open_manager_dialog(self)
+        except Exception as e:
+            QMessageBox.critical(self, "Errore", f"Impossibile aprire il gestore chiavi: {e}")
+
+    def open_key_manager_dialog(self):
+        try:
+            from key_manager import KeyManager
+            km = KeyManager()
+            km.open_manager_dialog(self)
+        except Exception as e:
+            QMessageBox.critical(self, "Errore", f"Impossibile aprire il gestore chiavi: {e}")
         
         lbl_prov = QLabel(self.gm("Provider IA:"))
         self.combo_prov = QComboBox()

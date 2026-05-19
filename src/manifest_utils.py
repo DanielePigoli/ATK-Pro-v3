@@ -1,3 +1,78 @@
+# --- Fallback download diretto immagini BNCF (brute force) ---
+import requests
+def download_bncf_images_brute_force(idr, output_dir, modalita="R", seq_start=1, seq_end=None, single_seq=1, user_agent=None):
+    """
+    Scarica tutte le immagini disponibili per un dato idr iterando su sequence.
+    modalita: "R" (registro, tutte le pagine) o "D" (documento singolo)
+    seq_start/seq_end: range di pagine (solo per R)
+    single_seq: pagina singola (solo per D)
+    """
+    os.makedirs(output_dir, exist_ok=True)
+    headers = {"User-Agent": user_agent or "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    base_url = "https://teca.bncf.firenze.sbn.it/ImageViewer/servlet/ImageViewer"
+    import hashlib
+    def _download_image(idr, sequence, out_dir):
+        params = {"idr": idr, "azione": "showImg", "sequence": sequence, "reduce": 0}
+        resp = requests.get(base_url, params=params, headers=headers, stream=True, timeout=20)
+        if resp.status_code == 200 and resp.headers.get("Content-Type", "").startswith("image"):
+            content = resp.content
+            filename = os.path.join(out_dir, f"{idr}_page_{sequence}.jpg")
+            with open(filename, "wb") as f:
+                f.write(content)
+            # Calcola hash per rilevare placeholder
+            img_hash = hashlib.md5(content).hexdigest()
+            img_size = len(content)
+            return True, img_hash, img_size
+        return False, None, None
+    if modalita.upper() == "R":
+        sequence = seq_start
+        found = 0
+        placeholder_hash = None
+        placeholder_size = None
+        placeholder_count = 0
+        last_hash = None
+        last_size = None
+        max_placeholder_repeat = 3  # Stoppa dopo 3 placeholder consecutivi
+        while True:
+            if seq_end is not None and sequence > seq_end:
+                break
+            ok, img_hash, img_size = _download_image(idr, sequence, output_dir)
+            if not ok:
+                if seq_end is None:
+                    break  # Fine registro
+                else:
+                    print(f"[BNCF] Pagina {sequence} non trovata")
+            else:
+                # Primo placeholder: salva hash/size
+                if found == 0:
+                    placeholder_hash = img_hash
+                    placeholder_size = img_size
+                # Se hash/size identici al primo, conta come placeholder
+                if img_hash == placeholder_hash and img_size == placeholder_size:
+                    placeholder_count += 1
+                    logger.warning(f"[BNCF] Possibile placeholder rilevato a pagina {sequence} (hash={img_hash}, size={img_size})")
+                else:
+                    placeholder_count = 0
+                # Se troppi placeholder consecutivi, stoppa
+                if placeholder_count >= max_placeholder_repeat:
+                    logger.error(f"[BNCF] STOP: Rilevati {placeholder_count} placeholder consecutivi. Interrotto download per evitare inutili duplicati.")
+                    break
+                found += 1
+                print(f"[BNCF] Scaricata pagina {sequence}")
+            sequence += 1
+        print(f"[BNCF] Totale immagini scaricate: {found}")
+        return found
+    elif modalita.upper() == "D":
+        ok, img_hash, img_size = _download_image(idr, single_seq, output_dir)
+        if ok:
+            print(f"[BNCF] Scaricata pagina {single_seq}")
+            return 1
+        else:
+            print(f"[BNCF] Pagina {single_seq} non trovata")
+            return 0
+    else:
+        print("[BNCF] Modalità non riconosciuta. Usa 'R' o 'D'.")
+        return 0
 import requests
 import re
 import logging
@@ -338,6 +413,125 @@ def _build_memooria_manifest(page_url: str) -> str | None:
 
 # Alias per compatibilità con portale "brixiana" già configurato
 _build_brixiana_manifest = _build_memooria_manifest
+
+
+def _build_bncf_teca_manifest(page_url: str) -> str | list | None:
+    """BNCF Teca (Firenze):
+    ?idr=BNCF00004140909 → prova standard e manuscript
+    """
+    m = re.search(r'[?&]idr=([A-Za-z0-9]+)', page_url)
+    if m:
+        idr = m.group(1)
+        # Restituiamo una lista di tentativi (URL)
+        return [
+            f"https://teca.bncf.firenze.sbn.it/iiif/manuscript/{idr}/manifest.json",
+            f"https://teca.bncf.firenze.sbn.it/iiif/2/manifest/{idr}?format=json"
+        ]
+    return None
+
+
+def build_bncf_teca_synthetic_manifest(page_url: str, working_folder: str) -> dict | None:
+    """
+    Crea un manifest sintetico per BNCF Teca quando il manifest IIIF standard fallisce.
+    Interroga la servlet readBook per ottenere l'elenco delle immagini.
+    """
+    import re, requests, os, traceback
+    logger.critical(f"[BNCF Synthetic][DEBUG] INGRESSO build_bncf_teca_synthetic_manifest: page_url={page_url}, working_folder={working_folder}")
+    # Forza errore volontario per verifica logging
+    # raise RuntimeError("TEST ERRORE VOLONTARIO BNCF SYNTH")
+    m = re.search(r'[?&]idr=([A-Za-z0-9]+)', page_url)
+    if not m:
+        logger.error(f"[BNCF Synthetic][DEBUG] Impossibile estrarre idr da page_url: {page_url}")
+        return None
+    work_idr = m.group(1)
+
+    xml_url = f"https://teca.bncf.firenze.sbn.it/ImageViewer/servlet/ImageViewer?idr={work_idr}&azione=readBook"
+    logger.info(f"[BNCF Synthetic][DEBUG] xml_url={xml_url}")
+    try:
+        h = {"User-Agent": "Mozilla/5.0"}
+        r = requests.get(xml_url, headers=h, timeout=15)
+        if not r.ok:
+            logger.error(f"[BNCF Synthetic][DEBUG] Errore HTTP {r.status_code} su {xml_url}")
+            return None
+
+        logger.debug(f"[BNCF Synthetic][DEBUG] XML ricevuto ({len(r.text)} byte). Primi 500 car: {r.text[:500]}")
+        # Salva sempre l'XML su file per debug, anche se working_folder non è valorizzato
+        xml_debug_path = None
+        try:
+            folder = working_folder if working_folder else os.path.join(os.getcwd(), "bncf_xml_debug_fallback")
+            os.makedirs(folder, exist_ok=True)
+            xml_debug_path = os.path.join(folder, f"bncf_xml_debug.xml")
+            with open(xml_debug_path, "w", encoding="utf-8") as fxml:
+                fxml.write(r.text)
+            logger.info(f"[BNCF Synthetic][DEBUG] XML salvato per debug: {xml_debug_path}")
+        except Exception as e2:
+            logger.error(f"[BNCF Synthetic][DEBUG] Errore salvataggio XML: {e2}\n{traceback.format_exc()}")
+
+        matches = re.findall(r'ID="([^"]+)"[^>]+?sequenza="([^"]+)"', r.text, re.DOTALL)
+        logger.debug(f"[BNCF Synthetic][DEBUG] Numero match trovati: {len(matches)}")
+
+        images = []
+        for img_id, seq in matches:
+            logger.debug(f"[BNCF Synthetic][DEBUG] Match trovato: ID={img_id}, SEQ={seq}")
+            images.append((img_id, seq))
+
+        logger.info(f"[BNCF Synthetic] Trovate {len(images)} immagini tramite Regex ultra-permissiva")
+
+        if not images:
+            # Tentativo disperato: cerca solo gli ID se sequenza fallisce
+            ids = re.findall(r'ID="(BNCF[0-9]+)"', r.text)
+            if ids:
+                logger.warning(f"[BNCF Synthetic][DEBUG] Trovati {len(ids)} ID senza sequenza esplicita, genero sequenza numerica")
+                images = [(id_val, str(i+1)) for i, id_val in enumerate(ids)]
+
+        if not images:
+            logger.error("[BNCF Synthetic][DEBUG] Nessuna immagine trovata nell'XML con nessun metodo. Controlla il file XML salvato per debug.")
+            return None
+
+        # Costruisci manifest sintetico
+        manifest = {
+            "@context": "http://iiif.io/api/presentation/2/context.json",
+            "@id": f"synthetic-bncf-{work_idr}",
+            "@type": "sc:Manifest",
+            "label": f"BNCF Teca - {work_idr} (Synthetic)",
+            "sequences": [{
+                "@type": "sc:Sequence",
+                "canvases": []
+            }]
+        }
+
+        for img_id, seq in images:
+            # URL immagine (alta risoluzione tramite servlet showImg)
+            img_url = f"https://teca.bncf.firenze.sbn.it/ImageViewer/servlet/ImageViewer?idr={img_id}&azione=showImg&sequence={seq}&reduce=0"
+
+            canvas = {
+                "@id": f"canvas-{img_id}",
+                "@type": "sc:Canvas",
+                "label": f"Pagina {seq}",
+                "width": 2000, "height": 3000,
+                "images": [{
+                    "@type": "oa:Annotation",
+                    "motivation": "sc:painting",
+                    "resource": {
+                        "@id": img_url,
+                        "@type": "dctypes:Image",
+                        "format": "image/jpeg",
+                        "service": {
+                            "@context": "http://iiif.io/api/image/2/context.json",
+                            "@id": img_url,
+                            "profile": "http://iiif.io/api/image/2/level0.json"
+                        }
+                    },
+                    "on": f"canvas-{img_id}"
+                }]
+            }
+            manifest["sequences"][0]["canvases"].append(canvas)
+
+        return manifest
+    except Exception as e:
+        import logging, traceback
+        logging.error(f"[BNCF Synthetic] Errore: {e}\n{traceback.format_exc()}")
+        return None
 
 
 def _build_findbuch_manifest(page_url: str) -> str | None:
@@ -961,22 +1155,37 @@ _PORTAL_BUILDERS = {
     "findbuch":         _build_findbuch_manifest,
     "matricula":        _build_matricula_manifest,
     "bnc_roma":         _build_bnc_roma_manifest,
+    "bncf_teca":        _build_bncf_teca_manifest,
 }
 
 
-def resolve_manifest_url(page_url: str, portale: str) -> str | None:
+def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
     """
-    Costruisce direttamente l'URL del manifest IIIF partendo dall'URL di pagina,
-    usando la logica specifica del portale.
-
-    - "manifest_diretto": l'URL è già il manifest, restituisce page_url invariato.
-    - "gallica", "internet_archive", "e_rara", "e_codices", "e_manuscripta", "heidelberg": costruisce URL manifest.
-    - "antenati", "bodleian" (e altri): restituisce None → il chiamante usa
-      Selenium/Playwright + scraping HTML (percorso legacy).
+    Costruisce l'URL del manifest IIIF o restituisce un dict (manifest sintetico)
+    partendo dall'URL di pagina.
     """
     portale_key = portale.lower().replace("-", "_").replace(" ", "_")
     if portale_key == "manifest_diretto":
         return page_url
+
+    # Builder sintetici (restituiscono dict invece di stringa URL)
+    if portale_key == "bnc_roma":
+        from .manifest_utils import build_bnc_roma_synthetic_manifest
+        return build_bnc_roma_synthetic_manifest(page_url, "")
+
+    if portale_key == "bncf_teca":
+        # Prima proviamo IIIF standard (tentativi multipli)
+        urls = _build_bncf_teca_manifest(page_url)
+        if urls:
+            import requests
+            for std_url in (urls if isinstance(urls, list) else [urls]):
+                try:
+                    r = requests.head(std_url, timeout=5, headers={"User-Agent": "Mozilla/5.0"})
+                    if r.ok: return std_url
+                except: pass
+        # Fallback sintetico
+        return build_bncf_teca_synthetic_manifest(page_url, "")
+
     builder = _PORTAL_BUILDERS.get(portale_key)
     if builder:
         return builder(page_url)

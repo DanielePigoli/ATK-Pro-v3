@@ -374,17 +374,28 @@ class Elaborazione:
             logger.error(f"[Error] Errore elaborazione: {e}", exc_info=True)
             return False
 
+
     def _fetch_manifest(self):
         """Scarica il manifest IIIF."""
         try:
+            # Logging diagnostico: mostra parametri chiave
+            logger.info(f"[DEBUG] _fetch_manifest: self.ark_url={self.ark_url}")
+            logger.info(f"[DEBUG] _fetch_manifest: self.portale={self.portale}")
+
             manifest_url = self._get_manifest_url()
             if not manifest_url:
                 logger.error("[Error] Manifest URL non disponibile")
                 return None
 
-            # Crea sottocartella di lavoro univoca nella cartella scelta per l'output
-            output_base = self.output_dir  # output_dir è la cartella scelta dall'utente
-            container_id = manifest_url.strip("/").split("/")[-2]
+            # Crea sottocartella di lavoro univoca
+            output_base = self.output_dir
+
+            # Se manifest_url è un dict, usiamo un ID fittizio per la cartella o l'ID estratto dall'URL
+            if isinstance(manifest_url, dict):
+                container_id = re.search(r'idr=([A-Za-z0-9]+)', self.ark_url).group(1) if "idr=" in self.ark_url else "BNCF_SYNTH"
+            else:
+                container_id = manifest_url.strip("/").split("/")[-2]
+
             titolo_pulito = re.sub(r'[\\/*?:"<>|]', "", self.nome_file).replace(" ", "_")
             base_folder_name = f"{container_id}_{titolo_pulito}"
             working_folder = os.path.join(output_base, base_folder_name)
@@ -415,8 +426,90 @@ class Elaborazione:
                 "matricula":        "https://data.matricula-online.eu",
                 "bnc_roma":         "http://digitale.bnc.roma.sbn.it",
             }
-            portale_key = self.portale.lower().replace("-", "_").replace(" ", "_")
+            portale_key = str(self.portale).lower().replace("-", "_").replace(" ", "_") if self.portale else ""
+            ark_url_lower = str(self.ark_url).lower() if self.ark_url else ""
+            logger.info(f"[DEBUG] _fetch_manifest: portale_key={portale_key}")
+
+            # Forza riconoscimento BNCF dall'URL (case-insensitive, accetta anche https/http)
+            if "bncf.firenze.sbn.it" in ark_url_lower or "teca.bncf.firenze.sbn.it" in ark_url_lower:
+                logger.info(f"[DEBUG] _fetch_manifest: MATCH BNCF URL trovato in ark_url_lower={ark_url_lower}")
+                portale_key = "bncf_teca"
+
             referer = _portale_referers.get(portale_key)
+            if not referer and ("bncf.firenze.sbn.it" in ark_url_lower or "teca.bncf.firenze.sbn.it" in ark_url_lower):
+                referer = "https://teca.bncf.firenze.sbn.it"
+
+            # --- BNCF Teca (Firenze): manifest sintetico prioritario ---
+            if portale_key == "bncf_teca":
+                from manifest_utils import build_bncf_teca_synthetic_manifest, _build_bncf_teca_manifest, download_bncf_images_brute_force
+                logger.info(f"[BNCF] Attivazione logica specifica per {self.ark_url}")
+                # Proviamo il sintetico come prima scelta per massima robustezza
+                manifest = build_bncf_teca_synthetic_manifest(self.ark_url, working_folder)
+                if manifest and isinstance(manifest, dict):
+                    os.makedirs(working_folder, exist_ok=True)
+                    # Use a fixed ID for the manifest filename to avoid regex issues with BNCF IDs
+                    safe_id = re.search(r'idr=([A-Za-z0-9]+)', self.ark_url).group(1) if "idr=" in self.ark_url else "BNCF"
+                    manifest_filename = f"manifest_{safe_id}_{titolo_pulito}.json"
+                    manifest_path = os.path.join(working_folder, manifest_filename)
+                    with open(manifest_path, 'w', encoding='utf-8') as _f:
+                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
+                    self.manifest_path = manifest_path
+                    self.output_dir = working_folder
+                    n_canvas = len(manifest['sequences'][0]['canvases'])
+                    logger.info(f"[BNCF] Manifest sintetico generato e salvato: {manifest_path} ({n_canvas} immagini)")
+                    return manifest
+                else:
+                    logger.warning("[BNCF] Fallito build sintetico, provo download diretto immagini brute-force...")
+                    # Estrai idr
+                    m = re.search(r'idr=([A-Za-z0-9]+)', self.ark_url)
+                    if not m:
+                        logger.error(f"[BNCF] Impossibile estrarre idr da URL: {self.ark_url}")
+                        return None
+                    idr = m.group(1)
+                    # Determina modalità (registro o documento singolo)
+                    modalita = getattr(self, 'record_type', 'R')
+                    # Range pagine opzionale
+                    seq_start = int(getattr(self, 'canvas_da', 1) or 1)
+                    seq_end = getattr(self, 'canvas_a', None)
+                    seq_end = int(seq_end) if seq_end is not None else None
+                    single_seq = seq_start if modalita == 'D' else 1
+                    logger.info(f"[BNCF] Avvio download diretto immagini brute-force: idr={idr}, modalita={modalita}, seq_start={seq_start}, seq_end={seq_end}")
+                    n_img = download_bncf_images_brute_force(idr, working_folder, modalita=modalita, seq_start=seq_start, seq_end=seq_end, single_seq=single_seq)
+                    if n_img > 0:
+                        logger.info(f"[BNCF] Download diretto completato: {n_img} immagini scaricate in {working_folder}")
+                        # Costruisci manifest minimale per compatibilità pipeline
+                        manifest = {
+                            "@context": "http://iiif.io/api/presentation/2/context.json",
+                            "@id": f"synthetic-bncf-{idr}",
+                            "@type": "sc:Manifest",
+                            "label": f"BNCF Teca - {idr} (BruteForce)",
+                            "sequences": [{
+                                "@type": "sc:Sequence",
+                                "canvases": [
+                                    {
+                                        "@id": f"canvas-{idr}-{i}",
+                                        "@type": "sc:Canvas",
+                                        "label": f"Pagina {i}",
+                                        "images": [{
+                                            "@type": "oa:Annotation",
+                                            "motivation": "sc:painting",
+                                            "resource": {
+                                                "@id": f"{working_folder}/{idr}_page_{i}.jpg",
+                                                "@type": "dctypes:Image",
+                                                "format": "image/jpeg"
+                                            },
+                                            "on": f"canvas-{idr}-{i}"
+                                        }]
+                                    } for i in range(seq_start, seq_start + n_img)
+                                ]
+                            }]
+                        }
+                        self.manifest_path = None  # Non c'è un file manifest, ma la pipeline può proseguire
+                        self.output_dir = working_folder
+                        return manifest
+                    else:
+                        logger.error("[BNCF] Download diretto immagini brute-force fallito: nessuna immagine trovata")
+                        return None
 
             # --- Matricula Online: manifest sintetico da HTML scraping ---
             if portale_key == "matricula":
@@ -514,6 +607,38 @@ class Elaborazione:
                 else:
                     logger.error("[Museogalileo] Impossibile costruire manifest sintetico")
                     return None
+
+            # --- BNCF Teca (Firenze): manifest sintetico se IIIF standard fallisce ---
+            if portale_key == "bncf_teca":
+                from manifest_utils import build_bncf_teca_synthetic_manifest, _build_bncf_teca_manifest
+                # Proviamo prima se c'è un manifest IIIF standard valido (HEAD check)
+                std_url = _build_bncf_teca_manifest(self.ark_url)
+                if std_url:
+                    try:
+                        import requests
+                        _rh = requests.head(std_url, timeout=5, headers={"User-Agent": "Mozilla/5.0"})
+                        if _rh.ok:
+                            # Se esiste, procediamo col download standard sotto
+                            pass 
+                        else:
+                            # Altrimenti forziamo il sintetico qui
+                            manifest = build_bncf_teca_synthetic_manifest(self.ark_url, working_folder)
+                    except:
+                        manifest = build_bncf_teca_synthetic_manifest(self.ark_url, working_folder)
+                else:
+                    manifest = build_bncf_teca_synthetic_manifest(self.ark_url, working_folder)
+
+                if manifest and isinstance(manifest, dict):
+                    os.makedirs(working_folder, exist_ok=True)
+                    manifest_filename = f"manifest_{container_id}_{titolo_pulito}.json"
+                    manifest_path = os.path.join(working_folder, manifest_filename)
+                    with open(manifest_path, 'w', encoding='utf-8') as _f:
+                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
+                    self.manifest_path = manifest_path
+                    self.output_dir = working_folder
+                    n_canvas = len(manifest['sequences'][0]['canvases'])
+                    logger.info(f"[BNCF] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
+                    return manifest
 
             # --- Internet Culturale / Estense: manifest sintetico da magparser ---
             if portale_key == "internetculturale_estense":
@@ -1079,10 +1204,58 @@ class Elaborazione:
                 tile_dir = os.path.join(self.output_dir, f"tiles_canvas_{idx}")
 
                 try:
+                    # --- BNCF Teca: download diretto JPEG con fallback IIIF ---
+                    from io import BytesIO as _BytesIO
+                    import requests as _req
+                    is_bncf_jpeg = False
+                    if service_id and 'teca.bncf.firenze.sbn.it/ImageViewer/servlet/ImageViewer' in service_id and 'azione=showImg' in service_id:
+                        is_bncf_jpeg = True
+                    if is_bncf_jpeg:
+                        _h_bncf = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+                        try:
+                            _r_bncf = _req.get(service_id, headers=_h_bncf, timeout=45)
+                            logger.debug(f"[BNCF][DEBUG] HTTP {_r_bncf.status_code} - Content-Type: {_r_bncf.headers.get('Content-Type','?')} - Size: {len(_r_bncf.content)} byte per canvas {idx}")
+                            if _r_bncf.ok and len(_r_bncf.content) > 10000:
+                                try:
+                                    final_img = Image.open(_BytesIO(_r_bncf.content)).copy()
+                                    logger.info(f"[BNCF] Pagina {idx} JPEG diretta scaricata: {len(_r_bncf.content)} byte")
+                                except Exception as pil_e:
+                                    logger.error(f"[BNCF][ERROR] PIL non riesce ad aprire l'immagine canvas {idx}: {pil_e}")
+                                    # Salva risposta raw per debug
+                                    raw_path = os.path.join(self.output_dir, f"{nome_base}_raw_response.jpg")
+                                    with open(raw_path, "wb") as raw_f:
+                                        raw_f.write(_r_bncf.content)
+                                    logger.error(f"[BNCF][DEBUG] Risposta raw salvata per canvas {idx}: {raw_path}")
+                                    final_img = None
+                            else:
+                                logger.warning(f"[BNCF] Download diretto fallito (HTTP {_r_bncf.status_code}, size={len(_r_bncf.content)}) per canvas {idx}, fallback su IIIF tiles")
+                                # Salva risposta raw per debug
+                                raw_path = os.path.join(self.output_dir, f"{nome_base}_raw_response.jpg")
+                                with open(raw_path, "wb") as raw_f:
+                                    raw_f.write(_r_bncf.content)
+                                logger.warning(f"[BNCF][DEBUG] Risposta raw salvata per canvas {idx}: {raw_path}")
+                                final_img = None
+                        except Exception as _e:
+                            logger.warning(f"[BNCF] Errore download diretto JPEG: {_e}, fallback su IIIF tiles")
+                            final_img = None
+                        if final_img is not None:
+                            ua = _parse_ua_from_url(self.ark_url)
+                            ark = _parse_ark_from_url(self.ark_url)
+                            page_label = canvas.get('label', None)
+                            meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                            _use_img = final_img
+                            if image_formats:
+                                save_image_variants(_use_img, self.output_dir, nome_base, image_formats, meta=meta)
+                            if pdf_in_formats:
+                                _pdf_png_path = os.path.join(temp_pdf_dir, f"{nome_base}_pdftmp.png")
+                                try:
+                                    _use_img.save(_pdf_png_path, format='PNG')
+                                except Exception as _e:
+                                    logger.error(f"[PDF] Errore PNG BNCF JPEG diretto canvas {idx}: {_e}")
+                            return  # nessuna cartella tile da pulire
+                        # Se il diretto fallisce, prosegue su IIIF tiles (logica sotto)
                     # --- IA: download diretto senza IIIF tiles ---
                     if service_id and 'BookReaderImages.php' in service_id:
-                        from io import BytesIO as _BytesIO
-                        import requests as _req
                         _h_ia = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36'}
                         _r_ia = _req.get(service_id, headers=_h_ia, timeout=45)
                         if _r_ia.ok:
@@ -1109,8 +1282,6 @@ class Elaborazione:
                         return  # nessuna cartella tile da pulire
                     # --- Matricula Online: download diretto JPEG ---
                     if service_id and 'hosted-images.matricula-online.eu' in service_id:
-                        from io import BytesIO as _BytesIO
-                        import requests as _req
                         _h_mat = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
                         _r_mat = _req.get(service_id, headers=_h_mat, timeout=45)
                         if _r_mat.ok:

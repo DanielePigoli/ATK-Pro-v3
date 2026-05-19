@@ -243,24 +243,31 @@ class GenealogyDialog(QDialog):
             return chiave
 
     def init_ui(self):
-        self.setWindowTitle("Factory Genealogica - ATK-Pro 3.0 Escape")
+        self.setWindowTitle("Esportazione GEDCOM - ATK-Pro")
         self.setMinimumSize(950, 850)
         self.setStyleSheet("""
             QDialog { background-color: #181818; color: #fff; border: 2px solid #a67c52; }
-            QLabel { color: #fff; }
-            QPushButton#btn_add_type { background-color: #222; border: 1px solid #a67c52; padding: 0px 0px 3px 0px; border-radius: 4px; font-family: 'Segoe UI Symbol'; font-size: 13pt; font-weight: bold; color: #a67c52; }
-            QPushButton#btn_add_type:hover { background-color: #333; }
-            QPushButton#btn_edit_type { background-color: #222; border: 1px solid #a67c52; padding: 0px; border-radius: 4px; font-family: 'Segoe UI Symbol'; font-size: 11pt; color: #fff; }
-            QPushButton#btn_edit_type:hover { background-color: #333; }
-            QPushButton#btn_del_type { background-color: #2a1818; border: 1px solid #8a3a3a; padding: 0px; border-radius: 4px; font-family: 'Segoe UI Symbol'; font-size: 11pt; color: #cc6666; }
+            QLabel { color: #fff; font-size: 13px; font-weight: bold; }
+            QPushButton { background-color: #222; border: 1px solid #a67c52; border-radius: 4px; padding: 10px; font-weight: bold; color: #fff; }
+            QPushButton:hover { background-color: #333; }
+            QComboBox, QLineEdit, QCheckBox { background-color: #2a2a2a; color: #fff; border: 1px solid #555; border-radius: 4px; padding: 7px; }
+            QTextEdit { background-color: #2a2a2a; color: #ccc; border: 1px solid #555; border-radius: 4px; font-size: 14px; }
+            QPushButton#btn_add_type { padding: 0px 0px 3px 0px; font-family: 'Segoe UI Symbol'; font-size: 13pt; color: #a67c52; }
+            QPushButton#btn_edit_type { padding: 0px; font-family: 'Segoe UI Symbol'; font-size: 11pt; }
+            QPushButton#btn_del_type { background-color: #2a1818; border-color: #8a3a3a; padding: 0px; font-family: 'Segoe UI Symbol'; font-size: 11pt; color: #cc6666; }
             QPushButton#btn_del_type:hover { background-color: #3a2020; }
         """)
-        l = QVBoxLayout(self); l.setContentsMargins(15, 15, 15, 15)
-        
+        l = QVBoxLayout(self); l.setContentsMargins(18, 18, 18, 18)
+
         t_css = "color: #a67c52; font-size: 15px; font-weight: bold;"
         lbl_css = "font-size: 13px; font-weight: bold; color: #fff;"
         inp_css = "background-color: #2a2a2a; border: 1px solid #555; border-radius: 4px; padding: 7px; color: #fff;"
         btn_css = "QPushButton { background-color: #222; border: 1px solid #a67c52; border-radius: 4px; padding: 10px; font-weight: bold; color: #fff; } QPushButton:hover { background-color: #333; }"
+
+        # --- Caveau chiavi in alto ---
+        self.btn_manage_keys = QPushButton("🗝️ GESTISCI CAVEAU CHIAVI (CSV)")
+        self.btn_manage_keys.setStyleSheet(btn_css)
+        l.addWidget(self.btn_manage_keys)
 
         scroll = QScrollArea(); scroll.setWidgetResizable(True); scroll.setStyleSheet("QScrollArea { border: none; }")
         cont = QWidget(); fl = QVBoxLayout(cont); fl.setSpacing(18)

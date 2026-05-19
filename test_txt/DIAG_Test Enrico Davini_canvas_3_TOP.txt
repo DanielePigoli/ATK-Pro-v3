@@ -1,0 +1,15 @@
+N°Casa | N°Fam | Prog | Cognome | Nome | Età | Celibe | Ammogliato | Vedovo | Nubile | Maritata | Vedova | Religione | Patria | Professione | Osservazioni
+1 | 1 | 1 | Acciaj | Gaspero | 60 | | 1 | | | | | Cattolico | " | Possidente | 
+| | 2 | " | Rosa | 62 | | | | | 1 | | " | " | " | 
+2 | 2 | 3 | Andrei | Gaetano | 33 | | 1 | | | | | " | " | Colono | 
+| | 4 | " | Maria | 34 | | | | | 1 | | " | " | " | 
+| | 5 | " | Giuseppe | 9 | 1 | | | | | | " | " | " | 
+| | 6 | " | Giovanni | 6 | 1 | | | | | | " | " | " | 
+| | 7 | " | Rosa | 4 | | | | 1 | | | " | " | " | 
+| | 8 | " | Fine[?] | 1 | | | | 1 | | | " | " | " | 
+3 | 3 | 9 | Angelini | Antonio | 42 | | 1 | | | | | " | " | " | 
+| | 10 | " | Luisa | 32 | | | | | 1 | | " | " | " | 
+| | 11 | " | Angelo | 6 | 1 | | | | | | " | " | " | 
+| | 12 | " | Santi | 4 | 1 | | | | | | " | " | " | 
+4 | 4 | 13 | Bargelli | Caterina | 72 | | | | | | 1 | " | " | " | 
+| | 14 | " | Pietro | 42 | | 1 | | | | | " | " | " |

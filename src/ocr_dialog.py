@@ -1,3 +1,12 @@
+import logging
+import os
+LOG_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'atkpro_debug.log'))
+if not logging.getLogger('atkpro').hasHandlers():
+    handler = logging.FileHandler(LOG_PATH, encoding='utf-8')
+    handler.setFormatter(logging.Formatter('[%(asctime)s][%(levelname)s][%(name)s] %(message)s'))
+    logging.getLogger('atkpro').addHandler(handler)
+    logging.getLogger('atkpro').setLevel(logging.DEBUG)
+logger = logging.getLogger('atkpro')
 import os
 import threading
 from PySide6.QtWidgets import (
@@ -205,22 +214,35 @@ class CalibrationThread(QThread):
 
 class AdvancedOCRDialog(QDialog):
     def __init__(self, parent=None, glossario_data=None, lingua="it"):
+        logger.debug("[AdvancedOCRDialog] __init__ INIZIO")
         super().__init__(parent)
         self.glossario_data = glossario_data
         self.lingua = lingua
         self.file_paths = []
         self.saved_instructions = {}  # {nome: testo}
-        self.setup_ui()
-        self.load_settings()
+        try:
+            self.setup_ui()
+            logger.debug("[AdvancedOCRDialog] setup_ui COMPLETATA")
+            # Carica impostazioni solo dopo che tutti i controlli sono creati
+            try:
+                self.load_settings()
+            except Exception as e:
+                logger.error(f"[AdvancedOCRDialog] Errore in load_settings: {e}")
+        except Exception as e:
+            import traceback
+            logger.error(f"[AdvancedOCRDialog] ECCEZIONE in setup_ui: {e}\n" + traceback.format_exc())
+            raise
 
     def gm(self, text):
         res = get_msg(self.glossario_data, text, self.lingua)
         return res if (res and res != text) else text
 
     def setup_ui(self):
+        logger.debug("[AdvancedOCRDialog] setup_ui INIZIO")
         self.setWindowTitle(self.gm("OCR Avanzato (Trascrizione Diplomatica)"))
-        self.setMinimumSize(700, 600)
-        self.resize(850, 650)
+        self.setMinimumSize(900, 600)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
+        self.resize(950, 700)
         self.setStyleSheet("""
             QDialog { background-color: #181818; color: #fff; border: 2px solid #a67c52; }
             QLabel { color: #fff; font-size: 14px; }
@@ -235,6 +257,8 @@ class AdvancedOCRDialog(QDialog):
         """)
 
         layout = QVBoxLayout(self)
+        # --- Caveau chiavi (come GenealogyDialog) ---
+        # RIMOSSO pulsante gestione caveau chiavi: già presente Cassaforte accanto all'API Key
 
         # File Selection
         lbl_file = QLabel(self.gm("File Selezionati:"))
@@ -242,7 +266,6 @@ class AdvancedOCRDialog(QDialog):
         self.lbl_file_path.setWordWrap(True)
         btn_sel = QPushButton(self.gm("Seleziona File (Immagini/PDF)"))
         btn_sel.clicked.connect(self.select_files)
-        
         file_layout = QHBoxLayout()
         file_layout.addWidget(lbl_file)
         file_layout.addWidget(self.lbl_file_path)
@@ -306,24 +329,21 @@ class AdvancedOCRDialog(QDialog):
         self.inp_custom_model.setPlaceholderText("Es. gpt-5-preview (lascia vuoto per default)")
         layout.addWidget(self.lbl_custom_model)
         layout.addWidget(self.inp_custom_model)
-        
-        # Inizializza visibilità
-        self.provider_changed()
+
         # API Key
         self.lbl_api = QLabel(self.gm("API Key per il provider scelto:"))
         api_ly = QHBoxLayout()
         self.txt_api = QLineEdit()
         self.txt_api.setEchoMode(QLineEdit.Password)
-        
         btn_key_safe = QPushButton("🔑 " + self.gm("Cassaforte"))
         btn_key_safe.setStyleSheet("background-color: #2a2a2a; color: #f5f0e8; border: 1px solid #888; padding: 2px 10px; border-radius: 4px; font-size: 11px;")
         btn_key_safe.clicked.connect(self.open_key_manager)
-        
         api_ly.addWidget(self.txt_api)
         api_ly.addWidget(btn_key_safe)
-        
         layout.addWidget(self.lbl_api)
         layout.addLayout(api_ly)
+        # Inizializza visibilità
+        self.provider_changed()
 
         # Formats
         lbl_fmt = QLabel(self.gm("Formati di Output:"))
@@ -345,6 +365,188 @@ class AdvancedOCRDialog(QDialog):
         self.chk_interactive.setStyleSheet("color: #f5f0e8; font-weight: bold; margin-top: 5px; margin-bottom: 5px;")
         layout.addWidget(self.chk_interactive)
 
+        # Calibrazione Assistita Checkbox
+        self.chk_calibration = QCheckBox("Abilita Calibrazione Assistita (anteprima TOP per creare il riferimento)")
+        self.chk_calibration.setStyleSheet("color: #c8e6c9; font-weight: bold; margin-bottom: 5px;")
+        self.chk_calibration.setToolTip(
+            "Il programma elabora le prime righe, le mostra per correzione,\n"
+            "poi usa il testo corretto come riferimento per l'elaborazione completa."
+        )
+        layout.addWidget(self.chk_calibration)
+
+        # Istruzioni extra con Archiviazione
+        istr_header_ly = QHBoxLayout()
+        lbl_istruzioni = QLabel(self.gm("Istruzioni Aggiuntive per l'IA (Opzionale):"))
+        lbl_istruzioni.setStyleSheet("margin-top: 10px; color: #f5f0e8; font-weight: bold;")
+
+        self.combo_istruzioni = QComboBox()
+        self.combo_istruzioni.addItem(self.gm("-- Istruzioni Salvate --"), "")
+        self.combo_istruzioni.currentIndexChanged.connect(self.load_saved_instruction)
+
+        _btn_small = "background-color: #222; border: 1px solid #a67c52; border-radius: 4px; font-weight: bold; color: #a67c52; padding: 0px; font-size: 14px;"
+        self.btn_add_istruzione = QPushButton("+")
+        self.btn_add_istruzione.setToolTip(self.gm("Salva istruzione corrente con un nome"))
+        self.btn_add_istruzione.setFixedSize(26, 26)
+        self.btn_add_istruzione.setStyleSheet(_btn_small)
+        self.btn_add_istruzione.clicked.connect(self.add_instruction)
+
+        self.btn_ren_istruzione = QPushButton("✏")
+        self.btn_ren_istruzione.setToolTip(self.gm("Rinomina istruzione selezionata"))
+        self.btn_ren_istruzione.setFixedSize(26, 26)
+        self.btn_ren_istruzione.setStyleSheet(_btn_small)
+        self.btn_ren_istruzione.clicked.connect(self.rename_instruction)
+
+        self.btn_del_istruzione = QPushButton("✕")
+        self.btn_del_istruzione.setToolTip(self.gm("Elimina istruzione selezionata"))
+        self.btn_del_istruzione.setFixedSize(26, 26)
+        self.btn_del_istruzione.setStyleSheet("background-color: #2a1818; border: 1px solid #8a3a3a; border-radius: 4px; font-weight: bold; color: #cc6666; padding: 0px; font-size: 14px;")
+        self.btn_del_istruzione.clicked.connect(self.delete_instruction)
+
+        istr_header_ly.addWidget(lbl_istruzioni)
+        istr_header_ly.addStretch()
+        istr_header_ly.addWidget(self.combo_istruzioni)
+        istr_header_ly.addWidget(self.btn_add_istruzione)
+        istr_header_ly.addWidget(self.btn_ren_istruzione)
+        istr_header_ly.addWidget(self.btn_del_istruzione)
+
+        layout.addLayout(istr_header_ly)
+
+        self.txt_istruzioni = QTextEdit()
+        self.txt_istruzioni.setAcceptRichText(False)
+        self.txt_istruzioni.setPlaceholderText(self.gm("Es: I nomi dei mesi sono in dialetto, ometti i timbri a margine..."))
+        self.txt_istruzioni.setMaximumHeight(60)
+        layout.addWidget(self.txt_istruzioni)
+
+        # Trascrizione di Esempio (Few-Shot)
+        es_header_ly = QHBoxLayout()
+        lbl_esempio = QLabel(self.gm("Trascrizione di Riferimento (Opzionale):"))
+        lbl_esempio.setStyleSheet("margin-top: 5px; color: #f5f0e8; font-weight: bold;")
+
+        self.btn_clear_esempio = QPushButton("✖ Cancella Testo")
+        self.btn_clear_esempio.setStyleSheet("background-color: #5a1a1a; color: #fff; padding: 2px 10px; border-radius: 4px; font-size: 11px;")
+        self.btn_clear_esempio.clicked.connect(lambda: self.txt_esempio.clear())
+
+        es_header_ly.addWidget(lbl_esempio)
+        es_header_ly.addStretch()
+        es_header_ly.addWidget(self.btn_clear_esempio)
+
+        self.txt_esempio = QTextEdit()
+        self.txt_esempio.setAcceptRichText(False)
+        self.txt_esempio.setPlaceholderText(self.gm("Copia qui la trascrizione esatta della primissima pagina per addestrare l'IA."))
+        self.txt_esempio.setMaximumHeight(80)
+
+        layout.addLayout(es_header_ly)
+        layout.addWidget(self.txt_esempio)
+
+        # Progress
+        self.progress_lbl = QLabel("")
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setValue(0)
+        layout.addWidget(self.progress_lbl)
+        layout.addWidget(self.progress_bar)
+
+        # Start/Close
+        btns = QHBoxLayout()
+        self.btn_start = QPushButton(self.gm("Avvia OCR"))
+        self.btn_start.clicked.connect(self.start_ocr)
+        self.btn_close = QPushButton(self.gm("Chiudi"))
+        self.btn_close.clicked.connect(self.reject)
+        btns.addWidget(self.btn_start)
+        btns.addWidget(self.btn_close)
+        layout.addLayout(btns)
+
+    def open_key_manager_dialog(self):
+        try:
+            from key_manager import KeyManager
+            km = KeyManager()
+            km.open_manager_dialog(self)
+        except Exception as e:
+            QMessageBox.critical(self, "Errore", f"Impossibile aprire il gestore chiavi: {e}")
+        btn_add_type.clicked.connect(self._add_custom_type)
+        self.btn_edit_type = QPushButton("\u270f")
+        self.btn_edit_type.setObjectName("btn_edit_type")
+        self.btn_edit_type.setToolTip(self.gm("Modifica tipologia personalizzata selezionata"))
+        self.btn_edit_type.setFixedSize(30, 30)
+        self.btn_edit_type.clicked.connect(self._edit_custom_type)
+        self.btn_edit_type.setVisible(False)
+        self.btn_del_type = QPushButton("\u2715")
+        self.btn_del_type.setObjectName("btn_del_type")
+        logger.debug("[AdvancedOCRDialog] setup_ui dopo file_layout")
+        self.btn_del_type.setToolTip(self.gm("Elimina tipologia personalizzata selezionata"))
+        self.btn_del_type.setFixedSize(30, 30)
+        self.btn_del_type.clicked.connect(self._delete_custom_type)
+        self.btn_del_type.setVisible(False)
+        type_layout.addWidget(lbl_type)
+        type_layout.addWidget(self.combo_type, 1)
+        type_layout.addWidget(btn_add_type)
+        type_layout.addWidget(self.btn_edit_type)
+        type_layout.addWidget(self.btn_del_type)
+        layout.addLayout(type_layout)
+
+        # Provider Selection
+        lbl_prov = QLabel(self.gm("Seleziona Provider IA:"))
+        self.combo_prov = QComboBox()
+        self.combo_prov.addItems([
+            "Anthropic / Claude (Miglior Vision)",
+            "OpenAI (GPT-4o Vision)",
+            "Google Gemini (Vision)",
+            "Transkribus (Italian Handwriting HTR)",
+            "Hugging Face (Modelli Specializzati OCR)",
+            "xAI / Grok (Vision)",
+            "Mistral (Pixtral Vision)",
+            "Groq (Llama Vision)",
+            "Ollama (Locale/Privato)",
+            "DeepSeek (Solo Testo)"
+        ])
+        self.combo_prov.currentIndexChanged.connect(self.provider_changed)
+        layout.addWidget(lbl_prov)
+        layout.addWidget(self.combo_prov)
+
+        self.lbl_custom_model = QLabel(self.gm("Override Modello (opzionale):"))
+        self.inp_custom_model = QLineEdit()
+        print("[DEBUG] AdvancedOCRDialog.setup_ui dopo type_layout")
+        self.inp_custom_model.setPlaceholderText("Es. gpt-5-preview (lascia vuoto per default)")
+        layout.addWidget(self.lbl_custom_model)
+        layout.addWidget(self.inp_custom_model)
+        
+        # API Key
+        self.lbl_api = QLabel(self.gm("API Key per il provider scelto:"))
+        api_ly = QHBoxLayout()
+        self.txt_api = QLineEdit()
+        self.txt_api.setEchoMode(QLineEdit.Password)
+        btn_key_safe = QPushButton("🔑 " + self.gm("Cassaforte"))
+        btn_key_safe.setStyleSheet("background-color: #2a2a2a; color: #f5f0e8; border: 1px solid #888; padding: 2px 10px; border-radius: 4px; font-size: 11px;")
+        btn_key_safe.clicked.connect(self.open_key_manager)
+        api_ly.addWidget(self.txt_api)
+        api_ly.addWidget(btn_key_safe)
+        layout.addWidget(self.lbl_api)
+        layout.addLayout(api_ly)
+        # Inizializza visibilità
+        self.provider_changed()
+
+        # Formats
+        lbl_fmt = QLabel(self.gm("Formati di Output:"))
+        self.chk_txt = QCheckBox(self.gm("Testo Semplice (.txt)"))
+        self.chk_docx = QCheckBox(self.gm("Documento Word (.docx)"))
+        self.chk_xml = QCheckBox(self.gm("XML TEI per Trascrizione (.xml)"))
+        logger.debug("[AdvancedOCRDialog] setup_ui prima di lbl_api")
+        self.chk_txt.setChecked(True)
+        self.chk_docx.setChecked(True)
+        logger.debug("[AdvancedOCRDialog] setup_ui lbl_api creato")
+        self.chk_xml.setChecked(True)
+        fmt_layout = QHBoxLayout()
+        fmt_layout.addWidget(self.chk_txt)
+        fmt_layout.addWidget(self.chk_docx)
+        fmt_layout.addWidget(self.chk_xml)
+        layout.addWidget(lbl_fmt)
+        layout.addLayout(fmt_layout)
+
+        # Revisione Interattiva Checkbox
+        self.chk_interactive = QCheckBox("Abilita Finestra di Revisione Interattiva prima di salvare l'OCR")
+        self.chk_interactive.setStyleSheet("color: #f5f0e8; font-weight: bold; margin-top: 5px; margin-bottom: 5px;")
+        layout.addWidget(self.chk_interactive)
+
+        logger.debug("[AdvancedOCRDialog] setup_ui dopo api_ly")
         # Calibrazione Assistita Checkbox
         self.chk_calibration = QCheckBox("Abilita Calibrazione Assistita (anteprima TOP per creare il riferimento)")
         self.chk_calibration.setStyleSheet("color: #c8e6c9; font-weight: bold; margin-bottom: 5px;")
@@ -429,6 +631,7 @@ class AdvancedOCRDialog(QDialog):
         btns = QHBoxLayout()
         self.btn_start = QPushButton(self.gm("Avvia OCR"))
         self.btn_start.clicked.connect(self.start_ocr)
+        logger.debug("[AdvancedOCRDialog] UI completata e segnali connessi")
         self.btn_close = QPushButton(self.gm("Chiudi"))
         self.btn_close.clicked.connect(self.reject)
         btns.addWidget(self.btn_start)
@@ -656,6 +859,7 @@ class AdvancedOCRDialog(QDialog):
             logging.error(f"Errore salvataggio OCR settings: {e}")
 
     def start_ocr(self):
+        logger.info(f"[AdvancedOCRDialog] Avvio OCR: provider={self.combo_prov.currentText()}, files={self.file_paths}")
         if not self.file_paths:
             QMessageBox.warning(self, "Attenzione", self.gm("Seleziona almeno un file."))
             return
