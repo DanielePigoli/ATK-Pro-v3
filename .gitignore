@@ -25,6 +25,10 @@ scripts/.venv*/
 *.log
 *.log.[0-9]*
 Immagine*.png
+temp.txt
+localization_check_report.txt
+gitleaks_report*.sarif
+trufflehog_report*.txt
 
 # 🔧 Script di setup e lavoro (per development locale, non per release)
 *.bat
