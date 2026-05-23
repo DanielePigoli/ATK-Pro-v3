@@ -115,16 +115,27 @@ class RicercaAssistitaAIWorker(QThread):
             self.error.emit(str(e))
 
 class RicercaAssistitaAIDialog(QDialog):
+    def gm(self, chiave):
+        try:
+            from main_gui_qt import get_msg as _get_msg
+        except Exception:
+            try:
+                from src.main_gui_qt import get_msg as _get_msg
+            except Exception:
+                return chiave
+        res = _get_msg(self.glossario, chiave, self.lingua)
+        return res if res else chiave
+
     def _update_key_status(self, slot, provider, key_count=None, error=False):
         """Aggiorna la label di stato chiave/provider e la progress bar."""
-        stato = "Errore" if error else "Elaborazione..."
+        stato = self.gm("Errore") if error else self.gm("Elaborazione...")
         testo = ""
         if slot and provider:
-            testo = f"Provider: <b>{provider}</b> | Slot chiave: <b>{slot}</b>"
+            testo = f"{self.gm('Provider')}: <b>{provider}</b> | {self.gm('Slot chiave')}: <b>{slot}</b>"
             if key_count is not None:
-                testo += f" | Tentativo: <b>{key_count}</b>"
+                testo += f" | {self.gm('Tentativo')}: <b>{key_count}</b>"
         elif provider:
-            testo = f"Provider: <b>{provider}</b>"
+            testo = f"{self.gm('Provider')}: <b>{provider}</b>"
         self.lbl_key_status.setText(testo)
         # Aggiorna anche la progress bar (formato)
         if hasattr(self, 'progress_bar') and self.progress_bar:
@@ -147,7 +158,7 @@ class RicercaAssistitaAIDialog(QDialog):
         layout.setContentsMargins(10, 10, 10, 10)
 
         # --- IMPOSTAZIONI FINESTRA (NATIVA) ---
-        self.setWindowTitle("Ricerca Assistita AI")
+        self.setWindowTitle(self.gm("Ricerca Assistita AI"))
         self.setWindowFlags(self.windowFlags() | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
 
         # --- INTESTAZIONE: INPUT QUERY, PROVIDER, MODELLO, PROMPT, CHECKBOX ---
@@ -158,12 +169,12 @@ class RicercaAssistitaAIDialog(QDialog):
         
         # Query
         self.inp_query = QTextEdit()
-        self.inp_query.setPlaceholderText("Soggetto, Luogo, Periodo, Fonti, ...")
+        self.inp_query.setPlaceholderText(self.gm("Soggetto, Luogo, Periodo, Fonti, ..."))
         self.inp_query.setStyleSheet(inp_css + "font-weight: bold; background: #f9f9e3; padding: 2px 6px; font-size: 13px;")
         self.inp_query.setMinimumHeight(44)
         self.inp_query.setMaximumHeight(44)
         
-        lbl_query = QLabel("Query di ricerca:")
+        lbl_query = QLabel(self.gm("Query di ricerca:"))
         lbl_query.setStyleSheet(lbl_style)
         lbl_query.setMinimumHeight(24)
         
@@ -173,7 +184,7 @@ class RicercaAssistitaAIDialog(QDialog):
         query_layout.setSpacing(2)
         query_layout.addWidget(self.inp_query)
         
-        lbl_hint = QLabel("Esempio: Rossi, Bianchi a Firenze e Prato 1850-1900, battesimi e matrimoni")
+        lbl_hint = QLabel(self.gm("Esempio: Rossi, Bianchi a Firenze e Prato 1850-1900, battesimi e matrimoni"))
         lbl_hint.setStyleSheet("color: #ccc; font-size: 11px; font-style: italic; min-height: 14px;")
         query_layout.addWidget(lbl_hint)
         
@@ -184,17 +195,17 @@ class RicercaAssistitaAIDialog(QDialog):
         self.combo_provider.setStyleSheet(inp_css)
         self.combo_provider.setMinimumHeight(24)
         self.combo_provider.addItems(["Gemini", "Claude", "OpenAI", "Mistral", "xAI", "DeepSeek", "Groq", "HuggingFace", "Ollama"])
-        lbl_prov = QLabel("Provider AI:")
+        lbl_prov = QLabel(self.gm("Provider AI:"))
         lbl_prov.setStyleSheet(lbl_style)
         lbl_prov.setMinimumHeight(24)
         form_top.addRow(lbl_prov, self.combo_provider)
         
         # Modello custom
         self.inp_custom_model = QLineEdit()
-        self.inp_custom_model.setPlaceholderText("Modello custom (opzionale)")
+        self.inp_custom_model.setPlaceholderText(self.gm("Modello custom (opzionale)"))
         self.inp_custom_model.setStyleSheet(inp_css)
         self.inp_custom_model.setMinimumHeight(24)
-        lbl_model = QLabel("Modello AI (opzionale):")
+        lbl_model = QLabel(self.gm("Modello AI (opzionale):"))
         lbl_model.setStyleSheet(lbl_style)
         lbl_model.setMinimumHeight(24)
         form_top.addRow(lbl_model, self.inp_custom_model)
@@ -204,27 +215,27 @@ class RicercaAssistitaAIDialog(QDialog):
         self.combo_prompt.setStyleSheet(inp_css)
         self.combo_prompt.setMinimumHeight(24)
         self.combo_prompt.addItems([
-            "Ricerca generale dettagliata",
-            "Strategie internazionali dettagliate",
-            "Ricerca atti specifici dettagliata",
-            "Ricerca avanzata con filtri"
+            self.gm("Ricerca generale dettagliata"),
+            self.gm("Strategie internazionali dettagliate"),
+            self.gm("Ricerca atti specifici dettagliata"),
+            self.gm("Ricerca avanzata con filtri")
         ])
-        lbl_prompt = QLabel("Prompt standard:")
+        lbl_prompt = QLabel(self.gm("Prompt standard:"))
         lbl_prompt.setStyleSheet(lbl_style)
         lbl_prompt.setMinimumHeight(24)
         form_top.addRow(lbl_prompt, self.combo_prompt)
         
         # Checkbox tutti i provider (spuntata di default)
-        self.chk_all_providers = QCheckBox("Elabora con tutti i provider disponibili (multi-provider)")
+        self.chk_all_providers = QCheckBox(self.gm("Elabora con tutti i provider disponibili (multi-provider)"))
         self.chk_all_providers.setStyleSheet(lbl_css + "font-size: 12px; color: #e6c891; font-weight: bold; min-height: 20px;")
         self.chk_all_providers.setChecked(True)
-        form_top.addRow(QLabel(""), self.chk_all_providers)
+        form_top.addRow(QLabel(), self.chk_all_providers)
         
         # Label stato chiave/provider
-        self.lbl_key_status = QLabel("")
+        self.lbl_key_status = QLabel()
         self.lbl_key_status.setStyleSheet("color:#e6c891;font-weight:bold;font-size:13px;padding:2px 0 2px 0;")
         self.lbl_key_status.setMinimumHeight(24)
-        lbl_status = QLabel("Stato provider/chiave:")
+        lbl_status = QLabel(self.gm("Stato provider/chiave:"))
         lbl_status.setStyleSheet(lbl_style + "color:#e6c891;")
         lbl_status.setMinimumHeight(24)
         form_top.addRow(lbl_status, self.lbl_key_status)
@@ -238,7 +249,7 @@ class RicercaAssistitaAIDialog(QDialog):
         self.combo_note.setStyleSheet(inp_css)
         self.combo_note.setMinimumWidth(260)
         self.combo_note.setMinimumHeight(24)
-        lbl_sel_nota = QLabel("Seleziona nota:")
+        lbl_sel_nota = QLabel(self.gm("Seleziona nota:"))
         lbl_sel_nota.setStyleSheet(lbl_style)
         form_note.addRow(lbl_sel_nota, self.combo_note)
         
@@ -246,17 +257,17 @@ class RicercaAssistitaAIDialog(QDialog):
         self.inp_note.setStyleSheet(inp_css + "min-height: 50px; font-size: 13px; min-width: 320px;")
         self.inp_note.setMinimumHeight(50)
         self.inp_note.setMinimumWidth(320)
-        self.inp_note.setPlaceholderText("Aggiungi o modifica una nota personale (opzionale)...")
-        lbl_cont_nota = QLabel("Contenuto nota:")
+        self.inp_note.setPlaceholderText(self.gm("Aggiungi o modifica una nota personale (opzionale)..."))
+        lbl_cont_nota = QLabel(self.gm("Contenuto nota:"))
         lbl_cont_nota.setStyleSheet(lbl_style)
         form_note.addRow(lbl_cont_nota, self.inp_note)
         
         # Pulsanti note
-        self.btn_save_note = QPushButton("Salva nota")
+        self.btn_save_note = QPushButton(self.gm("Salva nota"))
         self.btn_save_note.setStyleSheet(btn_css)
-        self.btn_delete_note = QPushButton("Elimina nota")
+        self.btn_delete_note = QPushButton(self.gm("Elimina nota"))
         self.btn_delete_note.setStyleSheet(btn_css)
-        self.btn_new_note = QPushButton("Nuova nota")
+        self.btn_new_note = QPushButton(self.gm("Nuova nota"))
         self.btn_new_note.setStyleSheet(btn_css)
         
         btns_note_h = QHBoxLayout()
@@ -275,14 +286,14 @@ class RicercaAssistitaAIDialog(QDialog):
         btns_note_widget.setLayout(btns_note_h)
         btns_note_widget.setMinimumHeight(32)
         btns_note_widget.setStyleSheet("margin-bottom: 2px;")
-        lbl_azioni_nota = QLabel("Azioni nota:")
+        lbl_azioni_nota = QLabel(self.gm("Azioni nota:"))
         lbl_azioni_nota.setStyleSheet(lbl_style)
         form_note.addRow(lbl_azioni_nota, btns_note_widget)
         
         layout.addLayout(form_note)
 
         # --- PULSANTE AVVIO ---
-        self.btn_run = QPushButton("SUGGERISCI PORTALI E QUERY")
+        self.btn_run = QPushButton(self.gm("SUGGERISCI PORTALI E QUERY"))
         self.btn_run.setStyleSheet(btn_css + "background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #e6c891, stop:1 #fffbe8); color: #222; font-size: 15px; border: 2px solid #a67c52; padding: 4px 0; margin-top: 6px;")
         self.btn_run.setMinimumHeight(36)
         self.btn_run.setMaximumWidth(420)
@@ -341,13 +352,22 @@ class RicercaAssistitaAIDialog(QDialog):
         self.progress_bar.setMinimumWidth(340)
         layout.addWidget(self.progress_bar)
         # Raggruppamento risultati
-        self.lbl_group_by = QLabel("Raggruppa risultati per:")
+        self.lbl_group_by = QLabel(self.gm("Raggruppa risultati per:"))
         self.lbl_group_by.setStyleSheet(lbl_css)
         self.combo_group_by = QComboBox()
         self.combo_group_by.setStyleSheet(inp_css)
         self.combo_group_by.setMinimumWidth(200)
         self.combo_group_by.setMinimumHeight(30)
-        self.combo_group_by.addItems(["(Nessuna aggregazione)", "Portale", "Motivazione", "Query di esempio", "Periodo", "Tipo atti", "Filtri/Strategie"])
+        for label, value in [
+            ("(Nessuna aggregazione)", "(Nessuna aggregazione)"),
+            ("Portale", "Portale"),
+            ("Motivazione", "Motivazione"),
+            ("Query di esempio", "Query di esempio"),
+            ("Periodo", "Periodo"),
+            ("Tipo atti", "Tipo atti"),
+            ("Filtri/Strategie", "Filtri/Strategie"),
+        ]:
+            self.combo_group_by.addItem(self.gm(label), value)
         group_layout = QHBoxLayout()
         group_layout.addWidget(self.lbl_group_by)
         group_layout.addWidget(self.combo_group_by)
@@ -363,14 +383,14 @@ class RicercaAssistitaAIDialog(QDialog):
         # Aggiorna anteprima raggruppamento quando cambia la selezione
         self.combo_group_by.currentIndexChanged.connect(self._update_grouped_preview)
         # Pulsante Salva Risultato
-        self.btn_save_result = QPushButton("SALVA RISULTATI AI")
+        self.btn_save_result = QPushButton(self.gm("SALVA RISULTATI AI"))
         self.btn_save_result.setStyleSheet(btn_css + "background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #a67c52, stop:1 #cfb58b); color: #fff; font-size: 15px; border: 2px solid #3a1f00; padding: 6px 0; margin-top: 6px;")
         self.btn_save_result.setMinimumHeight(44)
         self.btn_save_result.setEnabled(False)
         layout.addWidget(self.btn_save_result)
         # Caveau chiavi
         layout.addSpacing(6)
-        self.btn_manage_keys = QPushButton("🗝️ GESTISCI CAVEAU CHIAVI (CSV)")
+        self.btn_manage_keys = QPushButton("🗝️ " + self.gm("GESTISCI CAVEAU CHIAVI (CSV)"))
         self.btn_manage_keys.setStyleSheet(btn_css)
         layout.addWidget(self.btn_manage_keys, alignment=Qt.AlignBottom)
         logger.debug("[RicercaAssistitaAIDialog] __init__ FINE")
@@ -522,7 +542,7 @@ class RicercaAssistitaAIDialog(QDialog):
             else:
                 normalized_data = []
 
-            field = self.combo_group_by.currentText()
+            field = self.combo_group_by.currentData() or self.combo_group_by.currentText()
             
             if field == "(Nessuna aggregazione)":
                 columns = ["Portale", "Motivazione", "Query di esempio", "Periodo", "Tipo atti", "Provider", "Slot"]
@@ -656,7 +676,7 @@ class RicercaAssistitaAIDialog(QDialog):
     def _refresh_notes_combo(self):
         self.combo_note.blockSignals(True)
         self.combo_note.clear()
-        self.combo_note.addItem("(Nessuna nota)")
+        self.combo_note.addItem(self.gm("(Nessuna nota)"))
         for k in self.notes:
             self.combo_note.addItem(k)
         self.combo_note.blockSignals(False)
