@@ -136,6 +136,7 @@ class RicercaAssistitaAIDialog(QDialog):
 
     def __init__(self, parent=None, glossario=None, lingua="it"):
         super().__init__(parent)
+        self.glossario = glossario or {}
         self.lingua = lingua
         # --- Stili base widget ---
         inp_css = "background: #fff; color: #222; border: 1px solid #bbb; border-radius: 6px; padding: 2px 8px; font-size: 14px;"
@@ -737,7 +738,7 @@ class RicercaAssistitaAIDialog(QDialog):
         if tipo_match:
             tipo = tipo_match.group(1)
         # Componi il prompt base parametrico
-        prompt_base = get_prompt_base(self.lingua, idx_prompt, query=query, luogo=luogo, periodo=periodo, tipo=tipo)
+        prompt_base = get_prompt_base(self.glossario, self.lingua, idx_prompt, query=query, luogo=luogo, periodo=periodo, tipo=tipo)
         # Componi prompt finale
         prompt_finale = prompt_base
         if note_text:
