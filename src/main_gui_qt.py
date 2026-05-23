@@ -516,13 +516,25 @@ def carica_glossario(lang):
         text = get_text_cached(path)
         return json.loads(text)
     except FileNotFoundError:
-        show_error(f"Glossario non trovato: {path}", level="warning")
+        try:
+            from user_prompts import show_error
+            show_error(f"Glossario non trovato: {path}", level="warning")
+        except Exception:
+            logger.warning(f"Glossario non trovato: {path}")
         return {}
     except json.JSONDecodeError as e:
-        show_error(f"Errore decodifica JSON nel glossario '{path}': {e}", level="warning")
+        try:
+            from user_prompts import show_error
+            show_error(f"Errore decodifica JSON nel glossario '{path}': {e}", level="warning")
+        except Exception:
+            logger.warning(f"Errore decodifica JSON nel glossario '{path}': {e}")
         return {}
     except Exception as e:
-        show_error(f"Errore imprevisto caricando il glossario '{path}': {e}", level="error")
+        try:
+            from user_prompts import show_error
+            show_error(f"Errore imprevisto caricando il glossario '{path}': {e}", level="error")
+        except Exception:
+            logger.error(f"Errore imprevisto caricando il glossario '{path}': {e}")
         return {}
 
 def get_msg(glossario, chiave, lingua):

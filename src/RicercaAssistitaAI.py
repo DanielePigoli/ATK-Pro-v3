@@ -8,6 +8,7 @@ from PySide6.QtGui import QIcon
 import logging
 import json
 import os
+import html
 LOG_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'atkpro_debug.log'))
 if not logging.getLogger('atkpro').hasHandlers():
     handler = logging.FileHandler(LOG_PATH, encoding='utf-8')
@@ -382,12 +383,18 @@ class RicercaAssistitaAIDialog(QDialog):
         layout.addWidget(self.txt_result, stretch=2)
         # Aggiorna anteprima raggruppamento quando cambia la selezione
         self.combo_group_by.currentIndexChanged.connect(self._update_grouped_preview)
-        # Pulsante Salva Risultato
+        # Pulsante Salva Risultato (Markdown)
         self.btn_save_result = QPushButton(self.gm("SALVA RISULTATI AI"))
         self.btn_save_result.setStyleSheet(btn_css + "background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #a67c52, stop:1 #cfb58b); color: #fff; font-size: 15px; border: 2px solid #3a1f00; padding: 6px 0; margin-top: 6px;")
         self.btn_save_result.setMinimumHeight(44)
         self.btn_save_result.setEnabled(False)
         layout.addWidget(self.btn_save_result)
+        # Pulsante Salva Risultato (HTML)
+        self.btn_save_html = QPushButton(self.gm("SALVA RISULTATO HTML"))
+        self.btn_save_html.setStyleSheet(btn_css + "background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #cfb58b, stop:1 #a67c52); color: #fff; font-size: 15px; border: 2px solid #3a1f00; padding: 6px 0; margin-top: 6px;")
+        self.btn_save_html.setMinimumHeight(44)
+        self.btn_save_html.setEnabled(False)
+        layout.addWidget(self.btn_save_html)
         # Caveau chiavi
         layout.addSpacing(6)
         self.btn_manage_keys = QPushButton("🗝️ " + self.gm("GESTISCI CAVEAU CHIAVI (CSV)"))
@@ -400,8 +407,9 @@ class RicercaAssistitaAIDialog(QDialog):
         self.btn_save_note.clicked.connect(self._on_save_note)
         self.btn_delete_note.clicked.connect(self._on_delete_note)
         self.btn_new_note.clicked.connect(self._on_new_note)
-        self.btn_manage_keys.clicked.connect(self.open_key_manager)
         self.btn_save_result.clicked.connect(self._on_save_result)
+        self.btn_save_html.clicked.connect(self._on_save_result_html)
+        self.btn_manage_keys.clicked.connect(self.open_key_manager)
         # --- Inizializzazione variabili note e risultati ---
         self.notes_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'ai_search_notes.json'))
         self.notes = self._load_notes()
@@ -442,6 +450,66 @@ class RicercaAssistitaAIDialog(QDialog):
                 QMessageBox.information(self, "Salvataggio riuscito", f"Risultato AI salvato in:\n{file_path}")
             except Exception as e:
                 QMessageBox.critical(self, "Errore salvataggio", str(e))
+
+    def _on_save_result_html(self):
+        from PySide6.QtWidgets import QFileDialog
+        default_dir = os.path.dirname(self.notes_path)
+        default_name = "risultato_ai.html"
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            self.gm("Salva risultato AI in HTML"),
+            os.path.join(default_dir, default_name),
+            f"{self.gm('File HTML')} (*.html);;{self.gm('Tutti i file')} (*)"
+        )
+        if not file_path:
+            return
+        if not file_path.lower().endswith((".html", ".htm")):
+            file_path += ".html"
+        try:
+            result_html = self._get_grouped_markdown()
+            html_content = self._render_result_html(result_html)
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(html_content)
+            QMessageBox.information(
+                self,
+                self.gm("Salvataggio HTML riuscito"),
+                self.gm("Risultato HTML salvato in:\n{file_path}").format(file_path=file_path),
+            )
+        except Exception as e:
+            QMessageBox.critical(self, self.gm("Errore salvataggio HTML"), str(e))
+
+    def _render_result_html(self, result_html):
+        title = html.escape(self.gm("Risultati Ricerca Assistita AI"), quote=True)
+        lang = html.escape(str(self.lingua).lower(), quote=True)
+        return f"""<!DOCTYPE html>
+<html lang="{lang}">
+<head>
+<meta charset="utf-8">
+<title>{title}</title>
+<style>
+body {{
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    padding: 20px;
+    margin: 0;
+}}
+.container {{
+    max-width: 1200px;
+    margin: 0 auto;
+}}
+h1, h2, h3, h4 {{
+    color: #e6c891;
+}}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>{title}</h1>
+    {result_html}
+</div>
+</body>
+</html>"""
 
     def _map_raw_row_to_headers(self, row):
         mapping = {
@@ -496,13 +564,14 @@ class RicercaAssistitaAIDialog(QDialog):
         th_html = ""
         for col in columns:
             w = width_map.get(col, "15%")
-            th_html += f'<th style="width: {w}; border: 1px solid #a67c52; background-color: #2b2b2b; color: #e6c891; padding: 8px; text-align: left; font-size: 13px;">{col}</th>'
+            col_safe = html.escape(str(col), quote=True)
+            th_html += f'<th style="width: {w}; border: 1px solid #a67c52; background-color: #2b2b2b; color: #e6c891; padding: 8px; text-align: left; font-size: 13px;">{col_safe}</th>'
             
         tr_html = ""
         for row in rows:
             tr_html += '  <tr style="background-color: #222222; color: #ffffff;">\n'
             for col in columns:
-                val = str(row.get(col, ''))
+                val = html.escape(str(row.get(col, '')), quote=True)
                 import re
                 val_formatted = re.sub(r'`(.*?)`', r'<code style="background-color: #333333; color: #e6c891; padding: 2px 4px; border-radius: 4px;">\1</code>', val)
                 val_formatted = re.sub(r'\*\*(.*?)\*\*', r'<strong style="color: #e6c891;">\1</strong>', val_formatted)
@@ -510,7 +579,7 @@ class RicercaAssistitaAIDialog(QDialog):
                 tr_html += f'    <td style="border: 1px solid #a67c52; padding: 8px; text-align: left; font-size: 13px; vertical-align: top; word-wrap: break-word; color: #ffffff;">{val_formatted}</td>\n'
             tr_html += '  </tr>\n'
             
-        html = f'''<table style="width: 100%; border-collapse: collapse; table-layout: fixed; font-family: 'Segoe UI', Arial, sans-serif; margin-top: 8px; margin-bottom: 16px;">
+        table_html = f'''<table style="width: 100%; border-collapse: collapse; table-layout: fixed; font-family: 'Segoe UI', Arial, sans-serif; margin-top: 8px; margin-bottom: 16px;">
   <thead>
     <tr style="height: 32px;">
       {th_html}
@@ -519,7 +588,7 @@ class RicercaAssistitaAIDialog(QDialog):
   <tbody>
 {tr_html}  </tbody>
 </table>'''
-        return html
+        return table_html
 
     def _get_grouped_markdown(self):
         """Restituisce la tabella HTML premium raggruppata o piatta per salvataggio e anteprima."""
@@ -595,7 +664,9 @@ class RicercaAssistitaAIDialog(QDialog):
             
             md = ""
             for clean_key, rows_in_group in grouped.items():
-                md += f'<h3 style="font-family: \'Segoe UI\', Arial, sans-serif; color: #a67c52; margin-top: 16px; margin-bottom: 8px;">{field}: {clean_key}</h3>\n'
+                field_safe = html.escape(str(field), quote=True)
+                key_safe = html.escape(str(clean_key), quote=True)
+                md += f'<h3 style="font-family: \'Segoe UI\', Arial, sans-serif; color: #a67c52; margin-top: 16px; margin-bottom: 8px;">{field_safe}: {key_safe}</h3>\n'
                 
                 columns_in_group = set()
                 for r_data in rows_in_group:
@@ -617,7 +688,9 @@ class RicercaAssistitaAIDialog(QDialog):
                 
             return md
         except Exception as e:
-            return f"Errore nel raggruppamento dati: {e}\n\nRaw Data:\n{self._last_result_data}"
+            err = html.escape(str(e), quote=True)
+            raw = html.escape(str(self._last_result_data), quote=True)
+            return f"<p>Errore nel raggruppamento dati: {err}</p><pre>{raw}</pre>"
 
     def open_key_manager(self):
         try:
@@ -686,6 +759,7 @@ class RicercaAssistitaAIDialog(QDialog):
         self.btn_run.setEnabled(True)
         self.progress_bar.setVisible(False)
         self.btn_save_result.setEnabled(True)
+        self.btn_save_html.setEnabled(True)
         self._last_result_data = result  # Salva SEMPRE il risultato grezzo
         self._update_grouped_preview()
 
