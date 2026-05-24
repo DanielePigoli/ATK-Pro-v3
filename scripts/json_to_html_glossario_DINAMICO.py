@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-json_to_html_glossario.py — ATK-Pro v2.1 dinamico
+json_to_html_glossario.py — generatore dinamico per ATK-Pro
 Converte il glossario multilingue JSON in HTML tabellare con sezioni.
 
 Input:  docs_generali/glossario_multilingua_ATK-Pro.json
@@ -17,6 +17,7 @@ Caratteristica principale:
 import html
 import json
 import os
+import re
 import sys
 from datetime import datetime
 
@@ -66,6 +67,33 @@ SECTION_LABELS = {
 
 # Chiavi tecniche da non trasformare in tabelle.
 SEZIONI_DA_IGNORARE = {"metadata", "meta", "_metadata", "__metadata__"}
+
+
+def current_project_version(project_root, metadata):
+    """Legge la versione dall'app; usa metadata/fallback solo se la fonte non è disponibile."""
+    sources = [
+        (
+            os.path.join(project_root, "src", "main_gui_qt.py"),
+            r'^\s*VERSION\s*=\s*["\']([^"\']+)["\']',
+        ),
+        (
+            os.path.join(project_root, "ATK-Pro-Installer.iss"),
+            r'^\s*#define\s+MyAppVersion\s+["\']([^"\']+)["\']',
+        ),
+    ]
+    for path, pattern in sources:
+        if not os.path.exists(path):
+            continue
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                match = re.search(pattern, f.read(), re.MULTILINE)
+            if match:
+                return match.group(1).strip()
+        except OSError:
+            continue
+
+    metadata_version = metadata.get("versione") if isinstance(metadata, dict) else None
+    return str(metadata_version).strip() if metadata_version else "dev"
 
 
 def escape(value):
@@ -302,7 +330,7 @@ def json_to_html_glossario():
     columns = discover_columns(sections)
 
     metadata = glossario.get("metadata", {}) if isinstance(glossario.get("metadata", {}), dict) else {}
-    versione = metadata.get("versione", "2.0")
+    versione = current_project_version(project_root, metadata)
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     responsabile = metadata.get("responsabile", "Daniele Pigoli")
 
