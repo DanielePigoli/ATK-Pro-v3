@@ -60,7 +60,7 @@ class GenealogyWorker(QThread):
     error = Signal(str)
     request_provider_change = Signal(str, list)
 
-    def __init__(self, files, doc_type, tips, provider, output_file_path, base_path=None, custom_model=None):
+    def __init__(self, files, doc_type, tips, provider, output_file_path, base_path=None, custom_model=None, messages=None):
         super().__init__()
         self.custom_model = custom_model
         self.files = files
@@ -72,6 +72,14 @@ class GenealogyWorker(QThread):
         self.mutex = QMutex()
         self.wait_cond = QWaitCondition()
         self.provider_result = None
+        self.messages = messages or {}
+
+    def msg(self, key, **kwargs):
+        template = self.messages.get(key, key)
+        try:
+            return template.format(**kwargs)
+        except Exception:
+            return template
 
     def run(self):
         try:
@@ -81,7 +89,7 @@ class GenealogyWorker(QThread):
             current_key, _ = km.get_next_key(current_prov)
             
             if not current_key:
-                self.error.emit(f"Nessuna chiave trovata per {current_prov} nel Caveau (api_keys.csv)!"); return
+                self.error.emit(self.msg("no_key", provider=current_prov)); return
 
             handler = get_handler(current_prov, current_key)
             generator = GedcomGenerator(source_system="ATK-Pro_Genealogy_Engine")
@@ -107,7 +115,7 @@ class GenealogyWorker(QThread):
             for i, file_path in enumerate(self.files):
                 filename = os.path.basename(file_path).lower()
                 percent = int((i / total_files) * 100)
-                self.progress.emit(percent, f"Analisi {i+1}/{total_files}: {filename}")
+                self.progress.emit(percent, self.msg("analysis_progress", current=i+1, total=total_files, filename=filename))
                 
                 success = False
                 while not success:
@@ -183,7 +191,7 @@ class GenealogyWorker(QThread):
                         logging.error(f"[CAVEAU-FAIL] Chiave {key_hint} fallita: {full_error}")
                         
                         # Messaggio di stato pulito sulla barra
-                        self.progress.emit(percent, f"Errore {current_prov}: Riprovo con prossima chiave...")
+                        self.progress.emit(percent, self.msg("retry_next_key", provider=current_prov))
                         
                         next_key, wrapped = km.get_next_key(current_prov, current_key)
                         
@@ -202,13 +210,13 @@ class GenealogyWorker(QThread):
                                     current_prov = self.provider_result
                                     current_key, _ = km.get_next_key(current_prov)
                                     handler = get_handler(current_prov, current_key)
-                                    self.progress.emit(percent, f"Passaggio a {current_prov} confermato. Riprovo...")
+                                    self.progress.emit(percent, self.msg("provider_switch_confirmed", provider=current_prov))
                                     continue
                                 else:
-                                    self.error.emit("Operazione annullata o nessun provider disponibile selezionato."); return
+                                    self.error.emit(self.msg("provider_switch_cancelled")); return
                             else:
                                 # Messaggio ancora più dettagliato in caso di fallimento totale
-                                raise Exception(f"Saturazione Totale Caveau.\nUltimo errore per {current_prov} (chiave {key_hint}):\n{full_error}")
+                                raise Exception(self.msg("total_vault_saturation", provider=current_prov, key_hint=key_hint, error=full_error))
                         
                         current_key = next_key
                         handler.set_key(current_key)
@@ -243,7 +251,7 @@ class GenealogyDialog(QDialog):
             return chiave
 
     def init_ui(self):
-        self.setWindowTitle("Esportazione GEDCOM - ATK-Pro")
+        self.setWindowTitle(f"{self.gm('Esportazione GEDCOM')} - ATK-Pro")
         self.setMinimumSize(950, 850)
         self.setStyleSheet("""
             QDialog { background-color: #181818; color: #fff; border: 2px solid #a67c52; }
@@ -265,28 +273,29 @@ class GenealogyDialog(QDialog):
         btn_css = "QPushButton { background-color: #222; border: 1px solid #a67c52; border-radius: 4px; padding: 10px; font-weight: bold; color: #fff; } QPushButton:hover { background-color: #333; }"
 
         # --- Caveau chiavi in alto ---
-        self.btn_manage_keys = QPushButton("🗝️ GESTISCI CAVEAU CHIAVI (CSV)")
-        self.btn_manage_keys.setStyleSheet(btn_css)
-        l.addWidget(self.btn_manage_keys)
+        self.btn_manage_keys_top = QPushButton(f"🗝️ {self.gm('GESTISCI CAVEAU CHIAVI (CSV)')}")
+        self.btn_manage_keys_top.setStyleSheet(btn_css)
+        l.addWidget(self.btn_manage_keys_top)
 
         scroll = QScrollArea(); scroll.setWidgetResizable(True); scroll.setStyleSheet("QScrollArea { border: none; }")
         cont = QWidget(); fl = QVBoxLayout(cont); fl.setSpacing(18)
 
         # 1. INPUT UNIVERSALE
-        fl.addWidget(QLabel("1. METODO E INPUT UNIVERSALE", styleSheet=t_css))
+        fl.addWidget(QLabel(f"1. {self.gm('METODO E INPUT UNIVERSALE')}", styleSheet=t_css))
         f_in = QFormLayout(); self.combo_source = QComboBox(); self.combo_source.addItems(["Auto-Discovery", "Vision IA", "Refinery LLM"])
-        self.combo_source.setStyleSheet(inp_css); f_in.addRow(QLabel("Metodo:", styleSheet=lbl_css), self.combo_source)
-        rs = QHBoxLayout(); self.btn_select = QPushButton("SFOGLIA L'ARCHIVIO 📂"); self.btn_select.setStyleSheet(btn_css); rs.addWidget(self.btn_select)
-        self.lbl_count = QLabel("0 atti pronti"); self.lbl_count.setStyleSheet("color: #a67c52;"); rs.addWidget(self.lbl_count); rs.addStretch()
-        f_in.addRow(QLabel("Input:", styleSheet=lbl_css), rs); fl.addLayout(f_in)
+        self.combo_source.setStyleSheet(inp_css); f_in.addRow(QLabel(f"{self.gm('Metodo')}:", styleSheet=lbl_css), self.combo_source)
+        browse_archive_label = self.gm("SFOGLIA L'ARCHIVIO")
+        rs = QHBoxLayout(); self.btn_select = QPushButton(f"{browse_archive_label} 📂"); self.btn_select.setStyleSheet(btn_css); rs.addWidget(self.btn_select)
+        self.lbl_count = QLabel(self.gm("{count} atti pronti").format(count=0)); self.lbl_count.setStyleSheet("color: #a67c52;"); rs.addWidget(self.lbl_count); rs.addStretch()
+        f_in.addRow(QLabel(f"{self.gm('Input')}:", styleSheet=lbl_css), rs); fl.addLayout(f_in)
 
         # 2. BASE INCREMENTALE
-        fl.addWidget(QLabel("2. INCREMENTA BASE ESISTENTE (GEDCOM o CSV)", styleSheet=t_css))
-        rb = QHBoxLayout(); self.btn_load_base = QPushButton("CARICA BASE 🧬📑"); self.btn_load_base.setStyleSheet(btn_css); rb.addWidget(self.btn_load_base)
-        self.lbl_base_path = QLabel("Lavoro nuovo"); self.lbl_base_path.setStyleSheet("color: #a67c52; font-size: 11px;"); rb.addWidget(self.lbl_base_path); rb.addStretch(); fl.addLayout(rb)
+        fl.addWidget(QLabel(f"2. {self.gm('INCREMENTA BASE ESISTENTE (GEDCOM o CSV)')}", styleSheet=t_css))
+        rb = QHBoxLayout(); self.btn_load_base = QPushButton(f"{self.gm('CARICA BASE')} 🧬📑"); self.btn_load_base.setStyleSheet(btn_css); rb.addWidget(self.btn_load_base)
+        self.lbl_base_path = QLabel(self.gm("Lavoro nuovo")); self.lbl_base_path.setStyleSheet("color: #a67c52; font-size: 11px;"); rb.addWidget(self.lbl_base_path); rb.addStretch(); fl.addLayout(rb)
 
         # 3. BANCA DATI NOTE
-        fl.addWidget(QLabel("3. BANCA DATI NOTE PALEOGRAFICHE", styleSheet=t_css))
+        fl.addWidget(QLabel(f"3. {self.gm('BANCA DATI NOTE PALEOGRAFICHE')}", styleSheet=t_css))
         ft = QFormLayout()
         from document_type_manager import DocumentTypeManager
         self._dtm = DocumentTypeManager()
@@ -297,13 +306,15 @@ class GenealogyDialog(QDialog):
         btn_add_type_geo.setToolTip(self.gm("Aggiungi tipologia personalizzata"))
         btn_add_type_geo.setFixedSize(30, 30)
         btn_add_type_geo.clicked.connect(self._add_custom_type)
-        self.btn_edit_type = QPushButton("\u270f")
+        self.btn_edit_type = QPushButton()
+        self.btn_edit_type.setText("\u270f")
         self.btn_edit_type.setObjectName("btn_edit_type")
         self.btn_edit_type.setToolTip(self.gm("Modifica tipologia personalizzata selezionata"))
         self.btn_edit_type.setFixedSize(30, 30)
         self.btn_edit_type.clicked.connect(self._edit_custom_type)
         self.btn_edit_type.setVisible(False)
-        self.btn_del_type = QPushButton("\u2715")
+        self.btn_del_type = QPushButton()
+        self.btn_del_type.setText("\u2715")
         self.btn_del_type.setObjectName("btn_del_type")
         self.btn_del_type.setToolTip(self.gm("Elimina tipologia personalizzata selezionata"))
         self.btn_del_type.setFixedSize(30, 30)
@@ -315,47 +326,48 @@ class GenealogyDialog(QDialog):
         type_row.addWidget(self.btn_edit_type)
         type_row.addWidget(self.btn_del_type)
         type_widget = QWidget(); type_widget.setLayout(type_row)
-        ft.addRow(QLabel("Atto:", styleSheet=lbl_css), type_widget)
+        ft.addRow(QLabel(f"{self.gm('Atto')}:", styleSheet=lbl_css), type_widget)
         self.combo_presets = QComboBox(); self.combo_presets.setStyleSheet(inp_css)
-        ft.addRow(QLabel("Richiama Nota:", styleSheet=lbl_css), self.combo_presets); fl.addLayout(ft)
+        ft.addRow(QLabel(f"{self.gm('Richiama Nota')}:", styleSheet=lbl_css), self.combo_presets); fl.addLayout(ft)
         self.txt_tips = QTextEdit(); self.txt_tips.setStyleSheet(inp_css); self.txt_tips.setMinimumHeight(120); fl.addWidget(self.txt_tips)
-        rp = QHBoxLayout(); self.btn_save_p = QPushButton("💾 SALVA NOTA"); self.btn_save_p.setStyleSheet("background-color: #222; border: 1px solid #a67c52; color: #fff; padding: 10px; font-weight: bold;"); rp.addWidget(self.btn_save_p)
-        self.btn_del_p = QPushButton("🗑️ ELIMINA"); self.btn_del_p.setStyleSheet("background-color: #2a1818; border: 1px solid #8a3a3a; color: #cc6666; padding: 10px; font-weight: bold;"); rp.addWidget(self.btn_del_p); fl.addLayout(rp)
+        rp = QHBoxLayout(); self.btn_save_p = QPushButton(f"💾 {self.gm('SALVA NOTA')}"); self.btn_save_p.setStyleSheet("background-color: #222; border: 1px solid #a67c52; color: #fff; padding: 10px; font-weight: bold;"); rp.addWidget(self.btn_save_p)
+        self.btn_del_p = QPushButton(f"🗑️ {self.gm('ELIMINA')}"); self.btn_del_p.setStyleSheet("background-color: #2a1818; border: 1px solid #8a3a3a; color: #cc6666; padding: 10px; font-weight: bold;"); rp.addWidget(self.btn_del_p); fl.addLayout(rp)
 
         # 4. DESTINAZIONE
-        fl.addWidget(QLabel("4. DESTINAZIONE OUTPUT", styleSheet=t_css))
-        ro = QHBoxLayout(); self.btn_out = QPushButton("CARTELLA OUTPUT 📂"); self.btn_out.setStyleSheet(btn_css); ro.addWidget(self.btn_out)
-        self.lbl_out_path = QLabel("output"); self.lbl_out_path.setStyleSheet("color: #a67c52;"); ro.addWidget(self.lbl_out_path); ro.addStretch(); fl.addLayout(ro)
+        fl.addWidget(QLabel(f"4. {self.gm('DESTINAZIONE OUTPUT')}", styleSheet=t_css))
+        ro = QHBoxLayout(); self.btn_out = QPushButton(f"{self.gm('CARTELLA OUTPUT')} 📂"); self.btn_out.setStyleSheet(btn_css); ro.addWidget(self.btn_out)
+        self.lbl_out_path = QLabel(self.gm("Output")); self.lbl_out_path.setStyleSheet("color: #a67c52;"); ro.addWidget(self.lbl_out_path); ro.addStretch(); fl.addLayout(ro)
 
         scroll.setWidget(cont); l.addWidget(scroll)
         
         # 5. MOTORE IA & CAVEAU
-        fl.addWidget(QLabel("5. MOTORE IA & CAVEAU CHIAVI", styleSheet=t_css))
+        fl.addWidget(QLabel(f"5. {self.gm('MOTORE IA & CAVEAU CHIAVI')}", styleSheet=t_css))
         fm = QFormLayout()
         self.combo_provider = QComboBox(); self.combo_provider.addItems(["Claude", "OpenAI", "Gemini", "Mistral", "xAI", "DeepSeek", "Groq", "HuggingFace", "Ollama"]); self.combo_provider.setStyleSheet(inp_css)
-        fm.addRow(QLabel("Provider:", styleSheet=lbl_css), self.combo_provider)
+        fm.addRow(QLabel(f"{self.gm('Provider')}:", styleSheet=lbl_css), self.combo_provider)
         
         self.inp_custom_model = QLineEdit()
-        self.inp_custom_model.setPlaceholderText("Es. claude-4-sonnet (lascia vuoto per default)")
+        self.inp_custom_model.setPlaceholderText(self.gm("Es. claude-4-sonnet (lascia vuoto per default)"))
         self.inp_custom_model.setStyleSheet(inp_css)
-        self.lbl_custom_model = QLabel("Override Modello:", styleSheet=lbl_css)
+        self.lbl_custom_model = QLabel(f"{self.gm('Override Modello')}:", styleSheet=lbl_css)
         fm.addRow(self.lbl_custom_model, self.inp_custom_model)
         
         # Nascondi di default se Gemini
         self._toggle_custom_model()
         
         km_ly = QHBoxLayout()
-        self.btn_manage_keys = QPushButton("🗝️ GESTISCI CAVEAU CHIAVI (CSV)"); self.btn_manage_keys.setStyleSheet(btn_css)
+        self.btn_manage_keys = QPushButton(f"🗝️ {self.gm('GESTISCI CAVEAU CHIAVI (CSV)')}"); self.btn_manage_keys.setStyleSheet(btn_css)
         km_ly.addWidget(self.btn_manage_keys); km_ly.addStretch()
-        fm.addRow(QLabel("Chiavi:", styleSheet=lbl_css), km_ly)
+        fm.addRow(QLabel(f"{self.gm('Chiavi')}:", styleSheet=lbl_css), km_ly)
         fl.addLayout(fm)
 
         self.progress_bar = QProgressBar(); self.progress_bar.setVisible(False); l.addWidget(self.progress_bar)
-        self.btn_run = QPushButton("AVVIA ESTRAZIONE COMPLETA 🚀🧬"); self.btn_run.setMinimumHeight(60); self.btn_run.setStyleSheet("background-color: #a67c52; border: none; color: #fff; font-weight: bold; font-size: 16px; border-radius: 4px;"); l.addWidget(self.btn_run)
+        self.btn_run = QPushButton(f"{self.gm('AVVIA ESTRAZIONE COMPLETA')} 🚀🧬"); self.btn_run.setMinimumHeight(60); self.btn_run.setStyleSheet("background-color: #a67c52; border: none; color: #fff; font-weight: bold; font-size: 16px; border-radius: 4px;"); l.addWidget(self.btn_run)
 
         # Connessioni
         self.btn_run.clicked.connect(self.start_process); self.btn_select.clicked.connect(self.select_files); self.btn_out.clicked.connect(self.select_output_folder)
         self.btn_load_base.clicked.connect(self.select_base_hybrid); self.btn_save_p.clicked.connect(self.save_current_preset); self.btn_del_p.clicked.connect(self.delete_selected_preset); self.combo_presets.currentIndexChanged.connect(self.apply_preset)
+        self.btn_manage_keys_top.clicked.connect(self.open_key_manager)
         self.btn_manage_keys.clicked.connect(self.open_key_manager)
         self.combo_source.currentIndexChanged.connect(self.save_config)
         self.combo_type.currentIndexChanged.connect(self.save_config)
@@ -482,7 +494,7 @@ class GenealogyDialog(QDialog):
         except: pass
 
     def load_presets(self):
-        self.combo_presets.clear(); self.combo_presets.addItem("--- Carica Nota dalla Banca Dati ---")
+        self.combo_presets.clear(); self.combo_presets.addItem(f"--- {self.gm('Carica Nota dalla Banca Dati')} ---")
         try:
             if os.path.exists(PRESETS_FILE):
                 with open(PRESETS_FILE, "r", encoding="utf-8") as f:
@@ -493,7 +505,7 @@ class GenealogyDialog(QDialog):
     def save_current_preset(self):
         t = self.txt_tips.toPlainText().strip()
         if not t: return
-        n, ok = QInputDialog.getText(self, "Salva", "Nome nota:")
+        n, ok = QInputDialog.getText(self, self.gm("Salva"), self.gm("Nome nota:"))
         if ok and n: self.presets[n] = t; self.save_pf(); self.load_presets()
 
     def save_pf(self):
@@ -506,23 +518,33 @@ class GenealogyDialog(QDialog):
     def delete_selected_preset(self):
         p = self.combo_presets.currentText()
         if p in self.presets:
-            if QMessageBox.question(self, "Elimina", f"Rimuovere '{p}'?") == QMessageBox.Yes:
+            if QMessageBox.question(self, self.gm("Elimina"), self.gm("Rimuovere '%s' dalla lista?") % p) == QMessageBox.Yes:
                 del self.presets[p]; self.save_pf(); self.load_presets()
 
     def select_output_folder(self):
-        f = QFileDialog.getExistingDirectory(self, "Seleziona", self.output_folder)
+        f = QFileDialog.getExistingDirectory(self, self.gm("Seleziona"), self.output_folder)
         if f: self.output_folder = f; self.lbl_out_path.setText(f)
 
     def select_base_hybrid(self):
-        p, _ = QFileDialog.getOpenFileName(self, "Base", "", "Database (*.ged *.csv)")
+        p, _ = QFileDialog.getOpenFileName(self, self.gm("Base"), "", f"{self.gm('Database')} (*.ged *.csv)")
         if p: 
             self.base_path = p
             self.lbl_base_path.setText(os.path.basename(p))
             self.save_config() # Salva subito il percorso della base
 
     def select_files(self):
-        f, _ = QFileDialog.getOpenFileNames(self, "Seleziona", "", "Archivio (*.pdf *.docx *.jpg *.jpeg *.png *.webp *.tiff *.tif *.bmp *.txt *.json *.csv)")
-        if f: self.selected_files = f; self.lbl_count.setText(f"{len(f)} file pronti")
+        f, _ = QFileDialog.getOpenFileNames(self, self.gm("Seleziona"), "", f"{self.gm('Archivio')} (*.pdf *.docx *.jpg *.jpeg *.png *.webp *.tiff *.tif *.bmp *.txt *.json *.csv)")
+        if f: self.selected_files = f; self.lbl_count.setText(self.gm("{count} file pronti").format(count=len(f)))
+
+    def _worker_messages(self):
+        return {
+            "no_key": self.gm("Nessuna chiave trovata per {provider} nel Caveau (api_keys.csv)!"),
+            "analysis_progress": self.gm("Analisi {current}/{total}: {filename}"),
+            "retry_next_key": self.gm("Errore {provider}: riprovo con la prossima chiave..."),
+            "provider_switch_confirmed": self.gm("Passaggio a {provider} confermato. Riprovo..."),
+            "provider_switch_cancelled": self.gm("Operazione annullata o nessun provider disponibile selezionato."),
+            "total_vault_saturation": self.gm("Saturazione Totale Caveau.\nUltimo errore per {provider} (chiave {key_hint}):\n{error}"),
+        }
 
     def start_process(self):
         if not self.selected_files: return
@@ -544,7 +566,7 @@ class GenealogyDialog(QDialog):
             if custom_gedcom:
                 tips_text = custom_gedcom + ("\n" + tips_text if tips_text else "")
             doc_type_raw = "Ricerca Libera / Altro"  # fallback built-in nel worker
-        self.worker = GenealogyWorker(self.selected_files, doc_type_raw, tips_text, self.combo_provider.currentText(), fp, self.base_path, custom_model=self.inp_custom_model.text().strip())
+        self.worker = GenealogyWorker(self.selected_files, doc_type_raw, tips_text, self.combo_provider.currentText(), fp, self.base_path, custom_model=self.inp_custom_model.text().strip(), messages=self._worker_messages())
         self.worker.progress.connect(lambda v,m: (self.progress_bar.setValue(v), self.progress_bar.setFormat(m)))
         self.worker.request_provider_change.connect(self.handle_provider_change)
         self.worker.finished.connect(self.process_finished); self.worker.error.connect(self.process_error); self.worker.start()
@@ -558,24 +580,24 @@ class GenealogyDialog(QDialog):
                 if platform.system() == 'Windows': os.startfile(km.file_path)
                 elif platform.system() == 'Darwin': subprocess.run(['open', km.file_path])
                 else: subprocess.run(['xdg-open', km.file_path])
-            except: QMessageBox.warning(self, "Errore", "Impossibile aprire il file CSV.")
+            except: QMessageBox.warning(self, self.gm("Errore"), self.gm("Impossibile aprire il file CSV."))
         else:
-            QMessageBox.warning(self, "Errore", "File chiavi non trovato.")
+            QMessageBox.warning(self, self.gm("Errore"), self.gm("File chiavi non trovato."))
 
     def handle_provider_change(self, current_prov, available_provs):
         """Slot per gestire la richiesta di cambio provider interattivo."""
-        msg = f"Le chiavi di {current_prov} sono sature.\nVuoi passare a un altro provider disponibile?"
+        msg = self.gm("Le chiavi di {provider} sono sature.\nVuoi passare a un altro provider disponibile?").format(provider=current_prov)
         box = QMessageBox(self)
-        box.setWindowTitle("Saturazione API")
+        box.setWindowTitle(self.gm("Saturazione API"))
         box.setText(msg)
         box.setIcon(QMessageBox.Question)
         
         btns = {}
         for p in available_provs:
-            b = box.addButton(f"Usa {p}", QMessageBox.AcceptRole)
+            b = box.addButton(self.gm("Usa {provider}").format(provider=p), QMessageBox.AcceptRole)
             btns[b] = p
         
-        cancel = box.addButton("Annulla", QMessageBox.RejectRole)
+        cancel = box.addButton(self.gm("Annulla"), QMessageBox.RejectRole)
         box.exec()
         
         if box.clickedButton() in btns:
@@ -589,7 +611,7 @@ class GenealogyDialog(QDialog):
 
     def process_finished(self, p, c):
         self.btn_run.setEnabled(True); self.progress_bar.setVisible(False)
-        QMessageBox.information(self, "OK", f"Finito!\nFile: {p}\nRecord: {c}")
+        QMessageBox.information(self, self.gm("Completato"), self.gm("Finito!\nFile: {file}\nRecord: {count}").format(file=p, count=c))
 
     def process_error(self, e):
-        self.btn_run.setEnabled(True); QMessageBox.critical(self, "Stato Quota", str(e))
+        self.btn_run.setEnabled(True); QMessageBox.critical(self, self.gm("Stato Quota"), str(e))
