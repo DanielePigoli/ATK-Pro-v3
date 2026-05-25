@@ -140,25 +140,35 @@ else:
 # 4. Detect hard‑coded UI strings (simple heuristic)
 # ---------------------------------------------------------------------------
 hard_coded_strings = []
-UI_STRING_PATTERN = re.compile(r"QPushButton\s*\(\s*\'([^\']+)\'\s*\)")
 SRC_FILES = [path for path in (PROJECT_ROOT / "src").rglob("*.py")]
 SYMBOL_ONLY = re.compile(r"^\s*(self\.)?\w+\s*=\s*QPushButton\([\"']\s*[\W_]{1,4}\s*[\"']\)")
 UI_CONSTANT_ONLY = re.compile(
     r"^\s*(?:self\.)?\w+\s*=\s*(?:QPushButton|QLabel)\(\s*[\"']\s*[-+−/0-9:%.\s]+\s*[\"']\s*\)"
 )
-PAGE_COUNTER_ONLY = re.compile(r"QLabel\(\s*f[\"']\s*/\s*\{[^}]+\}\s*[\"']\s*\)")
+UI_CALL = re.compile(
+    r"\b(?:QPushButton|QLabel)\s*\("
+    r"|\bQMessageBox\.(?:critical|warning|information|question|about)\s*\("
+)
+STRING_LITERAL = re.compile(r"(?i)(?:[rubf]+)?([\"'])(.*?)(?<!\\)\1")
+IGNORED_LITERAL_TEXT = {
+    "ATK-Pro",
+    "ATK-Pro v",
+    "©2026 Daniele Pigoli",
+}
 
-def localized_variable_messagebox(line: str) -> bool:
-    """Allow message boxes assembled only from localized variables and punctuation."""
-    match = re.search(
-        r"QMessageBox\.\w+\([^,]+,\s*[A-Za-z_]\w*,\s*f([\"'])(.*)\1\s*\)",
-        line,
-    )
-    if not match:
+def literal_needs_localization(text: str) -> bool:
+    """Return True when a literal carries user-visible words."""
+    text = re.sub(r"\{[^}]*\}", "", text)
+    text = re.sub(r"\\[nrt]", "", text)
+    text = re.sub(r"</?(?:br|hr)\s*/?>", "", text, flags=re.IGNORECASE)
+    text = text.strip()
+    if not text or text in IGNORED_LITERAL_TEXT:
         return False
-    body = re.sub(r"\{[^}]+\}", "", match.group(2))
-    body = re.sub(r"\\[nrt]", "", body)
-    return not re.search(r"[A-Za-zÀ-ÿ]", body)
+    return bool(re.search(r"[A-Za-zÀ-ÿ]", text))
+
+def line_has_localizable_literal(line: str) -> bool:
+    literals = [match.group(2) for match in STRING_LITERAL.finditer(line)]
+    return any(literal_needs_localization(text) for text in literals)
 
 for py in SRC_FILES:
     try:
@@ -169,25 +179,24 @@ for py in SRC_FILES:
         stripped = line.strip()
         if not stripped or stripped.startswith("#") or "setStyleSheet" in stripped:
             continue
+        if not UI_CALL.search(line):
+            continue
         if (
             "QPushButton#" in stripped
             or "QPushButton {" in stripped
             or SYMBOL_ONLY.match(stripped)
             or UI_CONSTANT_ONLY.match(stripped)
-            or PAGE_COUNTER_ONLY.search(stripped)
-            or localized_variable_messagebox(stripped)
         ):
             continue
         # Look for literal strings passed to widget constructors
-        if "QPushButton" in line or "QLabel" in line or "QMessageBox" in line:
-            if (
-                ("'" in line or '"' in line)
-                and "get_msg" not in line
-                and ".gm(" not in line
-                and "_gm(" not in line
-                and "gm(" not in line
-            ):
-                hard_coded_strings.append((py, i, stripped))
+        if (
+            line_has_localizable_literal(line)
+            and "get_msg" not in line
+            and ".gm(" not in line
+            and "_gm(" not in line
+            and "gm(" not in line
+        ):
+            hard_coded_strings.append((py, i, stripped))
         # also check .ui files for literal text
 
 if hard_coded_strings:

@@ -2855,8 +2855,8 @@ def action_process(glossario_data, lingua, parent=None):
             email = (carica_testo_asset(email_path) or "").strip()
             r1 = QLabel(f"ATK-Pro v{VERSION}")
             r2 = QLabel("©2026 Daniele Pigoli")
-            msg = get_msg(self.glossario_data, "email non disponibile", self.lingua)
-            r3 = QLabel(email if email else msg or "email non disponibile")
+            unavailable_email = get_msg(self.glossario_data, "email non disponibile", self.lingua) or "email non disponibile"
+            r3 = QLabel(email if email else unavailable_email)
             for lbl in (r1, r2, r3):
                 lbl.setAlignment(Qt.AlignCenter)
                 lbl.setStyleSheet("QLabel { background: transparent; color: #482e1a; font-size: 16px; }")
