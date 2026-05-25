@@ -20,6 +20,7 @@ class TranslationDialog(QDialog):
     def __init__(self, parent, glossario_data, lingua_corrente):
         super().__init__(parent)
         self.glossario = glossario_data
+        self.glossario_data = glossario_data
         self.lingua = lingua_corrente
         self.setWindowTitle(self.gm("Traduzione Paleografica Assistita (LLM)"))
         self.setMinimumSize(900, 600)
@@ -60,15 +61,22 @@ class TranslationDialog(QDialog):
         lbl_prov = QLabel(self.gm("Provider IA:"))
         self.combo_prov = QComboBox()
         self.combo_prov.addItems([
-            "Anthropic / Claude (Miglior Testo)", "OpenAI (GPT-4o)", "Google Gemini", "DeepSeek (Economico/Testo)",
-            "Mistral", "xAI / Grok", "Groq (Veloce)", "Hugging Face (Inference API)", "Ollama (Locale/Privato)"
+            self.gm("Anthropic / Claude (Miglior Testo)"),
+            self.gm("OpenAI (GPT-4o)"),
+            self.gm("Google Gemini"),
+            self.gm("DeepSeek (Economico/Testo)"),
+            self.gm("Mistral"),
+            self.gm("xAI / Grok"),
+            self.gm("Groq (Veloce)"),
+            self.gm("Hugging Face (Inference API)"),
+            self.gm("Ollama (Locale/Privato)"),
         ])
         self.combo_prov.setMinimumWidth(180)
         self.combo_prov.setMaximumWidth(220)
         self.combo_prov.currentIndexChanged.connect(self._toggle_custom_model)
-        self.lbl_custom_model = QLabel("Modello:")
+        self.lbl_custom_model = QLabel(self.gm("Modello:"))
         self.inp_custom_model = QLineEdit()
-        self.inp_custom_model.setPlaceholderText("Es. gpt-5")
+        self.inp_custom_model.setPlaceholderText(self.gm("Es. gpt-5-preview (lascia vuoto per default)"))
         self.inp_custom_model.setFixedWidth(110)
         row1.addWidget(lbl_prov)
         row1.addWidget(self.combo_prov)
@@ -92,13 +100,15 @@ class TranslationDialog(QDialog):
         btn_add_type_tr.setToolTip(self.gm("Aggiungi tipologia personalizzata"))
         btn_add_type_tr.setFixedSize(30, 30)
         btn_add_type_tr.clicked.connect(self._add_custom_type)
-        self.btn_edit_type = QPushButton("\u270f")
+        self.btn_edit_type = QPushButton()
+        self.btn_edit_type.setText("\u270f")
         self.btn_edit_type.setObjectName("btn_edit_type")
         self.btn_edit_type.setToolTip(self.gm("Modifica tipologia personalizzata selezionata"))
         self.btn_edit_type.setFixedSize(30, 30)
         self.btn_edit_type.clicked.connect(self._edit_custom_type)
         self.btn_edit_type.setVisible(False)
-        self.btn_del_type = QPushButton("\u2715")
+        self.btn_del_type = QPushButton()
+        self.btn_del_type.setText("\u2715")
         self.btn_del_type.setObjectName("btn_del_type")
         self.btn_del_type.setToolTip(self.gm("Elimina tipologia personalizzata selezionata"))
         self.btn_del_type.setFixedSize(30, 30)
@@ -223,189 +233,52 @@ class TranslationDialog(QDialog):
             km = KeyManager()
             km.open_manager_dialog(self)
         except Exception as e:
-            QMessageBox.critical(self, "Errore", f"Impossibile aprire il gestore chiavi: {e}")
-
-    def open_key_manager_dialog(self):
-        try:
-            from key_manager import KeyManager
-            km = KeyManager()
-            km.open_manager_dialog(self)
-        except Exception as e:
-            QMessageBox.critical(self, "Errore", f"Impossibile aprire il gestore chiavi: {e}")
-        
-        lbl_prov = QLabel(self.gm("Provider IA:"))
-        self.combo_prov = QComboBox()
-        self.combo_prov.addItems(["Anthropic / Claude (Miglior Testo)", "OpenAI (GPT-4o)", "Google Gemini", "DeepSeek (Economico/Testo)", "Mistral", "xAI / Grok", "Groq (Veloce)", "Hugging Face (Inference API)", "Ollama (Locale/Privato)"])
-
-        # Tipologia Documentale
-        from document_type_manager import DocumentTypeManager
-        self._dtm = DocumentTypeManager()
-        lbl_type = QLabel(self.gm("Tipologia Documento:"))
-        lbl_type.setStyleSheet("font-weight: bold;")
-        self.combo_type = QComboBox()
-        self.combo_type.addItems(self._dtm.get_labels(service="translation"))
-        self.combo_type.currentIndexChanged.connect(self._on_type_changed_tr)
-
-        self.lbl_api = QLabel(self.gm("API Key:"))
-        api_inner_ly = QHBoxLayout()
-        self.txt_api = QLineEdit()
-        self.txt_api.setEchoMode(QLineEdit.Password)
-        self.txt_api.setFixedWidth(200)
-        
-        btn_key_safe = QPushButton("🔑 " + self.gm("Cassaforte"))
-        btn_key_safe.setStyleSheet("background-color: #2a2a2a; color: #f5f0e8; border: 1px solid #888; padding: 2px 10px; border-radius: 4px; font-size: 11px;")
-        btn_key_safe.clicked.connect(self.open_key_manager)
-        
-        api_inner_ly.addWidget(self.txt_api)
-        api_inner_ly.addWidget(btn_key_safe)
-
-        lbl_target = QLabel(self.gm("Lingua di Destinazione:"))
-        self.combo_lingua = QComboBox()
-        # Le 20 lingue supportate sotto forma di autonimi
-        lingue = [
-            "Italiano", "English", "Deutsch", "Français", "Español", "Português",
-            "Русский", "中文", "日本語", "韓国語", "العربية", "हिन्दी", "Türkçe",
-            "Polski", "Nederlands", "Ελληνικά", "Čeština", "Svenska", "Dansk", "Suomi"
-        ]
-        self.combo_lingua.addItems(lingue)
-
-        top_layout.addWidget(lbl_prov)
-        top_layout.addWidget(self.combo_prov)
-        self.combo_prov.currentIndexChanged.connect(self._toggle_custom_model)
-
-        self.lbl_custom_model = QLabel("Modello:")
-        self.inp_custom_model = QLineEdit()
-        self.inp_custom_model.setPlaceholderText("Es. gpt-5")
-        self.inp_custom_model.setFixedWidth(100)
-        top_layout.addWidget(self.lbl_custom_model)
-        top_layout.addWidget(self.inp_custom_model)
-        
-        top_layout.addSpacing(20)
-        btn_add_type_tr = QPushButton("+")
-        btn_add_type_tr.setObjectName("btn_add_type")
-        btn_add_type_tr.setToolTip(self.gm("Aggiungi tipologia personalizzata"))
-        btn_add_type_tr.setFixedSize(30, 30)
-        btn_add_type_tr.clicked.connect(self._add_custom_type)
-        self.btn_edit_type = QPushButton("\u270f")
-        self.btn_edit_type.setObjectName("btn_edit_type")
-        self.btn_edit_type.setToolTip(self.gm("Modifica tipologia personalizzata selezionata"))
-        self.btn_edit_type.setFixedSize(30, 30)
-        self.btn_edit_type.clicked.connect(self._edit_custom_type)
-        self.btn_edit_type.setVisible(False)
-        self.btn_del_type = QPushButton("\u2715")
-        self.btn_del_type.setObjectName("btn_del_type")
-        self.btn_del_type.setToolTip(self.gm("Elimina tipologia personalizzata selezionata"))
-        self.btn_del_type.setFixedSize(30, 30)
-        self.btn_del_type.clicked.connect(self._delete_custom_type)
-        self.btn_del_type.setVisible(False)
-        top_layout.addWidget(lbl_type)
-        top_layout.addWidget(self.combo_type)
-        top_layout.addWidget(btn_add_type_tr)
-        top_layout.addWidget(self.btn_edit_type)
-        top_layout.addWidget(self.btn_del_type)
-        top_layout.addSpacing(20)
-        top_layout.addWidget(self.lbl_api)
-        top_layout.addLayout(api_inner_ly)
-        top_layout.addStretch()
-        top_layout.addWidget(lbl_target)
-        top_layout.addWidget(self.combo_lingua)
-        
-        main_layout.addLayout(top_layout)
-        self._toggle_custom_model()
-
-        # Splitter main content
-        splitter = QSplitter(Qt.Horizontal)
-        
-        # --- LEFT PANE ---
-        left_widget = QWidget()
-        left_ly = QVBoxLayout(left_widget)
-        left_ly.setContentsMargins(0, 10, 5, 0)
-        
-        # Origine
-        header_orig = QHBoxLayout()
-        lbl_orig = QLabel(self.gm("Testo Sorgente (Antico/Gregoriano/Dialetto):"))
-        btn_load = QPushButton(self.gm("Carica File TXT"))
-        btn_load.clicked.connect(self.carica_file)
-        header_orig.addWidget(lbl_orig)
-        header_orig.addStretch()
-        header_orig.addWidget(btn_load)
-        
-        self.txt_orig = QTextEdit()
-        self.txt_orig.setPlaceholderText(self.gm("Incolla qui la trascrizione cruda o carica un file .txt generato prima..."))
-        
-        # Contesto
-        lbl_ctx = QLabel(self.gm("Glossario & Contesto (Opzionale, istruzioni alla IA):"))
-        self.txt_ctx = QTextEdit()
-        self.txt_ctx.setMaximumHeight(80)
-        self.txt_ctx.setPlaceholderText(self.gm("Es. Traduci mantenendo arcaico. Cabella = dazio. Tassano = Nome proprio."))
-        
-        left_ly.addLayout(header_orig)
-        left_ly.addWidget(self.txt_orig)
-        left_ly.addWidget(lbl_ctx)
-        left_ly.addWidget(self.txt_ctx)
-        
-        # --- RIGHT PANE ---
-        right_widget = QWidget()
-        right_ly = QVBoxLayout(right_widget)
-        right_ly.setContentsMargins(5, 10, 0, 0)
-        
-        lbl_dest = QLabel(self.gm("Risultato Tradotto:"))
-        self.txt_dest = QTextEdit()
-        self.txt_dest.setPlaceholderText(self.gm("La traduzione moderna apparirà qui e potrà essere revisionata..."))
-        
-        # Export
-        export_ly = QHBoxLayout()
-        btn_save_txt = QPushButton(self.gm("Salva Traduzione (TXT)"))
-        btn_save_txt.clicked.connect(lambda: self.esporta_risultato("txt"))
-        btn_save_docx = QPushButton(self.gm("Esporta in Word (DOCX)"))
-        btn_save_docx.clicked.connect(lambda: self.esporta_risultato("docx"))
-        export_ly.addWidget(btn_save_txt)
-        export_ly.addWidget(btn_save_docx)
-        
-        right_ly.addWidget(lbl_dest)
-        right_ly.addWidget(self.txt_dest)
-        right_ly.addLayout(export_ly)
-        
-        # Add to splitter
-        splitter.addWidget(left_widget)
-        splitter.addWidget(right_widget)
-        
-        # Give them 50/50 ratio
-        splitter.setSizes([500, 500])
-        main_layout.addWidget(splitter, 1) # stretch 1
-        
-        # Bottom Bar
-        bottom_ly = QHBoxLayout()
-        self.progress_bar = QProgressBar()
-        self.progress_bar.setVisible(False)
-        self.progress_bar.setRange(0, 0) # Indeterminate spinning
-        
-        self.btn_traduci = QPushButton("✨ " + self.gm("Traduci Testo ORA"))
-        self.btn_traduci.setObjectName("btn_traduci")
-        self.btn_traduci.clicked.connect(self.avvia_traduzione)
-        
-        bottom_ly.addWidget(self.progress_bar, 1)
-        bottom_ly.addWidget(self.btn_traduci)
-        
-        main_layout.addLayout(bottom_ly)
+            QMessageBox.critical(
+                self,
+                self.gm("Errore"),
+                self.gm("Impossibile aprire il gestore chiavi: {err}").format(err=e),
+            )
 
     def _toggle_custom_model(self):
         prov = self.combo_prov.currentText()
+        self.inp_custom_model.setPlaceholderText(self.gm("Es. gpt-5-preview (lascia vuoto per default)"))
         if "Gemini" in prov:
+            self.lbl_api.setText(self.gm("Google Gemini API Key:"))
             self.lbl_custom_model.setVisible(False)
             self.inp_custom_model.setVisible(False)
             self.inp_custom_model.clear()
+        elif "OpenAI" in prov:
+            self.lbl_api.setText(self.gm("OpenAI API Key:"))
+            self.lbl_custom_model.setVisible(True)
+            self.inp_custom_model.setVisible(True)
+        elif "DeepSeek" in prov:
+            self.lbl_api.setText(self.gm("DeepSeek API Key:"))
+            self.lbl_custom_model.setVisible(True)
+            self.inp_custom_model.setVisible(True)
+        elif "Mistral" in prov:
+            self.lbl_api.setText(self.gm("Mistral API Key:"))
+            self.lbl_custom_model.setVisible(True)
+            self.inp_custom_model.setVisible(True)
+        elif "xAI" in prov:
+            self.lbl_api.setText(self.gm("xAI API Key:"))
+            self.lbl_custom_model.setVisible(True)
+            self.inp_custom_model.setVisible(True)
+        elif "Groq" in prov:
+            self.lbl_api.setText(self.gm("Groq API Key:"))
+            self.lbl_custom_model.setVisible(True)
+            self.inp_custom_model.setVisible(True)
         elif "Ollama" in prov:
-            self.lbl_api.setText("Host Ollama:")
+            self.lbl_api.setText(self.gm("Host Ollama (es. http://localhost:11434):"))
             self.lbl_custom_model.setVisible(True)
             self.inp_custom_model.setVisible(True)
-            self.inp_custom_model.setPlaceholderText("Es. llava, llama3.2-vision, qwen2.5vl")
+            self.inp_custom_model.setPlaceholderText(self.gm("Es. llava, llama3.2-vision, qwen2.5vl"))
         elif "Hugging Face" in prov:
-            self.lbl_api.setText("Hugging Face Token (hf_...):")
+            self.lbl_api.setText(self.gm("Hugging Face Token (hf_...):"))
             self.lbl_custom_model.setVisible(True)
             self.inp_custom_model.setVisible(True)
-            self.inp_custom_model.setPlaceholderText("Es. Qwen/Qwen2.5-VL-7B-Instruct")
+            self.inp_custom_model.setPlaceholderText(self.gm("Es. Qwen/Qwen2.5-VL-7B-Instruct"))
         else:
+            self.lbl_api.setText(self.gm("Anthropic API Key:"))
             self.lbl_custom_model.setVisible(True)
             self.inp_custom_model.setVisible(True)
 
@@ -511,13 +384,22 @@ class TranslationDialog(QDialog):
             pass
 
     def carica_file(self):
-        path, _ = QFileDialog.getOpenFileName(self, self.gm("Seleziona file di testo"), "", "Text Files (*.txt);;All Files (*.*)")
+        path, _ = QFileDialog.getOpenFileName(
+            self,
+            self.gm("Seleziona file di testo"),
+            "",
+            self.gm("File di testo (*.txt);;Tutti i file (*.*)"),
+        )
         if path:
             try:
                 with open(path, 'r', encoding='utf-8') as f:
                     self.txt_orig.setPlainText(f.read())
             except Exception as e:
-                QMessageBox.warning(self, "Errore", f"Impossibile leggere il file: {e}")
+                QMessageBox.warning(
+                    self,
+                    self.gm("Errore"),
+                    self.gm("Impossibile leggere il file: {err}").format(err=e),
+                )
 
     def avvia_traduzione(self):
         src_text = self.txt_orig.toPlainText().strip()
@@ -590,7 +472,7 @@ class TranslationDialog(QDialog):
             QMessageBox.warning(self, self.gm("Attenzione"), self.gm("Non ci sono risultati da esportare."))
             return
 
-        filter_str = "Documento testo (*.txt)" if format_ext == "txt" else "Microsoft Word (*.docx)"
+        filter_str = self.gm("Documento testo (*.txt)") if format_ext == "txt" else self.gm("Microsoft Word (*.docx)")
         # Disabilito momentaneamente il DontUseNativeDialog che causa glitch stilistici sui Windows moderni, reintroduco il parent nullo per evitare i break e i crash alla memory release.
         filename, _ = QFileDialog.getSaveFileName(None, self.gm("Salva File"), f"Traduzione.{format_ext}", filter_str)
         if filename:
@@ -616,6 +498,6 @@ class TranslationDialog(QDialog):
                 if platform.system() == 'Windows': os.startfile(km.file_path)
                 elif platform.system() == 'Darwin': subprocess.run(['open', km.file_path])
                 else: subprocess.run(['xdg-open', km.file_path])
-            except: QMessageBox.warning(self, "Errore", "Impossibile aprire il file CSV.")
+            except: QMessageBox.warning(self, self.gm("Errore"), self.gm("Impossibile aprire il file CSV."))
         else:
-            QMessageBox.warning(self, "Errore", "File chiavi non trovato.")
+            QMessageBox.warning(self, self.gm("Errore"), self.gm("File chiavi non trovato."))
