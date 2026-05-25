@@ -10,7 +10,6 @@ from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QTextEdit, QMessageBox,
 )
-from PySide6.QtCore import Qt
 
 
 SERVICE_LABELS = {
@@ -18,6 +17,15 @@ SERVICE_LABELS = {
     "translation": "Traduzione",
     "gedcom": "GEDCOM",
 }
+
+
+def get_msg(glossario, chiave, lingua):
+    try:
+        from main_gui_qt import get_msg as _get_msg
+        res = _get_msg(glossario, chiave, lingua)
+        return res if res is not None else chiave
+    except Exception:
+        return chiave
 
 
 class PromptEditDialog(QDialog):
@@ -62,11 +70,12 @@ class PromptEditDialog(QDialog):
         self._dtm = dtm
         self._label = dtm.bare_label(label)
         self._service = service
+        self.lingua = lingua
+        self.glossario_data = glossario_data or {}
 
         has_override = dtm.has_builtin_override(self._label, service)
-        svc_name = SERVICE_LABELS.get(service, service.upper())
-        title_marker = " ★ Override attivo" if has_override else ""
-        self.setWindowTitle(f"Prompt {svc_name} — {self._label}{title_marker}")
+        svc_name = self._service_name()
+        self.setWindowTitle(self._dialog_title(has_override))
         self.setMinimumSize(720, 500)
         self.setStyleSheet(self.STYLE)
 
@@ -76,18 +85,20 @@ class PromptEditDialog(QDialog):
 
         # Intestazione
         lbl_info = QLabel(
-            f"<b>Tipologia:</b> {self._label} &nbsp;|&nbsp; <b>Servizio:</b> {svc_name}"
+            f"<b>{self.gm('Tipologia:')}</b> {self._label} &nbsp;|&nbsp; <b>{self.gm('Servizio:')}</b> {svc_name}"
         )
         layout.addWidget(lbl_info)
 
         if has_override:
-            badge = QLabel("⚠ Override attivo — il prompt originale built-in è stato modificato")
+            badge = QLabel("⚠ " + self.gm("Override attivo — il prompt originale built-in è stato modificato"))
             badge.setObjectName("lbl_override_badge")
             layout.addWidget(badge)
         else:
             note = QLabel(
-                "Stai visualizzando il prompt originale built-in. "
-                "Modificalo e salva per creare un override personalizzato."
+                self.gm(
+                    "Stai visualizzando il prompt originale built-in. "
+                    "Modificalo e salva per creare un override personalizzato."
+                )
             )
             note.setWordWrap(True)
             note.setStyleSheet("color: #888; font-size: 11px;")
@@ -95,8 +106,10 @@ class PromptEditDialog(QDialog):
 
         if service == "translation":
             note_tr = QLabel(
-                "⚠ Per la Traduzione il prompt include il testo sorgente dinamicamente. "
-                "Il tuo override verrà usato come sezione 'CONTESTO DOCUMENTO' nel prompt finale."
+                "⚠ " + self.gm(
+                    "Per la Traduzione il prompt include il testo sorgente dinamicamente. "
+                    "Il tuo override verrà usato come sezione 'CONTESTO DOCUMENTO' nel prompt finale."
+                )
             )
             note_tr.setWordWrap(True)
             note_tr.setStyleSheet("color: #aa8844; font-size: 11px;")
@@ -119,15 +132,15 @@ class PromptEditDialog(QDialog):
 
         # Pulsanti
         btns = QHBoxLayout()
-        btn_restore = QPushButton("↩ Ripristina Originale")
+        btn_restore = QPushButton("↩ " + self.gm("Ripristina Originale"))
         btn_restore.setObjectName("btn_restore")
-        btn_restore.setToolTip("Elimina l'override e torna al prompt built-in originale")
+        btn_restore.setToolTip(self.gm("Elimina l'override e torna al prompt built-in originale"))
         btn_restore.clicked.connect(self._restore)
 
-        btn_cancel = QPushButton("Annulla")
+        btn_cancel = QPushButton(self.gm("Annulla"))
         btn_cancel.clicked.connect(self.reject)
 
-        btn_save = QPushButton("✔ Salva Override")
+        btn_save = QPushButton("✔ " + self.gm("Salva Override"))
         btn_save.setObjectName("btn_save")
         btn_save.clicked.connect(self._save)
 
@@ -137,25 +150,42 @@ class PromptEditDialog(QDialog):
         btns.addWidget(btn_save)
         layout.addLayout(btns)
 
+    def gm(self, chiave):
+        return get_msg(self.glossario_data, chiave, self.lingua)
+
+    def _service_name(self):
+        return self.gm(SERVICE_LABELS.get(self._service, self._service.upper()))
+
+    def _dialog_title(self, has_override=False):
+        marker = f" ★ {self.gm('Override attivo')}" if has_override else ""
+        return f"{self.gm('Prompt')} {self._service_name()} — {self._label}{marker}"
+
     def _save(self):
         text = self.txt_prompt.toPlainText().strip()
         if not text:
-            QMessageBox.warning(self, "Attenzione",
-                                "Il prompt non può essere vuoto. "
-                                "Usa 'Ripristina Originale' per tornare al default.")
+            QMessageBox.warning(
+                self,
+                self.gm("Attenzione"),
+                self.gm(
+                    "Il prompt non può essere vuoto. "
+                    "Usa 'Ripristina Originale' per tornare al default."
+                ),
+            )
             return
         self._dtm.set_builtin_override(self._label, self._service, text)
         self.accept()
 
     def _restore(self):
         msg = QMessageBox(self)
-        msg.setWindowTitle("Ripristina Originale")
+        msg.setWindowTitle(self.gm("Ripristina Originale"))
         msg.setText(
-            f"Eliminare l'override per «{self._label}» ({SERVICE_LABELS.get(self._service, '')})?\n"
-            "Verrà ripristinato il prompt built-in originale."
+            self.gm(
+                "Eliminare l'override per «{label}» ({service})?\n"
+                "Verrà ripristinato il prompt built-in originale."
+            ).format(label=self._label, service=self._service_name())
         )
-        btn_si = msg.addButton("Sì, ripristina", QMessageBox.ButtonRole.YesRole)
-        msg.addButton("Annulla", QMessageBox.ButtonRole.NoRole)
+        btn_si = msg.addButton(self.gm("Sì, ripristina"), QMessageBox.ButtonRole.YesRole)
+        msg.addButton(self.gm("Annulla"), QMessageBox.ButtonRole.NoRole)
         msg.exec()
         if msg.clickedButton() == btn_si:
             self._dtm.delete_builtin_override(self._label, self._service)
@@ -163,8 +193,9 @@ class PromptEditDialog(QDialog):
             self.txt_prompt.setPlainText(
                 self._dtm.get_builtin_original_prompt(self._label, self._service)
             )
-            self.setWindowTitle(
-                f"Prompt {SERVICE_LABELS.get(self._service, '')} — {self._label}"
+            self.setWindowTitle(self._dialog_title(False))
+            QMessageBox.information(
+                self,
+                self.gm("Ripristinato"),
+                self.gm("Override eliminato. Il prompt built-in originale è ripristinato."),
             )
-            QMessageBox.information(self, "Ripristinato",
-                                    "Override eliminato. Il prompt built-in originale è ripristinato.")
