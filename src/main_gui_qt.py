@@ -891,11 +891,11 @@ class MainWindow(QMainWindow):
         ]
 
         dlg = QDialog(self)
-        dlg.setWindowTitle("Portale attivo")
+        dlg.setWindowTitle(gm("Portale attivo"))
         _setup_dialog_pergamena(dlg, 520, 220)
         layout = QVBoxLayout(dlg)
 
-        lbl = QLabel("Seleziona il portale da cui scaricherai le immagini:")
+        lbl = QLabel(gm("Seleziona il portale da cui scaricherai le immagini:"))
         lbl.setStyleSheet("color: #fff; font-size: 15px;")
         layout.addWidget(lbl)
 
@@ -926,7 +926,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(combo)
 
         btn_row = QHBoxLayout()
-        ok_btn = QPushButton("OK")
+        ok_btn = QPushButton(gm("Conferma") or "Conferma")
         cancel_btn = QPushButton(gm("Annulla") or "Annulla")
         ok_btn.clicked.connect(dlg.accept)
         cancel_btn.clicked.connect(dlg.reject)
@@ -941,9 +941,6 @@ class MainWindow(QMainWindow):
                 self.portale_attivo = nuovo_portale
                 state["portale_attivo"] = nuovo_portale
                 _write_config_prefs("portale_attivo", nuovo_portale)
-                portale_label = combo.currentText()
-                info_lbl = QLabel(f"Portale attivo: {portale_label}")
-                info_lbl.setStyleSheet("color: #fff; font-size: 14px;")
                 show_operation_completed_dialog(self, self.glossario_data, self.lingua)
 
     def verifica_aggiornamenti(self):
