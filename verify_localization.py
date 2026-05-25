@@ -180,7 +180,13 @@ for py in SRC_FILES:
             continue
         # Look for literal strings passed to widget constructors
         if "QPushButton" in line or "QLabel" in line or "QMessageBox" in line:
-            if ("'" in line or '"' in line) and "get_msg" not in line and ".gm(" not in line and "_gm(" not in line:
+            if (
+                ("'" in line or '"' in line)
+                and "get_msg" not in line
+                and ".gm(" not in line
+                and "_gm(" not in line
+                and "gm(" not in line
+            ):
                 hard_coded_strings.append((py, i, stripped))
         # also check .ui files for literal text
 

@@ -747,8 +747,11 @@ def _ask_canvas_range(parent, glossario_data, lingua):
                                    QPushButton, QSpinBox)
     from PySide6.QtCore import Qt
 
+    def gm(key):
+        return get_msg(glossario_data, key, lingua) or key
+
     dlg = QDialog(parent)
-    dlg.setWindowTitle("Range canvas")
+    dlg.setWindowTitle(gm("Range canvas"))
     dlg.resize(420, 220)
     dlg.setStyleSheet("""
         QDialog { background-color: #111216; color: #fff; border: 2px solid #a67c52; }
@@ -760,20 +763,22 @@ def _ask_canvas_range(parent, glossario_data, lingua):
     """)
     layout = QVBoxLayout(dlg)
 
-    info = QLabel("Vuoi limitare l'elaborazione a un range di canvas?\n"
-                  "Clicca OK per usare il range, oppure \"Tutti i canvas\" per elaborare tutto.")
+    info = QLabel(gm(
+        "Vuoi limitare l'elaborazione a un range di canvas?\n"
+        "Clicca OK per usare il range, oppure \"Tutti i canvas\" per elaborare tutto."
+    ))
     info.setWordWrap(True)
     info.setStyleSheet("color: #fff; font-size: 13px;")
     layout.addWidget(info)
 
     range_row = QHBoxLayout()
-    lbl_da = QLabel("Da canvas:")
+    lbl_da = QLabel(gm("Da canvas:"))
     lbl_da.setStyleSheet("color: #ccc; font-size: 13px;")
     spin_da = QSpinBox()
     spin_da.setMinimum(1)
     spin_da.setMaximum(99999)
     spin_da.setValue(1)
-    lbl_a = QLabel("  A canvas:")
+    lbl_a = QLabel("  " + gm("A canvas:"))
     lbl_a.setStyleSheet("color: #ccc; font-size: 13px;")
     spin_a = QSpinBox()
     spin_a.setMinimum(1)
@@ -786,8 +791,8 @@ def _ask_canvas_range(parent, glossario_data, lingua):
     layout.addLayout(range_row)
 
     btn_row = QHBoxLayout()
-    ok_btn = QPushButton("OK (usa range)")
-    skip_btn = QPushButton("Tutti i canvas")
+    ok_btn = QPushButton(gm("OK (usa range)"))
+    skip_btn = QPushButton(gm("Tutti i canvas"))
     ok_btn.clicked.connect(dlg.accept)
     skip_btn.clicked.connect(dlg.reject)
     btn_row.addWidget(ok_btn)
@@ -3389,4 +3394,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
