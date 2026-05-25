@@ -143,6 +143,23 @@ hard_coded_strings = []
 UI_STRING_PATTERN = re.compile(r"QPushButton\s*\(\s*\'([^\']+)\'\s*\)")
 SRC_FILES = [path for path in (PROJECT_ROOT / "src").rglob("*.py")]
 SYMBOL_ONLY = re.compile(r"^\s*(self\.)?\w+\s*=\s*QPushButton\([\"']\s*[\W_]{1,4}\s*[\"']\)")
+UI_CONSTANT_ONLY = re.compile(
+    r"^\s*(?:self\.)?\w+\s*=\s*(?:QPushButton|QLabel)\(\s*[\"']\s*[-+−/0-9:%.\s]+\s*[\"']\s*\)"
+)
+PAGE_COUNTER_ONLY = re.compile(r"QLabel\(\s*f[\"']\s*/\s*\{[^}]+\}\s*[\"']\s*\)")
+
+def localized_variable_messagebox(line: str) -> bool:
+    """Allow message boxes assembled only from localized variables and punctuation."""
+    match = re.search(
+        r"QMessageBox\.\w+\([^,]+,\s*[A-Za-z_]\w*,\s*f([\"'])(.*)\1\s*\)",
+        line,
+    )
+    if not match:
+        return False
+    body = re.sub(r"\{[^}]+\}", "", match.group(2))
+    body = re.sub(r"\\[nrt]", "", body)
+    return not re.search(r"[A-Za-zÀ-ÿ]", body)
+
 for py in SRC_FILES:
     try:
         lines = py.read_text(encoding="utf-8").splitlines()
@@ -152,7 +169,14 @@ for py in SRC_FILES:
         stripped = line.strip()
         if not stripped or stripped.startswith("#") or "setStyleSheet" in stripped:
             continue
-        if "QPushButton#" in stripped or "QPushButton {" in stripped or SYMBOL_ONLY.match(stripped):
+        if (
+            "QPushButton#" in stripped
+            or "QPushButton {" in stripped
+            or SYMBOL_ONLY.match(stripped)
+            or UI_CONSTANT_ONLY.match(stripped)
+            or PAGE_COUNTER_ONLY.search(stripped)
+            or localized_variable_messagebox(stripped)
+        ):
             continue
         # Look for literal strings passed to widget constructors
         if "QPushButton" in line or "QLabel" in line or "QMessageBox" in line:

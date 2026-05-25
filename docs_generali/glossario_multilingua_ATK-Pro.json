@@ -8713,6 +8713,29 @@
       "NO": "Språk",
       "TR": "Dil",
       "VI": "Ngôn ngữ"
+    },
+    {
+      "messaggio": "Errore nel caricamento",
+      "IT": "Errore nel caricamento",
+      "EN": "Loading error",
+      "ES": "Error de carga",
+      "FR": "Erreur de chargement",
+      "DE": "Ladefehler",
+      "PT": "Erro ao carregar",
+      "NL": "Laadfout",
+      "AR": "خطأ في التحميل",
+      "HE": "שגיאת טעינה",
+      "RU": "Ошибка загрузки",
+      "JA": "読み込みエラー",
+      "SV": "Inläsningsfel",
+      "ZH": "加载错误",
+      "RO": "Eroare la încărcare",
+      "EL": "Σφάλμα φόρτωσης",
+      "PL": "Błąd ładowania",
+      "DA": "Indlæsningsfejl",
+      "NO": "Lastingsfeil",
+      "TR": "Yükleme hatası",
+      "VI": "Lỗi tải"
     }
   ],
   "ricerca_assistita_ai_ui": [

@@ -235,6 +235,8 @@ class _ImagePanel(QWidget):
         self._base_pix  = None
         self._fit_mode  = True
         gd, lg = glossario_data, lingua
+        self._glossario_data = gd
+        self._lingua = lg
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -332,7 +334,8 @@ class _ImagePanel(QWidget):
             else:
                 self._apply_zoom()
         except Exception as exc:
-            self._img_label.setText(f"Errore nel caricamento: {exc}")
+            err = _gm(self._glossario_data, "Errore nel caricamento", self._lingua)
+            self._img_label.setText(f"{err}: {exc}")
 
     def _apply_zoom(self):
         if not self._base_pix:
