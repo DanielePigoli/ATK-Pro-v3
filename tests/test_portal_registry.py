@@ -4,6 +4,7 @@ from src.portal_registry import (
     PORTAL_WARNING_MESSAGE_KEYS,
     get_portal,
     get_portal_groups,
+    get_portal_referer,
     get_portal_warning_message_key,
     normalize_portal_key,
     portal_keys,
@@ -49,3 +50,11 @@ def test_each_priority_has_a_warning_message_key():
     assert get_portal_warning_message_key("antenati") == PORTAL_WARNING_MESSAGE_KEYS["maintain_with_warning"]
     assert get_portal_warning_message_key("matricula") == PORTAL_WARNING_MESSAGE_KEYS["do_not_extend"]
     assert get_portal_warning_message_key("non_esiste") is None
+
+
+def test_portal_referer_capability_matches_existing_special_cases():
+    assert get_portal_referer("gallica") == "https://gallica.bnf.fr"
+    assert get_portal_referer("BNC ROMA") == "http://digitale.bnc.roma.sbn.it"
+    assert get_portal_referer("manifest_diretto") is None
+    assert get_portal_referer("antenati") is None
+    assert get_portal_referer("bncf_teca", "https://teca.bncf.firenze.sbn.it/viewer") == "https://teca.bncf.firenze.sbn.it"
