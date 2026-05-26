@@ -338,47 +338,50 @@
 
     <div class="section">
         <h2>&#128204; Panoramica</h2>
-        <p>Il modulo <strong>Traduzione Paleografica Assistita (LLM)</strong> traduce testi paleografici o antichi &mdash; output dell&apos;OCR Avanzato, trascrizioni manuali o qualsiasi testo in formato <code>.txt</code> &mdash; in una delle 20 lingue moderne disponibili.</p>
-        <p>A differenza dei traduttori generici, il modulo utilizza lo stesso provider LLM configurato per l&apos;OCR e pu&ograve; essere guidato tramite un glossario personalizzato, che consente al modello di trattare correttamente arcaismi, termini tecnici storici, dialettismi e nomi propri.</p>
-        <p>Si apre dal menu <em>Strumenti &rarr; Traduzione</em> dell&apos;applicazione principale. La chiave API &egrave; condivisa con il modulo OCR.</p>
+        <p>Il modulo <strong>Traduzione Paleografica Assistita (LLM)</strong> traduce trascrizioni, testi paleografici, appunti di ricerca o file <code>.txt</code> in una lingua moderna scelta dall&apos;utente.</p>
+        <p>Si apre dal menu <em>Servizi &rarr; Traduzione OCR</em>. Il modulo usa i provider IA configurati in ATK-Pro, con la stessa logica di chiavi e preferenze usata anche dai servizi OCR e genealogici.</p>
+        <p>La traduzione resta un supporto alla lettura: il risultato deve sempre essere rivisto, soprattutto quando il testo sorgente contiene grafie antiche, latino, formule notarili, abbreviazioni, dialetti o nomi propri.</p>
     </div>
 
     <div class="section">
         <h2>&#128421;&#65039; Interfaccia</h2>
-        <p>La finestra &egrave; organizzata in tre aree principali:</p>
+        <p>La finestra &egrave; organizzata in una barra di configurazione, un&apos;area per il testo sorgente, un campo di istruzioni contestuali e un&apos;area per il risultato.</p>
 
         <div class="section-box">
             <h3>Barra di Configurazione (In Alto)</h3>
             <ul>
-                <li><strong>Provider IA</strong>: Google Gemini (Free/Consigliato), OpenAI (GPT-4o), Anthropic (Claude 3.5), DeepSeek, Mistral, xAI, Groq, HuggingFace, Ollama</li>
-                <li><strong>API Key</strong>: Stessa chiave del modulo OCR &mdash; inserirla qui (oppure lasciarla leggere in automatico dal file <code>api_keys.csv</code>) la aggiorna ovunque.</li>
-                <li><strong>Lingua di Destinazione</strong>: Scelta tra 20 lingue (vedi lista completa pi&ugrave; in basso)</li>
+                <li><strong>Provider IA</strong>: scegli il servizio da usare tra quelli disponibili nell&apos;installazione, ad esempio Gemini, OpenAI, Claude, Mistral, xAI, DeepSeek, Groq, HuggingFace o Ollama.</li>
+                <li><strong>Modello</strong>: campo opzionale per indicare un modello specifico supportato dal provider. Se lo lasci vuoto, ATK-Pro usa il modello predefinito previsto dalla configurazione.</li>
+                <li><strong>Tipologia Documento</strong>: seleziona il tipo di documento o testo da tradurre. Le tipologie sono collegate ai prompt e possono essere aggiunte, modificate o eliminate dagli appositi pulsanti.</li>
+                <li><strong>API Key e Cassaforte</strong>: inserisci la chiave del provider scelto oppure apri la <em>Cassaforte</em> per gestire le chiavi salvate nel caveau CSV.</li>
+                <li><strong>Lingua di Destinazione</strong>: scegli la lingua moderna in cui vuoi ottenere la traduzione.</li>
             </ul>
         </div>
 
         <div class="section-box">
-            <h3>Pannello Sinistro &mdash; Testo Sorgente</h3>
+            <h3>Testo sorgente</h3>
             <ul>
-                <li><strong>Area di testo principale</strong>: Incolla direttamente il testo da tradurre. Accetta testo di qualsiasi lunghezza, ma testi molto lunghi potrebbero richiedere pi&ugrave; elaborazione</li>
-                <li><strong>Pulsante &ldquo;Carica File TXT&rdquo;</strong>: Apre un file <code>.txt</code> da disco (ad es. output dell&apos;OCR). Il contenuto sostituisce il testo nell&apos;area</li>
-                <li><strong>Campo &ldquo;Glossario &amp; Contesto&rdquo;</strong>: vedi sezione dedicata</li>
+                <li><strong>Testo Sorgente</strong>: incolla la trascrizione da tradurre o carica un file <code>.txt</code> generato in precedenza.</li>
+                <li><strong>Carica File TXT</strong>: apre un file di testo e lo inserisce nell&apos;area sorgente.</li>
+                <li><strong>Glossario &amp; Contesto</strong>: permette di dare istruzioni al modello prima della traduzione.</li>
             </ul>
         </div>
 
         <div class="section-box">
-            <h3>Pannello Destro &mdash; Risultato Tradotto</h3>
+            <h3>Risultato tradotto</h3>
             <ul>
-                <li>La traduzione appare automaticamente al termine dell&apos;elaborazione</li>
-                <li>Il testo &egrave; <strong>liberamente editabile</strong>: puoi correggere errori di traduzione direttamente nell&apos;area prima di esportare</li>
-                <li><strong>Pulsante &ldquo;Salva Traduzione (TXT)&rdquo;</strong>: Salva il risultato come file di testo semplice</li>
-                <li><strong>Pulsante &ldquo;Esporta in Word (DOCX)&rdquo;</strong>: Salva come documento Microsoft Word editabile</li>
+                <li>Premi <strong>Traduci Testo ORA</strong> per avviare l&apos;elaborazione.</li>
+                <li>Durante l&apos;elaborazione il pannello risultato mostra un messaggio di attesa.</li>
+                <li>Il risultato e&apos; modificabile: correggi direttamente la traduzione prima di salvarla.</li>
+                <li><strong>Salva Traduzione (TXT)</strong> esporta testo semplice.</li>
+                <li><strong>Esporta in Word (DOCX)</strong> crea un documento Word editabile.</li>
             </ul>
         </div>
     </div>
 
     <div class="section">
         <h2>&#128221; Il Campo Glossario &amp; Contesto — Guida all&apos;Uso</h2>
-        <p>Questo campo opzionale &egrave; la funzione pi&ugrave; potente del modulo traduzione. Permette di istruire il modello LLM su ogni specificit&agrave; del testo prima che inizi l&apos;elaborazione.</p>
+        <p>Questo campo opzionale consente di istruire il modello sulle caratteristiche del testo prima che inizi l&apos;elaborazione. E&apos; il punto giusto per chiarire abbreviazioni, formule, lingua sorgente, criteri di resa e parole da non tradurre.</p>
 
         <div class="section-box">
             <h3>Quando usarlo</h3>
@@ -418,17 +421,18 @@ Traduci in inglese (non in italiano).</pre>
         <div class="section-box">
             <h3>Strategia Consigliata</h3>
             <ul>
-                <li>Costruisci il glossario <strong>progressivamente</strong>: inizia con un primo tentativo di traduzione, identifica le parole mal tradotte, aggiungile al glossario e ritraduce</li>
-                <li>Il campo viene <strong>salvato automaticamente</strong> nelle preferenze: non devi reinserirlo ogni volta che apri il modulo</li>
-                <li>Per registri diversi, crea glossari separati e scambiamoli copia-incollando prima di avviare la traduzione</li>
-                <li>Specifica sempre la <strong>lingua del testo sorgente</strong> (soprattutto per latino, dialetti, lingue regionali) &mdash; il modello performar&agrave; meglio</li>
+                <li>Costruisci il glossario <strong>progressivamente</strong>: fai una prima traduzione, individua gli errori ricorrenti, aggiungi istruzioni e riprova.</li>
+                <li>Per registri diversi, conserva glossari separati e incollali nel campo prima dell&apos;elaborazione.</li>
+                <li>Specifica sempre la <strong>lingua del testo sorgente</strong>, soprattutto per latino, dialetti, lingue regionali o documenti multilingui.</li>
+                <li>Indica quando nomi propri, toponimi, titoli o formule devono essere mantenuti e non modernizzati.</li>
             </ul>
         </div>
     </div>
 
     <div class="section">
-        <h2>&#127760; Lingue di Destinazione Disponibili (20)</h2>
+        <h2>&#127760; Lingue di destinazione</h2>
         <div class="section-box">
+            <p>La scelta effettiva dipende dall&apos;elenco disponibile nel modulo. La tabella seguente riassume le lingue previste nella guida italiana.</p>
             <table>
                 <thead><tr><th>Lingua</th><th>Autononimo</th><th>Lingua</th><th>Autononimo</th></tr></thead>
                 <tbody>
@@ -451,11 +455,11 @@ Traduci in inglese (non in italiano).</pre>
         <h2>&#128221; Note Operative</h2>
         <div class="section-box">
             <ul>
-                <li>L&apos;elaborazione &egrave; <strong>asincrona</strong>: la barra di avanzamento &egrave; indeterminata e la UI rimane responsiva. Per testi lunghi possono volerci alcune decine di secondi</li>
-                <li>Il risultato nel pannello destro pu&ograve; essere liberamente modificato prima di salvare</li>
-                <li>La chiave API e il provider selezionato sono condivisi con il modulo OCR: modificarli qui aggiorna anche le impostazioni OCR</li>
-                <li>Il campo Glossario &amp; Contesto viene salvato automaticamente e ripristinato alla prossima apertura del modulo</li>
-                <li>La traduzione produce solo output testuale (TXT o DOCX): non vengono generate immagini, strutture dati o formati specializzati</li>
+                <li>L&apos;elaborazione e&apos; asincrona: la finestra resta utilizzabile mentre il modulo attende la risposta del provider.</li>
+                <li>Per testi lunghi o complessi possono servire piu&apos; tempo e piu&apos; revisioni manuali.</li>
+                <li>La chiave API e il provider selezionato sono condivisi con le preferenze dei moduli IA collegati.</li>
+                <li>La traduzione produce output testuale in TXT o DOCX: non genera immagini, metadati, alberi genealogici o file GEDCOM.</li>
+                <li>Non inviare a provider esterni testi riservati o soggetti a restrizioni se non hai verificato condizioni d&apos;uso, privacy e autorizzazioni.</li>
             </ul>
         </div>
     </div>
