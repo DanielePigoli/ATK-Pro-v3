@@ -5,6 +5,11 @@ Data snapshot: 2026-05-25
 Questo audit leggero fotografa lo stato del progetto dopo il completamento del
 processo di localizzazione UI e prima di aprire una nuova fase sui portali.
 
+Nota successiva 2026-05-26: i punti documentali indicati come prossime mosse
+sono stati affrontati in PR successive. README macOS/Linux, `requirements.txt`,
+`tests/roadmap_tests.md`, matrice portali e roadmap portali sono ora allineati
+alla fase v3; questo file resta come snapshot storico post-localizzazione.
+
 ## Stato Git
 
 - `main` risulta allineato a `origin/main` dopo la PR #13.
@@ -52,12 +57,13 @@ Punti fragili o da sorvegliare:
 - alcuni portali usano manifest sintetici o fallback da HTML/endpoint non
   standard: vanno classificati portale per portale prima di aggiungere nuove
   integrazioni;
-- `README_MACOS.txt` e `README_LINUX.txt` sono ancora allineati a v2.2.0,
-  citano il repository v2 e un disclaimer piu vecchio basato su "Canvas LMS";
+- al momento dello snapshot, `README_MACOS.txt` e `README_LINUX.txt` erano
+  ancora allineati a v2.2.0, citavano il repository v2 e un disclaimer piu
+  vecchio basato su "Canvas LMS";
 - `requirements.txt` contiene intestazione duplicata e va ripulito in una fase
   documentale/dependency separata;
-- `tests/roadmap_tests.md` descrive una situazione v2.0 e potrebbe non
-  rappresentare lo stato reale della suite v3.0;
+- al momento dello snapshot, `tests/roadmap_tests.md` descriveva una
+  situazione v2.0 e poteva non rappresentare lo stato reale della suite v3.0;
 - la root contiene molti file temporanei, log, output di test e script
   diagnostici: serve una passata di inventario prima di una release pulita.
 

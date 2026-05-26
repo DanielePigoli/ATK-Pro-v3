@@ -80,29 +80,33 @@ Portali gia presenti nel selettore:
   e-rara, e-codices, e-manuscripta, Internet Archive, Europeana IIIF;
 - avanzato: manifest diretto.
 
-## Debiti da controllare prima della roadmap portali
+## Stato documentale dopo la matrice
 
-- `README_MACOS.txt` e `README_LINUX.txt` contengono ancora riferimenti vecchi
-  a v2 e al "Canvas LMS"; vanno riallineati al disclaimer legale attuale.
-- `tests/roadmap_tests.md` descrive uno stato test v2.0 che potrebbe non
-  rappresentare piu lo stato reale dopo le modifiche v3.0.
-- La logica specifica dei portali vive in piu punti e include fallback
-  sintetici/scraping-like: ogni nuovo portale deve essere valutato prima sui
-  termini d'uso correnti e poi sulla riusabilita tecnica.
-- La root contiene molti file temporanei/log/diagnostici: in una rivalutazione
-  ex novo conviene separare cosa e sorgente viva da cosa e residuo operativo.
+Le verifiche preliminari previste sono state completate in documenti separati:
+
+- audit post-localizzazione:
+  `docs_generali/audit_post_localizzazione_ATK-Pro.md`;
+- matrice dei portali gia presenti:
+  `docs_generali/matrice_portali_esistenti_ATK-Pro.md`;
+- roadmap operativa:
+  `docs_generali/roadmap_portali_ATK-Pro.md`;
+- roadmap test v3:
+  `tests/roadmap_tests.md`.
+
+Debiti residui:
+
+- la logica specifica dei portali vive ancora in piu punti e va ridotta con una
+  registry/adapter progressiva;
+- i portali con manifest sintetici o scraping-like devono restare congelati o
+  limitati finche non esiste una fonte tecnica piu stabile;
+- prima di una release pubblica conviene inventariare file temporanei, log e
+  script diagnostici rimasti nella root.
 
 ## Prossima sequenza proposta
 
-1. Rivalutazione ex novo leggera del progetto post-localizzazione:
-   stato Git, test disponibili, documentazione installazione, struttura root,
-   moduli critici, rischi tecnici.
-2. Matrice dei portali gia presenti:
-   per ciascuno, segnare fonte tecnica, metodo usato, rischio legale, rischio
-   manutenzione e priorita. Snapshot corrente:
-   `docs_generali/matrice_portali_esistenti_ATK-Pro.md`.
-3. Prima di proporre nuovi portali, verificare termini d'uso e documentazione
-   tecnica correnti da fonti ufficiali.
-4. Dare priorita ad area italiana/italofona solo quando il portale e pubblico,
-   istituzionale e tecnicamente pulito; passare all'internazionale dove IIIF/API
-   e termini sono piu chiari.
+1. Consolidare i portali in priorita 1 della roadmap con avvisi e fixture
+   offline.
+2. Introdurre una tabella interna di capability per portale.
+3. Proteggere con test i builder diretti e i casi piu stabili.
+4. Solo dopo valutare nuovi portali pubblici/istituzionali con IIIF/API e
+   termini chiari.

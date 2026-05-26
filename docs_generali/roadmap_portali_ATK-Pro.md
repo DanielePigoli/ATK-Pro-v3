@@ -1,0 +1,114 @@
+# Roadmap portali ATK-Pro
+
+Data snapshot: 2026-05-26
+
+Questa roadmap traduce la matrice dei portali esistenti in una sequenza pratica
+di lavoro. Non e una consulenza legale: applica al progetto i paletti gia
+documentati in `docs_generali/valutazione_portali_ATK-Pro.md` e le fonti
+ufficiali raccolte in `docs_generali/matrice_portali_esistenti_ATK-Pro.md`.
+
+## Decisione generale
+
+La priorita non e aggiungere subito altri portali, ma consolidare quelli gia
+presenti separando tre piani:
+
+1. supporto tecnico del manifest o delle immagini;
+2. avvisi chiari su licenza, citazione, non commerciale e no-login;
+3. test offline per evitare regressioni senza dipendere dai siti esterni.
+
+Nuovi portali vanno valutati solo dopo questa fase, e solo se sono pubblici,
+istituzionali, senza login/paywall e con IIIF/API o documentazione tecnica
+stabile.
+
+## Priorita 1 - Consolidare
+
+Portali da trattare per primi per rapporto favorevole tra valore, metodo
+tecnico e verificabilita delle fonti:
+
+- `manifest_diretto`: mantenere come percorso avanzato, con avviso che termini
+  e diritti dipendono dal sito di origine.
+- `bodleian`, `heidelberg`, `e_rara`, `e_codices`, `e_manuscripta`: IIIF
+  diretto/builder dedicati, ma sempre con controllo licenza per item o volume.
+- `europeana`: utile come aggregatore IIIF, solo record con rights statement
+  chiaro e attribuzione ai provider.
+- `gallica`: API IIIF documentata, riuso non commerciale con citazione e
+  attenzione ai documenti partner.
+- `internetculturale_estense`: consolidabile su contenuti pubblici web,
+  non commerciali, con citazione e preferenza per IIIF ufficiale quando
+  disponibile.
+
+Interventi consigliati:
+
+- aggiungere una tabella interna di capability per portale;
+- aggiungere avvisi sintetici nel flusso UI prima del download;
+- creare fixture offline di manifest/item rappresentativi;
+- mantenere rate limit espliciti dove gia previsti.
+
+## Priorita 2 - Mantenere con avvisi forti
+
+Portali ad alto valore ma con limiti di riuso o variabilita per ente:
+
+- `antenati`: portale primario per ricerca e studio; non trattare le immagini
+  come automaticamente open reuse.
+- `vatlib`: tecnicamente IIIF, ma uso libero solo personale/studio e
+  riproduzione/pubblicazione soggetta ad autorizzazione BAV.
+- `memooria`, `brixiana`: capability tecnica Jarvis/IIIF, ma accesso e diritti
+  dipendono dall'ente; solo risorse pubbliche no-login.
+- `internet_archive`: item-by-item; solo materiale pubblico, scaricabile e con
+  licenza/diritti chiari.
+
+Interventi consigliati:
+
+- mostrare un avviso specifico per portale;
+- bloccare ogni percorso che richieda credenziali o aree riservate;
+- documentare nel codice le assunzioni per singola istanza.
+
+## Priorita 3 - Non estendere per ora
+
+Portali da mantenere solo se il supporto esistente resta utile e non viola i
+paletti, ma da non ampliare senza nuove fonti ufficiali o autorizzazioni:
+
+- `bnc_roma`: solo contenuti pubblici e no-login; escludere OpenAthens, alta
+  risoluzione, materiali sotto diritto e pubblicazione automatizzata.
+- `bncf_teca`: consultazione puntuale, citazione e cautela su riproduzione o
+  pubblicazione.
+- `museogalileo`: endpoint non documentato/stabile; niente nuove automazioni.
+- `findbuch`: piattaforma per molte istanze; non estendere genericamente.
+- `matricula`: CC BY-NC-ND 2.0, quindi no commerciale, no derivati e no bulk.
+
+Interventi consigliati:
+
+- evitare nuove feature basate su scraping-like o HTML fragile;
+- aggiungere test solo per proteggere il comportamento gia presente;
+- rivalutare solo se compare una API/IIIF ufficiale o una policy piu chiara.
+
+## Nuovi portali
+
+Ordine di valutazione consigliato:
+
+1. area italiana/italofona solo se il portale e pubblico, istituzionale,
+   no-login e con API/IIIF ufficiale;
+2. area internazionale IIIF/API con licenze per item chiare;
+3. aggregatori solo se espongono rights statement e provider in modo leggibile;
+4. esclusione diretta per portali commerciali, chiusi, paywall, abbonamento,
+   login obbligatorio, anti-bot o divieto di automazione.
+
+Scheda minima prima di proporre un nuovo portale:
+
+- nome portale e area;
+- URL ufficiale;
+- fonte termini/licenza;
+- fonte API/IIIF o documentazione tecnica;
+- metodo previsto: IIIF diretto, API, discovery, sintetico;
+- limiti: login, rate limit, copyright, riuso, non commerciale, no-derivati;
+- fixture offline prevista;
+- decisione: integrare, verificare ancora, solo link, non supportare.
+
+## Sequenza tecnica consigliata
+
+1. Introdurre una registry `portale -> capability` per togliere conoscenza
+   implicita da UI, `elaborazione`, `manifest_utils` e `tile_downloader`.
+2. Collegare ogni portale a un messaggio breve di avviso operativo.
+3. Aggiungere fixture offline per i portali in priorita 1.
+4. Spostare progressivamente i builder verso adapter testabili.
+5. Solo dopo aprire la valutazione di nuovi portali.

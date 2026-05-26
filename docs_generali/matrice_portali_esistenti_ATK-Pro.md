@@ -78,15 +78,16 @@ Priorita tecnica dopo il primo controllo fonti ufficiali:
 - Registrare per ogni nuovo portale: fonte tecnica, termini ufficiali, metodo,
   rischio manutenzione, test offline disponibili e decisione go/no-go.
 
-## Prossima verifica richiesta
+## Stato della verifica fonti
 
-Per trasformare questa matrice in roadmap di integrazione serve una seconda
-fase, con consultazione delle fonti ufficiali correnti:
+La consultazione delle fonti ufficiali correnti e stata completata il
+2026-05-26 per tutti i portali effettivi gia presenti nella matrice. Il caso
+`manifest_diretto` resta volutamente variabile: la fonte e scelta dall'utente e
+deve essere valutata sul sito di origine.
 
-1. pagina note legali/terms del portale;
-2. documentazione IIIF/API;
-3. eventuali limiti di download, rate limit, licenze e riuso;
-4. decisione finale: integrare, consolidare, solo link esterno, non supportare.
+La traduzione operativa di questa matrice e nella roadmap:
+
+- `docs_generali/roadmap_portali_ATK-Pro.md`.
 
 ## Fonti ufficiali consultate - batch 1
 
