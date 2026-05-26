@@ -1,74 +1,90 @@
-# 🧭 Roadmap Test — ATK-Pro v2.0
+# Roadmap test - ATK-Pro v3.0
 
-## 🎯 Obiettivi principali
-- Riallineare la suite di test alla nuova architettura modulare v2.0, verificata contro BASE AUREA.
-- Mantenere in `tests/` solo i test coerenti e funzionanti (249 passed).
-- Archiviare in `tests_storici/` i 47 test divergenti, da aggiornare progressivamente.
-- Garantire esecuzione coerente sia in ambiente Python puro che in Windows con .exe.
-- Documentare ogni fase di riallineamento nel registro attività.
+Data snapshot: 2026-05-26
 
----
+Questa roadmap sostituisce la precedente fotografia v2.0. I numeri storici
+249/296 non vengono piu usati come baseline, perche non descrivono lo stato
+post-localizzazione e post-audit del progetto v3.
 
-## 📊 Stato attuale della suite
-- Totale test eseguiti: **296**
-- Passed: **249**
-- Failed: **47**
-- Skipped: **0**
-- Copertura media stimata: **78%**
-- Divergenze principali:
-  - `browser_setup` / `main` → riferimenti a `setup_driver` rimosso
-  - `canvas_processor` → riferimenti a `download_info_json` rimosso
-  - `tile_downloader` → riferimenti a `download_all_tiles` sostituito da `download_tiles`
-  - `manifest_utils` → divergenze su `find_manifest_url`
-  - `canvas_id_extractor` → test difensivi su fallback HTML non più coerenti
+## Baseline verificata
 
----
+Verifiche generali gia verdi:
 
-## 🧪 Piano di riallineamento
+- `python verify_localization.py`
+- `python validate_glossary.py`
+- `python verify_glossary.py`
+- `python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py`
 
-### Fase 1 — Pulizia
-- [x] Spostati i 47 test divergenti in `tests_storici/`.
-- [ ] Confermare stabilità dei 249 test validi.
+Subset portali/manifest/tile/worker:
 
-### Fase 2 — Riallineamento test obsoleti
-- [ ] Aggiornare test di `browser_setup` e `main` eliminando riferimenti a `setup_driver`.
-- [ ] Aggiornare test di `canvas_processor` eliminando `download_info_json`.
-- [ ] Aggiornare test di `tile_downloader` per usare `download_tiles`.
-- [ ] Aggiornare test di `manifest_utils` per casi reali.
-- [ ] Rivalutare test difensivi di `canvas_id_extractor`.
+- comando:
+  `python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py tests\test_tile_downloader.py tests\test_qt_worker_coverage.py -q`
+- risultato verificato:
+  `43 passed`
 
-### Fase 3 — Consolidamento
-- [ ] Rieseguire suite completa.
-- [ ] Aggiornare copertura e documentare regressioni reali.
-- [ ] Annotare milestone in `registro_attivita_v2.0.md`.
+Nota: durante l'audit post-localizzazione e stato riallineato il mock di
+`tests/test_tile_downloader.py` alla firma attuale di `download_tile`.
 
----
+## Obiettivi v3
 
-## 📂 Struttura consigliata dei test v2.0
+- Mantenere verde il controllo di localizzazione e glossario.
+- Stabilizzare la pipeline portali: manifest, tile, worker e fallback.
+- Distinguere test unitari puri da test che richiedono rete, GUI, browser o
+  servizi esterni.
+- Evitare baseline numeriche obsolete: ogni milestone deve dichiarare comando,
+  risultato e data.
+- Preparare una suite smoke veloce da eseguire prima di ogni PR tecnica.
 
-```plaintext
-tests/
-├── test_browser_setup.py
-├── test_canvas_id_extractor.py
-├── test_canvas_processor.py
-├── test_cli_dispatcher.py
-├── test_image_downloader.py
-├── test_image_rebuilder.py
-├── test_image_saver.py
-├── test_image_parser.py
-├── test_image_loader.py
-├── test_main.py
-├── test_manifest_utils.py
-├── test_metadata_utils.py
-├── test_pdf_utils.py
-├── test_tile_downloader.py
-├── test_tile_rebuilder.py
-├── test_ui_info.py
-├── test_user_prompts.py
-└── test_url_utils.py
-📌 Note operative
-Ogni test deve essere coerente con i moduli v2.0 verificati.
+## Suite smoke consigliata
 
-I test storici restano in tests_storici/ come archivio, non più eseguiti.
+Usare come controllo rapido dopo modifiche a localizzazione, portali o pipeline:
 
-Ogni fase di riallineamento deve essere accompagnata da commit narrativo e voce di registro.
+```powershell
+python verify_localization.py
+python validate_glossary.py
+python verify_glossary.py
+python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py
+python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py tests\test_tile_downloader.py tests\test_qt_worker_coverage.py -q
+```
+
+## Piano di riallineamento
+
+### Fase 1 - Baseline stabile
+
+- [x] Confermare localizzazione e glossario.
+- [x] Confermare compilazione dei moduli centrali.
+- [x] Confermare subset portali/manifest/tile/worker.
+- [ ] Eseguire una suite piu ampia in ambiente controllato.
+- [ ] Documentare numero totale di test pass/fail/skip aggiornato a v3.
+
+### Fase 2 - Classificazione test
+
+- [ ] Marcare test che richiedono rete reale.
+- [ ] Marcare test che richiedono GUI/Qt visibile.
+- [ ] Marcare test che richiedono Playwright/browser.
+- [ ] Separare test unitari puri da test di integrazione.
+- [ ] Ridurre dipendenze da percorsi locali storici in `tests/conftest.py`.
+
+### Fase 3 - Portali
+
+- [ ] Estendere i test su `manifest_utils` per i portali gia presenti.
+- [ ] Aggiungere fixture offline per manifest IIIF v2/v3 rappresentativi.
+- [ ] Aggiungere test per fallback sintetici solo dove legalmente e
+  tecnicamente giustificati.
+- [ ] Collegare ogni nuovo portale alla matrice di valutazione tecnica/legale.
+
+### Fase 4 - Release hygiene
+
+- [ ] Inventariare file temporanei, log e output generati nella root.
+- [ ] Aggiornare documentazione test in base alla suite realmente eseguita.
+- [ ] Definire un comando smoke per PR e un comando completo per release.
+
+## Note operative
+
+- Non aggiornare questa roadmap con numeri stimati.
+- Ogni baseline deve riportare il comando effettivo e il risultato osservato.
+- I test che toccano portali esterni devono preferire fixture offline, salvo
+  quando si sta eseguendo una verifica manuale esplicitamente autorizzata.
+- Le integrazioni con portali chiusi, commerciali, login, abbonamenti o paywall
+  restano fuori dallo scope supportato, salvo autorizzazione espressa e
+  documentata.
