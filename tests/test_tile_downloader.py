@@ -84,3 +84,29 @@ def test_download_tiles_invokes_download_tile(monkeypatch):
 
     td.download_tiles(info, "outdir")
     assert set(called) == {(0, 0), (1, 0), (0, 1), (1, 1)}
+
+
+def test_download_tiles_applies_registry_delay_for_heidelberg(tmp_path, monkeypatch):
+    info = {
+        "@id": "http://fake",
+        "width": 256,
+        "height": 256,
+        "tiles": [{"width": 256}],
+    }
+
+    delays = []
+
+    def fake_download_tile(base_url, x, y, tile_size, output_dir, quality, width, height, inter_delay):
+        delays.append(inter_delay)
+        filename = os.path.join(output_dir, f"tile_{x}_{y}.jpg")
+        with open(filename, "wb") as fh:
+            fh.write(b"x" * 2048)
+        return filename
+
+    monkeypatch.setattr(td, "download_tile", fake_download_tile)
+
+    tiles_ok, tiles_missing = td.download_tiles(info, tmp_path, portale="heidelberg")
+
+    assert delays == [0.3]
+    assert len(tiles_ok) == 1
+    assert tiles_missing == []
