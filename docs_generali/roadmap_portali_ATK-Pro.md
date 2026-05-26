@@ -130,6 +130,10 @@ Scheda minima prima di proporre un nuovo portale:
 - fixture offline prevista;
 - decisione: integrare, verificare ancora, solo link, non supportare.
 
+Matrice iniziale di scouting:
+
+- `docs_generali/matrice_portali_candidati_ATK-Pro.md`.
+
 ## Sequenza tecnica consigliata
 
 1. Continuare a estendere la registry `portale -> capability`; gruppi UI,
@@ -138,4 +142,4 @@ Scheda minima prima di proporre un nuovo portale:
    ancora implicite in `elaborazione`, `manifest_utils` e `tile_downloader`.
 3. Aggiungere fixture offline per i portali in priorita 1.
 4. Spostare progressivamente i builder verso adapter testabili.
-5. Solo dopo aprire la valutazione di nuovi portali.
+5. Usare la matrice candidati per scegliere i prossimi portali da verificare.
