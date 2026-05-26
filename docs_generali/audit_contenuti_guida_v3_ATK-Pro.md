@@ -2,13 +2,13 @@
 
 Data audit: 2026-05-26
 
-Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_06_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_07_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. La guida principale italiana e `assets/it/testuali/guida_02_operazioni_base.html` sono state aggiornate nella sezione Servizi per descrivere i sei moduli v3 come operativi. I percorsi menu residui in guida 03, 04 e 05 sono stati aggiornati al menu attuale, e le FAQ italiane sono state ripulite dai riferimenti obsoleti individuati. Restano da valutare la propagazione multilingue e l'eventuale rinomina/documentazione del file esempio `input_link_base_v2.0.txt`.
+Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_06_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_07_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. La guida principale italiana e `assets/it/testuali/guida_02_operazioni_base.html` sono state aggiornate nella sezione Servizi per descrivere i sei moduli v3 come operativi. I percorsi menu residui in guida 03, 04 e 05 sono stati aggiornati al menu attuale, e le FAQ italiane sono state ripulite dai riferimenti obsoleti individuati. Il file esempio `input_link_base_v2.0.txt` e' stato documentato come nome storico mantenuto per compatibilita'. Resta da valutare la propagazione multilingue.
 
 ## Esito sintetico aggiornato
 
 La verifica strutturale dei documenti del menu Documenti e dei link locali e' verde. Dopo gli interventi successivi all'audit iniziale, la guida italiana copre ora i tre blocchi che erano release blocker immediati: Ricerca assistita AI, Traduzione OCR e analisi genealogica/GEDCOM.
 
-La scansione dei marker critici sulla guida italiana non trova piu' riferimenti obsoleti nei file trattati. Restano da valutare prima della RC una revisione editoriale di OCR Avanzato e FAQ, la posizione del file esempio `input_link_base_v2.0.txt`, e soprattutto la propagazione o dichiarazione di stato per le altre lingue.
+La scansione dei marker critici sulla guida italiana non trova piu' riferimenti obsoleti nei file trattati. Restano da valutare prima della RC una revisione editoriale di OCR Avanzato e FAQ, e soprattutto la propagazione o dichiarazione di stato per le altre lingue.
 
 ## Fonti di confronto
 
@@ -24,7 +24,7 @@ La scansione dei marker critici sulla guida italiana non trova piu' riferimenti 
 
 1. Guida principale `assets/it/testuali/guida.html`.
    - La sezione Servizi e' stata riallineata ai sei moduli operativi v3.
-   - Cita l'esempio `input_link_base_v2.0.txt`, da valutare se mantenere come compatibilita' o rinominare/documentare meglio.
+   - Il file esempio `input_link_base_v2.0.txt` e' documentato come nome storico mantenuto per compatibilita'.
 
 2. Ricerca assistita AI.
    - Fatto per la guida italiana con `assets/it/testuali/guida_09_ricerca_assistita_ai.html`.
@@ -60,7 +60,7 @@ La scansione dei marker critici sulla guida italiana non trova piu' riferimenti 
 
 | File | Stato | Problema principale | Azione prima di RC |
 | --- | --- | --- | --- |
-| `guida.html` | Parziale | Sezione Servizi riallineata; resta possibile rinomina/documentazione di `input_link_base_v2.0.txt` | Decidere se rinominare o mantenere compatibilita' |
+| `guida.html` | Parziale | Sezione Servizi riallineata; nome storico `input_link_base_v2.0.txt` documentato | Rilettura finale |
 | `guida_01_installazione_configurazione.html` | Parziale | Mappa funzioni aggiornata nei marker critici; resta revisione editoriale complessiva | Rilettura finale |
 | `guida_02_operazioni_base.html` | Riallineata in italiano | Sezione Servizi aggiornata ai sei moduli operativi v3 | Verificare propagazione futura |
 | `guida_03_visualizzazione_immagini.html` | Riallineata in italiano | Percorso menu aggiornato | Verificare propagazione futura |
@@ -72,10 +72,9 @@ La scansione dei marker critici sulla guida italiana non trova piu' riferimenti 
 
 ## Sequenza consigliata
 
-1. Decidere se mantenere `input_link_base_v2.0.txt` come nome storico compatibile o rinominarlo/documentarlo diversamente.
-2. Completare una revisione editoriale italiana di OCR Avanzato e FAQ, senza blocchi critici gia rimossi.
-3. Propagare o riallineare le altre lingue, oppure dichiarare esplicitamente che la guida italiana e' la fonte v3 primaria fino alla traduzione completa.
-4. Aggiungere un controllo automatico leggero per marker vietati o sospetti nella guida v3, evitando falsi positivi sui "placeholder" tecnici delle pagine non scaricabili.
+1. Completare una revisione editoriale italiana di OCR Avanzato e FAQ, senza blocchi critici gia rimossi.
+2. Propagare o riallineare le altre lingue, oppure dichiarare esplicitamente che la guida italiana e' la fonte v3 primaria fino alla traduzione completa.
+3. Aggiungere un controllo automatico leggero per marker vietati o sospetti nella guida v3, evitando falsi positivi sui "placeholder" tecnici delle pagine non scaricabili.
 
 ## Criterio RC
 
