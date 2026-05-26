@@ -20,6 +20,32 @@ Nuovi portali vanno valutati solo dopo questa fase, e solo se sono pubblici,
 istituzionali, senza login/paywall e con IIIF/API o documentazione tecnica
 stabile.
 
+## Indirizzo strategico
+
+ATK-Pro deve restare prima di tutto uno strumento di ausilio alla ricerca
+genealogica in area italiana e italofona. La priorita non coincide pero con i
+confini amministrativi attuali: per la storia migratoria italiana vanno
+considerate anche le fonti pubbliche dei paesi di destinazione e delle aree
+storicamente collegate alla documentazione italiana.
+
+Ordine strategico di ricerca e valutazione:
+
+1. Italia, Stato della Citta del Vaticano, San Marino e aree italofone o
+   storicamente connesse alla ricerca italiana, incluse Svizzera italiana,
+   Trentino-Alto Adige/Sudtirol, Friuli Venezia Giulia e territori legati alla
+   storia asburgica o austro-ungarica.
+2. Paesi di emigrazione italiana ad alta rilevanza genealogica: Brasile,
+   Argentina, Colombia, Stati Uniti, Australia, Nuova Zelanda, Francia, Belgio
+   e Germania.
+3. Altri portali internazionali solo quando sono molto rilevanti, istituzionali,
+   tecnicamente stabili e utili anche per ricerche connesse all'area italiana o
+   italofona.
+
+Questa ambizione va trattata come una pipeline di scouting, non come promessa di
+integrazione automatica: ogni portale candidato deve superare i criteri
+go/no-go gia documentati e deve poter essere mantenuto senza aggirare login,
+paywall, restrizioni tecniche o limiti contrattuali.
+
 ## Priorita 1 - Consolidare
 
 Portali da trattare per primi per rapporto favorevole tra valore, metodo
