@@ -2,12 +2,15 @@ import src.manifest_utils as manifest_utils
 from src.portal_registry import (
     PORTAL_REGISTRY,
     PORTAL_WARNING_MESSAGE_KEYS,
+    TECHNICAL_FAMILIES,
     get_portal,
     get_portal_groups,
     get_portal_referer,
+    get_portal_technical_family,
     get_portal_warning_message_key,
     normalize_portal_key,
     portal_keys,
+    portals_by_technical_family,
 )
 
 
@@ -58,3 +61,23 @@ def test_portal_referer_capability_matches_existing_special_cases():
     assert get_portal_referer("manifest_diretto") is None
     assert get_portal_referer("antenati") is None
     assert get_portal_referer("bncf_teca", "https://teca.bncf.firenze.sbn.it/viewer") == "https://teca.bncf.firenze.sbn.it"
+
+
+def test_technical_family_values_are_known():
+    families = {portal.technical_family for portal in PORTAL_REGISTRY.values()}
+    assert families == TECHNICAL_FAMILIES
+
+
+def test_technical_family_lookup_and_grouping():
+    assert get_portal_technical_family("gallica") == "iiif_direct"
+    assert get_portal_technical_family("antenati") == "iiif_discovery"
+    assert get_portal_technical_family("bncf_teca") == "hybrid_manifest"
+    assert get_portal_technical_family("non_esiste") is None
+
+    iiif_direct = {portal.key for portal in portals_by_technical_family("iiif_direct")}
+    synthetic = {portal.key for portal in portals_by_technical_family("synthetic_manifest")}
+
+    assert "europeana" in iiif_direct
+    assert "memooria" in iiif_direct
+    assert "matricula" in synthetic
+    assert "internet_archive" in synthetic

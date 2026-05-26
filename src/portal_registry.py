@@ -9,6 +9,7 @@ class PortalInfo:
     label: str
     group: str
     area: str
+    technical_family: str
     method: str
     maintenance_risk: str
     roadmap_priority: str
@@ -18,12 +19,24 @@ class PortalInfo:
     requires_rights_check: bool = True
 
 
+TECHNICAL_FAMILIES: frozenset[str] = frozenset(
+    {
+        "iiif_direct",
+        "iiif_discovery",
+        "synthetic_manifest",
+        "hybrid_manifest",
+        "user_supplied_manifest",
+    }
+)
+
+
 _PORTALS: tuple[PortalInfo, ...] = (
     PortalInfo(
         key="antenati",
         label="Antenati (Cultura.gov.it)",
         group="\u2500\u2500 Italia \u2500\u2500",
         area="Italia",
+        technical_family="iiif_discovery",
         method="IIIF discovery / manifest DAM",
         maintenance_risk="Medio",
         roadmap_priority="maintain_with_warning",
@@ -34,6 +47,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="BNC Roma digitale",
         group="\u2500\u2500 Italia \u2500\u2500",
         area="Italia",
+        technical_family="synthetic_manifest",
         method="Manifest sintetico da pagina item-level",
         maintenance_risk="Alto",
         roadmap_priority="do_not_extend",
@@ -45,6 +59,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="BNCF Teca (Firenze)",
         group="\u2500\u2500 Italia \u2500\u2500",
         area="Italia",
+        technical_family="hybrid_manifest",
         method="IIIF standard con fallback sintetico",
         maintenance_risk="Alto",
         roadmap_priority="do_not_extend",
@@ -55,6 +70,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Museo Galileo Digiteca",
         group="\u2500\u2500 Italia \u2500\u2500",
         area="Italia",
+        technical_family="synthetic_manifest",
         method="Manifest sintetico da TecaService",
         maintenance_risk="Alto",
         roadmap_priority="do_not_extend",
@@ -66,6 +82,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Internet Culturale (Estense/ICCU)",
         group="\u2500\u2500 Italia \u2500\u2500",
         area="Italia",
+        technical_family="synthetic_manifest",
         method="Manifest sintetico da magparser",
         maintenance_risk="Medio-Alto",
         roadmap_priority="consolidate",
@@ -77,6 +94,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Brixiana (Biblioteca Queriniana Brescia)",
         group="\u2500\u2500 Italia \u2500\u2500",
         area="Italia",
+        technical_family="iiif_direct",
         method="Alias Memooria/Jarvis IIIF",
         maintenance_risk="Medio",
         roadmap_priority="maintain_with_warning",
@@ -87,6 +105,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Memooria/Jarvis (qualsiasi biblioteca)",
         group="\u2500\u2500 Italia \u2500\u2500",
         area="Italia",
+        technical_family="iiif_direct",
         method="IIIF da meta/iiif/{guid}/manifest",
         maintenance_risk="Medio",
         roadmap_priority="maintain_with_warning",
@@ -97,6 +116,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="DigiVatLib (Biblioteca Apostolica Vaticana)",
         group="\u2500\u2500 Italia \u2500\u2500",
         area="Italia / Vaticano",
+        technical_family="iiif_direct",
         method="IIIF diretto da view/mss/iiif",
         maintenance_risk="Basso-Medio",
         roadmap_priority="maintain_with_warning",
@@ -108,6 +128,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Kirchenb\u00fccher S\u00fcdtirol (findbuch.net)",
         group="\u2500\u2500 Alto Adige / S\u00fcdtirol \u2500\u2500",
         area="Alto Adige / Sudtirol",
+        technical_family="synthetic_manifest",
         method="Manifest sintetico da HTML + gtpc.php",
         maintenance_risk="Alto",
         roadmap_priority="do_not_extend",
@@ -119,6 +140,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Matricula Online (Kirchenb\u00fccher AT/DE/SI/LU)",
         group="\u2500\u2500 Europa Centrale (AT/DE/SI/...) \u2500\u2500",
         area="Europa centrale",
+        technical_family="synthetic_manifest",
         method="Manifest sintetico da viewer HTML e hosted-images",
         maintenance_risk="Alto",
         roadmap_priority="do_not_extend",
@@ -130,6 +152,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Gallica (BnF)",
         group="\u2500\u2500 Francia \u2500\u2500",
         area="Francia",
+        technical_family="iiif_direct",
         method="IIIF diretto da ARK + fallback Playwright",
         maintenance_risk="Medio",
         roadmap_priority="consolidate",
@@ -141,6 +164,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Heidelberg UB",
         group="\u2500\u2500 Germania \u2500\u2500",
         area="Germania",
+        technical_family="iiif_direct",
         method="IIIF diretto + rate-limit sequenziale",
         maintenance_risk="Basso-Medio",
         roadmap_priority="consolidate",
@@ -152,6 +176,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Bodleian Libraries Oxford",
         group="\u2500\u2500 Regno Unito \u2500\u2500",
         area="Regno Unito",
+        technical_family="iiif_direct",
         method="IIIF diretto da object UUID",
         maintenance_risk="Basso",
         roadmap_priority="consolidate",
@@ -163,6 +188,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="e-rara",
         group="\u2500\u2500 Svizzera \u2500\u2500",
         area="Svizzera",
+        technical_family="iiif_direct",
         method="IIIF builder dedicato",
         maintenance_risk="Basso-Medio",
         roadmap_priority="consolidate",
@@ -174,6 +200,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="e-codices (Unifr)",
         group="\u2500\u2500 Svizzera \u2500\u2500",
         area="Svizzera",
+        technical_family="iiif_direct",
         method="IIIF builder dedicato",
         maintenance_risk="Basso-Medio",
         roadmap_priority="consolidate",
@@ -185,6 +212,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="e-manuscripta",
         group="\u2500\u2500 Svizzera \u2500\u2500",
         area="Svizzera",
+        technical_family="iiif_direct",
         method="IIIF builder dedicato",
         maintenance_risk="Basso-Medio",
         roadmap_priority="consolidate",
@@ -196,6 +224,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Internet Archive",
         group="\u2500\u2500 Internazionale \u2500\u2500",
         area="Internazionale",
+        technical_family="synthetic_manifest",
         method="Manifest sintetico da metadata/files/BookReaderImages",
         maintenance_risk="Medio-Alto",
         roadmap_priority="maintain_with_warning",
@@ -207,6 +236,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Europeana IIIF",
         group="\u2500\u2500 Internazionale \u2500\u2500",
         area="Internazionale",
+        technical_family="iiif_direct",
         method="IIIF diretto da provider/record id",
         maintenance_risk="Basso-Medio",
         roadmap_priority="consolidate",
@@ -217,6 +247,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         label="Manifest diretto (URL gi\u00e0 noto)",
         group="\u2500\u2500 Avanzato \u2500\u2500",
         area="Avanzato",
+        technical_family="user_supplied_manifest",
         method="URL manifest fornito dall'utente",
         maintenance_risk="Variabile",
         roadmap_priority="consolidate",
@@ -261,6 +292,17 @@ def get_portal_referer(portale: str | None, source_url: str | None = None) -> st
         return "https://teca.bncf.firenze.sbn.it"
 
     return None
+
+
+def get_portal_technical_family(portale: str | None) -> str | None:
+    portal = get_portal(portale)
+    if not portal:
+        return None
+    return portal.technical_family
+
+
+def portals_by_technical_family(technical_family: str) -> tuple[PortalInfo, ...]:
+    return tuple(portal for portal in _PORTALS if portal.technical_family == technical_family)
 
 
 def iter_portals() -> tuple[PortalInfo, ...]:
