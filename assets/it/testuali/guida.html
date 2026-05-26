@@ -342,7 +342,7 @@
                 <li><a href="guida_04_visualizzazione_metadati.html">📚 Modulo 04: Visualizzazione Metadati JSON</a></li>
                 <li><a href="guida_05_ocr_avanzato.html">📚 Modulo 05: Funzioni Avanzate OCR</a></li>
                 <li><a href="guida_06_traduzione.html">📚 Modulo 06: Traduzione</a></li>
-                <li><a href="guida_07_esportazione_gedcom.html">🔮 Modulo 07: Esportazione GEDCOM</a></li>
+                <li><a href="guida_07_esportazione_gedcom.html">📚 Modulo 07: Esportazione GEDCOM</a></li>
                 <li><a href="guida_08_supporto_faq.html">📚 Modulo 08: Documentazione, Supporto, Troubleshooting e FAQ</a></li>
                 <li><a href="guida_09_ricerca_assistita_ai.html">Modulo 09: Ricerca assistita AI</a></li>
             </ul>
@@ -369,7 +369,7 @@
             <h3>5. Elaborazione e Download Immagini</h3>
             <h3>6. PDF per Registri e Documenti</h3>
             <h3>7. Localizzazione Multilingue</h3>
-            <h3>8. Menu Servizi - Funzioni Future</h3>
+            <h3>8. Menu Servizi - Funzioni operative</h3>
             <h3>9. Cartelle e File Output</h3>
             <h3>10. Menu Documenti - Accesso a Risorse e Supporto</h3>
             <h3>11. Chiusura del Programma e Supporto al Progetto</h3>
@@ -544,19 +544,19 @@
 └─ Visualizza elaborazioni precedenti
    └─ Lista dei record già elaborati</pre>
             <h3>3. SERVIZI</h3>
-            <p><strong>Placeholder per funzionalità future (tutte mostrano "Funzione in sviluppo"):</strong></p>
-            <pre class="file-structure">├─ Integrazione API Portale Antenati
-│  └─ OCR avanzato e metadati dal Portale Antenati
+            <p><strong>Servizi operativi disponibili nella v3:</strong></p>
+            <pre class="file-structure">├─ Ricerca assistita AI
+│  └─ Suggerisce portali, strategie e query da verificare manualmente
 ├─ Visualizzazione Immagini
 │  └─ Viewer immagini scaricate e/o PDF generati
 ├─ Visualizzazione Metadati JSON
 │  └─ JSON originali e metadati (genealogici, tecnici, EXIF)
 ├─ OCR Avanzato
-│  └─ Testi manoscritti ottocenteschi, latino ecclesiastico, tardo-medievali
+│  └─ Trascrizione assistita di immagini e documenti storici
 ├─ Traduzione OCR
-│  └─ Traduzione automatica testi estratti nelle lingue selezionate
+│  └─ Traduzione di testi OCR, trascrizioni e file TXT
 └─ Esportazione GEDCOM
-   └─ GEDCOM, Gramps, Family Tree Maker, Ancestry, MyHeritage, WikiTree, etc.</pre>
+   └─ Analisi genealogica assistita e generazione di file .ged</pre>
             <h3>4. DOCUMENTI</h3>
             <p><strong>Accesso a risorse e documentazione:</strong></p>
             <pre class="file-structure">├─ Disclaimer - Clausole legali e termini d'uso
@@ -583,7 +583,7 @@
 ├─ Importa configurazione
 │  └─ Carica un file di impostazioni precedentemente salvato (ripristina tutte le preferenze e percorsi)
 ├─ Verifica aggiornamenti
-│  └─ Controlla la disponibilità di nuove versioni del programma (funzione in sviluppo)
+│  └─ Controlla la disponibilità di nuove versioni del programma
 └─ Chiudi
     └─ Termina il programma (mostra banner di supporto PayPal.me)</pre>
             </div>
@@ -937,16 +937,16 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             <div class="section-box">
             <h3>8. MENU SERVIZI</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>FUNZIONALITÀ DISPONIBILI E PIANIFICATE</h4>
-            <p>Il menu "Servizi" contiene 6 funzioni: 2 già disponibili dalla v2.0, 4 pianificate per versioni future.</p>
-            <h4>1️⃣ INTEGRAZIONE API PORTALE ANTENATI</h4>
-            <p>Integrazione "API level" con il Portale Antenati:</p>
+            <h4>FUNZIONALITÀ DISPONIBILI</h4>
+            <p>Il menu "Servizi" contiene 6 funzioni operative della v3.</p>
+            <h4>1️⃣ RICERCA ASSISTITA AI ✅</h4>
+            <p>Assistente per impostare strategie di ricerca genealogica:</p>
             <ul>
-                <li>OCR avanzato supportato da Antenati</li>
-                <li>Estrazione metadati genealogici</li>
-                <li>Sincronizzazione dati con archivi centrali</li>
+                <li>Suggerisce portali, filtri e query di esempio da verificare manualmente</li>
+                <li>Supporta ricerche italiane, italofone, migratorie e internazionali</li>
+                <li>Consente note personali, confronto multi-provider e salvataggio risultati</li>
             </ul>
-            <p><strong>Status:</strong> Pianificato per versioni future</p>
+            <p><strong>Status:</strong> ✅ Disponibile - <a href="guida_09_ricerca_assistita_ai.html">Vedi Guida Ricerca assistita AI</a></p>
             <h4>2️⃣ VISUALIZZAZIONE IMMAGINI ✅</h4>
             <p>Viewer integrato per immagini genealogiche:</p>
             <ul>
@@ -956,7 +956,7 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
                 <li>Modalità "Adatta alla finestra" e "1:1 pixel"</li>
                 <li>Sidecar JSON affiancato all'immagine (EXIF e metadati tecnici)</li>
             </ul>
-            <p><strong>Status:</strong> ✅ Disponibile da v2.0</p>
+            <p><strong>Status:</strong> ✅ Disponibile - <a href="guida_03_visualizzazione_immagini.html">Vedi Guida Visualizzazione Immagini</a></p>
             <h4>3️⃣ VISUALIZZAZIONE METADATI JSON ✅</h4>
             <p>Viewer ad albero per metadati strutturati:</p>
             <ul>
@@ -965,39 +965,34 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
                 <li>Sezioni: dati genealogici, metadati tecnici, EXIF dalle immagini</li>
                 <li>Anteprima immagine abbinata affiancata al pannello metadati</li>
             </ul>
-            <p><strong>Status:</strong> ✅ Disponibile da v2.0</p>
-            <h4>4️⃣ OCR AVANZATO</h4>
-            <p>Trattamento OCR avanzato:</p>
+            <p><strong>Status:</strong> ✅ Disponibile - <a href="guida_04_visualizzazione_metadati.html">Vedi Guida Visualizzazione Metadati JSON</a></p>
+            <h4>4️⃣ OCR AVANZATO ✅</h4>
+            <p>Trattamento OCR avanzato tramite modelli IA:</p>
             <ul>
-                <li>Testi manoscritti in italiano burocratico ottocentesco</li>
-                <li>Estensione futura a latino ecclesiastico</li>
-                <li>Testi tardo-medievali/moderni</li>
-                <li>Estrazione testo con coordinate (ALTO XML)</li>
+                <li>Trascrizione di immagini e PDF storici</li>
+                <li>Uso di provider IA, tipologie documento e prompt personalizzabili</li>
+                <li>Esportazione del testo e dei risultati prodotti dal modulo</li>
             </ul>
-            <p><strong>Status:</strong> Pianificato per versioni future</p>
-            <h4>5️⃣ TRADUZIONE OCR</h4>
-            <p>Traduzione testi OCR:</p>
+            <p><strong>Status:</strong> ✅ Disponibile - <a href="guida_05_ocr_avanzato.html">Vedi Guida OCR Avanzato</a></p>
+            <h4>5️⃣ TRADUZIONE OCR ✅</h4>
+            <p>Traduzione di testi OCR, trascrizioni e file TXT:</p>
             <ul>
-                <li>Traduzione automatica dei testi estratti</li>
-                <li>Supporto lingue selezionate in fase di installazione</li>
-                <li>Alternanza tra lingue durante visualizzazione</li>
-                <li>Output TXT multilingue</li>
+                <li>Tipologia documento, glossario e contesto</li>
+                <li>Provider IA configurabile, modello opzionale e Cassaforte chiavi</li>
+                <li>Output TXT o DOCX editabile</li>
             </ul>
-            <p><strong>Status:</strong> Pianificato per versioni future</p>
-            <h4>6️⃣ ESPORTAZIONE GEDCOM</h4>
-            <p>Esportazione in formati genealogici:</p>
+            <p><strong>Status:</strong> ✅ Disponibile - <a href="guida_06_traduzione.html">Vedi Guida Traduzione OCR</a></p>
+            <h4>6️⃣ ESPORTAZIONE GEDCOM ✅</h4>
+            <p>Analisi genealogica assistita ed esportazione GEDCOM:</p>
             <ul>
-                <li>GEDCOM (standard genealogico internazionale)</li>
-                <li>Interoperabilità con software genealogici:
-                    <ul>
-                        <li>Ancestry, Family Historian, Family Tree Maker, Findmypast, FamilySearch, Geni, Geneanet, Gramps, Legacy Family Tree, MyHeritage, Reunion (macOS), RootsMagic, WikiTree</li>
-                    </ul>
-                </li>
+                <li>Input universale con metodo Auto-Discovery, Vision IA o Refinery LLM</li>
+                <li>Base GEDCOM o CSV opzionale da incrementare</li>
+                <li>Note paleografiche e tipologie documentali</li>
+                <li>Output <code>genealogia_*.ged</code> da verificare prima dell&apos;importazione</li>
             </ul>
-            <p><strong>📌 Nota:</strong> L'elencazione dei software genealogici è puramente indicativa e non vincolante allo sviluppo dell'interoperabilità con ciascuna piattaforma/software.</p>
-            <p><strong>Status:</strong> Pianificato per versioni future</p>
+            <p><strong>Status:</strong> ✅ Disponibile - <a href="guida_07_esportazione_gedcom.html">Vedi Guida GEDCOM</a></p>
             <h4>📢 PER SUGGERIMENTI O PRIORITÀ</h4>
-            <p>Contatta il team di sviluppo via Email: <strong>antenati.toolkit.pro@gmail.com</strong></p>
+            <p>Per proporre miglioramenti o priorità documentali puoi scrivere a <strong>antenati.toolkit.pro@gmail.com</strong>.</p>
             </div>
             <div class="section-box">
             <h3>9. CARTELLE E FILE OUTPUT</h3>
