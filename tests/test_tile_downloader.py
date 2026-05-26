@@ -77,7 +77,7 @@ def test_download_tiles_invokes_download_tile(monkeypatch):
     }
 
     called = []
-    def fake_download_tile(base_url, x, y, tile_size, output_dir):
+    def fake_download_tile(base_url, x, y, tile_size, output_dir, *args):
         called.append((x, y))
 
     monkeypatch.setattr(td, "download_tile", fake_download_tile)
