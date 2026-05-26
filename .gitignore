@@ -252,11 +252,30 @@ _release_notes.md
 _win_artifacts/
 
 # Cartelle di lavoro temporanee locali
+.codex_tmp/
 scratch/
 tmp/
 
+# Ambienti e configurazioni locali aggiuntive
+.venv*/
+.vscode/
+
 # File vari non classificabili
 La
+
+# Screenshot e immagini di prova locali
+screenshot_*.png
+_test_*.jpg
+_test_*.jpeg
+_test_*.png
+
+# File di output generati da smoke test e diagnostiche locali
+atkpro_output.log
+atkpro_debug.log*
+atkpro.log*
+src/atkpro_output.log
+src/*_report.txt
+src/*_debug.txt
 
 # 🔬 Script di diagnostica e debug dentro src/ (locali, non parte del prodotto)
 src/check_gemini_models.py

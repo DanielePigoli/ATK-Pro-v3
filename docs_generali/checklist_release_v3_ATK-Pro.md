@@ -28,7 +28,7 @@ release pubblica multilingue completa.
 | Portali esistenti | Go | Matrice, roadmap e registro tecnico sono allineati; nuove integrazioni restano incrementalmente valutate. |
 | Test tecnici | Go con suite finale | La smoke suite deve passare prima del tag RC; la suite ampia resta da inventariare e numerare. |
 | Packaging | Da verificare | Prima della RC servono build pulite per le piattaforme previste e controllo manuale avvio/app menu Documenti. |
-| File temporanei | Da verificare | Prima della RC va eseguito un inventario root e output generati, evitando scratch file inclusi per errore. |
+| File temporanei | Go con controllo finale | Inventario root eseguito: artefatti locali, cache, build, log, screenshot e output test risultano ignorati o coperti da regole di esclusione; prima del tag resta da confermare `git status --short --ignored`. |
 
 ## Suite smoke pre-RC
 
@@ -57,6 +57,8 @@ python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py test
   estendere.
 - Controllo che non siano inclusi file temporanei, lock file, output di test o
   log locali.
+- Conferma che gli artefatti locali ignorati non siano necessari alla build o
+  alla documentazione pubblica.
 
 ## Bloccanti per release pubblica completa
 
