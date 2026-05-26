@@ -99,7 +99,8 @@ Portali gia presenti nel selettore:
    moduli critici, rischi tecnici.
 2. Matrice dei portali gia presenti:
    per ciascuno, segnare fonte tecnica, metodo usato, rischio legale, rischio
-   manutenzione e priorita.
+   manutenzione e priorita. Snapshot corrente:
+   `docs_generali/matrice_portali_esistenti_ATK-Pro.md`.
 3. Prima di proporre nuovi portali, verificare termini d'uso e documentazione
    tecnica correnti da fonti ufficiali.
 4. Dare priorita ad area italiana/italofona solo quando il portale e pubblico,
