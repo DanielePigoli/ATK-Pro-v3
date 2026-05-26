@@ -132,9 +132,10 @@ Scheda minima prima di proporre un nuovo portale:
 
 ## Sequenza tecnica consigliata
 
-1. Estendere la registry `portale -> capability` per togliere conoscenza
-   implicita da UI, `elaborazione`, `manifest_utils` e `tile_downloader`.
-2. Collegare ogni portale a un messaggio breve di avviso operativo.
+1. Continuare a estendere la registry `portale -> capability`; gruppi UI,
+   avvisi operativi e referer HTTP sono gia centralizzati.
+2. Spostare progressivamente nella registry le altre capability tecniche
+   ancora implicite in `elaborazione`, `manifest_utils` e `tile_downloader`.
 3. Aggiungere fixture offline per i portali in priorita 1.
 4. Spostare progressivamente i builder verso adapter testabili.
 5. Solo dopo aprire la valutazione di nuovi portali.

@@ -11,6 +11,10 @@ import shutil
 from PIL import Image
 
 from manifest_utils import download_manifest, robust_find_manifest
+try:
+    from portal_registry import get_portal_referer, normalize_portal_key
+except ImportError:
+    from src.portal_registry import get_portal_referer, normalize_portal_key
 from canvas_id_extractor import extract_canvas_id_from_url, extract_ud_canvas_id_from_infojson_xhr
 from browser_setup import setup_selenium, setup_playwright
 try:
@@ -411,22 +415,7 @@ class Elaborazione:
             os.makedirs(working_folder, exist_ok=True)
 
             # Determina referer in base al portale (per header HTTP corretti)
-            _portale_referers = {
-                "gallica":          "https://gallica.bnf.fr",
-                "vatlib":           "https://digi.vatlib.it",
-                "internet_archive": "https://archive.org",
-                "e_rara":           "https://www.e-rara.ch",
-                "e_codices":        "https://www.e-codices.unifr.ch",
-                "e_manuscripta":    "https://www.e-manuscripta.ch",
-                "museogalileo":     "https://opac.museogalileo.it",
-                "internetculturale_estense": "https://www.internetculturale.it",
-                "heidelberg":       "https://digi.ub.uni-heidelberg.de",
-                "bodleian":         "https://digital.bodleian.ox.ac.uk",
-                "findbuch":         "https://www.findbuch.net",
-                "matricula":        "https://data.matricula-online.eu",
-                "bnc_roma":         "http://digitale.bnc.roma.sbn.it",
-            }
-            portale_key = str(self.portale).lower().replace("-", "_").replace(" ", "_") if self.portale else ""
+            portale_key = normalize_portal_key(self.portale)
             ark_url_lower = str(self.ark_url).lower() if self.ark_url else ""
             logger.info(f"[DEBUG] _fetch_manifest: portale_key={portale_key}")
 
@@ -435,9 +424,7 @@ class Elaborazione:
                 logger.info(f"[DEBUG] _fetch_manifest: MATCH BNCF URL trovato in ark_url_lower={ark_url_lower}")
                 portale_key = "bncf_teca"
 
-            referer = _portale_referers.get(portale_key)
-            if not referer and ("bncf.firenze.sbn.it" in ark_url_lower or "teca.bncf.firenze.sbn.it" in ark_url_lower):
-                referer = "https://teca.bncf.firenze.sbn.it"
+            referer = get_portal_referer(portale_key, ark_url_lower)
 
             # --- BNCF Teca (Firenze): manifest sintetico prioritario ---
             if portale_key == "bncf_teca":

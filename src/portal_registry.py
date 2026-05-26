@@ -13,6 +13,7 @@ class PortalInfo:
     maintenance_risk: str
     roadmap_priority: str
     operational_note: str
+    default_referer: str | None = None
     public_only: bool = True
     requires_rights_check: bool = True
 
@@ -37,6 +38,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Alto",
         roadmap_priority="do_not_extend",
         operational_note="Solo risorse pubbliche/no-login; escludere OpenAthens e alta risoluzione.",
+        default_referer="http://digitale.bnc.roma.sbn.it",
     ),
     PortalInfo(
         key="bncf_teca",
@@ -57,6 +59,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Alto",
         roadmap_priority="do_not_extend",
         operational_note="Endpoint non documentato/stabile; niente nuove automazioni.",
+        default_referer="https://opac.museogalileo.it",
     ),
     PortalInfo(
         key="internetculturale_estense",
@@ -67,6 +70,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Medio-Alto",
         roadmap_priority="consolidate",
         operational_note="Contenuti pubblici web non commerciali con citazione.",
+        default_referer="https://www.internetculturale.it",
     ),
     PortalInfo(
         key="brixiana",
@@ -97,6 +101,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Basso-Medio",
         roadmap_priority="maintain_with_warning",
         operational_note="Uso studio/personale; riproduzione o pubblicazione richiede autorizzazione BAV.",
+        default_referer="https://digi.vatlib.it",
     ),
     PortalInfo(
         key="findbuch",
@@ -107,6 +112,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Alto",
         roadmap_priority="do_not_extend",
         operational_note="Solo istanze pubbliche gia verificate e range puntuale.",
+        default_referer="https://www.findbuch.net",
     ),
     PortalInfo(
         key="matricula",
@@ -117,6 +123,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Alto",
         roadmap_priority="do_not_extend",
         operational_note="CC BY-NC-ND 2.0: no commerciale, no derivati, no bulk.",
+        default_referer="https://data.matricula-online.eu",
     ),
     PortalInfo(
         key="gallica",
@@ -127,6 +134,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Medio",
         roadmap_priority="consolidate",
         operational_note="Riuso non commerciale con citazione; cautela sui partner.",
+        default_referer="https://gallica.bnf.fr",
     ),
     PortalInfo(
         key="heidelberg",
@@ -137,6 +145,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Basso-Medio",
         roadmap_priority="consolidate",
         operational_note="Controllare licenza per volume e mantenere rate limit.",
+        default_referer="https://digi.ub.uni-heidelberg.de",
     ),
     PortalInfo(
         key="bodleian",
@@ -147,6 +156,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Basso",
         roadmap_priority="consolidate",
         operational_note="Attribuzione, uso non commerciale e no re-hosting sistematico.",
+        default_referer="https://digital.bodleian.ox.ac.uk",
     ),
     PortalInfo(
         key="e_rara",
@@ -157,6 +167,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Basso-Medio",
         roadmap_priority="consolidate",
         operational_note="Controllare licenza per documento e citare la fonte.",
+        default_referer="https://www.e-rara.ch",
     ),
     PortalInfo(
         key="e_codices",
@@ -167,6 +178,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Basso-Medio",
         roadmap_priority="consolidate",
         operational_note="Uso non commerciale con citazione salvo item Public Domain/CC.",
+        default_referer="https://www.e-codices.unifr.ch",
     ),
     PortalInfo(
         key="e_manuscripta",
@@ -177,6 +189,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Basso-Medio",
         roadmap_priority="consolidate",
         operational_note="Controllare licenza per documento; evitare copia sistematica.",
+        default_referer="https://www.e-manuscripta.ch",
     ),
     PortalInfo(
         key="internet_archive",
@@ -187,6 +200,7 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Medio-Alto",
         roadmap_priority="maintain_with_warning",
         operational_note="Solo item pubblici scaricabili con diritti chiari.",
+        default_referer="https://archive.org",
     ),
     PortalInfo(
         key="europeana",
@@ -235,6 +249,18 @@ def get_portal_warning_message_key(portale: str | None) -> str | None:
     if not portal:
         return None
     return PORTAL_WARNING_MESSAGE_KEYS.get(portal.roadmap_priority)
+
+
+def get_portal_referer(portale: str | None, source_url: str | None = None) -> str | None:
+    portal = get_portal(portale)
+    if portal and portal.default_referer:
+        return portal.default_referer
+
+    source_url_lower = str(source_url).lower() if source_url else ""
+    if "bncf.firenze.sbn.it" in source_url_lower or "teca.bncf.firenze.sbn.it" in source_url_lower:
+        return "https://teca.bncf.firenze.sbn.it"
+
+    return None
 
 
 def iter_portals() -> tuple[PortalInfo, ...]:
