@@ -133,6 +133,9 @@ Scheda minima prima di proporre un nuovo portale:
 Matrice iniziale di scouting:
 
 - `docs_generali/matrice_portali_candidati_ATK-Pro.md`.
+- `docs_generali/Matrice_portali.xlsx`, come vista tabellare di lavoro dei
+  portali esistenti e candidati. I file Markdown restano la fonte primaria da
+  aggiornare.
 
 ## Sequenza tecnica consigliata
 
@@ -142,4 +145,5 @@ Matrice iniziale di scouting:
    ancora implicite in `elaborazione`, `manifest_utils` e `tile_downloader`.
 3. Aggiungere fixture offline per i portali in priorita 1.
 4. Spostare progressivamente i builder verso adapter testabili.
-5. Usare la matrice candidati per scegliere i prossimi portali da verificare.
+5. Usare la shortlist operativa nella matrice candidati per scegliere i
+   prossimi portali da verificare.

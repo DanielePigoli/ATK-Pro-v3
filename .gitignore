@@ -119,6 +119,7 @@ coverage_html/
 
 # 📑 Documenti temporanei
 *.pdf
+~$*.xlsx
 
 # 🗂️ File di sistema
 .DS_Store
