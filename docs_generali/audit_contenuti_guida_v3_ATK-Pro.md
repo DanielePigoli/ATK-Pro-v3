@@ -2,7 +2,7 @@
 
 Data audit: 2026-05-26
 
-Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_06_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_07_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. La guida principale italiana e `assets/it/testuali/guida_02_operazioni_base.html` sono state aggiornate nella sezione Servizi per descrivere i sei moduli v3 come operativi. Restano bloccanti FAQ e percorsi di menu residui.
+Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_06_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_07_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. La guida principale italiana e `assets/it/testuali/guida_02_operazioni_base.html` sono state aggiornate nella sezione Servizi per descrivere i sei moduli v3 come operativi. I percorsi menu residui in guida 03, 04 e 05 sono stati aggiornati da "Strumenti" a "Servizi", e le FAQ italiane sono state ripulite da riferimenti a servizi placeholder e versioni v2.x. Restano da valutare la propagazione multilingue e l'eventuale rinomina/documentazione del file esempio `input_link_base_v2.0.txt`.
 
 ## Esito sintetico
 
@@ -37,8 +37,7 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
    - La pagina ora descrive il dialog di analisi genealogica con input universale, base GEDCOM/CSV opzionale, note paleografiche, provider IA, caveau chiavi e output `genealogia_*.ged`.
 
 4. Riallineare i percorsi di menu nelle sotto-guide operative.
-   - `guida_03_visualizzazione_immagini.html` e `guida_04_visualizzazione_metadati.html` citano il menu "Strumenti"; nella v3 sono in `Servizi`.
-   - `guida_05_ocr_avanzato.html` cita `Strumenti -> OCR Avanzato`; nella v3 e' `Servizi -> OCR Avanzato`.
+   - Fatto per la guida italiana: guida 03, guida 04 e guida 05 usano ora il menu `Servizi`.
    - `guida_06_traduzione.html` cita `Strumenti -> Traduzione`; nella v3 e' `Servizi -> Traduzione OCR`.
 
 5. Aggiornare `assets/it/testuali/guida_06_traduzione.html`.
@@ -50,8 +49,8 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
    - La pagina descrive ora le 6 funzioni attuali: Ricerca assistita AI, Visualizzazione Immagini, Visualizzazione Metadati JSON, OCR Avanzato, Traduzione OCR, Esportazione GEDCOM.
 
 7. Aggiornare `assets/it/testuali/guida_08_supporto_faq.html`.
-   - Contiene riferimenti a servizi placeholder e a tempi/versioni v2.1-v2.3.
-   - Deve diventare una FAQ v3, con indicazione chiara delle funzioni effettive e dei limiti reali.
+   - Fatto per i riferimenti piu' critici nella guida italiana.
+   - Rimane consigliata una revisione editoriale completa della FAQ, ma non risultano piu' riferimenti diretti a servizi placeholder o roadmap v2.x nei marker controllati.
 
 8. Verificare i contenuti instabili su provider IA, modelli e costi.
    - Le guide OCR e Traduzione citano provider e modelli specifici.
@@ -64,21 +63,20 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
 | `guida.html` | Parziale | Sezione Servizi riallineata; restano FAQ/supporto, riferimenti storici e possibile rinomina `input_link_base_v2.0.txt` | Completare pulizia contenutistica |
 | `guida_01_installazione_configurazione.html` | Da riallineare | Albero funzionale include GEDCOM come previsione/interoperabilita' generica | Aggiornare mappa funzioni e menu |
 | `guida_02_operazioni_base.html` | Riallineata in italiano | Sezione Servizi aggiornata ai sei moduli operativi v3 | Verificare propagazione futura |
-| `guida_03_visualizzazione_immagini.html` | Parziale | Percorso menu vecchio | Correggere menu e verificare controlli |
-| `guida_04_visualizzazione_metadati.html` | Parziale | Percorso menu vecchio | Correggere menu e verificare relazione immagine/JSON |
-| `guida_05_ocr_avanzato.html` | Da verificare | Percorso menu vecchio e possibili dettagli provider/modelli instabili | Aggiornare menu, caveau chiavi, provider e disclaimer operativo |
+| `guida_03_visualizzazione_immagini.html` | Riallineata in italiano | Percorso menu aggiornato | Verificare propagazione futura |
+| `guida_04_visualizzazione_metadati.html` | Riallineata in italiano | Percorso menu aggiornato | Verificare propagazione futura |
+| `guida_05_ocr_avanzato.html` | Parziale | Percorso menu aggiornato e note provider rese stabili; resta revisione piu' ampia del modulo OCR | Verificare caveau chiavi, provider e prompt in una passata dedicata |
 | `guida_06_traduzione.html` | Riallineata in italiano | Copertura aggiornata al dialog v3; resta da propagare alle altre lingue quando si fara' il riallineamento multilingue | Verificare link e propagazione futura |
 | `guida_07_esportazione_gedcom.html` | Riallineata in italiano | Copertura aggiornata al dialog v3; resta da propagare alle altre lingue quando si fara' il riallineamento multilingue | Verificare link e propagazione futura |
-| `guida_08_supporto_faq.html` | Da riallineare | Riferimenti a placeholder e versioni v2.x | Aggiornare FAQ v3 e supporto |
+| `guida_08_supporto_faq.html` | Parziale | Rimossi riferimenti diretti a placeholder e versioni v2.x; resta revisione editoriale completa | Verificare FAQ v3 e supporto |
 
 ## Sequenza consigliata
 
 1. Aggiornare prima la guida italiana, usando il codice come fonte primaria.
 2. Aggiungere una nuova sotto-guida dedicata alla Ricerca assistita AI oppure trasformare la numerazione in una sequenza v3 con 9 moduli.
-3. Correggere i percorsi di menu residui in guida 01, guida 03, guida 04, guida 05 e altre sezioni non ancora toccate.
-4. Aggiornare FAQ e avvertenze sui provider IA.
-5. Solo dopo il via libera sui contenuti italiani, propagare o riallineare le altre lingue.
-6. Aggiungere un controllo automatico leggero per marker vietati o sospetti nella guida v3, evitando falsi positivi sui "placeholder" tecnici delle pagine non scaricabili.
+3. Completare una revisione editoriale italiana di OCR Avanzato e FAQ, senza bloccare i marker critici gia rimossi.
+4. Solo dopo il via libera sui contenuti italiani, propagare o riallineare le altre lingue.
+5. Aggiungere un controllo automatico leggero per marker vietati o sospetti nella guida v3, evitando falsi positivi sui "placeholder" tecnici delle pagine non scaricabili.
 
 ## Criterio RC
 
