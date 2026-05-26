@@ -13,6 +13,8 @@ Verifiche generali gia verdi:
 - `python verify_localization.py`
 - `python validate_glossary.py`
 - `python verify_glossary.py`
+- `python verify_document_assets.py`
+- `python verify_portal_matrix_workbook.py`
 - `python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py`
 
 Subset portali/manifest/tile/worker:
@@ -43,7 +45,9 @@ Usare come controllo rapido dopo modifiche a localizzazione, portali o pipeline:
 python verify_localization.py
 python validate_glossary.py
 python verify_glossary.py
-python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py
+python verify_document_assets.py
+python verify_portal_matrix_workbook.py
+python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py verify_document_assets.py verify_portal_matrix_workbook.py
 python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py tests\test_tile_downloader.py tests\test_qt_worker_coverage.py -q
 ```
 
@@ -52,6 +56,7 @@ python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py test
 ### Fase 1 - Baseline stabile
 
 - [x] Confermare localizzazione e glossario.
+- [x] Confermare documenti consultabili dal menu Documenti e guida articolata.
 - [x] Confermare compilazione dei moduli centrali.
 - [x] Confermare subset portali/manifest/tile/worker.
 - [ ] Eseguire una suite piu ampia in ambiente controllato.
