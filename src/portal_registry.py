@@ -213,6 +213,12 @@ _PORTALS: tuple[PortalInfo, ...] = (
 
 PORTAL_REGISTRY: dict[str, PortalInfo] = {portal.key: portal for portal in _PORTALS}
 
+PORTAL_WARNING_MESSAGE_KEYS: dict[str, str] = {
+    "consolidate": "Portale con priorità di consolidamento: verifica comunque licenze e condizioni del singolo documento.",
+    "maintain_with_warning": "Portale da usare con avviso: verifica accesso pubblico, diritti e condizioni prima del download.",
+    "do_not_extend": "Portale da non estendere per ora: usa solo risorse pubbliche puntuali e senza accessi riservati.",
+}
+
 
 def normalize_portal_key(portale: str | None) -> str:
     if not portale:
@@ -222,6 +228,13 @@ def normalize_portal_key(portale: str | None) -> str:
 
 def get_portal(portale: str | None) -> PortalInfo | None:
     return PORTAL_REGISTRY.get(normalize_portal_key(portale))
+
+
+def get_portal_warning_message_key(portale: str | None) -> str | None:
+    portal = get_portal(portale)
+    if not portal:
+        return None
+    return PORTAL_WARNING_MESSAGE_KEYS.get(portal.roadmap_priority)
 
 
 def iter_portals() -> tuple[PortalInfo, ...]:

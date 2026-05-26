@@ -1,8 +1,10 @@
 import src.manifest_utils as manifest_utils
 from src.portal_registry import (
     PORTAL_REGISTRY,
+    PORTAL_WARNING_MESSAGE_KEYS,
     get_portal,
     get_portal_groups,
+    get_portal_warning_message_key,
     normalize_portal_key,
     portal_keys,
 )
@@ -38,3 +40,12 @@ def test_normalize_and_lookup_portal_key():
 def test_roadmap_priority_values_are_known():
     priorities = {portal.roadmap_priority for portal in PORTAL_REGISTRY.values()}
     assert priorities == {"consolidate", "maintain_with_warning", "do_not_extend"}
+
+
+def test_each_priority_has_a_warning_message_key():
+    priorities = {portal.roadmap_priority for portal in PORTAL_REGISTRY.values()}
+    assert set(PORTAL_WARNING_MESSAGE_KEYS) == priorities
+    assert get_portal_warning_message_key("gallica") == PORTAL_WARNING_MESSAGE_KEYS["consolidate"]
+    assert get_portal_warning_message_key("antenati") == PORTAL_WARNING_MESSAGE_KEYS["maintain_with_warning"]
+    assert get_portal_warning_message_key("matricula") == PORTAL_WARNING_MESSAGE_KEYS["do_not_extend"]
+    assert get_portal_warning_message_key("non_esiste") is None

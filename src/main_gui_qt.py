@@ -849,9 +849,9 @@ class MainWindow(QMainWindow):
         """Dialog per selezionare il portale attivo (impostazione persistente)."""
         from PySide6.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox
         try:
-            from .portal_registry import get_portal_groups
+            from .portal_registry import get_portal_groups, get_portal_warning_message_key
         except ImportError:
-            from portal_registry import get_portal_groups
+            from portal_registry import get_portal_groups, get_portal_warning_message_key
         gm = lambda k: get_msg(self.glossario_data, k, self.lingua) or k
 
         dlg = QDialog(self)
@@ -888,6 +888,18 @@ class MainWindow(QMainWindow):
                 _cidx += 1
         combo.setCurrentIndex(current_idx)
         layout.addWidget(combo)
+
+        warning_label = QLabel()
+        warning_label.setWordWrap(True)
+        warning_label.setStyleSheet("color: #f5e6c3; font-size: 12px; padding-top: 4px;")
+
+        def _update_portal_warning():
+            warning_key = get_portal_warning_message_key(combo.currentData())
+            warning_label.setText(gm(warning_key) if warning_key else "")
+
+        combo.currentIndexChanged.connect(_update_portal_warning)
+        _update_portal_warning()
+        layout.addWidget(warning_label)
 
         btn_row = QHBoxLayout()
         ok_btn = QPushButton(gm("Conferma") or "Conferma")
