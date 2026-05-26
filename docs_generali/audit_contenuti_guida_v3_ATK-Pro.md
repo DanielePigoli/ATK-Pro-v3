@@ -2,6 +2,8 @@
 
 Data audit: 2026-05-26
 
+Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. Restano bloccanti il riallineamento della guida principale, Traduzione OCR, GEDCOM/analisi genealogica, FAQ e percorsi di menu.
+
 ## Esito sintetico
 
 La verifica strutturale dei documenti del menu Documenti e dei link locali e' verde, ma la guida italiana non e' ancora pronta per una RC v3.0.0 dal punto di vista contenutistico.
@@ -26,8 +28,8 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
    - La sezione Servizi non rappresenta lo stato reale della v3: oggi il menu contiene 6 funzioni operative, inclusa Ricerca assistita AI.
 
 2. Documentare la Ricerca assistita AI.
+   - Fatto per la guida italiana con `assets/it/testuali/guida_09_ricerca_assistita_ai.html`.
    - Il menu reale espone `Servizi -> Ricerca assistita AI`.
-   - La funzione non ha una sotto-guida dedicata.
    - Il dialog consente query genealogica, scelta provider, modello opzionale, prompt standard, elaborazione multi-provider, note personali, salvataggio risultati testuali e HTML, e gestione del caveau chiavi.
 
 3. Riscrivere `assets/it/testuali/guida_07_esportazione_gedcom.html`.
@@ -88,7 +90,7 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
 La prima RC v3.0.0 puo' partire solo quando:
 
 - La guida italiana non presenta piu' moduli reali come funzioni future.
-- Ricerca assistita AI, Traduzione OCR e analisi genealogica/GEDCOM sono documentate.
+- Ricerca assistita AI, Traduzione OCR e analisi genealogica/GEDCOM sono documentate. La Ricerca assistita AI e' gia coperta nella guida italiana; Traduzione OCR e GEDCOM/analisi genealogica restano da completare.
 - I percorsi di menu corrispondono alla UI attuale.
 - Le sezioni su provider IA evitano informazioni commerciali o tecniche non verificate.
 - `verify_document_assets.py`, `verify_localization.py`, `validate_glossary.py` e `verify_glossary.py` restano verdi.

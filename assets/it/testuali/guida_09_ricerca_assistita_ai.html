@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modulo 09: Ricerca assistita AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.15em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+        }
+
+        .section-box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #a67c52;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .nav-button {
+            display: inline-block;
+            background: #4a2c1a;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: 1px solid #a67c52;
+            font-weight: 600;
+        }
+
+        .nav-button:hover {
+            background: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        footer p {
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.7em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Modulo 09: Ricerca assistita AI</h1>
+        </header>
+
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_08_supporto_faq.html" class="nav-button">&larr; Mod.08 - Supporto e FAQ</a>
+            <a href="guida.html" class="nav-button">Indice principale</a>
+        </div>
+
+        <div class="section">
+            <h2>Panoramica</h2>
+            <p>La funzione <strong>Ricerca assistita AI</strong> aiuta a trasformare una domanda genealogica in una traccia di lavoro piu' ordinata: suggerisce portali, piste di ricerca, filtri e query di esempio da provare manualmente sulle fonti disponibili.</p>
+            <p>Si apre dal menu <strong>Servizi -&gt; Ricerca assistita AI</strong>. Non scarica documenti e non sostituisce la consultazione diretta dei portali: produce indicazioni operative da verificare, citare e usare con giudizio archivistico.</p>
+        </div>
+
+        <div class="section">
+            <h2>Quando usarla</h2>
+            <div class="section-box">
+                <ul>
+                    <li>Quando parti da cognomi, luoghi e periodi ma non sai quali archivi o portali controllare per primi.</li>
+                    <li>Quando vuoi impostare una ricerca su piu' paesi, ad esempio per emigrazione italiana verso Americhe, Europa o Oceania.</li>
+                    <li>Quando vuoi ottenere query di esempio e filtri da copiare nei portali istituzionali.</li>
+                    <li>Quando devi confrontare strategie alternative per atti di nascita, battesimo, matrimonio, morte, leva, immigrazione o cittadinanza.</li>
+                </ul>
+            </div>
+            <div class="warning">
+                <p><strong>Nota:</strong> i risultati generati da un modello AI sono ipotesi di lavoro. Vanno sempre verificati sulle fonti ufficiali e non costituiscono prova genealogica.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Campi principali</h2>
+
+            <div class="section-box">
+                <h3>Query di ricerca</h3>
+                <p>Inserisci soggetto, luogo, periodo e tipo di fonte. Un esempio utile e': <code>Rossi, Bianchi a Firenze e Prato 1850-1900, battesimi e matrimoni</code>.</p>
+                <p>Piu' la richiesta e' concreta, piu' le indicazioni saranno utilizzabili: evita frasi troppo generiche e indica sempre eventuali migrazioni, varianti di cognome o aree storiche rilevanti.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>Provider AI e modello opzionale</h3>
+                <p>Il menu provider permette di scegliere il servizio AI da usare tra quelli configurati nell'applicazione. Il campo modello opzionale serve solo se vuoi forzare un modello specifico supportato dal provider scelto; in caso contrario puo' restare vuoto.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>Prompt standard</h3>
+                <p>La funzione include quattro tracce predefinite:</p>
+                <ul>
+                    <li><strong>Ricerca generale dettagliata</strong>, per una prima ricognizione ampia.</li>
+                    <li><strong>Strategie internazionali dettagliate</strong>, utile per percorsi migratori e ricerche fuori dall'Italia.</li>
+                    <li><strong>Ricerca atti specifici dettagliata</strong>, quando cerchi un tipo di atto preciso.</li>
+                    <li><strong>Ricerca avanzata con filtri</strong>, quando vuoi ottenere filtri, varianti e query piu' strutturate.</li>
+                </ul>
+            </div>
+
+            <div class="section-box">
+                <h3>Multi-provider</h3>
+                <p>L'opzione <strong>Elabora con tutti i provider disponibili</strong> e' attiva di default. Se nel caveau sono presenti piu' chiavi, ATK-Pro puo' interrogare piu' provider e confrontare i risultati. Puoi disattivarla quando vuoi limitarti al provider selezionato.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Note personali</h2>
+            <p>La sezione note consente di salvare istruzioni ricorrenti da aggiungere alla richiesta: ad esempio varianti dei cognomi, confini storici, parrocchie note, archivi gia' controllati o criteri da escludere.</p>
+            <p>Puoi creare una nuova nota, salvarla, richiamarla da elenco o eliminarla. La nota selezionata viene aggiunta al prompt finale inviato al provider AI.</p>
+        </div>
+
+        <div class="section">
+            <h2>Risultati e salvataggio</h2>
+            <div class="section-box">
+                <p>Premi <strong>SUGGERISCI PORTALI E QUERY</strong> per avviare l'elaborazione. Durante il lavoro la finestra mostra lo stato del provider e dello slot chiave usato.</p>
+                <p>I risultati possono essere raggruppati per portale, motivazione, query di esempio, periodo, tipo di atti o filtri/strategie. Dopo la generazione puoi salvare l'output in formato testuale o HTML con i pulsanti <strong>SALVA RISULTATI AI</strong> e <strong>SALVA RISULTATO HTML</strong>.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Caveau chiavi</h2>
+            <p>Il pulsante <strong>GESTISCI CAVEAU CHIAVI (CSV)</strong> apre la gestione delle chiavi per i provider configurati. La funzione di ricerca usa solo provider per cui e' disponibile una chiave valida o una configurazione locale compatibile.</p>
+        </div>
+
+        <div class="section">
+            <h2>Limiti operativi</h2>
+            <ul>
+                <li>La funzione non aggira login, paywall, restrizioni tecniche o condizioni d'uso dei portali.</li>
+                <li>Le proposte vanno controllate sul portale ufficiale prima di inserirle in una ricerca documentata.</li>
+                <li>La disponibilita' dei provider AI e dei modelli puo' variare nel tempo.</li>
+                <li>Per ricerche sensibili, conserva sempre traccia delle fonti effettivamente consultate e non solo del suggerimento AI.</li>
+            </ul>
+        </div>
+
+        <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_08_supporto_faq.html" class="nav-button">&larr; Mod.08 - Supporto e FAQ</a>
+            <a href="guida.html" class="nav-button">Indice principale</a>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
+    </div>
+</body>
+</html>
