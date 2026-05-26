@@ -21,6 +21,8 @@ Verifiche generali gia verdi:
 Nota pre-release: `verify_document_assets.py` controlla presenza e link locali
 dei documenti, non la qualita contenutistica della guida. L'audit contenutistico
 pre-RC e tracciato in `docs_generali/audit_contenuti_guida_v3_ATK-Pro.md`.
+La checklist di go/no-go per RC tecnica e release pubblica v3 e tracciata in
+`docs_generali/checklist_release_v3_ATK-Pro.md`.
 
 Subset portali/manifest/tile/worker:
 
