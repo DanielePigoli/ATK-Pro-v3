@@ -141,7 +141,8 @@ Matrice iniziale di scouting:
 ## Sequenza tecnica consigliata
 
 1. Continuare a estendere la registry `portale -> capability`; gruppi UI,
-   avvisi operativi, referer HTTP e famiglia tecnica sono gia centralizzati.
+   avvisi operativi, referer HTTP, famiglia tecnica e policy tile sono gia
+   centralizzati.
 2. Spostare progressivamente nella registry le altre capability tecniche
    ancora implicite in `elaborazione`, `manifest_utils` e `tile_downloader`.
 3. Aggiungere fixture offline per i portali in priorita 1.

@@ -7,6 +7,7 @@ from src.portal_registry import (
     get_portal_groups,
     get_portal_referer,
     get_portal_technical_family,
+    get_portal_tile_download_policy,
     get_portal_warning_message_key,
     normalize_portal_key,
     portal_keys,
@@ -81,3 +82,9 @@ def test_technical_family_lookup_and_grouping():
     assert "memooria" in iiif_direct
     assert "matricula" in synthetic
     assert "internet_archive" in synthetic
+
+
+def test_tile_download_policy_marks_heidelberg_rate_limit():
+    assert get_portal_tile_download_policy("heidelberg") == (1, 0.3)
+    assert get_portal_tile_download_policy("gallica") == (None, 0.0)
+    assert get_portal_tile_download_policy("non_esiste") == (None, 0.0)

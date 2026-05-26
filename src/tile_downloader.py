@@ -9,6 +9,11 @@ import time
 import logging
 import requests
 
+try:
+    from portal_registry import get_portal_tile_download_policy
+except ImportError:  # pragma: no cover - package import path
+    from src.portal_registry import get_portal_tile_download_policy
+
 logger = logging.getLogger(__name__)
 
 MAX_RETRIES = 3
@@ -143,18 +148,15 @@ def download_tiles(infojson, output_dir, update_progress=None, portale=None):
     expected_files = [expected_tile_filename(x, y) for y in range(rows) for x in range(cols)]
 
     max_global_retries = 3
-    # Parallelizzazione automatica: usa metà dei core disponibili, minimo 2, massimo 8
-    # Heidelberg UB applica rate-limiting aggressivo: download sequenziale con delay tra richieste
-    is_heidelberg = portale and "heidelberg" in portale.lower()
+    # Parallelizzazione automatica: usa metà dei core disponibili, minimo 2, massimo 8.
+    # Eventuali limiti per portale arrivano dalla registry centrale.
     try:
         cpu_count = os.cpu_count() or 4
-        if is_heidelberg:
-            max_workers = 1
-        else:
-            max_workers = min(8, max(2, cpu_count // 2))
+        default_max_workers = min(8, max(2, cpu_count // 2))
     except Exception:
-        max_workers = 4
-    inter_delay = 0.3 if is_heidelberg else 0.0
+        default_max_workers = 4
+    portal_max_workers, inter_delay = get_portal_tile_download_policy(portale)
+    max_workers = portal_max_workers or default_max_workers
     tile_args = [(base_url, x, y, tile_size, output_dir, quality, width, height, inter_delay) for y in range(rows) for x in range(cols)]
     attempt = 0
     tiles_downloaded = set()

@@ -15,6 +15,8 @@ class PortalInfo:
     roadmap_priority: str
     operational_note: str
     default_referer: str | None = None
+    tile_max_workers: int | None = None
+    tile_inter_delay: float = 0.0
     public_only: bool = True
     requires_rights_check: bool = True
 
@@ -170,6 +172,8 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="consolidate",
         operational_note="Controllare licenza per volume e mantenere rate limit.",
         default_referer="https://digi.ub.uni-heidelberg.de",
+        tile_max_workers=1,
+        tile_inter_delay=0.3,
     ),
     PortalInfo(
         key="bodleian",
@@ -299,6 +303,13 @@ def get_portal_technical_family(portale: str | None) -> str | None:
     if not portal:
         return None
     return portal.technical_family
+
+
+def get_portal_tile_download_policy(portale: str | None) -> tuple[int | None, float]:
+    portal = get_portal(portale)
+    if not portal:
+        return None, 0.0
+    return portal.tile_max_workers, portal.tile_inter_delay
 
 
 def portals_by_technical_family(technical_family: str) -> tuple[PortalInfo, ...]:
