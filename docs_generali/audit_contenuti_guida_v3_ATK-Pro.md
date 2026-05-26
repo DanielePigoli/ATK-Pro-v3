@@ -2,7 +2,7 @@
 
 Data audit: 2026-05-26
 
-Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_06_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_07_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. Restano bloccanti il riallineamento della guida principale, FAQ e percorsi di menu residui.
+Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_06_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_07_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. La guida principale italiana e `assets/it/testuali/guida_02_operazioni_base.html` sono state aggiornate nella sezione Servizi per descrivere i sei moduli v3 come operativi. Restano bloccanti FAQ e percorsi di menu residui.
 
 ## Esito sintetico
 
@@ -23,9 +23,9 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
 ## Release blocker prima di RC
 
 1. Aggiornare la guida principale `assets/it/testuali/guida.html`.
-   - Contiene ancora riferimenti a funzioni future, placeholder e stato v2.0-v2.2.x.
+   - La sezione Servizi e' stata riallineata ai sei moduli operativi v3.
+   - Restano da ripulire riferimenti sparsi non ancora trattati, in particolare FAQ/supporto e voci storiche.
    - Cita l'esempio `input_link_base_v2.0.txt`, da valutare se mantenere come compatibilita' o rinominare/documentare meglio.
-   - La sezione Servizi non rappresenta lo stato reale della v3: oggi il menu contiene 6 funzioni operative, inclusa Ricerca assistita AI.
 
 2. Documentare la Ricerca assistita AI.
    - Fatto per la guida italiana con `assets/it/testuali/guida_09_ricerca_assistita_ai.html`.
@@ -46,8 +46,8 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
    - La pagina ora descrive il percorso `Servizi -> Traduzione OCR`, tipologia documento, modello opzionale, Cassaforte chiavi, pulsante `Traduci Testo ORA` e salvataggio TXT/DOCX.
 
 6. Aggiornare `assets/it/testuali/guida_02_operazioni_base.html`.
-   - Descrive il menu Servizi come 5 funzioni con una pianificata.
-   - Deve essere riallineata alle 6 funzioni attuali: Ricerca assistita AI, Visualizzazione Immagini, Visualizzazione Metadati JSON, OCR Avanzato, Traduzione OCR, Esportazione GEDCOM.
+   - Fatto per la sezione Servizi italiana.
+   - La pagina descrive ora le 6 funzioni attuali: Ricerca assistita AI, Visualizzazione Immagini, Visualizzazione Metadati JSON, OCR Avanzato, Traduzione OCR, Esportazione GEDCOM.
 
 7. Aggiornare `assets/it/testuali/guida_08_supporto_faq.html`.
    - Contiene riferimenti a servizi placeholder e a tempi/versioni v2.1-v2.3.
@@ -61,9 +61,9 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
 
 | File | Stato | Problema principale | Azione prima di RC |
 | --- | --- | --- | --- |
-| `guida.html` | Bloccante | Stato v2.x, placeholder/future, Servizi non allineati | Riscrivere panoramica v3 e indice |
+| `guida.html` | Parziale | Sezione Servizi riallineata; restano FAQ/supporto, riferimenti storici e possibile rinomina `input_link_base_v2.0.txt` | Completare pulizia contenutistica |
 | `guida_01_installazione_configurazione.html` | Da riallineare | Albero funzionale include GEDCOM come previsione/interoperabilita' generica | Aggiornare mappa funzioni e menu |
-| `guida_02_operazioni_base.html` | Bloccante | Servizi descritti come 5 funzioni, una futura | Aggiornare sezione Servizi v3 |
+| `guida_02_operazioni_base.html` | Riallineata in italiano | Sezione Servizi aggiornata ai sei moduli operativi v3 | Verificare propagazione futura |
 | `guida_03_visualizzazione_immagini.html` | Parziale | Percorso menu vecchio | Correggere menu e verificare controlli |
 | `guida_04_visualizzazione_metadati.html` | Parziale | Percorso menu vecchio | Correggere menu e verificare relazione immagine/JSON |
 | `guida_05_ocr_avanzato.html` | Da verificare | Percorso menu vecchio e possibili dettagli provider/modelli instabili | Aggiornare menu, caveau chiavi, provider e disclaimer operativo |
@@ -75,7 +75,7 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
 
 1. Aggiornare prima la guida italiana, usando il codice come fonte primaria.
 2. Aggiungere una nuova sotto-guida dedicata alla Ricerca assistita AI oppure trasformare la numerazione in una sequenza v3 con 9 moduli.
-3. Correggere i percorsi di menu e le sezioni Servizi in guida principale, guida 01 e guida 02.
+3. Correggere i percorsi di menu residui in guida 01, guida 03, guida 04, guida 05 e altre sezioni non ancora toccate.
 4. Aggiornare FAQ e avvertenze sui provider IA.
 5. Solo dopo il via libera sui contenuti italiani, propagare o riallineare le altre lingue.
 6. Aggiungere un controllo automatico leggero per marker vietati o sospetti nella guida v3, evitando falsi positivi sui "placeholder" tecnici delle pagine non scaricabili.
