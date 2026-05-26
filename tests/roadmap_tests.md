@@ -17,6 +17,10 @@ Verifiche generali gia verdi:
 - `python verify_portal_matrix_workbook.py`
 - `python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py`
 
+Nota pre-release: `verify_document_assets.py` controlla presenza e link locali
+dei documenti, non la qualita contenutistica della guida. L'audit contenutistico
+pre-RC e tracciato in `docs_generali/audit_contenuti_guida_v3_ATK-Pro.md`.
+
 Subset portali/manifest/tile/worker:
 
 - comando:
@@ -57,6 +61,7 @@ python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py test
 
 - [x] Confermare localizzazione e glossario.
 - [x] Confermare documenti consultabili dal menu Documenti e guida articolata.
+- [ ] Riallineare contenutisticamente la guida italiana alla v3 reale.
 - [x] Confermare compilazione dei moduli centrali.
 - [x] Confermare subset portali/manifest/tile/worker.
 - [ ] Eseguire una suite piu ampia in ambiente controllato.
