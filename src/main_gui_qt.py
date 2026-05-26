@@ -848,47 +848,11 @@ class MainWindow(QMainWindow):
     def cambia_portale(self):
         """Dialog per selezionare il portale attivo (impostazione persistente)."""
         from PySide6.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox
+        try:
+            from .portal_registry import get_portal_groups
+        except ImportError:
+            from portal_registry import get_portal_groups
         gm = lambda k: get_msg(self.glossario_data, k, self.lingua) or k
-
-        PORTALI_GROUPED = [
-            ("── Italia ──", [
-                ("antenati",         "Antenati (Cultura.gov.it)"),
-                ("bnc_roma",         "BNC Roma digitale"),
-                ("bncf_teca",        "BNCF Teca (Firenze)"),
-                ("museogalileo",     "Museo Galileo Digiteca"),
-                ("internetculturale_estense", "Internet Culturale (Estense/ICCU)"),
-                ("brixiana",         "Brixiana (Biblioteca Queriniana Brescia)"),
-                ("memooria",         "Memooria/Jarvis (qualsiasi biblioteca)"),
-                ("vatlib",           "DigiVatLib (Biblioteca Apostolica Vaticana)"),
-            ]),
-            ("── Alto Adige / Südtirol ──", [
-                ("findbuch",         "Kirchenbücher Südtirol (findbuch.net)"),
-            ]),
-            ("── Europa Centrale (AT/DE/SI/...) ──", [
-                ("matricula",        "Matricula Online (Kirchenbücher AT/DE/SI/LU)"),
-            ]),
-            ("── Francia ──", [
-                ("gallica",          "Gallica (BnF)"),
-            ]),
-            ("── Germania ──", [
-                ("heidelberg",       "Heidelberg UB"),
-            ]),
-            ("── Regno Unito ──", [
-                ("bodleian",         "Bodleian Libraries Oxford"),
-            ]),
-            ("── Svizzera ──", [
-                ("e_rara",           "e-rara"),
-                ("e_codices",        "e-codices (Unifr)"),
-                ("e_manuscripta",    "e-manuscripta"),
-            ]),
-            ("── Internazionale ──", [
-                ("internet_archive", "Internet Archive"),
-                ("europeana",        "Europeana IIIF"),
-            ]),
-            ("── Avanzato ──", [
-                ("manifest_diretto", "Manifest diretto (URL già noto)"),
-            ]),
-        ]
 
         dlg = QDialog(self)
         dlg.setWindowTitle(gm("Portale attivo"))
@@ -907,7 +871,7 @@ class MainWindow(QMainWindow):
         current_key = self.portale_attivo
         current_idx = 1  # default: primo portale selezionabile
         _cidx = 0
-        for _group_label, _portals in PORTALI_GROUPED:
+        for _group_label, _portals in get_portal_groups():
             _hdr = QStandardItem(_group_label)
             _hdr.setFlags(Qt.NoItemFlags)
             _hf = _QFont(); _hf.setBold(True)

@@ -132,7 +132,7 @@ Scheda minima prima di proporre un nuovo portale:
 
 ## Sequenza tecnica consigliata
 
-1. Introdurre una registry `portale -> capability` per togliere conoscenza
+1. Estendere la registry `portale -> capability` per togliere conoscenza
    implicita da UI, `elaborazione`, `manifest_utils` e `tile_downloader`.
 2. Collegare ogni portale a un messaggio breve di avviso operativo.
 3. Aggiungere fixture offline per i portali in priorita 1.
