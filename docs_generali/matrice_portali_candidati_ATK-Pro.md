@@ -57,6 +57,52 @@ Prime piste da approfondire tecnicamente:
 5. `archivi_nazionali`, da monitorare perche potrebbe diventare centrale per
    l'area italiana.
 
+## Shortlist operativa provvisoria
+
+Questa shortlist ordina il lavoro senza derogare alla priorita italiana e
+italofona. I portali di diaspora entrano in testa solo quando sono strettamente
+legati alla ricerca genealogica italiana e hanno una base pubblica o
+istituzionale verificabile.
+
+### Blocco A - Diaspora italiana ad alto valore
+
+- `museu_imigracao_sp`: verificare se esistono endpoint stabili o modalita
+  tecniche documentabili per liste passeggeri e acervo digitale; in assenza di
+  API chiara, trattarlo come link assistito.
+- `apesp_digitalizados`: cercare un esempio pubblico riproducibile e valutare
+  se il viewer espone immagini o metadati senza login, senza aggiramenti e con
+  limiti di riuso rispettabili.
+- `arquivo_nacional_br_sian`: verificare prima l'accesso no-login; se richiede
+  autenticazione, escludere download diretto e mantenere solo supporto
+  informativo.
+
+### Blocco B - API ufficiali e metadati stabili
+
+- `nara_catalog`: primo candidato tecnico per un prototipo metadata/discovery,
+  perche dispone di API ufficiale e documentazione pubblica.
+- `francearchives`: candidato forte per discovery archivistica; download di
+  immagini solo quando il provider sorgente e verificato.
+- `papers_past_digitalnz`: utile per ricerca contestuale su stampa storica, da
+  trattare come integrazione metadata/search prima di qualsiasi download.
+
+### Blocco C - Italia e fonti istituzionali nazionali
+
+- `archivi_nazionali`: monitorare lo sviluppo del portale perche potrebbe
+  diventare l'asse pubblico piu importante per l'area italiana.
+- `san_risorse_digitali`, `sias`, `siusa`: considerarli prima come discovery e
+  orientamento archivistico, non come downloader immagini.
+
+### Blocco D - Solo link o verifica sospesa
+
+- `cemla_buscador`: valore alto, ma niente download diretto senza termini/API
+  espliciti.
+- `belgium_state_archives`: mantenere su percorso manuale se l'accesso richiede
+  account.
+- `austrian_state_archives_ais`: utile per ricerca guidata, non ancora per
+  acquisizione automatica.
+- `anno_onb`: rivalutare solo se emerge una API ufficiale o una policy tecnica
+  compatibile.
+
 Portali da non automatizzare in questa fase:
 
 - `belgium_state_archives`, se l'accesso richiede account;

@@ -142,4 +142,5 @@ Matrice iniziale di scouting:
    ancora implicite in `elaborazione`, `manifest_utils` e `tile_downloader`.
 3. Aggiungere fixture offline per i portali in priorita 1.
 4. Spostare progressivamente i builder verso adapter testabili.
-5. Usare la matrice candidati per scegliere i prossimi portali da verificare.
+5. Usare la shortlist operativa nella matrice candidati per scegliere i
+   prossimi portali da verificare.
