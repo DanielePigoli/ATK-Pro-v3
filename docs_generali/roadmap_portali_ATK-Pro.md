@@ -135,7 +135,8 @@ Matrice iniziale di scouting:
 - `docs_generali/matrice_portali_candidati_ATK-Pro.md`.
 - `docs_generali/Matrice_portali.xlsx`, come vista tabellare di lavoro dei
   portali esistenti e candidati. I file Markdown restano la fonte primaria da
-  aggiornare.
+  aggiornare. Dopo ogni modifica alla vista Excel, eseguire
+  `python verify_portal_matrix_workbook.py`.
 
 ## Sequenza tecnica consigliata
 
