@@ -1,11 +1,11 @@
-; ATK-Pro v2.2.0 Installer Script per Inno Setup
-; Supporta 10 lingue con testi Unicode completi (arabo, ebraico, russo)
+; ATK-Pro v3.0.0 Installer Script per Inno Setup
+; Supporta 20 lingue con testi Unicode completi
 ; Legge i disclaimer direttamente da assets/ 
 
 #define MyAppName "ATK-Pro"
 #define MyAppVersion "3.0.0"
 #define MyAppPublisher "ATK-Pro Project"
-#define MyAppURL "https://github.com/DanielePigoli/ATK-Pro"
+#define MyAppURL "https://github.com/DanielePigoli/ATK-Pro-v3"
 #define MyAppExeName "ATK-Pro.exe"
 
 [CustomMessages]
@@ -30,26 +30,26 @@ el.LicenseAcceptance=Αποδοχή Άδειας
 ro.LicenseAcceptance=Acceptarea Licenței
 sv.LicenseAcceptance=Licensacceptans
   ; Custom messages per localizzazione completa
-  en.NameAndVersion=ATK-Pro v2.2.0
-  it.NameAndVersion=ATK-Pro v2.2.0
-  es.NameAndVersion=ATK-Pro v2.2.0
-  de.NameAndVersion=ATK-Pro v2.2.0
-  fr.NameAndVersion=ATK-Pro v2.2.0
-  pt.NameAndVersion=ATK-Pro v2.2.0
-  nl.NameAndVersion=ATK-Pro v2.2.0
-  ar.NameAndVersion=ATK-Pro v2.2.0
-  he.NameAndVersion=ATK-Pro v2.2.0
-  ru.NameAndVersion=ATK-Pro v2.2.0
-  ja.NameAndVersion=ATK-Pro v2.2.0
-  zh.NameAndVersion=ATK-Pro v2.2.0
-  pl.NameAndVersion=ATK-Pro v2.2.0
-  tr.NameAndVersion=ATK-Pro v2.2.0
-  da.NameAndVersion=ATK-Pro v2.2.0
-  no.NameAndVersion=ATK-Pro v2.2.0
-  vi.NameAndVersion=ATK-Pro v2.2.0
-  el.NameAndVersion=ATK-Pro v2.2.0
-  ro.NameAndVersion=ATK-Pro v2.2.0
-  sv.NameAndVersion=ATK-Pro v2.2.0
+  en.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  it.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  es.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  de.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  fr.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  pt.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  nl.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  ar.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  he.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  ru.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  ja.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  zh.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  pl.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  tr.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  da.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  no.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  vi.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  el.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  ro.NameAndVersion=ATK-Pro v{#MyAppVersion}
+  sv.NameAndVersion=ATK-Pro v{#MyAppVersion}
 
   en.AdditionalIcons=Additional icons
   it.AdditionalIcons=Icone aggiuntive
@@ -452,4 +452,3 @@ function InitializeUninstall(): Boolean;
 begin
   Result := True;
 end;
-

@@ -9,7 +9,7 @@ Compila l'applicazione per macOS e crea un installer DMG.
 
 **Trigger:**
 - Push su `main`
-- Tag `v*` (es. `v2.0.7`)
+- Tag `v*` (es. `v3.0.0-rc1` o `v3.0.0`)
 - Pull request
 - Manuale (workflow_dispatch)
 
@@ -18,7 +18,7 @@ Compila l'applicazione per macOS e crea un installer DMG.
 - `ATK-Pro-macOS.dmg` - Installer DMG drag & drop
 
 **Come usare:**
-1. Vai su: https://github.com/DanielePigoli/ATK-Pro-v2/actions/workflows/build-macos.yml
+1. Vai su: https://github.com/DanielePigoli/ATK-Pro-v3/actions/workflows/build-macos.yml
 2. Click "Run workflow" → "Run workflow"
 3. Attendi ~5-10 minuti
 4. Download artifact da "Artifacts" in basso
@@ -28,16 +28,16 @@ Compila l'eseguibile Windows e crea installer con Inno Setup.
 
 **Trigger:**
 - Push su `main`
-- Tag `v*` (es. `v2.0.7`)
+- Tag `v*` (es. `v3.0.0-rc1` o `v3.0.0`)
 - Pull request
 - Manuale (workflow_dispatch)
 
 **Output:**
 - `dist/ATK-Pro/ATK-Pro.exe` - Eseguibile portable
-- `ATK-Pro-Setup-v2.0.exe` - Installer Inno Setup
+- `ATK-Pro-Setup-v3.0.0.exe` - Installer Inno Setup
 
 **Come usare:**
-1. Vai su: https://github.com/DanielePigoli/ATK-Pro-v2/actions/workflows/build-windows.yml
+1. Vai su: https://github.com/DanielePigoli/ATK-Pro-v3/actions/workflows/build-windows.yml
 2. Click "Run workflow" → "Run workflow"
 3. Attendi ~5-10 minuti
 4. Download artifact da "Artifacts" in basso
@@ -48,8 +48,8 @@ Per creare una release con installer automatici:
 
 ```bash
 # 1. Tag la versione
-git tag v2.0.7
-git push origin v2.0.7
+git tag v3.0.0-rc1
+git push origin v3.0.0-rc1
 
 # 2. GitHub Actions compilerà automaticamente per Windows e macOS
 # 3. Gli installer saranno allegati alla release su GitHub
@@ -81,11 +81,11 @@ open dist/ATK-Pro.app
 ## 📊 Monitoring
 
 **Stato build:**
-- macOS: ![macOS Build](https://github.com/DanielePigoli/ATK-Pro-v2/actions/workflows/build-macos.yml/badge.svg)
-- Windows: ![Windows Build](https://github.com/DanielePigoli/ATK-Pro-v2/actions/workflows/build-windows.yml/badge.svg)
+- macOS: ![macOS Build](https://github.com/DanielePigoli/ATK-Pro-v3/actions/workflows/build-macos.yml/badge.svg)
+- Windows: ![Windows Build](https://github.com/DanielePigoli/ATK-Pro-v3/actions/workflows/build-windows.yml/badge.svg)
 
 **Logs:**
-https://github.com/DanielePigoli/ATK-Pro-v2/actions
+https://github.com/DanielePigoli/ATK-Pro-v3/actions
 
 ## 🐛 Troubleshooting
 

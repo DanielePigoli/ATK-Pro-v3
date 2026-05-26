@@ -27,7 +27,7 @@ release pubblica multilingue completa.
 | Disclaimer e policy portali | Go | Il disclaimer esclude scraping massivo, aggiramento login/paywall e portali commerciali chiusi; i servizi esterni sono facoltativi e attivati dall'utente. |
 | Portali esistenti | Go | Matrice, roadmap e registro tecnico sono allineati; nuove integrazioni restano incrementalmente valutate. |
 | Test tecnici | Go con suite finale | La smoke suite deve passare prima del tag RC; la suite ampia resta da inventariare e numerare. |
-| Packaging | Da verificare | Prima della RC servono build pulite per le piattaforme previste e controllo manuale avvio/app menu Documenti. |
+| Packaging | Go con build da eseguire | Audit non distruttivo eseguito: spec PyInstaller, script Inno e README workflow sono allineati a v3.0.0; prima della RC restano da generare e provare le build. |
 | File temporanei | Go con controllo finale | Inventario root eseguito: artefatti locali, cache, build, log, screenshot e output test risultano ignorati o coperti da regole di esclusione; prima del tag resta da confermare `git status --short --ignored`. |
 
 ## Suite smoke pre-RC

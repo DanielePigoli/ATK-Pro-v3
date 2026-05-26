@@ -1,6 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 r"""
-ATK-Pro v2.0 PyInstaller Specification File
+ATK-Pro v3.0 PyInstaller Specification File
 =============================================
 
 Builds exe from modular source with proper path handling for:
