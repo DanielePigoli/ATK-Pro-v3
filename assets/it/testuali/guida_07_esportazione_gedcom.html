@@ -329,11 +329,6 @@
     <div class="container">
         <header>
             <h1>&#128302; Modulo 07: Esportazione GEDCOM</h1>
-            <p style="text-align:center;margin-top:0.5rem;">
-                <span style="background:#7a5c3b;color:white;padding:4px 14px;
-                border-radius:20px;font-size:.9em;">
-                &#128302; Pianificato per versioni future</span>
-            </p>
         </header>
 
         <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
@@ -344,51 +339,73 @@
 
         <div class="section">
             <h2>&#128204; Panoramica</h2>
-            <p>Il modulo <strong>Esportazione GEDCOM</strong> &egrave; in fase di pianificazione. Permetter&agrave; di esportare le relazioni familiari estratte dai documenti genealogici elaborati da ATK-Pro nel formato <strong>GEDCOM</strong> (GEnealogical Data COMmunication), lo standard internazionale per l&apos;interscambio di dati genealogici.</p>
-            <p>Una volta sviluppato, il modulo si occuper&agrave; di aggregare le entit&agrave; estratte dall&apos;OCR (nomi, date, relazioni di parentela) e di strutturarle in un file GEDCOM compatibile con i principali software genealogici.</p>
+            <p>Il modulo <strong>Esportazione GEDCOM</strong> della v3 e&apos; un ambiente di analisi genealogica assistita: prende testi, immagini o documenti selezionati, usa un provider IA configurato in ATK-Pro e genera un file <code>.ged</code> nella cartella di output scelta.</p>
+            <p>Si apre dal menu <em>Servizi &rarr; Esportazione GEDCOM</em>. Il nome pubblico resta legato al formato GEDCOM, ma il lavoro effettivo comprende anche estrazione genealogica, uso di note paleografiche, eventuale incremento di una base esistente e gestione delle chiavi IA.</p>
+            <p>Il risultato deve essere verificato prima di importarlo in un software genealogico: l&apos;IA puo&apos; aiutare a strutturare dati e relazioni, ma non sostituisce la lettura critica delle fonti.</p>
         </div>
 
         <div class="section">
-            <h2>&#127795;&#65039; Interoperabilit&agrave; Pianificata</h2>
+            <h2>&#128421;&#65039; Interfaccia</h2>
             <div class="section-box">
-                <h3>Software Genealogici Compatibili (Obiettivo)</h3>
-                <p>L&apos;obiettivo &egrave; garantire la compatibilit&agrave; con i principali software e piattaforme genealogici:</p>
+                <h3>1. Metodo e input universale</h3>
+                <p>La prima sezione permette di scegliere il metodo di lavoro e i file da analizzare.</p>
                 <ul>
-                    <li>Ancestry</li>
-                    <li>Family Historian</li>
-                    <li>Family Tree Maker</li>
-                    <li>Findmypast</li>
-                    <li>FamilySearch</li>
-                    <li>Geni</li>
-                    <li>Geneanet</li>
-                    <li>Gramps (open source)</li>
-                    <li>Legacy Family Tree</li>
-                    <li>MyHeritage</li>
-                    <li>Reunion (macOS)</li>
-                    <li>RootsMagic</li>
-                    <li>WikiTree</li>
+                    <li><strong>Auto-Discovery</strong>: scelta adatta quando vuoi lasciare al modulo il compito di interpretare il materiale selezionato.</li>
+                    <li><strong>Vision IA</strong>: usa un modello capace di leggere immagini quando il materiale di partenza e&apos; visivo.</li>
+                    <li><strong>Refinery LLM</strong>: utile per lavorare su testo gia&apos; estratto o trascritto.</li>
+                    <li><strong>Input</strong>: seleziona uno o piu&apos; atti, immagini, trascrizioni o documenti compatibili con il flusso scelto.</li>
                 </ul>
-                <p style="margin-top:0.8rem;font-style:italic;color:#7a5c3b;">
-                &#128204; <em>Nota: L&apos;elencazione &egrave; puramente indicativa e non vincolante allo sviluppo
-                dell&apos;interoperabilit&agrave; con ciascuna piattaforma o software.</em></p>
+            </div>
+
+            <div class="section-box">
+                <h3>2. Incrementa base esistente</h3>
+                <p>Il pulsante <strong>CARICA BASE</strong> consente di indicare una base genealogica gia&apos; esistente in formato GEDCOM o CSV. Se non carichi nulla, il modulo crea un nuovo lavoro.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>3. Banca dati note paleografiche</h3>
+                <p>Questa sezione collega il lavoro genealogico alle tipologie documentali e alle note operative. Puoi scegliere il tipo di atto, richiamare una nota salvata, crearne una nuova, modificarla o eliminarla.</p>
+                <p>Le note servono a spiegare al modello abbreviazioni, formule locali, lingua del documento, regole di parentela, dubbi di lettura o criteri di estrazione.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>4. Destinazione output</h3>
+                <p>Scegli la cartella in cui salvare il risultato. Il file generato usa un nome del tipo <code>genealogia_*.ged</code>.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>5. Motore IA e caveau chiavi</h3>
+                <ul>
+                    <li><strong>Provider</strong>: scegli il servizio IA tra quelli configurati, ad esempio Claude, OpenAI, Gemini, Mistral, xAI, DeepSeek, Groq, HuggingFace o Ollama.</li>
+                    <li><strong>Override modello</strong>: campo opzionale per indicare un modello specifico supportato dal provider scelto.</li>
+                    <li><strong>GESTISCI CAVEAU CHIAVI (CSV)</strong>: apre la gestione delle chiavi disponibili.</li>
+                    <li><strong>AVVIA ESTRAZIONE COMPLETA</strong>: avvia l&apos;analisi e la generazione del GEDCOM.</li>
+                </ul>
             </div>
         </div>
 
         <div class="section">
-            <h2>&#9881;&#65039; Funzionalit&agrave; Previste</h2>
-            <div class="section-box">
-                <p>&#9888;&#65039; <strong>Nota:</strong> Le funzionalit&agrave; descritte di seguito rappresentano
-                una <strong>bozza ipotetica</strong> delle possibili integrazioni future. Non vi &egrave; ancora
-                alcun riscontro di fattibilit&agrave; tecnica n&eacute; alcun impegno di sviluppo. Le specifiche
-                potranno variare o essere abbandonate in qualsiasi momento.</p>
-            </div>
+            <h2>&#128221; Flusso consigliato</h2>
+            <ol>
+                <li>Prepara input leggibili: trascrizioni, immagini o file gia&apos; organizzati per atto.</li>
+                <li>Scegli il metodo di analisi piu&apos; adatto al materiale.</li>
+                <li>Se stai proseguendo un lavoro esistente, carica la base GEDCOM o CSV.</li>
+                <li>Seleziona la tipologia di atto e aggiungi una nota paleografica concreta.</li>
+                <li>Scegli cartella di output, provider e chiave.</li>
+                <li>Avvia l&apos;estrazione completa.</li>
+                <li>Controlla il file <code>.ged</code> generato prima di importarlo in altri programmi.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>&#9888;&#65039; Avvertenze</h2>
             <div class="section-box">
                 <ul>
-                    <li>Estrazione automatica di entit&agrave; (nomi, date, relazioni) dai testi OCR tramite LLM</li>
-                    <li>Linkage ed entity extraction tra registri multipli analizzati in blocco</li>
-                    <li>Generazione di file <code>.ged</code> conformi allo standard GEDCOM 5.5.1 e GEDCOM 7.0</li>
-                    <li>Verifica e deduplicazione automatica degli individui identificati</li>
-                    <li>Esportazione con metadati delle fonti (riferimento al documento originale, pagina, data)</li>
+                    <li>Il GEDCOM prodotto e&apos; una base di lavoro, non una prova definitiva.</li>
+                    <li>Relazioni familiari, date, luoghi e nomi devono essere verificati sulle fonti originali.</li>
+                    <li>Gli errori di OCR, trascrizione o interpretazione possono propagarsi nel file genealogico.</li>
+                    <li>Prima di importare il GEDCOM in software esterni, conserva una copia del file originale e controlla eventuali duplicati.</li>
+                    <li>Non inviare a provider esterni documenti riservati o soggetti a restrizioni senza aver verificato condizioni d&apos;uso, privacy e autorizzazioni.</li>
                 </ul>
             </div>
         </div>

@@ -2,7 +2,7 @@
 
 Data audit: 2026-05-26
 
-Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_06_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. Restano bloccanti il riallineamento della guida principale, GEDCOM/analisi genealogica, FAQ e percorsi di menu residui.
+Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_06_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_07_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. Restano bloccanti il riallineamento della guida principale, FAQ e percorsi di menu residui.
 
 ## Esito sintetico
 
@@ -33,9 +33,8 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
    - Il dialog consente query genealogica, scelta provider, modello opzionale, prompt standard, elaborazione multi-provider, note personali, salvataggio risultati testuali e HTML, e gestione del caveau chiavi.
 
 3. Riscrivere `assets/it/testuali/guida_07_esportazione_gedcom.html`.
-   - Attualmente presenta GEDCOM come modulo futuro.
-   - La funzione reale apre un dialog di analisi genealogica con input universale, base GEDCOM/CSV opzionale, note paleografiche, provider IA, caveau chiavi e output `genealogia_*.ged`.
-   - Il titolo pubblico puo' restare "Esportazione GEDCOM", ma il contenuto deve chiarire che nella v3 il modulo e' operativo come estrazione/analisi genealogica assistita e generazione GEDCOM.
+   - Fatto per la guida italiana.
+   - La pagina ora descrive il dialog di analisi genealogica con input universale, base GEDCOM/CSV opzionale, note paleografiche, provider IA, caveau chiavi e output `genealogia_*.ged`.
 
 4. Riallineare i percorsi di menu nelle sotto-guide operative.
    - `guida_03_visualizzazione_immagini.html` e `guida_04_visualizzazione_metadati.html` citano il menu "Strumenti"; nella v3 sono in `Servizi`.
@@ -69,25 +68,24 @@ La documentazione principale e alcune sotto-guide descrivono ancora lo stato v2.
 | `guida_04_visualizzazione_metadati.html` | Parziale | Percorso menu vecchio | Correggere menu e verificare relazione immagine/JSON |
 | `guida_05_ocr_avanzato.html` | Da verificare | Percorso menu vecchio e possibili dettagli provider/modelli instabili | Aggiornare menu, caveau chiavi, provider e disclaimer operativo |
 | `guida_06_traduzione.html` | Riallineata in italiano | Copertura aggiornata al dialog v3; resta da propagare alle altre lingue quando si fara' il riallineamento multilingue | Verificare link e propagazione futura |
-| `guida_07_esportazione_gedcom.html` | Bloccante | Placeholder/futuro, non descrive il modulo reale | Riscrivere completamente |
+| `guida_07_esportazione_gedcom.html` | Riallineata in italiano | Copertura aggiornata al dialog v3; resta da propagare alle altre lingue quando si fara' il riallineamento multilingue | Verificare link e propagazione futura |
 | `guida_08_supporto_faq.html` | Da riallineare | Riferimenti a placeholder e versioni v2.x | Aggiornare FAQ v3 e supporto |
 
 ## Sequenza consigliata
 
 1. Aggiornare prima la guida italiana, usando il codice come fonte primaria.
 2. Aggiungere una nuova sotto-guida dedicata alla Ricerca assistita AI oppure trasformare la numerazione in una sequenza v3 con 9 moduli.
-3. Riscrivere la guida GEDCOM/analisi genealogica sulla base del dialog reale.
-4. Correggere i percorsi di menu e le sezioni Servizi in guida principale, guida 01 e guida 02.
-5. Aggiornare FAQ e avvertenze sui provider IA.
-6. Solo dopo il via libera sui contenuti italiani, propagare o riallineare le altre lingue.
-7. Aggiungere un controllo automatico leggero per marker vietati o sospetti nella guida v3, evitando falsi positivi sui "placeholder" tecnici delle pagine non scaricabili.
+3. Correggere i percorsi di menu e le sezioni Servizi in guida principale, guida 01 e guida 02.
+4. Aggiornare FAQ e avvertenze sui provider IA.
+5. Solo dopo il via libera sui contenuti italiani, propagare o riallineare le altre lingue.
+6. Aggiungere un controllo automatico leggero per marker vietati o sospetti nella guida v3, evitando falsi positivi sui "placeholder" tecnici delle pagine non scaricabili.
 
 ## Criterio RC
 
 La prima RC v3.0.0 puo' partire solo quando:
 
 - La guida italiana non presenta piu' moduli reali come funzioni future.
-- Ricerca assistita AI, Traduzione OCR e analisi genealogica/GEDCOM sono documentate. Ricerca assistita AI e Traduzione OCR sono gia coperte nella guida italiana; GEDCOM/analisi genealogica resta da completare.
+- Ricerca assistita AI, Traduzione OCR e analisi genealogica/GEDCOM sono documentate nella guida italiana. Resta da completare il riallineamento della guida principale, delle sezioni base/FAQ e delle altre lingue.
 - I percorsi di menu corrispondono alla UI attuale.
 - Le sezioni su provider IA evitano informazioni commerciali o tecniche non verificate.
 - `verify_document_assets.py`, `verify_localization.py`, `validate_glossary.py` e `verify_glossary.py` restano verdi.
