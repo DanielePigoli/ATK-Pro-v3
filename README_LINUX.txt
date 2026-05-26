@@ -1,5 +1,5 @@
 ================================================================================
-  ATK-Pro v2.2.0 for Linux - Instructions
+  ATK-Pro v3.0 for Linux - Instructions
 ================================================================================
 
 SYSTEM REQUIREMENTS:
@@ -47,17 +47,25 @@ DESKTOP INTEGRATION (tarball only — deb handles this automatically):
   Replace /full/path/ with the actual location of ATK-Pro.
 
 DISCLAIMER:
-  This software is intended exclusively for researchers who access the
-  Antenati portal (Canvas LMS) with their own valid credentials.
-  The user is solely responsible for compliance with the portal's Terms
-  of Service and applicable copyright law.
+  ATK-Pro is intended for archival, genealogical, and document consultation
+  workflows, primarily in support of the Portale Antenati.
+  Access to third-party resources is accessory and depends on their technical
+  and legal availability. The user is solely responsible for complying with
+  each portal's terms of use, licenses, copyright rules, access conditions,
+  and reuse policies.
+  ATK-Pro is not intended for automated data extraction, mass harvesting,
+  systematic downloads, or bypassing authenticated access, subscriptions,
+  paywalls, technical restrictions, security measures, or contractual
+  prohibitions imposed by third-party sites or portals.
+  Commercial genealogy portals or portals requiring an account are not
+  supported unless explicit documented authorization says otherwise.
   The software is provided "AS IS", without warranty of any kind.
   The authors assume no liability for improper or unlawful use.
 
 SUPPORT:
-  GitHub : https://github.com/DanielePigoli/ATK-Pro-v2
-  Issues : https://github.com/DanielePigoli/ATK-Pro-v2/issues
+  GitHub : https://github.com/DanielePigoli/ATK-Pro-v3
+  Issues : https://github.com/DanielePigoli/ATK-Pro-v3/issues
 
 ================================================================================
-  (c) 2026 ATK-Pro - Distributed under open-source license
+  (c) 2026 ATK-Pro - See the bundled legal disclaimer for terms of use
 ================================================================================
