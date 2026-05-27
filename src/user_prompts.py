@@ -155,11 +155,13 @@ def ask_generate_pdf_missing_images(missing_count, glossario_data=None, lingua="
 
 import os
 import logging
-import tkinter as tk
-from tkinter import messagebox
 import sys
 
 logger = logging.getLogger(__name__)
+try:
+    import tkinter as tk
+except ImportError:
+    tk = None
 
 
 def ask_image_formats(glossario_data=None, lingua="IT", format_vars=None):
@@ -184,6 +186,9 @@ def ask_image_formats(glossario_data=None, lingua="IT", format_vars=None):
         return [fmt.lower() for fmt, var in format_vars.items() if var.get()]
 
     try:
+        global tk
+        if tk is None:
+            import tkinter as tk
         # Caso normale: GUI interattiva
         selected_formats = []
 
@@ -643,4 +648,3 @@ def show_error(message, glossario_data=None, lingua="IT", parent=None, level="er
     except Exception:
         # Fallback console
         print(f"[{level.upper()}] {msg}", file=sys.stderr if level=="error" else sys.stdout)
-
