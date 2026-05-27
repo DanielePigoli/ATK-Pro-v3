@@ -43,8 +43,8 @@ def test_process_single_canvas_happy(monkeypatch, tmp_path):
     manifest = {}
     monkeypatch.setattr(cp, "find_canvas_by_id", lambda *a, **k: canvas)
     monkeypatch.setattr(cp, "is_canvas_valid", lambda *a, **k: True)
-    monkeypatch.setattr(cp, "download_tiles", lambda info, td: None)
-    monkeypatch.setattr(cp, "rebuild_image", lambda info, td: b"img")
+    monkeypatch.setattr(cp, "download_tiles", lambda info, td, **kwargs: None)
+    monkeypatch.setattr(cp, "rebuild_image", lambda info, td, **kwargs: b"img")
     monkeypatch.setattr(cp, "save_image_variants", lambda *a, **k: None)
     monkeypatch.setattr(cp, "build_image_metadata", lambda **k: {"meta": "ok"})
     monkeypatch.setattr(cp, "estrai_metadati_da_manifest", lambda *a, **k: None)
@@ -75,8 +75,8 @@ def test_process_all_canvases_happy_with_pdf_real(monkeypatch, tmp_path):
     }
     manifest = {"sequences": [{"canvases": [canvas]}]}
     monkeypatch.setattr(cp, "is_canvas_valid", lambda *a, **k: True)
-    monkeypatch.setattr(cp, "download_tiles", lambda info, td: None)
-    monkeypatch.setattr(cp, "rebuild_image", lambda info, td: b"imgbytes")
+    monkeypatch.setattr(cp, "download_tiles", lambda info, td, **kwargs: None)
+    monkeypatch.setattr(cp, "rebuild_image", lambda info, td, **kwargs: b"imgbytes")
 
     def fake_save_image_variants(image_bytes, out_dir, base_name="canvas", formats=("JPEG",), **kwargs):
         img_path = tmp_path / f"{prefix}_canvas_1.jpg"
@@ -106,8 +106,8 @@ def test_process_all_canvases_pdf_no_images(monkeypatch, tmp_path):
     }
     manifest = {"sequences": [{"canvases": [canvas]}]}
     monkeypatch.setattr(cp, "is_canvas_valid", lambda *a, **k: True)
-    monkeypatch.setattr(cp, "download_tiles", lambda info, td: None)
-    monkeypatch.setattr(cp, "rebuild_image", lambda info, td: b"imgbytes")
+    monkeypatch.setattr(cp, "download_tiles", lambda info, td, **kwargs: None)
+    monkeypatch.setattr(cp, "rebuild_image", lambda info, td, **kwargs: b"imgbytes")
     monkeypatch.setattr(cp, "save_image_variants", lambda *a, **k: [])
 
     called = {"count": 0}

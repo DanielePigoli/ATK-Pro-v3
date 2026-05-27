@@ -212,9 +212,9 @@ class TestProcessDocumentPDF:
         monkeypatch.setattr('src.elaborazione.download_info_json',
                             lambda url: _fake_info())
         monkeypatch.setattr('src.elaborazione.download_tiles',
-                            lambda info, tile_dir: ([], []))
+                            lambda info, tile_dir, **kwargs: ([], []))
         monkeypatch.setattr('src.elaborazione.rebuild_image',
-                            lambda info, tile_dir: img)
+                            lambda info, tile_dir, **kwargs: img)
         monkeypatch.setattr('src.elaborazione.build_image_metadata',
                             lambda **kw: {'_json': {}})
         monkeypatch.setattr('src.elaborazione.save_image_variants',
@@ -364,9 +364,9 @@ class TestProcessRegisterPDF:
         monkeypatch.setattr('src.elaborazione.download_info_json',
                             lambda url: _fake_info())
         monkeypatch.setattr('src.elaborazione.download_tiles',
-                            lambda info, tile_dir: ([], []))
+                            lambda info, tile_dir, **kwargs: ([], []))
         monkeypatch.setattr('src.elaborazione.rebuild_image',
-                            lambda info, tile_dir: img)
+                            lambda info, tile_dir, **kwargs: img)
         monkeypatch.setattr('src.elaborazione.build_image_metadata',
                             lambda **kw: {'_json': {}})
         monkeypatch.setattr('src.elaborazione.save_image_variants',
@@ -435,7 +435,7 @@ class TestProcessRegisterPDF:
         real_img = Image.new('RGB', (10, 10), color='white')
 
         call_n = [0]
-        def rebuild_alternating(info, tile_dir):
+        def rebuild_alternating(info, tile_dir, **kwargs):
             call_n[0] += 1
             return real_img if call_n[0] % 2 == 1 else None  # secondo canvas fallisce
 

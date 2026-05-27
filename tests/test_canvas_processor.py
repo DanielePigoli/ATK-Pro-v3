@@ -83,7 +83,7 @@ def manifest_con_canvas_valido():
 
 def test_process_single_canvas_crea_file(tmp_path, manifest_con_canvas_valido, monkeypatch):
     monkeypatch.setattr(cp, "download_tiles", lambda info, path, **kwargs: None)
-    monkeypatch.setattr(cp, "rebuild_image", lambda info, path: b"img")
+    monkeypatch.setattr(cp, "rebuild_image", lambda info, path, **kwargs: b"img")
     # Evitiamo la chiamata reale a requests.get per info.json
     monkeypatch.setattr(cp, "_get_info_json_for_canvas", lambda canvas: {"@id": "https://example.org/service/1"})
     monkeypatch.setattr(cp, "save_image_variants", lambda img, folder, name, formats, meta=None: Path(folder).joinpath(f"{name}.jpg").write_bytes(img))
@@ -116,8 +116,8 @@ def test_process_single_canvas_senza_service(monkeypatch):
 
 
 def test_service_id_lista(monkeypatch, tmp_path, manifest_con_service_lista):
-    monkeypatch.setattr(cp, "download_tiles", lambda info, path: None)
-    monkeypatch.setattr(cp, "rebuild_image", lambda info, path: b"img")
+    monkeypatch.setattr(cp, "download_tiles", lambda info, path, **kwargs: None)
+    monkeypatch.setattr(cp, "rebuild_image", lambda info, path, **kwargs: b"img")
     monkeypatch.setattr(cp, "save_image_variants", lambda img, folder, name, formats, meta=None: Path(folder).joinpath(f"{name}.jpg").write_bytes(img))
     monkeypatch.setattr(cp, "build_image_metadata", lambda **kwargs: {})
     monkeypatch.setattr(cp, "estrai_metadati_da_manifest", lambda path, imgs: None)
@@ -164,8 +164,8 @@ def test_process_all_canvases_multipli(monkeypatch, tmp_path):
         }]
     }
 
-    monkeypatch.setattr(cp, "download_tiles", lambda info, path: None)
-    monkeypatch.setattr(cp, "rebuild_image", lambda info, path: b"img")
+    monkeypatch.setattr(cp, "download_tiles", lambda info, path, **kwargs: None)
+    monkeypatch.setattr(cp, "rebuild_image", lambda info, path, **kwargs: b"img")
     monkeypatch.setattr(cp, "save_image_variants", lambda img, folder, name, formats, meta=None: Path(folder).joinpath(f"{name}.jpg").write_bytes(img))
     monkeypatch.setattr(cp, "build_image_metadata", lambda **kwargs: {})
     monkeypatch.setattr(cp, "estrai_metadati_da_manifest", lambda path, imgs: None)

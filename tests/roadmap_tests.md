@@ -72,6 +72,16 @@ Primo riallineamento successivo:
 Risultato dopo il riallineamento dei test v2 oggettivi: `432 passed, 18 failed,
 38 skipped`.
 
+Secondo riallineamento successivo:
+
+- mock di pipeline canvas/PDF aggiornati alle firme v3 con `source_url` e
+  `portale`;
+- fake `Elaborazione` del worker aggiornato per accettare keyword future senza
+  bloccare il test di conferma PDF.
+
+Risultato dopo il riallineamento dei mock pipeline v3: `443 passed, 7 failed,
+38 skipped`.
+
 Questa suite non e' ancora criterio bloccante per RC tecnica; va trasformata in
 baseline completa tramite riallineamenti mirati e PR dedicate.
 

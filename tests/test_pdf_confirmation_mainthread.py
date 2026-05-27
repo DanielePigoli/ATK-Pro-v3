@@ -14,13 +14,14 @@ def test_worker_emits_need_pdf_and_main_handles(monkeypatch, tmp_path):
 
     # Patch Elaborazione used inside the worker to a lightweight fake
     class FakeElab:
-        def __init__(self, mode, url, out_dir, glossario_data=None, lingua='IT'):
+        def __init__(self, mode, url, out_dir, glossario_data=None, lingua='IT', **kwargs):
             self.mode = mode
             self.url = url
             self.out_dir = out_dir
         def set_nome_file(self, name):
             self.name = name
         def run(self, formats=None):
+            self.ask_pdf_cb(self.name)
             return True
 
     import src.qt_worker as qw
