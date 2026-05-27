@@ -4,6 +4,8 @@ Data audit: 2026-05-26
 
 Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_06_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_07_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. La guida principale italiana e `assets/it/testuali/guida_02_operazioni_base.html` sono state aggiornate nella sezione Servizi per descrivere i sei moduli v3 come operativi. I percorsi menu residui in guida 03, 04 e 05 sono stati aggiornati al menu attuale, e le FAQ italiane sono state ripulite dai riferimenti obsoleti individuati. Il file esempio `input_link_base_v2.0.txt` e' stato documentato come nome storico mantenuto per compatibilita'. Resta da valutare la propagazione multilingue.
 
+Nota successiva 2026-05-27: `assets/it/testuali/guida.html` e' stato riportato alla funzione corretta di indice modulare. Il corpo operativo duplicato e' stato rimosso dalla guida principale, lasciando il contenuto dettagliato nei file `guida_01...guida_09`. Il verificatore `verify_italian_guide_content.py` ora controlla che l'indice linki tutti i moduli italiani e non torni a contenere blocchi estesi duplicati.
+
 ## Esito sintetico aggiornato
 
 La verifica strutturale dei documenti del menu Documenti e dei link locali e' verde. Dopo gli interventi successivi all'audit iniziale, la guida italiana copre ora i tre blocchi che erano release blocker immediati: Ricerca assistita AI, Traduzione OCR e analisi genealogica/GEDCOM.
@@ -23,8 +25,9 @@ La scansione dei marker critici sulla guida italiana non trova piu' riferimenti 
 ## Stato dei blocchi iniziali
 
 1. Guida principale `assets/it/testuali/guida.html`.
-   - La sezione Servizi e' stata riallineata ai sei moduli operativi v3.
-   - Il file esempio `input_link_base_v2.0.txt` e' documentato come nome storico mantenuto per compatibilita'.
+   - Riallineata come indice/portale della guida italiana.
+   - Linka i nove moduli sezionali e contiene solo sommari brevi, stato guida e perimetro v3.
+   - Il corpo operativo resta nei file sezionali dedicati, evitando duplicazioni.
 
 2. Ricerca assistita AI.
    - Fatto per la guida italiana con `assets/it/testuali/guida_09_ricerca_assistita_ai.html`.
@@ -60,7 +63,7 @@ La scansione dei marker critici sulla guida italiana non trova piu' riferimenti 
 
 | File | Stato | Problema principale | Azione prima di RC |
 | --- | --- | --- | --- |
-| `guida.html` | Parziale | Sezione Servizi riallineata; nome storico `input_link_base_v2.0.txt` documentato | Rilettura finale |
+| `guida.html` | Riallineata come indice | La guida principale non duplica piu' i moduli sezionali; linka `guida_01...guida_09` | Verificare propagazione futura |
 | `guida_01_installazione_configurazione.html` | Parziale | Mappa funzioni aggiornata nei marker critici; resta revisione editoriale complessiva | Rilettura finale |
 | `guida_02_operazioni_base.html` | Riallineata in italiano | Sezione Servizi aggiornata ai sei moduli operativi v3 | Verificare propagazione futura |
 | `guida_03_visualizzazione_immagini.html` | Riallineata in italiano | Percorso menu aggiornato | Verificare propagazione futura |
@@ -84,5 +87,6 @@ La prima RC v3.0.0 puo' partire quando:
 - Ricerca assistita AI, Traduzione OCR e analisi genealogica/GEDCOM sono documentate nella guida italiana.
 - I percorsi di menu corrispondono alla UI attuale.
 - Le sezioni su provider IA evitano informazioni commerciali o tecniche non verificate.
+- La guida principale resta un indice modulare e non duplica il contenuto dei file sezionali.
 - E' chiaro lo stato delle altre lingue: aggiornate, oppure esplicitamente dichiarate come traduzioni da riallineare dopo la fonte italiana.
 - `verify_document_assets.py`, `verify_localization.py`, `validate_glossary.py` e `verify_glossary.py` restano verdi.
