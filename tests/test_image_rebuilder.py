@@ -27,9 +27,10 @@ def test_rebuild_image_from_tiles(monkeypatch, tmp_path):
     def fake_open(path):
         return f"tile:{os.path.basename(path)}"
 
-    def fake_new(mode, size):
+    def fake_new(mode, size, color=None):
         assert mode == "RGB"
         assert size == (200, 100)
+        assert color == (255, 255, 255)
         return dummy_img
 
     monkeypatch.setattr(Image, "open", lambda path: fake_open(path))

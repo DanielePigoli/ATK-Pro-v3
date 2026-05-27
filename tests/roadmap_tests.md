@@ -82,6 +82,18 @@ Secondo riallineamento successivo:
 Risultato dopo il riallineamento dei mock pipeline v3: `443 passed, 7 failed,
 38 skipped`.
 
+Terzo riallineamento successivo:
+
+- test headless aggiornato per passare uno stato esplicito a
+  `esegui_elaborazione`;
+- corretto il log iniziale di `esegui_elaborazione`, che usava variabili prima
+  dell'assegnazione;
+- mock `Image.new` in `test_image_rebuilder.py` aggiornato alla firma PIL usata
+  dalla ricostruzione con colore di sfondo.
+
+Risultato dopo il riallineamento headless/rebuilder: `445 passed, 5 failed,
+38 skipped`.
+
 Questa suite non e' ancora criterio bloccante per RC tecnica; va trasformata in
 baseline completa tramite riallineamenti mirati e PR dedicate.
 

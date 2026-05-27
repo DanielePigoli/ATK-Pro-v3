@@ -2,7 +2,7 @@ from src import elaborazione as elab_mod
 
 
 class FakeElab:
-    def __init__(self, modalita, url, out_dir, glossario_data=None, lingua='IT'):
+    def __init__(self, modalita, url, out_dir, glossario_data=None, lingua='IT', **kwargs):
         self.modalita = modalita
         self.url = url
         self.output_dir = out_dir
@@ -24,7 +24,13 @@ def test_esegui_elaborazione_headless(tmp_path, monkeypatch):
     # Ensure an output folder exists and set it in module state
     out = tmp_path / 'out'
     out.mkdir()
-    elab_mod.state['output_folder'] = str(out)
+    state = {
+        'records': records,
+        'formats': formats,
+        'output_folder': str(out),
+        'output_folders_doc': [],
+        'output_folders_reg': [str(out)],
+    }
 
     # Patch Elaborazione with our FakeElab and ProgressDialog to avoid GUI
     monkeypatch.setattr(elab_mod, 'Elaborazione', FakeElab)
@@ -42,7 +48,7 @@ def test_esegui_elaborazione_headless(tmp_path, monkeypatch):
     # Patch ProgressDialog where it is imported from (src.user_prompts)
     monkeypatch.setattr('src.user_prompts.ProgressDialog', DummyProgress)
 
-    risultati = elab_mod.esegui_elaborazione(glossario_data=None, lingua='IT', records=records, formats=formats)
+    risultati = elab_mod.esegui_elaborazione(state, glossario_data=None, lingua='IT', records=records, formats=formats)
     assert isinstance(risultati, list)
     assert len(risultati) == 1
     assert risultati[0]['status'] in ('SUCCESS', 'FAILED', 'CANCELLED')

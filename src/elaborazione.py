@@ -1736,12 +1736,6 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
     Wrapper che adatta la classe Elaborazione alle interfacce v1.4.1.
     Ora accetta anche un parent opzionale per ProgressDialog.
     """
-    logger.info(f"[STATO] output_folder: {output_folder}")
-    logger.info(f"[STATO] output_folders_doc: {output_folders_doc}")
-    logger.info(f"[STATO] output_folders_reg: {output_folders_reg}")
-    logger.info(f"[STATO] records: {[{'modalita': r.get('modalita'), 'nome_file': r.get('nome_file'), 'output': r.get('output')} for r in records]}")
-    # parent ora è un argomento esplicito
-
     if records is None:
         records = state["records"]
     if formats is None:
@@ -1749,6 +1743,11 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
     output_folder = state["output_folder"]
     output_folders_doc = state.get("output_folders_doc", [])
     output_folders_reg = state.get("output_folders_reg", [])
+    logger.info(f"[STATO] output_folder: {output_folder}")
+    logger.info(f"[STATO] output_folders_doc: {output_folders_doc}")
+    logger.info(f"[STATO] output_folders_reg: {output_folders_reg}")
+    logger.info(f"[STATO] records: {[{'modalita': r.get('modalita'), 'nome_file': r.get('nome_file'), 'output': r.get('output')} for r in records]}")
+    # parent ora è un argomento esplicito
 
     if not records:
         raise RuntimeError("Nessun record caricato")
