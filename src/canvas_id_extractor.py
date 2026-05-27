@@ -96,12 +96,86 @@ def extract_ud_canvas_id(driver) -> str | None:
 def extract_ud_canvas_id_from_infojson_xhr(url: str, timeout_ms: int = 30000) -> str | None:
     """
     Estrae il canvas_id per documenti an_ud usando Playwright.
-    Per ora, ritorna None per far ricadere su fallback (dato che Playwright 
-    non funziona affidabilmente nel PyInstaller compilato).
-    Il fallback in elaborazione.py userà extract_canvas_id_from_url().
+    In ambiente PyInstaller compilato il percorso browser resta disabilitato e
+    il chiamante puo' ricadere su fallback HTML/URL.
     """
-    # NOTA: Playwright fallisce silenziosamente nel PyInstaller compilato
-    # perché non ha stdout/stderr. Disabilitato per ora.
-    # TODO: Implementare un metodo basato su requests HTTP + DOM parsing
-    log_to_file("[UD] extract_ud_canvas_id_from_infojson_xhr: Playwright disabilitato nel PyInstaller compilato")
+    if getattr(sys, "frozen", False):
+        log_to_file("[UD] extract_ud_canvas_id_from_infojson_xhr: Playwright disabilitato nel PyInstaller compilato")
+        return None
+
+    def _extract_from_text(text: str) -> str | None:
+        if not text:
+            return None
+        patterns = [
+            r"/iiif/2/([A-Za-z0-9]+)/info\.json",
+            r"/iiif/2/([A-Za-z0-9]+)/",
+            r"canvasId:\s*['\"][^'\"]*/([A-Za-z0-9]+)['\"]",
+            r'"@id"\s*:\s*"[^"]*/iiif/2/([A-Za-z0-9]+)',
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, text)
+            if match:
+                return match.group(1)
+        return None
+
+    browser = None
+    context = None
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context()
+            try:
+                context.set_default_timeout(timeout_ms)
+            except Exception:
+                pass
+            page = context.new_page()
+
+            try:
+                page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+            except TypeError:
+                page.goto(url)
+
+            try:
+                response = page.wait_for_response(
+                    lambda resp: "/iiif/2/" in getattr(resp, "url", "") and getattr(resp, "url", "").endswith("/info.json"),
+                    timeout=timeout_ms,
+                )
+                canvas_id = _extract_from_text(getattr(response, "url", ""))
+                if canvas_id:
+                    log_to_file(f"[UD] Canvas ID da XHR info.json: {canvas_id}")
+                    return canvas_id
+            except Exception as e:
+                log_to_file(f"[UD] XHR info.json non intercettato: {str(e)[:100]}")
+
+            try:
+                canvas_id = _extract_from_text(page.content())
+                if canvas_id:
+                    log_to_file(f"[UD] Canvas ID da HTML pagina: {canvas_id}")
+                    return canvas_id
+            except Exception as e:
+                log_to_file(f"[UD] Errore lettura HTML pagina: {str(e)[:100]}")
+
+            for frame in getattr(page, "frames", []) or []:
+                try:
+                    canvas_id = _extract_from_text(frame.content())
+                    if canvas_id:
+                        log_to_file(f"[UD] Canvas ID da frame: {canvas_id}")
+                        return canvas_id
+                except Exception as e:
+                    log_to_file(f"[UD] Errore lettura frame: {str(e)[:100]}")
+
+    except Exception as e:
+        log_to_file(f"[UD] Errore Playwright: {str(e)[:100]}")
+    finally:
+        try:
+            if context is not None:
+                context.close()
+        except Exception:
+            pass
+        try:
+            if browser is not None:
+                browser.close()
+        except Exception:
+            pass
+
     return None

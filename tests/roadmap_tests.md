@@ -94,6 +94,18 @@ Terzo riallineamento successivo:
 Risultato dopo il riallineamento headless/rebuilder: `445 passed, 5 failed,
 38 skipped`.
 
+Quarto riallineamento successivo:
+
+- percorso Playwright di `extract_ud_canvas_id_from_infojson_xhr` riattivato in
+  ambiente sviluppo/test e mantenuto disabilitato in PyInstaller compilato;
+- fallback su URL XHR, HTML pagina e frame coperti dai test;
+- marker `gui` registrato in `pytest.ini` per eliminare warning di raccolta.
+
+Risultato dopo il riallineamento canvas/Playwright: `450 passed, 38 skipped`.
+
+La suite ampia e' ora verde; gli skip residui sono test dichiarati non
+applicabili o dipendenti da componenti non implementati/esterni.
+
 Questa suite non e' ancora criterio bloccante per RC tecnica; va trasformata in
 baseline completa tramite riallineamenti mirati e PR dedicate.
 
