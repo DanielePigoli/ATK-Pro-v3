@@ -1,6 +1,6 @@
 # Roadmap test - ATK-Pro v3.0
 
-Data snapshot: 2026-05-26
+Data snapshot: 2026-05-27
 
 Questa roadmap sostituisce la precedente fotografia v2.0. I numeri storici
 249/296 non vengono piu usati come baseline, perche non descrivono lo stato
@@ -13,10 +13,11 @@ Verifiche generali gia verdi:
 - `python verify_localization.py`
 - `python validate_glossary.py`
 - `python verify_glossary.py`
+- `python verify_disclaimer_consent.py`
 - `python verify_document_assets.py`
 - `python verify_italian_guide_content.py`
 - `python verify_portal_matrix_workbook.py`
-- `python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py`
+- `python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py verify_disclaimer_consent.py verify_document_assets.py verify_italian_guide_content.py verify_portal_matrix_workbook.py`
 
 Nota pre-release: `verify_document_assets.py` controlla presenza e link locali
 dei documenti, non la qualita contenutistica della guida. L'audit contenutistico
@@ -27,9 +28,9 @@ La checklist di go/no-go per RC tecnica e release pubblica v3 e tracciata in
 Subset portali/manifest/tile/worker:
 
 - comando:
-  `python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py tests\test_tile_downloader.py tests\test_qt_worker_coverage.py -q`
+  `python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py tests\test_tile_downloader.py tests\test_qt_worker_coverage.py tests\test_portal_registry.py -q`
 - risultato verificato:
-  `43 passed`
+  `54 passed`
 
 Nota: durante l'audit post-localizzazione e stato riallineato il mock di
 `tests/test_tile_downloader.py` alla firma attuale di `download_tile`.

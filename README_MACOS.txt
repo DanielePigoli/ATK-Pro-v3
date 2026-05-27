@@ -50,6 +50,10 @@ HOW TO OPEN ATK-Pro (choose one method):
   4. Click "Open" again in the confirmation dialog.
 
 FIRST LAUNCH:
+  The DMG shows the legal disclaimer as an EULA, and ATK-Pro also requires
+  explicit acceptance of the current v3 legal disclaimer before the main
+  window is shown. If the disclaimer is not accepted, the application closes
+  without continuing.
   ATK-Pro will automatically download Chromium (~150 MB) on first use.
   This may take a few minutes. An internet connection is required.
 

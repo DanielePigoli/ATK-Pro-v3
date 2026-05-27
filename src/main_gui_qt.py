@@ -11,7 +11,10 @@ from PySide6.QtWidgets import (
 
 # Versione corrente dell'applicazione
 VERSION = "3.0.0"
-GITHUB_REPO = "DanielePigoli/ATK-Pro-v2"
+GITHUB_REPO = "DanielePigoli/ATK-Pro-v3"
+DISCLAIMER_REVISION = "v3.0.0-legal-disclaimer-2026-05-27"
+DISCLAIMER_ACCEPT_PARAM = f"/ATKACCEPTDISCLAIMER={DISCLAIMER_REVISION}"
+DISCLAIMER_SOURCE_LANGUAGE = "it"
 
 # Stato globale
 state = {
@@ -244,8 +247,8 @@ def _is_first_run() -> bool:
     return not _os.path.exists(_config_file_path())
 
 
-def _read_config_disclaimer_accepted() -> bool:
-    """Ritorna True se l'utente ha già accettato il disclaimer (chiave disclaimer_accepted nel config)."""
+def _read_config_disclaimer_revision() -> str | None:
+    """Legge la revisione del disclaimer accettata nel config utente."""
     import os as _os
     import json as _json
     try:
@@ -253,15 +256,71 @@ def _read_config_disclaimer_accepted() -> bool:
         if _os.path.exists(cfg):
             with open(cfg, encoding="utf-8") as fh:
                 data = _json.load(fh)
-            return bool(data.get("disclaimer_accepted", False))
+            revision = data.get("disclaimer_revision") or data.get("disclaimer_accepted_revision")
+            if isinstance(revision, str) and revision.strip():
+                return revision.strip()
     except Exception:
         pass
-    return False
+    return None
+
+
+def _read_windows_disclaimer_revision() -> str | None:
+    """Legge la revisione del disclaimer accettata dall'installer Windows."""
+    if sys.platform != "win32" or IS_PORTABLE:
+        return None
+    try:
+        import winreg
+        reg_path = r"Software\\ATK-Pro"
+        for root in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
+            try:
+                reg_key = winreg.OpenKey(root, reg_path)
+                revision, _ = winreg.QueryValueEx(reg_key, "DisclaimerRevision")
+                winreg.CloseKey(reg_key)
+                if isinstance(revision, str) and revision.strip():
+                    return revision.strip()
+            except OSError:
+                continue
+    except Exception:
+        pass
+    return None
+
+
+def _read_linux_system_disclaimer_revision() -> str | None:
+    """Legge la revisione accettata a livello di pacchetto Linux, se presente."""
+    if sys.platform != "linux":
+        return None
+    for path in ("/etc/atk-pro/disclaimer_revision", "/etc/atk-pro/defaults.json"):
+        try:
+            if path.endswith(".json"):
+                import json as _json
+                with open(path, encoding="utf-8") as fh:
+                    data = _json.load(fh)
+                revision = data.get("disclaimer_revision")
+            else:
+                with open(path, encoding="utf-8") as fh:
+                    revision = fh.read().strip()
+            if isinstance(revision, str) and revision.strip():
+                return revision.strip()
+        except Exception:
+            continue
+    return None
+
+
+def _is_current_disclaimer_accepted() -> bool:
+    """Ritorna True solo se e' stata accettata la revisione legale corrente."""
+    accepted_revisions = (
+        _read_config_disclaimer_revision(),
+        _read_windows_disclaimer_revision(),
+        _read_linux_system_disclaimer_revision(),
+    )
+    return DISCLAIMER_REVISION in accepted_revisions
 
 
 def _write_config_disclaimer_accepted() -> None:
-    """Scrive disclaimer_accepted=true nel config JSON."""
+    """Scrive nel config utente l'accettazione della revisione legale corrente."""
     _write_config_prefs("disclaimer_accepted", True)
+    _write_config_prefs("disclaimer_revision", DISCLAIMER_REVISION)
+    _write_config_prefs("disclaimer_accepted_version", VERSION)
 
 
 def _get_default_output_dir(sub: str = "") -> str:
@@ -502,6 +561,18 @@ IS_PORTABLE = os.path.exists(_PORTABLE_SENTINEL)
 ASSET_COMMON = os.path.join(BASE_DIR, "assets", "common")
 ASSET_LANG = os.path.join(BASE_DIR, "assets")
 # Funzioni di utilità definite subito dopo gli import
+
+def _current_disclaimer_txt_path() -> str:
+    return os.path.join(
+        ASSET_LANG,
+        DISCLAIMER_SOURCE_LANGUAGE,
+        "testuali",
+        "disclaimer_legale_ATK-Pro.txt",
+    )
+
+
+def _load_current_disclaimer_text() -> str:
+    return carica_testo_asset(_current_disclaimer_txt_path())
 
 def carica_file_esempio(lingua: str) -> str:
     path = os.path.join(ASSET_LANG, lingua, "testuali", "input_link_base.txt")
@@ -1034,6 +1105,17 @@ class MainWindow(QMainWindow):
         """Scarica e installa automaticamente il nuovo installer (solo Windows)."""
         gm = lambda k: get_msg(self.glossario_data, k, self.lingua) or k
 
+        if not _is_current_disclaimer_accepted():
+            if not mostra_disclaimer(self.glossario_data, self.lingua):
+                QMessageBox.warning(
+                    self,
+                    gm("Aggiornamento") or "Aggiornamento",
+                    gm("Aggiornamento annullato: il disclaimer legale non e' stato accettato.")
+                    or "Aggiornamento annullato: il disclaimer legale non e' stato accettato.",
+                )
+                return
+            _write_config_disclaimer_accepted()
+
         installer_asset = None
         for a in assets:
             name = a.get('name', '')
@@ -1091,7 +1173,7 @@ class MainWindow(QMainWindow):
             progress_dlg.reset()
             progress_dlg.close()
             try:
-                _subprocess_mod.Popen([path, '/SILENT', '/NORESTART'])
+                _subprocess_mod.Popen([path, '/SILENT', '/NORESTART', DISCLAIMER_ACCEPT_PARAM])
             except Exception as exc:
                 QMessageBox.critical(
                     self, gm("Errore"),
@@ -1729,15 +1811,11 @@ class MainWindow(QMainWindow):
         )
 
     def mostra_disclaimer(self):
-        percorso_html = asset_path(f"assets/{self.lingua}/testuali/disclaimer_legale_ATK-Pro.html")
-        percorso_txt = asset_path(f"assets/{self.lingua}/testuali/disclaimer_legale_ATK-Pro.txt")
+        percorso_txt = _current_disclaimer_txt_path()
         try:
-            if os.path.exists(percorso_html):
-                self._mostra_html("Disclaimer", percorso_html)
-            else:
-                msg = get_msg(self.glossario_data, "Disclaimer non disponibile", self.lingua)
-                testo = carica_testo_asset(percorso_txt) or msg or "Disclaimer non disponibile."
-                self._mostra_testo_lungo("Disclaimer", testo)
+            msg = get_msg(self.glossario_data, "Disclaimer non disponibile", self.lingua)
+            testo = carica_testo_asset(percorso_txt) or msg or "Disclaimer non disponibile."
+            self._mostra_testo_lungo("Disclaimer", testo)
         except Exception as e:
             from PySide6.QtWidgets import QMessageBox
             msg = get_msg(self.glossario_data, "Impossibile aprire il disclaimer", self.lingua)
@@ -1984,9 +2062,8 @@ def _styled_text_edit(read_only=True, initial_text=""):
 
 
 def mostra_disclaimer(glossario_data, lingua):
-    disclaimer_path = os.path.join(ASSET_LANG, lingua, "testuali", "disclaimer_legale_ATK-Pro.txt")
     msg = get_msg(glossario_data, "Disclaimer non disponibile", lingua.upper())
-    disclaimer_text = carica_testo_asset(disclaimer_path) or msg or "Disclaimer non disponibile"
+    disclaimer_text = _load_current_disclaimer_text() or msg or "Disclaimer non disponibile"
 
     dlg = QDialog()
     dlg.setWindowTitle(get_msg(glossario_data, "Disclaimer", lingua.upper()))
@@ -3201,13 +3278,12 @@ def main():
         if IS_PORTABLE:
             # Portable: nessun installer → usa config file, non il registro Windows
             saved = _read_config_language()
-            _disc_ok = _read_config_disclaimer_accepted()
-            if saved and _disc_ok:
+            if saved:
                 lingua = saved
                 primo_avvio = False
                 logging.debug(f"Portable: lingua da config file: {lingua}")
             else:
-                # Primo avvio portable: scegli lingua poi mostra disclaimer
+                # Primo avvio portable: scegli lingua; il disclaimer viene richiesto prima di mostrare la UI
                 primo_avvio = True
                 glossario_data_tmp = carica_glossario("en")
                 lingua = scegli_lingua(glossario_data_tmp, "en")
@@ -3254,10 +3330,8 @@ def main():
                 _write_config_language(lingua)
                 logging.debug(f"Linux/macOS primo avvio: lingua scelta: {lingua}")
 
-        # Installazione GUI (.deb via GDebi/GNOME Software/etc.): il preinst
-        # scrive il flag pending-disclaimer e non mostra nulla sullo schermo.
-        # Al primo avvio qui forziamo la selezione lingua esplicita da parte
-        # dell'utente, indipendentemente dal default di sistema impostato dal postinst.
+        # Compatibilita' con pacchetti Linux pre-v3 che potevano lasciare un
+        # flag pending-disclaimer: in tal caso l'app richiede comunque consenso.
         _PENDING_FLAG_EARLY = "/var/lib/atk-pro/pending-disclaimer"
         if (not primo_avvio
                 and sys.platform == "linux"
@@ -3284,6 +3358,31 @@ def main():
 
     glossario_data = carica_glossario(lingua)
 
+    # Il disclaimer legale v3 e' sostanzialmente diverso dalle release precedenti:
+    # l'app puo' proseguire solo se la revisione corrente risulta accettata.
+    _PENDING_FLAG = "/var/lib/atk-pro/pending-disclaimer"
+    _ha_flag_pendente = (
+        not primo_avvio
+        and sys.platform.startswith("linux")
+        and _is_frozen
+        and os.path.exists(_PENDING_FLAG)
+    )
+    if _ha_flag_pendente or not _is_current_disclaimer_accepted():
+        accettato = mostra_disclaimer(glossario_data, lingua)
+        if not accettato:
+            logging.warning("Disclaimer rifiutato -> chiusura applicazione")
+            sys.exit(1)
+
+        _write_config_disclaimer_accepted()
+        logging.info("Disclaimer accettato per la revisione %s", DISCLAIMER_REVISION)
+
+        if _ha_flag_pendente:
+            try:
+                os.remove(_PENDING_FLAG)
+                logging.info("Flag pending-disclaimer rimosso dopo accettazione")
+            except OSError as e:
+                logging.warning(f"Impossibile rimuovere flag pending-disclaimer: {e}")
+
     # Crea cartelle output di default (silenzioso, exist_ok=True)
     _ensure_default_output_dirs()
 
@@ -3304,39 +3403,6 @@ def main():
             window._mostra_dialogo_aggiornamento(is_newer, latest_version, release_url, assets, silent_if_ok=False)
     window._startup_checker.result.connect(_on_startup_update)
     QTimer.singleShot(3000, window._startup_checker.start)  # 3s dopo l'avvio
-
-    # Mostra disclaimer al primo avvio oppure dopo installazione silente (GNOME Software)
-    _PENDING_FLAG = "/var/lib/atk-pro/pending-disclaimer"
-    _ha_flag_pendente = (
-        not primo_avvio
-        and sys.platform.startswith("linux")
-        and _is_frozen
-        and os.path.exists(_PENDING_FLAG)
-    )
-    if primo_avvio or _ha_flag_pendente:
-        accettato = mostra_disclaimer(glossario_data, lingua)
-        if _ha_flag_pendente and accettato:
-            # Rimuovi flag solo se accettato; se rifiutato rimane per il prossimo avvio
-            try:
-                os.remove(_PENDING_FLAG)
-                logging.info("Flag pending-disclaimer rimosso dopo accettazione")
-            except OSError as e:
-                logging.warning(f"Impossibile rimuovere flag pending-disclaimer: {e}")
-        if IS_PORTABLE and accettato:
-            # Portable: persisti l'accettazione nel config affinché non venga richiesta al prossimo avvio
-            _write_config_disclaimer_accepted()
-            logging.info("Portable: disclaimer accettato, salvato in config.json")
-        if not accettato:
-            logging.warning("Disclaimer rifiutato → chiusura applicazione")
-            # Cancella lingua salvata: al prossimo avvio primo_avvio=True / flag ancora presente
-            try:
-                _cfg = _config_file_path()
-                if os.path.exists(_cfg):
-                    os.remove(_cfg)
-                    logging.info("Config lingua cancellata dopo rifiuto disclaimer")
-            except OSError as _e:
-                logging.warning(f"Impossibile cancellare config lingua: {_e}")
-            sys.exit(1)
 
     # Gestione chiusura con banner
     def on_close():

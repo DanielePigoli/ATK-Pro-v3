@@ -7,6 +7,7 @@
 #define MyAppPublisher "ATK-Pro Project"
 #define MyAppURL "https://github.com/DanielePigoli/ATK-Pro-v3"
 #define MyAppExeName "ATK-Pro.exe"
+#define MyDisclaimerRevision "v3.0.0-legal-disclaimer-2026-05-27"
 
 [CustomMessages]
 en.LicenseAcceptance=License Acceptance
@@ -311,27 +312,29 @@ UninstallDisplayName={#MyAppName} {#MyAppVersion}
 
 [Languages]
 
-; 20 lingue supportate (autonimi per il menu)
-Name: "en"; MessagesFile: "compiler:Default.isl"; LicenseFile: "assets\en\testuali\disclaimer_legale_ATK-Pro.txt"
+; 20 lingue supportate (autonimi per il menu).
+; Il testo legale vincolante della revisione v3.0.0 resta quello italiano
+; finche' le traduzioni legali non saranno riallineate in modo completo.
+Name: "en"; MessagesFile: "compiler:Default.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
 Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"; LicenseFile: "assets\es\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "fr"; MessagesFile: "compiler:Languages\French.isl"; LicenseFile: "assets\fr\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "de"; MessagesFile: "compiler:Languages\German.isl"; LicenseFile: "assets\de\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "pt"; MessagesFile: "inno_setup_languages\Portuguese.isl"; LicenseFile: "assets\pt\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"; LicenseFile: "assets\ru\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "ar"; MessagesFile: "compiler:Languages\Arabic.isl"; LicenseFile: "assets\ar\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl"; LicenseFile: "assets\nl\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "he"; MessagesFile: "compiler:Languages\Hebrew.isl"; LicenseFile: "assets\he\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "ja"; MessagesFile: "compiler:Languages\Japanese.isl"; LicenseFile: "assets\ja\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "zh"; MessagesFile: "inno_setup_languages\Chinese.isl"; LicenseFile: "assets\zh\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "pl"; MessagesFile: "compiler:Languages\Polish.isl"; LicenseFile: "assets\pl\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "tr"; MessagesFile: "compiler:Languages\Turkish.isl"; LicenseFile: "assets\tr\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "da"; MessagesFile: "inno_setup_languages\Danish.isl"; LicenseFile: "assets\da\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "no"; MessagesFile: "compiler:Languages\Norwegian.isl"; LicenseFile: "assets\no\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "vi"; MessagesFile: "inno_setup_languages\Vietnamese.isl"; LicenseFile: "assets\vi\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "el"; MessagesFile: "inno_setup_languages\Greek.isl"; LicenseFile: "assets\el\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "ro"; MessagesFile: "inno_setup_languages\Romanian.isl"; LicenseFile: "assets\ro\testuali\disclaimer_legale_ATK-Pro.txt"
-Name: "sv"; MessagesFile: "inno_setup_languages\Swedish.isl"; LicenseFile: "assets\sv\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "fr"; MessagesFile: "compiler:Languages\French.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "de"; MessagesFile: "compiler:Languages\German.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "pt"; MessagesFile: "inno_setup_languages\Portuguese.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "ar"; MessagesFile: "compiler:Languages\Arabic.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "he"; MessagesFile: "compiler:Languages\Hebrew.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "ja"; MessagesFile: "compiler:Languages\Japanese.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "zh"; MessagesFile: "inno_setup_languages\Chinese.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "pl"; MessagesFile: "compiler:Languages\Polish.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "tr"; MessagesFile: "compiler:Languages\Turkish.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "da"; MessagesFile: "inno_setup_languages\Danish.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "no"; MessagesFile: "compiler:Languages\Norwegian.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "vi"; MessagesFile: "inno_setup_languages\Vietnamese.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "el"; MessagesFile: "inno_setup_languages\Greek.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "ro"; MessagesFile: "inno_setup_languages\Romanian.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
+Name: "sv"; MessagesFile: "inno_setup_languages\Swedish.isl"; LicenseFile: "assets\it\testuali\disclaimer_legale_ATK-Pro.txt"
 
 
 
@@ -396,8 +399,10 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 Root: "HKLM"; Subkey: "Software\{#MyAppName}"; Flags: uninsdeletekey
 Root: "HKLM"; Subkey: "Software\{#MyAppName}"; ValueType: string; ValueName: "InstallDir"; ValueData: "{app}"
 Root: "HKLM"; Subkey: "Software\{#MyAppName}"; ValueType: string; ValueName: "Version"; ValueData: "{#MyAppVersion}"
+Root: "HKLM"; Subkey: "Software\{#MyAppName}"; ValueType: string; ValueName: "DisclaimerRevision"; ValueData: "{#MyDisclaimerRevision}"
 Root: "HKLM"; Subkey: "Software\{#MyAppName}"; ValueType: string; ValueName: "Language"; ValueData: "{language}"; Flags: uninsdeletevalue
 Root: "HKCU"; Subkey: "Software\{#MyAppName}"; ValueType: string; ValueName: "Language"; ValueData: "{language}"; Flags: uninsdeletevalue
+Root: "HKCU"; Subkey: "Software\{#MyAppName}"; ValueType: string; ValueName: "DisclaimerRevision"; ValueData: "{#MyDisclaimerRevision}"; Flags: uninsdeletevalue
 
 [Code]
 // Map Windows UI language IDs to our installer language names
@@ -423,6 +428,51 @@ end;
 var
   DetectedUILang: String;
 
+function HasDisclaimerAcceptanceParam(): Boolean;
+var
+  I: Integer;
+  P: String;
+begin
+  Result := False;
+  for I := 1 to ParamCount do
+  begin
+    P := ParamStr(I);
+    if CompareText(P, '/ATKACCEPTDISCLAIMER={#MyDisclaimerRevision}') = 0 then
+    begin
+      Result := True;
+      Exit;
+    end;
+  end;
+end;
+
+function HasCurrentDisclaimerRevision(): Boolean;
+var
+  Revision: String;
+begin
+  Result := False;
+  if RegQueryStringValue(HKCU, 'Software\{#MyAppName}', 'DisclaimerRevision', Revision) then
+  begin
+    if CompareText(Revision, '{#MyDisclaimerRevision}') = 0 then
+    begin
+      Result := True;
+      Exit;
+    end;
+  end;
+  if RegQueryStringValue(HKLM, 'Software\{#MyAppName}', 'DisclaimerRevision', Revision) then
+  begin
+    if CompareText(Revision, '{#MyDisclaimerRevision}') = 0 then
+    begin
+      Result := True;
+      Exit;
+    end;
+  end;
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  Result := (PageID = wpLicense) and (HasCurrentDisclaimerRevision() or HasDisclaimerAcceptanceParam());
+end;
+
 procedure CurLanguageChanged;
 begin
   Log(Format('Language changed to %s', [ActiveLanguage()]));
@@ -436,6 +486,17 @@ begin
     Log(Format('Detected UI language: %s', [DetectedUILang]))
   else
     Log('UI language detection returned no match');
+
+  if WizardSilent and not (HasDisclaimerAcceptanceParam() or HasCurrentDisclaimerRevision()) then
+  begin
+    MsgBox(
+      'ATK-Pro v3.0.0 requires explicit acceptance of the current legal disclaimer before installation.',
+      mbCriticalError,
+      MB_OK
+    );
+    Result := False;
+    Exit;
+  end;
 
   Result := True;
 end;

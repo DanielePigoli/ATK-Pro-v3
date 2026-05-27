@@ -194,7 +194,7 @@ jobs:
           'Version=1.0' \
           'Type=Application' \
           'Name=ATK-Pro' \
-          'Comment=Estrazione immagini da Canvas LMS (portale Antenati)' \
+          'Comment=IIIF archive and genealogical document consultation toolkit' \
           'Exec=/opt/ATK-Pro/ATK-Pro' \
           'Icon=atk-pro' \
           'Terminal=false' \
@@ -206,7 +206,7 @@ jobs:
 
         # File control del pacchetto
         INSTALLED_SIZE=$(du -sk "$PKG_DIR/opt" | cut -f1)
-        printf 'Package: atk-pro\nVersion: %s\nSection: utils\nPriority: optional\nArchitecture: amd64\nInstalled-Size: %s\nPre-Depends: debconf (>= 0.5) | debconf-2.0\nDepends: libxcb-xinerama0, libxcb-cursor0, libegl1, libdbus-1-3, libxkbcommon-x11-0, xdg-utils\nRecommends: zenity\nMaintainer: Daniele Pigoli\nDescription: ATK-Pro - Estrazione immagini da Canvas LMS\n Strumento per estrarre, visualizzare ed esportare immagini e documenti\n dai corsi Canvas LMS (portale Antenati).\n .\n Supporta 20 lingue: IT, EN, ES, DE, FR, PT, NL, AR, HE, RU,\n JA, SV, ZH, RO, EL, PL, DA, NO, TR, VI\n' \
+        printf 'Package: atk-pro\nVersion: %s\nSection: utils\nPriority: optional\nArchitecture: amd64\nInstalled-Size: %s\nPre-Depends: debconf (>= 0.5) | debconf-2.0\nDepends: libxcb-xinerama0, libxcb-cursor0, libegl1, libdbus-1-3, libxkbcommon-x11-0, xdg-utils\nRecommends: zenity\nMaintainer: Daniele Pigoli\nDescription: ATK-Pro - Genealogical and archival document toolkit\n Tool for assisted consultation, viewing, OCR, translation, export,\n and reconstruction workflows on supported public archival portals.\n .\n Supporta 20 lingue: IT, EN, ES, DE, FR, PT, NL, AR, HE, RU,\n JA, SV, ZH, RO, EL, PL, DA, NO, TR, VI\n' \
           "$VERSION" "$INSTALLED_SIZE" \
           > "$PKG_DIR/DEBIAN/control"
         echo "✓ control creato"

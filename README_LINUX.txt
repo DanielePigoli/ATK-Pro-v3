@@ -20,6 +20,9 @@ INSTALLATION — choose one method:
     3. Run:      ./ATK-Pro
 
 FIRST LAUNCH:
+  Before the main window is shown, ATK-Pro requires explicit acceptance of the
+  current v3 legal disclaimer. If the disclaimer is not accepted, the
+  application closes without continuing.
   ATK-Pro will automatically download Chromium (~150 MB) on first use.
   This may take a few minutes. An internet connection is required.
 

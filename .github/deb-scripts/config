@@ -7,8 +7,16 @@
 set -e
 . /usr/share/debconf/confmodule
 db_version 2.0
+DISCLAIMER_REVISION="v3.0.0-legal-disclaimer-2026-05-27"
 
-if [ "$1" = "install" ]; then
+_CURRENT_DISCLAIMER_REVISION=""
+if [ -f /etc/atk-pro/disclaimer_revision ]; then
+    _CURRENT_DISCLAIMER_REVISION=$(cat /etc/atk-pro/disclaimer_revision 2>/dev/null || true)
+fi
+
+if [ "$1" = "install" ] || {
+    [ "$1" = "upgrade" ] && [ "$_CURRENT_DISCLAIMER_REVISION" != "$DISCLAIMER_REVISION" ]
+}; then
     # Resetta i flag "seen" per forzare la richiesta anche in caso di reinstallazione
     # (senza db_fset, debconf ricorderebbe le risposte precedenti e salterebbe le domande)
     db_fset atk-pro/language seen false || true
@@ -23,7 +31,9 @@ if [ "$1" = "install" ]; then
     # Usa /var/tmp/ (non /tmp/): apt-daemon ha PrivateTmp=yes, /tmp/ non e' visibile a postinst
     printf '%s' "$LANG_CHOSEN" > /var/tmp/atk-pro-install-lang
 
-    # Imposta locale per traduzione disclaimer debconf
+    # Mantiene la lingua scelta per l'app. Il testo legale v3 mostrato da
+    # debconf resta quello italiano canonico finche' le traduzioni non sono
+    # riallineate.
     case "$LANG_CHOSEN" in
         ar)  export LANG=ar_SA.UTF-8 ;;
         da)  export LANG=da_DK.UTF-8 ;;

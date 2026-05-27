@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+DISCLAIMER_REVISION="v3.0.0-legal-disclaimer-2026-05-27"
 
 if [ "$1" = "configure" ]; then
 
@@ -14,7 +15,8 @@ if [ "$1" = "configure" ]; then
 
     # Write system-wide config (fallback for all users / polkit installs)
     mkdir -p /etc/atk-pro
-    printf '{"language": "%s"}\n' "$SELECTED_LANG" > /etc/atk-pro/defaults.json
+    printf '%s\n' "$DISCLAIMER_REVISION" > /etc/atk-pro/disclaimer_revision
+    printf '{"language": "%s", "disclaimer_accepted": true, "disclaimer_revision": "%s"}\n' "$SELECTED_LANG" "$DISCLAIMER_REVISION" > /etc/atk-pro/defaults.json
     echo "ATK-Pro: system language default set to '$SELECTED_LANG'"
 
     # Detect real user: sudo -> polkit/pkexec -> logname -> who
@@ -33,7 +35,7 @@ if [ "$1" = "configure" ]; then
         USER_HOME=$(getent passwd "$ACTUAL_USER" | cut -d: -f6)
         CONFIG_DIR="$USER_HOME/.config/atk-pro"
         mkdir -p "$CONFIG_DIR"
-        printf '{"language": "%s"}\n' "$SELECTED_LANG" > "$CONFIG_DIR/config.json"
+        printf '{"language": "%s", "disclaimer_accepted": true, "disclaimer_revision": "%s"}\n' "$SELECTED_LANG" "$DISCLAIMER_REVISION" > "$CONFIG_DIR/config.json"
         chown -R "$ACTUAL_USER" "$CONFIG_DIR" 2>/dev/null || true
         echo "ATK-Pro: language '$SELECTED_LANG' saved for user $ACTUAL_USER"
     else

@@ -112,7 +112,7 @@ jobs:
         cp -r dist/ATK-Pro.app dist/dmg_intel/
         [ -f "README_MACOS.txt" ] && cp README_MACOS.txt dist/dmg_intel/
         ln -s /Applications dist/dmg_intel/Applications
-        cp assets/en/testuali/disclaimer_legale_ATK-Pro.txt /tmp/atk-disclaimer.txt
+        cp assets/it/testuali/disclaimer_legale_ATK-Pro.txt /tmp/atk-disclaimer.txt
         brew install create-dmg
         DMG_NAME="ATK-Pro-macOS-Intel-v${{ steps.ver.outputs.version }}.dmg"
         create-dmg \
@@ -252,7 +252,7 @@ jobs:
         cp -r dist/ATK-Pro.app dist/dmg_arm64/
         [ -f "README_MACOS.txt" ] && cp README_MACOS.txt dist/dmg_arm64/
         ln -s /Applications dist/dmg_arm64/Applications
-        cp assets/en/testuali/disclaimer_legale_ATK-Pro.txt /tmp/atk-disclaimer.txt
+        cp assets/it/testuali/disclaimer_legale_ATK-Pro.txt /tmp/atk-disclaimer.txt
         brew install create-dmg
         DMG_NAME="ATK-Pro-macOS-AppleSilicon-v${{ steps.ver.outputs.version }}.dmg"
         create-dmg \

@@ -1,6 +1,6 @@
 # Checklist release ATK-Pro v3.0.0
 
-Data snapshot: 2026-05-26
+Data snapshot: 2026-05-27
 
 Questa checklist raccoglie i criteri minimi per decidere se ATK-Pro puo' passare
 da baseline pre-release a RC tecnica v3.0.0, e distingue quel passaggio da una
@@ -24,7 +24,7 @@ release pubblica multilingue completa.
 | Documenti menu | Go | `verify_document_assets.py` deve confermare presenza e link locali per disclaimer, presentazioni e guida. |
 | Guida italiana | Go con rilettura finale | La guida italiana e' la baseline v3; Ricerca assistita AI, Traduzione OCR e GEDCOM sono documentate. Resta consigliata una rilettura editoriale di OCR Avanzato e FAQ. |
 | Altre lingue | Go solo con dichiarazione | Per RC tecnica e' accettabile dichiarare che la guida italiana e' la fonte v3 primaria. Per release pubblica multilingue serve propagazione o nota visibile di stato. |
-| Disclaimer e policy portali | Go | Il disclaimer esclude scraping massivo, aggiramento login/paywall e portali commerciali chiusi; i servizi esterni sono facoltativi e attivati dall'utente. |
+| Disclaimer e policy portali | Go con consenso revisionato | Il disclaimer esclude scraping massivo, aggiramento login/paywall e portali commerciali chiusi; la revisione v3 deve essere accettata esplicitamente prima di installazione, aggiornamento automatico o avvio portable/bundle. Fino alla propagazione multilingue, il testo legale vincolante e' quello italiano. |
 | Portali esistenti | Go | Matrice, roadmap e registro tecnico sono allineati; nuove integrazioni restano incrementalmente valutate. |
 | Test tecnici | Go con suite finale | La smoke suite deve passare prima del tag RC; la suite ampia resta da inventariare e numerare. |
 | Packaging | Go con build da eseguire | Audit non distruttivo eseguito: spec PyInstaller, script Inno e README workflow sono allineati a v3.0.0; prima della RC restano da generare e provare le build. |
@@ -38,10 +38,11 @@ Da eseguire su `main` pulito:
 python verify_localization.py
 python validate_glossary.py
 python verify_glossary.py
+python verify_disclaimer_consent.py
 python verify_document_assets.py
 python verify_italian_guide_content.py
 python verify_portal_matrix_workbook.py
-python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py verify_document_assets.py verify_italian_guide_content.py verify_portal_matrix_workbook.py
+python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py verify_disclaimer_consent.py verify_document_assets.py verify_italian_guide_content.py verify_portal_matrix_workbook.py
 python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py tests\test_tile_downloader.py tests\test_qt_worker_coverage.py tests\test_portal_registry.py -q
 ```
 
@@ -59,11 +60,17 @@ python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py test
   log locali.
 - Conferma che gli artefatti locali ignorati non siano necessari alla build o
   alla documentazione pubblica.
+- Conferma che installer Windows, portable Windows, DMG/app macOS, pacchetto
+  DEB, tarball Linux e aggiornamento automatico richiedano la revisione corrente
+  del disclaimer prima di procedere.
 
 ## Bloccanti per release pubblica completa
 
 - Propagazione multilingue della guida v3 oppure avviso chiaro e coerente nelle
   lingue non ancora riallineate.
+- Propagazione multilingue del disclaimer legale v3; fino al completamento
+  delle traduzioni, le build pubbliche devono mostrare e richiedere
+  l'accettazione del testo legale italiano come fonte primaria.
 - Verifica delle build pubbliche Windows, Linux e macOS, con note specifiche per
   eventuali piattaforme non testate su hardware reale.
 - Aggiornamento changelog o note di rilascio v3.0.0.
