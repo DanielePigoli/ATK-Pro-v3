@@ -9,6 +9,7 @@ from logging.handlers import RotatingFileHandler
 ATKPRO_ENV = os.environ.get("ATKPRO_ENV", "development").lower()
 import logging
 from PIL import Image, ImageDraw, ImageFont
+logger = logging.getLogger(__name__)
 if not logger.hasHandlers():
     handler = logging.StreamHandler()
     handler.setLevel(logging.DEBUG if ATKPRO_ENV != "production" else logging.WARNING)

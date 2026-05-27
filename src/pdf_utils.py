@@ -10,6 +10,7 @@ pdf_utils.py — ATK-Pro v2.0 (ripristino logica v1.4.1 con innesti Qt)
 """
 
 import os
+import logging
 from logging.handlers import RotatingFileHandler
 ATKPRO_ENV = os.environ.get("ATKPRO_ENV", "development").lower()
 logger = logging.getLogger(__name__)
