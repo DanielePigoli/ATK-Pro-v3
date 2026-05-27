@@ -66,7 +66,18 @@ def test_glossario_json_valido():
     with open(glossario_path, "r", encoding="utf-8") as f:
         data = json.load(f)
     
-    # Verifica metadata
-    assert "metadata" in data
-    assert data["metadata"]["versione"] == "2.0"
-    assert data["metadata"]["lingue"] == 20
+    assert isinstance(data, dict)
+    assert data
+    messages = [
+        entry.get("messaggio")
+        for entries in data.values()
+        if isinstance(entries, list)
+        for entry in entries
+        if isinstance(entry, dict)
+    ]
+    assert "Elaborazioni precedenti trovate" in messages
+    for entries in data.values():
+        assert isinstance(entries, list)
+        for entry in entries:
+            assert isinstance(entry, dict)
+            assert "IT" in entry
