@@ -1,5 +1,5 @@
 # ================================================================
-# 📜 ATK-Pro – input_link_base_v2.0.txt
+# 📜 ATK-Pro – input_link_base.txt
 # Ten plik zawiera listę aktów/rejestrów do analizy.
 # FORMAT:
 # • Jedna linia z „Tryb – Opis”

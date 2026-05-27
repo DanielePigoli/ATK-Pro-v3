@@ -11,6 +11,11 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parent
 ASSETS_DIR = ROOT / "assets"
+EXAMPLE_INPUT_FILE = "input_link_base.txt"
+OLD_EXAMPLE_INPUT_FILES = (
+    "input_link_base_v2.0.txt",
+    "input_link_base_.txt",
+)
 
 GUIDE_MODULES = [
     "guida_01_installazione_configurazione.html",
@@ -87,6 +92,30 @@ def check_menu_documents(lang_dir: Path) -> list[str]:
     return issues
 
 
+def check_example_input(lang_dir: Path) -> list[str]:
+    issues: list[str] = []
+    text_dir = lang_dir / "testuali"
+    if not (text_dir / EXAMPLE_INPUT_FILE).is_file():
+        issues.append(f"{lang_dir.name}: missing example input file {EXAMPLE_INPUT_FILE}")
+    for old_name in OLD_EXAMPLE_INPUT_FILES:
+        if (text_dir / old_name).exists():
+            issues.append(f"{lang_dir.name}: obsolete example input file still present: {old_name}")
+    return issues
+
+
+def check_obsolete_example_references(lang_dir: Path) -> list[str]:
+    issues: list[str] = []
+    text_dir = lang_dir / "testuali"
+    for path in sorted(text_dir.glob("*")):
+        if path.suffix.lower() not in {".html", ".txt", ".md"}:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for old_name in OLD_EXAMPLE_INPUT_FILES:
+            if old_name in text:
+                issues.append(f"{path.relative_to(ROOT)}: obsolete example input reference: {old_name}")
+    return issues
+
+
 def check_guide_set(lang_dir: Path) -> list[str]:
     issues: list[str] = []
     text_dir = lang_dir / "testuali"
@@ -145,6 +174,8 @@ def main() -> int:
 
     for lang_dir in langs:
         issues.extend(check_menu_documents(lang_dir))
+        issues.extend(check_example_input(lang_dir))
+        issues.extend(check_obsolete_example_references(lang_dir))
         issues.extend(check_guide_set(lang_dir))
         issues.extend(check_local_links(lang_dir))
 

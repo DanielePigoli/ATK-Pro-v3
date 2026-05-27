@@ -1,5 +1,5 @@
 # ================================================================
-# ATK-Pro – input_link_base_v2.0.txt
+# ATK-Pro – input_link_base.txt
 # Den här filen innehåller en lista över akter/register att analysera.
 # FORMAT:
 # • En rad med "Mode - Beskrivning"

@@ -504,9 +504,9 @@ ASSET_LANG = os.path.join(BASE_DIR, "assets")
 # Funzioni di utilità definite subito dopo gli import
 
 def carica_file_esempio(lingua: str) -> str:
-    path = os.path.join(ASSET_LANG, lingua, "testuali", "input_link_base_v2.0.txt")
+    path = os.path.join(ASSET_LANG, lingua, "testuali", "input_link_base.txt")
     if not os.path.exists(path):
-        path = os.path.join(ASSET_LANG, "en", "testuali", "input_link_base_v2.0.txt")
+        path = os.path.join(ASSET_LANG, "en", "testuali", "input_link_base.txt")
     return path
 
 def carica_glossario(lang):
@@ -2033,7 +2033,7 @@ def mostra_disclaimer(glossario_data, lingua):
 
 
 def action_show_example_input(glossario_data, lingua, parent=None):
-    example_path = os.path.join(ASSET_LANG, lingua.lower(), "testuali", "input_link_base_v2.0.txt")
+    example_path = os.path.join(ASSET_LANG, lingua.lower(), "testuali", "input_link_base.txt")
     try:
         raw_text = load_input_file(example_path)
         records = parse_input_text(raw_text)

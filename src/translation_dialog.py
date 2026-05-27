@@ -8,6 +8,36 @@ from PySide6.QtGui import QFont
 
 from translation_processor import TranslationWorker
 
+TARGET_LANGUAGES = [
+    "Italiano", "English", "Español", "Français", "Deutsch", "Português",
+    "Русский", "العربية", "Nederlands", "עברית", "日本語", "中文",
+    "Polski", "Türkçe", "Dansk", "Norsk", "Tiếng Việt", "Ελληνικά",
+    "Română", "Svenska",
+]
+
+TARGET_LANGUAGE_BY_INTERFACE = {
+    "it": "Italiano",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "de": "Deutsch",
+    "pt": "Português",
+    "ru": "Русский",
+    "ar": "العربية",
+    "nl": "Nederlands",
+    "he": "עברית",
+    "ja": "日本語",
+    "zh": "中文",
+    "pl": "Polski",
+    "tr": "Türkçe",
+    "da": "Dansk",
+    "no": "Norsk",
+    "vi": "Tiếng Việt",
+    "el": "Ελληνικά",
+    "ro": "Română",
+    "sv": "Svenska",
+}
+
 def get_msg(glossario, chiave, lingua):
     try:
         from main_gui_qt import get_msg as _get_msg
@@ -138,12 +168,7 @@ class TranslationDialog(QDialog):
         row3.addSpacing(20)
         lbl_target = QLabel(self.gm("Lingua di Destinazione:"))
         self.combo_lingua = QComboBox()
-        lingue = [
-            "Italiano", "English", "Deutsch", "Français", "Español", "Português",
-            "Русский", "中文", "日本語", "韓国語", "العربية", "हिन्दी", "Türkçe",
-            "Polski", "Nederlands", "Ελληνικά", "Čeština", "Svenska", "Dansk", "Suomi"
-        ]
-        self.combo_lingua.addItems(lingue)
+        self.combo_lingua.addItems(TARGET_LANGUAGES)
         row3.addWidget(lbl_target)
         row3.addWidget(self.combo_lingua)
         row3.addStretch()
@@ -362,9 +387,8 @@ class TranslationDialog(QDialog):
                 self.txt_ctx.setText(prefs.get('translation_context', ''))
                 self.inp_custom_model.setText(prefs.get('translation_custom_model', ''))
             
-            # Default Language logic based on self.lingua (e.g. "it" -> Italiano)
-            lang_map = {"it": "Italiano", "en": "English", "fr": "Français", "es": "Español", "de": "Deutsch"}
-            default_autonym = lang_map.get(self.lingua, "English")
+            # Default target language follows the current interface language when supported.
+            default_autonym = TARGET_LANGUAGE_BY_INTERFACE.get(str(self.lingua).lower(), "English")
             idx = self.combo_lingua.findText(default_autonym)
             if idx >= 0:
                 self.combo_lingua.setCurrentIndex(idx)

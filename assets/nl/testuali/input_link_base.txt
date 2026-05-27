@@ -1,5 +1,5 @@
 # ================================================================ #
-# 📜 ATK-Pro – input_link_base_v2.0.txt #
+# 📜 ATK-Pro – input_link_base.txt #
 # Dit bestand bevat een lijst van akten/registers om te analyseren. #
 # FORMAAT: #
 # • Eén regel met "Modus - Beschrijving" #

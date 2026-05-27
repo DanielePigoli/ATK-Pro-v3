@@ -78,7 +78,8 @@ class TestLanguageSupport(unittest.TestCase):
             'disclaimer_legale_ATK-Pro.txt',
             'presentazione_progetto_ATK-Pro.html',
             'presentazione_autore.html',
-            'guida.html'
+            'guida.html',
+            'input_link_base.txt',
         ]
 
         for lang_code in self.SUPPORTED_LANGUAGES.keys():
@@ -88,6 +89,12 @@ class TestLanguageSupport(unittest.TestCase):
                     file_path.exists(),
                     f"File '{filename}' mancante per {lang_code}"
                 )
+
+            old_file_path = self.assets_dir / lang_code / 'testuali' / 'input_link_base_v2.0.txt'
+            self.assertFalse(
+                old_file_path.exists(),
+                f"File esempio input obsoleto ancora presente per {lang_code}: {old_file_path}"
+            )
 
     def test_05_glossario_file_exists(self):
         """Verifica che il file glossario multilingue esista"""
@@ -130,6 +137,13 @@ class TestLanguageSupport(unittest.TestCase):
                 locale_dir.exists(),
                 f"Cartella locales mancante per {lang_code}: {locale_dir}"
             )
+
+    def test_09_translation_targets_match_supported_languages(self):
+        """Verifica che il dialog Traduzione esponga solo le 20 lingue supportate."""
+        from translation_dialog import TARGET_LANGUAGES, TARGET_LANGUAGE_BY_INTERFACE
+
+        self.assertEqual(set(TARGET_LANGUAGES), set(self.SUPPORTED_LANGUAGES.values()))
+        self.assertEqual(set(TARGET_LANGUAGE_BY_INTERFACE.keys()), set(self.SUPPORTED_LANGUAGES.keys()))
 
 
 class TestBuildArtifacts(unittest.TestCase):

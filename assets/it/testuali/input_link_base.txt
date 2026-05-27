@@ -1,5 +1,5 @@
 # ================================================================
-# 📜 ATK-Pro – input_link_base_v2.0.txt
+# 📜 ATK-Pro – input_link_base.txt
 # Questo file contiene un elenco di atti/registri da analizzare.
 # FORMATO:
 # • Una riga con "Modalità - Descrizione"

@@ -1,5 +1,5 @@
 # ================================================================
-# 📜 ATK-Pro – input_link_base_v2.0.txt
+# 📜 ATK-Pro – input_link_base.txt
 # Acest fișier conține o listă de acte/registre de analizat.
 # FORMAT:
 # • O linie cu „Mod - Descriere”

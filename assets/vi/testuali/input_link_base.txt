@@ -1,5 +1,5 @@
 # ================================================================
-# 📜 ATK-Pro – input_link_base_v2.0.txt
+# 📜 ATK-Pro – input_link_base.txt
 # Tệp này chứa danh sách các hành vi/sổ đăng ký cần phân tích.
 # ĐỊNH DẠNG:
 # • Một dòng với "Chế độ - Mô tả"
