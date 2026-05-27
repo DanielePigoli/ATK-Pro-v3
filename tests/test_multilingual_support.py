@@ -1,11 +1,12 @@
 """
-Test Suite per ATK-Pro v2.0 - Verifica supporto multilingue e integrità build
+Test Suite per ATK-Pro v3.0 - Verifica supporto multilingue e integrità build.
 """
 
 import os
 import sys
 import json
 import unittest
+import pytest
 from pathlib import Path
 
 # Aggiungi il percorso src al path
@@ -41,7 +42,7 @@ class TestLanguageSupport(unittest.TestCase):
     def setUp(self):
         self.workspace_root = Path(__file__).parent.parent
         self.assets_dir = self.workspace_root / 'assets'
-        self.glossario_file = self.workspace_root / 'glossario_multilingua_ATK-Pro.json'
+        self.glossario_file = self.workspace_root / 'docs_generali' / 'glossario_multilingua_ATK-Pro.json'
         self.dist_dir = self.workspace_root / 'dist' / 'ATK-Pro'
 
     def test_01_all_languages_have_asset_directories(self):
@@ -109,12 +110,15 @@ class TestLanguageSupport(unittest.TestCase):
         with open(self.glossario_file, 'r', encoding='utf-8') as f:
             glossario = json.load(f)
 
-        for lang_code in self.SUPPORTED_LANGUAGES.keys():
-            self.assertIn(
-                lang_code,
-                glossario,
-                f"Lingua '{lang_code}' non trovata nel glossario"
-            )
+        for key, entries in glossario.items():
+            self.assertIsInstance(entries, list, f"Voce glossario non lista: {key}")
+            for entry in entries:
+                for lang_code in self.SUPPORTED_LANGUAGES.keys():
+                    self.assertIn(
+                        lang_code.upper(),
+                        entry,
+                        f"Lingua '{lang_code.upper()}' non trovata nella voce glossario '{key}'"
+                    )
 
     def test_08_locales_folders_present(self):
         """Verifica che le cartelle locales/[lang] siano presenti per il PyInstaller"""
@@ -134,11 +138,20 @@ class TestBuildArtifacts(unittest.TestCase):
     def setUp(self):
         self.workspace_root = Path(__file__).parent.parent
         self.dist_dir = self.workspace_root / 'dist' / 'ATK-Pro'
-        self.exe_file = self.workspace_root / 'dist' / 'ATK-Pro.exe'
-        self.installer_file = self.workspace_root / 'ATK-Pro-Setup-v2.0.exe'
+        self.exe_file = self.dist_dir / 'ATK-Pro.exe'
+        self.installer_file = self.workspace_root / 'Output' / 'ATK-Pro-Setup-v3.0.0.exe'
+
+    def require_build_artifacts(self):
+        if not self.dist_dir.exists():
+            pytest.skip("Build artifacts not present; run packaging build before artifact checks.")
+
+    def require_installer_artifact(self):
+        if not self.installer_file.exists():
+            pytest.skip("Installer artifact not present; run Windows installer build before installer checks.")
 
     def test_01_exe_file_exists(self):
         """Verifica che l'eseguibile principale sia stato generato"""
+        self.require_build_artifacts()
         self.assertTrue(
             self.exe_file.exists(),
             f"File eseguibile mancante: {self.exe_file}"
@@ -146,6 +159,7 @@ class TestBuildArtifacts(unittest.TestCase):
 
     def test_02_exe_file_has_size(self):
         """Verifica che l'eseguibile abbia una dimensione ragionevole (>1MB)"""
+        self.require_build_artifacts()
         if self.exe_file.exists():
             size = self.exe_file.stat().st_size
             self.assertGreater(
@@ -156,6 +170,7 @@ class TestBuildArtifacts(unittest.TestCase):
 
     def test_03_dist_directory_has_assets(self):
         """Verifica che la directory dist contiene gli asset"""
+        self.require_build_artifacts()
         internal_assets = self.dist_dir / '_internal' / 'assets'
         self.assertTrue(
             internal_assets.exists(),
@@ -164,6 +179,7 @@ class TestBuildArtifacts(unittest.TestCase):
 
     def test_04_installer_file_exists(self):
         """Verifica che l'installer sia stato generato"""
+        self.require_installer_artifact()
         self.assertTrue(
             self.installer_file.exists(),
             f"File installer mancante: {self.installer_file}"
@@ -171,6 +187,7 @@ class TestBuildArtifacts(unittest.TestCase):
 
     def test_05_installer_file_has_size(self):
         """Verifica che l'installer abbia una dimensione ragionevole (>50MB)"""
+        self.require_installer_artifact()
         if self.installer_file.exists():
             size = self.installer_file.stat().st_size
             self.assertGreater(

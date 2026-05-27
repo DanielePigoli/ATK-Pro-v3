@@ -48,7 +48,7 @@ Stato snapshot 2026-05-27:
   diagnostica locali ignorati nella root vengano raccolti come test.
 - Prima correzione eseguita: import logger ripristinati in `src/image_rebuilder.py`
   e `src/pdf_utils.py`.
-- Risultato osservato: `427 passed, 25 failed, 36 skipped`.
+- Risultato iniziale osservato: `427 passed, 25 failed, 36 skipped`.
 
 I fallimenti residui sono concentrati in test storici o non ancora riallineati
 alla v3:
@@ -59,6 +59,18 @@ alla v3:
 - test che cercano asset v2 o posizioni storiche, come glossario in root o
   installer `ATK-Pro-Setup-v2.0.exe`;
 - aspettative UI datate su titolo applicazione e testo del progress dialog.
+
+Primo riallineamento successivo:
+
+- test glossario aggiornati al percorso `docs_generali/glossario_multilingua_ATK-Pro.json`;
+- test glossario aggiornati al formato v3 basato su chiavi voce e liste di
+  traduzioni, senza metadata v2;
+- test artifact build aggiornati al layout v3 e saltati quando i pacchetti non
+  sono stati ancora generati;
+- aspettative UI v2 piu' semplici aggiornate per titolo app e progress dialog.
+
+Risultato dopo il riallineamento dei test v2 oggettivi: `432 passed, 18 failed,
+38 skipped`.
 
 Questa suite non e' ancora criterio bloccante per RC tecnica; va trasformata in
 baseline completa tramite riallineamenti mirati e PR dedicate.

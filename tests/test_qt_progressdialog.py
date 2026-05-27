@@ -22,7 +22,7 @@ def test_progressdialog_cancel_and_center(qtbot):
 
     # Update and check label text contains progress and name
     pd.update(1, name='Registro 1')
-    assert 'Elaborazione record' in pd.label.text()
+    assert 'Record 1/3' in pd.label.text()
     assert 'Registro 1' in pd.label.text()
 
     # Click cancel and verify cancelled flag is set
