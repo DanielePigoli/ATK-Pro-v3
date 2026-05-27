@@ -334,51 +334,53 @@
         <div class="section">
             <div class="meta-info">
                 <div>
-                    <p><strong>📅 Aggiornamento</strong><br>26 maggio 2026</p>
+                    <p><strong>📅 Aggiornamento</strong><br>27 maggio 2026</p>
                     <p><strong>✍️ Redatto da</strong><br>Daniele Pigoli</p>
                 </div>
                 <div>
                     <p><strong>📂 Collocazione</strong><br>/assets/[lingua]/testuali/</p>
-                    <p><strong>📌 Versione</strong><br>v3.0.0 - baseline pre-release</p>
+                    <p><strong>📌 Versione</strong><br>v3.0.0 - RC tecnica</p>
                 </div>
             </div>
 
             <h3>📖 Contesto e Premesse</h3>
-            <p>Il <strong>Portale Antenati</strong> rappresenta una risorsa straordinaria per la ricerca genealogica italiana, mettendo a disposizione milioni di immagini di registri storici e documenti d'archivio in formato <strong>IIIF</strong> (International Image Interoperability Framework). Tuttavia, il download diretto tramite browser offre soltanto versioni a bassa qualità (PNG visualizzabili ma non idonei all'uso archivistico).</p>
+            <p>ATK-Pro nasce dal lavoro sul <strong>Portale Antenati</strong>, che resta una fonte primaria per la ricerca genealogica italiana. Con la versione <strong>v3.0.0</strong>, però, il progetto compie un passaggio più ampio: da strumento centrato sul download e sulla ricostruzione di immagini IIIF diventa un <strong>banco di lavoro genealogico e archivistico multi-portale</strong>, pensato per fonti italiane, italofone e per le principali direttrici della diaspora italiana.</p>
+
+            <p>La ricerca genealogica contemporanea non si esaurisce in un singolo portale. Gli atti e le tracce familiari possono trovarsi in archivi nazionali, biblioteche digitali, portali regionali, raccolte ecclesiastiche, piattaforme IIIF internazionali e risorse collegate ai percorsi migratori verso Europa, Americhe e Oceania. ATK-Pro affronta questa complessità con un criterio prudente: integrare solo fonti tecnicamente accessibili e compatibili con i limiti legali e d'uso documentati.</p>
             
-            <p>Le immagini ad alta risoluzione rimangono accessibili solo tramite API IIIF in formato tile, il che rende problematico per l'utente generico:</p>
+            <p>Rimangono centrali le esigenze tecniche che hanno dato origine al progetto:</p>
             <ul>
-                <li>Scaricare collezioni complete di documenti senza dipendenza da connessione Internet continua</li>
-                <li>Ricostruire manualmente i tile IIIF in immagini integrali ad alta qualità</li>
-                <li>Lavorare offline con documenti elaborati in formati professionali (TIFF lossless, PDF)</li>
-                <li>Gestire metadati strutturati e genealogici insieme alle immagini</li>
+                <li>scaricare e ricostruire immagini ad alta qualità quando il portale espone manifest o tile compatibili;</li>
+                <li>lavorare offline con documenti, registri, immagini, metadati e PDF organizzati localmente;</li>
+                <li>distinguere tra portali pienamente consolidabili, fonti da usare con cautela e risorse da non estendere;</li>
+                <li>integrare assistenza AI senza sostituire il giudizio critico del ricercatore.</li>
             </ul>
 
             <div class="highlight-box">
-                <strong>✨ Soluzione ATK-Pro:</strong> Una risposta concreta a queste esigenze. Non è uno strumento generico di visualizzazione, ma una <strong>soluzione archivistica specializzata</strong> che abilita ricercatori e appassionati a scaricare automaticamente i tile IIIF ad alta risoluzione, ricostruirli in immagini integrali e rigenerare localmente documenti digitalizzati preservando la qualità archivistica.
+                <strong>✨ Svolta v3.0.0:</strong> ATK-Pro non è più soltanto un downloader/ricostruttore per il Portale Antenati. È una <strong>postazione di ricerca assistita</strong> che unisce portali documentari, conservazione locale, OCR, traduzione, analisi genealogica, esportazione GEDCOM e Ricerca assistita AI, nel rispetto delle regole di accesso delle fonti.
             </div>
 
             <h3>🎯 Obiettivi Principali</h3>
-            <p>ATK-Pro è un'iniziativa archivistica e genealogica nata per offrire a ricercatori e appassionati di storia familiare uno strumento specializzato:</p>
+            <p>ATK-Pro è un'iniziativa archivistica e genealogica nata per offrire a ricercatori e appassionati di storia familiare uno strumento specializzato, ora orientato a un flusso di lavoro più completo:</p>
             
             <div class="feature-grid">
                 <div class="feature-item">
-                    <strong>📥 Scaricare e Elaborare</strong><br>Immagini da archivi digitali IIIF tramite interfaccia grafica intuitiva
+                    <strong>📥 Acquisire Fonti Digitali</strong><br>Immagini e registri da portali pubblici compatibili, con priorità all'area italiana e italofona
                 </div>
                 <div class="feature-item">
-                    <strong>🔧 Ricostruire Automaticamente</strong><br>Tile in immagini complete mantenendo qualità archivistica
+                    <strong>🔧 Ricostruire e Conservare</strong><br>Tile e immagini in file locali ordinati, con formati adatti allo studio e alla conservazione
                 </div>
                 <div class="feature-item">
-                    <strong>💾 Esportare in Formati Multipli</strong><br>PNG, JPG, TIFF e PDF per documento/registro
+                    <strong>🧭 Orientare la Ricerca</strong><br>Ricerca assistita AI per impostare piste, luoghi, varianti onomastiche e fonti da verificare
                 </div>
                 <div class="feature-item">
-                    <strong>🌍 Accessibilità Globale</strong><br>Interfaccia multilingue completa (20 lingue)
+                    <strong>🧠 Supportare la Lettura</strong><br>OCR avanzato, traduzione OCR e analisi genealogica assistita da provider configurabili dall'utente
                 </div>
                 <div class="feature-item">
-                    <strong>📦 Distribuzione Multipiattaforma</strong><br>Windows (.exe), Linux (.deb / .tar.gz), macOS (.dmg – test su hardware reale in corso)
+                    <strong>🌍 Lavorare in Più Lingue</strong><br>Interfaccia localizzata in 20 lingue e attenzione alle ricerche legate alla diaspora italiana
                 </div>
                 <div class="feature-item">
-                    <strong>🔬 Focus Archivistico</strong><br>TIFF lossless, metadati strutturati, preservazione digitale
+                    <strong>⚖️ Operare con Prudenza</strong><br>Esclusione di portali chiusi, commerciali, con login, paywall o restrizioni tecniche non autorizzate
                 </div>
             </div>
 
@@ -394,8 +396,10 @@
 
             <h4>🔵 Architettura Tecnica</h4>
             <ul>
-                <li><strong>Backend:</strong> Python 3.12+ con moduli specializzati (download IIIF, ricostruzione tile, conversione PDF)</li>
+                <li><strong>Backend:</strong> Python 3.12+ con moduli specializzati per manifest, tile, immagini, PDF, OCR, traduzione e analisi genealogica</li>
                 <li><strong>Frontend:</strong> Qt 6 per interfaccia grafica multipiattaforma e localizzazione nativa</li>
+                <li><strong>Portali:</strong> registro centrale con gruppi, priorità, avvisi d'uso, referer, famiglia tecnica e policy di download</li>
+                <li><strong>Servizi AI:</strong> dialoghi assistiti con provider configurabili dall'utente e gestione locale delle chiavi tramite caveau</li>
                 <li><strong>Packaging:</strong> PyInstaller per Windows (.exe), Linux (.deb / .tar.gz), macOS (.dmg – test su hardware reale in corso)</li>
             </ul>
 
@@ -407,20 +411,20 @@
             </ul>
 
             <h3>📈 Evoluzione del Progetto</h3>
-            <p>ATK-Pro è nato come iniziativa personale nel 2025 per risolvere un problema concreto: permettere ai ricercatori genealogici di <strong>scaricare e gestire localmente</strong> raccolte di documenti IIIF dal Portale Antenati <strong>ad alta risoluzione e qualità archivistica</strong>.</p>
+            <p>ATK-Pro è nato nel 2025 per risolvere un problema concreto: permettere ai ricercatori genealogici di <strong>scaricare e gestire localmente</strong> documenti IIIF dal Portale Antenati ad alta risoluzione e qualità archivistica.</p>
             
-            <p>Le immagini disponibili per il download diretto dal portale sono di qualità inferiore e non idonee all'uso archivistico professionale. ATK-Pro accede ai tile IIIF ad alta risoluzione, li ricostruisce in immagini integrali complete e abilita il lavoro offline con documenti in formato archivistico puro (TIFF lossless) senza dipendenza da connessione Internet.</p>
+            <p>La v3.0.0 conserva quel nucleo tecnico, ma lo colloca in una cornice più ampia: ricerca su più portali, documentazione delle condizioni d'uso, valutazione di nuove fonti italiane e internazionali, supporto ai percorsi migratori italiani e servizi AI come ausilio operativo per leggere, tradurre, confrontare e organizzare le evidenze.</p>
 
             <h4>📅 Tappe Principali</h4>
             <ul class="two-col">
                 <li><strong>2025 (v1.x):</strong> Sviluppo iniziale, ricerca metodologica, prototipo in Python puro</li>
                 <li><strong>2025-2026 (v2.x):</strong> Passaggio a GUI Qt, multilingua completa, distribuzione eseguibile professionale</li>
-                <li><strong>2026 (v3.0.0):</strong> Riallineamento localizzazione/glossario, policy portali, registro tecnico dei portali, ricerca assistita AI, OCR, traduzione e analisi genealogica</li>
+                <li><strong>2026 (v3.0.0):</strong> Passaggio a piattaforma multi-portale con registro tecnico, policy legale, selezione di fonti candidate, Ricerca assistita AI, OCR, traduzione, analisi genealogica ed export GEDCOM</li>
             </ul>
 
             <h3>✨ Caratteristiche v3.0</h3>
             
-            <h4>🔧 Core Functionality</h4>
+            <h4>🔧 Funzioni Principali</h4>
             <ul>
                 <li>✅ Download automatico immagini da manifest IIIF 2.0 e 2.1</li>
                 <li>✅ Ricostruzione tile con compressione ottimizzata</li>
@@ -428,8 +432,26 @@
                 <li>✅ Generazione PDF per registri completi</li>
                 <li>✅ Supporto Documenti Singoli (D) e Registri Multi-pagina (R)</li>
                 <li>✅ Metadati strutturati (genealogici, tecnici, EXIF)</li>
-                <li>✅ Registro centrale dei portali con gruppi, avvisi d'uso, referer e policy di download</li>
-                <li>✅ Ricerca assistita AI, OCR avanzato, traduzione OCR e analisi genealogica con esportazione GEDCOM</li>
+                <li>✅ Registro centrale dei portali con gruppi, avvisi d'uso, referer, famiglie tecniche e policy di download</li>
+                <li>✅ Ricerca assistita AI per impostare indagini genealogiche, strategie di consultazione e piste documentarie</li>
+                <li>✅ OCR avanzato, traduzione OCR e analisi genealogica con esportazione GEDCOM</li>
+            </ul>
+
+            <h4>🧭 Portali e Ambito di Ricerca</h4>
+            <ul>
+                <li>✅ Priorità primaria all'area italiana e italofona</li>
+                <li>✅ Attenzione alle fonti estere rilevanti per emigrazione italiana e dominazioni storiche, incluse aree sudamericane, nordamericane, europee e austro-asburgiche</li>
+                <li>✅ Integrazione solo di portali pubblici, consultabili senza aggiramenti tecnici e compatibili con condizioni d'uso verificabili</li>
+                <li>✅ Mantenimento separato tra portali già presenti, candidati da valutare, fonti solo consultive e portali da non estendere</li>
+            </ul>
+
+            <h4>🧠 Servizi Assistiti da AI</h4>
+            <ul>
+                <li>✅ Ricerca assistita AI per formulare domande, ipotesi, varianti dei nomi, luoghi e priorità di consultazione</li>
+                <li>✅ OCR avanzato su immagini e documenti, con prompt specializzati e controllo umano del risultato</li>
+                <li>✅ Traduzione OCR per lavorare su testi storici o amministrativi in lingue diverse</li>
+                <li>✅ Analisi genealogica con produzione di sintesi, dati strutturati ed export GEDCOM quando le evidenze lo consentono</li>
+                <li>✅ Provider esterni configurabili dall'utente: ATK-Pro non sostituisce le condizioni dei singoli servizi AI e non garantisce disponibilità, costi o modelli specifici</li>
             </ul>
 
             <h4>👥 User Experience</h4>
@@ -443,24 +465,24 @@
 
             <h3>📂 Struttura del Progetto</h3>
             <ul>
-                <li><code>/src/</code> → Moduli Python (download, ricostruzione, conversione)</li>
+                <li><code>/src/</code> → Moduli Python (portali, download, ricostruzione, OCR, traduzione, analisi, UI)</li>
                 <li><code>/assets/[lingua]/testuali/</code> → Localizzazione completa (guida, disclaimer, presentazioni)</li>
-                <li><code>/scripts/</code> → Utility (traduzione, parsing manifest)</li>
-                <li><code>/docs/</code> → Documentazione tecnica e roadmap</li>
+                <li><code>/docs_generali/</code> → Documentazione tecnica, policy portali, roadmap e matrici di valutazione</li>
+                <li><code>/tests/</code> → Suite di verifica automatica e roadmap test</li>
                 <li><code>build/</code> e pacchetti di distribuzione → Build Windows, Linux e macOS secondo stato di test della piattaforma</li>
             </ul>
 
             <h3>🎓 Destinatari</h3>
             <div class="two-col">
                 <ul>
-                    <li><strong>Ricercatori genealogici e storici</strong> che lavorano con Portale Antenati</li>
+                    <li><strong>Ricercatori genealogici e storici</strong> che lavorano su fonti italiane, italofone e collegate alla diaspora</li>
                     <li><strong>Archivisti e bibliotecari</strong> che gestiscono collezioni digitali IIIF</li>
-                    <li><strong>Studiosi di storia locale</strong> interessati a digitalizzazione</li>
+                    <li><strong>Studiosi di storia locale</strong> interessati a digitalizzazione, metadati e fonti distribuite</li>
                 </ul>
                 <ul>
-                    <li><strong>Comunità internazionali genealogiche</strong> che necessitano di strumenti multilingua</li>
+                    <li><strong>Comunità internazionali genealogiche</strong> che seguono famiglie italiane in paesi di emigrazione</li>
                     <li><strong>Utenti Windows</strong> che vogliono lavorare con immagini storiche offline</li>
-                    <li><strong>Appassionati di archivistica digitale</strong> interessati a consultazione strutturata</li>
+                    <li><strong>Appassionati di archivistica digitale</strong> interessati a consultazione strutturata e strumenti assistiti</li>
                 </ul>
             </div>
 
@@ -473,23 +495,24 @@
                     <strong>🤝 Community-Driven</strong><br>Feedback degli utenti guida priorità di sviluppo
                 </div>
                 <div class="feature-item">
-                    <strong>📊 Focus Qualità Archiviale</strong><br>TIFF lossless, metadati strutturati, preservazione digitale
+                    <strong>📊 Focus Qualità Archivistica</strong><br>TIFF lossless, metadati strutturati, preservazione digitale
                 </div>
                 <div class="feature-item">
-                    <strong>🌍 Multilingua Nativo</strong><br>Non semplice traduzione, ma UI design localizzato per ogni lingua
+                    <strong>🌍 Multilingua Nativo</strong><br>Interfaccia localizzata; guida italiana come baseline v3 prima della propagazione completa
                 </div>
                 <div class="feature-item">
-                    <strong>🔬 Iniziativa Personale</strong><br>Progetto di ricerca e sviluppo continuo basato su esigenze reali
+                    <strong>⚖️ Prudenza Legale</strong><br>Nessuna integrazione di portali chiusi, commerciali, con login, paywall o restrizioni non autorizzate
                 </div>
                 <div class="feature-item">
-                    <strong>📚 Documento Vivo</strong><br>Soggetto a integrazione progressiva con feedback utenti
+                    <strong>📚 Documento Vivo</strong><br>Soggetto a integrazione progressiva con feedback utenti e verifica delle fonti
                 </div>
             </div>
 
             <h3>📋 Stato della Versione</h3>
             <div class="highlight-box">
-                <p><strong>🎉 Release:</strong> v3.0.0 in preparazione</p>
-                <p><strong>✅ Status:</strong> Baseline tecnica pre-release; guida italiana aggiornata alla v3, propagazione multilingue completa da eseguire al consolidamento del perimetro finale</p>
+                <p><strong>🎉 Release:</strong> v3.0.0 in fase RC tecnica</p>
+                <p><strong>✅ Status:</strong> Suite automatica verde, build Windows RC avviabile, guida italiana aggiornata alla v3; propagazione multilingue completa da eseguire al consolidamento del perimetro finale</p>
+                <p><strong>🧭 Perimetro v3:</strong> portali pubblici compatibili, servizi assistiti da AI, Ricerca assistita AI, OCR, traduzione, analisi genealogica e GEDCOM</p>
                 <p><strong>📧 Supporto:</strong> antenati.toolkit.pro@gmail.com</p>
                 <p><strong>💝 Donazioni:</strong> PayPal.me per supportare sviluppo futuro</p>
                 <p><strong>📝 Documento:</strong> Presentazione viva, soggetto a integrazione progressiva con feedback utenti</p>
