@@ -66,6 +66,7 @@ _archive/
 *.local
 *.env
 *.ini
+!pytest.ini
 *.cfg
 *.yaml
 *.yml

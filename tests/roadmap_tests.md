@@ -34,12 +34,43 @@ Subset portali/manifest/tile/worker:
 Nota: durante l'audit post-localizzazione e stato riallineato il mock di
 `tests/test_tile_downloader.py` alla firma attuale di `download_tile`.
 
+## Suite ampia
+
+Comando standard:
+
+```powershell
+python -m pytest -q
+```
+
+Stato snapshot 2026-05-27:
+
+- Discovery limitata a `tests/` tramite `pytest.ini`, per evitare che script di
+  diagnostica locali ignorati nella root vengano raccolti come test.
+- Prima correzione eseguita: import logger ripristinati in `src/image_rebuilder.py`
+  e `src/pdf_utils.py`.
+- Risultato osservato: `427 passed, 25 failed, 36 skipped`.
+
+I fallimenti residui sono concentrati in test storici o non ancora riallineati
+alla v3:
+
+- test Playwright/canvas che assumono percorsi abilitati anche quando
+  l'estrazione via browser e' disabilitata;
+- mock non aggiornati alle firme v3 con parametri `source_url` e `portale`;
+- test che cercano asset v2 o posizioni storiche, come glossario in root o
+  installer `ATK-Pro-Setup-v2.0.exe`;
+- aspettative UI datate su titolo applicazione e testo del progress dialog.
+
+Questa suite non e' ancora criterio bloccante per RC tecnica; va trasformata in
+baseline completa tramite riallineamenti mirati e PR dedicate.
+
 ## Obiettivi v3
 
 - Mantenere verde il controllo di localizzazione e glossario.
 - Stabilizzare la pipeline portali: manifest, tile, worker e fallback.
 - Distinguere test unitari puri da test che richiedono rete, GUI, browser o
   servizi esterni.
+- Limitare la discovery standard di pytest a `tests/`, evitando che script di
+  diagnostica locali ignorati nella root vengano raccolti come test.
 - Evitare baseline numeriche obsolete: ogni milestone deve dichiarare comando,
   risultato e data.
 - Preparare una suite smoke veloce da eseguire prima di ogni PR tecnica.
