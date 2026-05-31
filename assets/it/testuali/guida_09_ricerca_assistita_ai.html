@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modulo 09: Ricerca assistita AI</title>
+    <title>&#129302; Modulo 09: Ricerca assistita AI</title>
     <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
             margin: 0;
             padding: 0;
@@ -14,7 +16,7 @@
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
-            min-height: 100%;
+            height: 100%;
         }
 
         body {
@@ -22,11 +24,13 @@
             line-height: 1.6;
             color: #4a2c1a;
             background: transparent;
+            position: relative;
             margin: 0;
             padding: 20px;
             min-height: 100vh;
         }
 
+        /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
             position: fixed;
@@ -60,8 +64,60 @@
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
-            margin: 0;
+            margin: 0 0 15px 0;
             font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #4a2c1a;
         }
 
         h2 {
@@ -76,6 +132,13 @@
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 10px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 8px;
         }
 
         p {
@@ -118,12 +181,48 @@
             margin: 15px 0;
         }
 
+        .highlight {
+            background: #e8f4f8;
+            border-left: 5px solid #4a90e2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+
         .warning {
             background: #fff3cd;
             border-left: 5px solid #a67c52;
             padding: 12px;
             margin: 12px 0;
             border-radius: 3px;
+        }
+
+        .toc {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            color: #4a2c1a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            color: #a67c52;
+            text-decoration: underline;
         }
 
         .nav-button {
@@ -141,20 +240,6 @@
             background: #5a3e2b;
         }
 
-        footer {
-            width: 100%;
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 3px solid #a67c52;
-            font-size: 0.9em;
-            color: #555;
-        }
-
-        footer p {
-            text-align: center;
-        }
-
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -167,28 +252,32 @@
             header h1 {
                 font-size: 1.7em;
             }
+
+            header h2 {
+                font-size: 1.3em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Modulo 09: Ricerca assistita AI</h1>
+            <h1>&#129302; Modulo 09: Ricerca assistita AI</h1>
         </header>
 
         <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_08_supporto_faq.html" class="nav-button">&larr; Mod.08 - Supporto e FAQ</a>
-            <a href="guida.html" class="nav-button">Indice principale</a>
+            <a href="guida_08_supporto_faq.html" class="nav-button">&#8592; Mod.08 &mdash; Documentazione, Supporto e FAQ</a>
+            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
         </div>
 
         <div class="section">
-            <h2>Panoramica</h2>
+            <h2>&#128204; Panoramica</h2>
             <p>La funzione <strong>Ricerca assistita AI</strong> aiuta a trasformare una domanda genealogica in una traccia di lavoro piu' ordinata: suggerisce portali, piste di ricerca, filtri e query di esempio da provare manualmente sulle fonti disponibili.</p>
             <p>Si apre dal menu <strong>Servizi -&gt; Ricerca assistita AI</strong>. Non scarica documenti e non sostituisce la consultazione diretta dei portali: produce indicazioni operative da verificare, citare e usare con giudizio archivistico.</p>
         </div>
 
         <div class="section">
-            <h2>Quando usarla</h2>
+            <h2>&#128269; Quando usarla</h2>
             <div class="section-box">
                 <ul>
                     <li>Quando parti da cognomi, luoghi e periodi ma non sai quali archivi o portali controllare per primi.</li>
@@ -203,7 +292,7 @@
         </div>
 
         <div class="section">
-            <h2>Campi principali</h2>
+            <h2>&#128421;&#65039; Campi principali</h2>
 
             <div class="section-box">
                 <h3>Query di ricerca</h3>
@@ -234,13 +323,13 @@
         </div>
 
         <div class="section">
-            <h2>Note personali</h2>
+            <h2>&#128221; Note personali</h2>
             <p>La sezione note consente di salvare istruzioni ricorrenti da aggiungere alla richiesta: ad esempio varianti dei cognomi, confini storici, parrocchie note, archivi gia' controllati o criteri da escludere.</p>
             <p>Puoi creare una nuova nota, salvarla, richiamarla da elenco o eliminarla. La nota selezionata viene aggiunta al prompt finale inviato al provider AI.</p>
         </div>
 
         <div class="section">
-            <h2>Risultati e salvataggio</h2>
+            <h2>&#128190; Risultati e salvataggio</h2>
             <div class="section-box">
                 <p>Premi <strong>SUGGERISCI PORTALI E QUERY</strong> per avviare l'elaborazione. Durante il lavoro la finestra mostra lo stato del provider e dello slot chiave usato.</p>
                 <p>I risultati possono essere raggruppati per portale, motivazione, query di esempio, periodo, tipo di atti o filtri/strategie. Dopo la generazione puoi salvare l'output in formato testuale o HTML con i pulsanti <strong>SALVA RISULTATI AI</strong> e <strong>SALVA RISULTATO HTML</strong>.</p>
@@ -248,12 +337,12 @@
         </div>
 
         <div class="section">
-            <h2>Caveau chiavi</h2>
+            <h2>&#128273; Caveau chiavi</h2>
             <p>Il pulsante <strong>GESTISCI CAVEAU CHIAVI (CSV)</strong> apre la gestione delle chiavi per i provider configurati. La funzione di ricerca usa solo provider per cui e' disponibile una chiave valida o una configurazione locale compatibile.</p>
         </div>
 
         <div class="section">
-            <h2>Limiti operativi</h2>
+            <h2>&#9888;&#65039; Limiti operativi</h2>
             <ul>
                 <li>La funzione non aggira login, paywall, restrizioni tecniche o condizioni d'uso dei portali.</li>
                 <li>Le proposte vanno controllate sul portale ufficiale prima di inserirle in una ricerca documentata.</li>
@@ -263,11 +352,11 @@
         </div>
 
         <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_08_supporto_faq.html" class="nav-button">&larr; Mod.08 - Supporto e FAQ</a>
-            <a href="guida.html" class="nav-button">Indice principale</a>
+            <a href="guida_08_supporto_faq.html" class="nav-button">&#8592; Mod.08 &mdash; Documentazione, Supporto e FAQ</a>
+            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
         </div>
 
-        <footer>
+        <footer style="text-align: center;">
             <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
         </footer>
     </div>
