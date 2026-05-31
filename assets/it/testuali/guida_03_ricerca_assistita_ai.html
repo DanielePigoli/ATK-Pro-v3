@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>&#129302; Modulo 09: Ricerca assistita AI</title>
+    <title>📚 Modulo 03: Ricerca assistita AI</title>
+    <meta name="description" content="ATK-Pro — Ricerca assistita AI">
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -18,6 +19,7 @@
             background-size: cover;
             height: 100%;
         }
+
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -117,7 +119,7 @@
         }
 
         .metadata strong {
-            color: #4a2c1a;
+            color: #2a1a0a;
         }
 
         h2 {
@@ -125,20 +127,23 @@
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
+
+
         }
 
         h3 {
-            font-size: 1.15em;
+            font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
             margin-top: 15px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
 
         p {
@@ -157,6 +162,75 @@
             line-height: 1.6;
         }
 
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -166,108 +240,100 @@
             color: #4a2c1a;
         }
 
-        .section {
-            margin: 30px 0;
+        pre {
+            background: #f4ede4;
             padding: 15px;
-            background: rgba(230, 210, 165, 0.2);
-            border-radius: 5px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
         }
 
-        .section-box {
-            background: #fafaf5;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
             border: 2px solid #a67c52;
-            border-radius: 4px;
-            padding: 15px;
-            margin: 15px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
         }
 
-        .highlight {
-            background: #e8f4f8;
-            border-left: 5px solid #4a90e2;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 3px;
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
-        .warning {
-            background: #fff3cd;
-            border-left: 5px solid #a67c52;
-            padding: 12px;
-            margin: 12px 0;
-            border-radius: 3px;
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
         }
 
         .toc {
-            background: #fafaf5;
+            background: rgba(230, 210, 165, 0.4);
             border: 2px solid #a67c52;
             border-radius: 4px;
             padding: 20px;
             margin: 20px 0;
         }
 
-        .toc ul {
-            list-style-type: none;
-            margin-left: 0;
+        .toc ol {
+            margin-left: 30px;
         }
 
         .toc li {
             margin: 8px 0;
         }
 
-        .toc a {
-            color: #4a2c1a;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .toc a:hover {
-            color: #a67c52;
-            text-decoration: underline;
-        }
-
-        .nav-button {
-            display: inline-block;
-            background: #4a2c1a;
-            color: #fff;
-            padding: 10px 18px;
-            border-radius: 4px;
-            text-decoration: none;
-            border: 1px solid #a67c52;
-            font-weight: 600;
-        }
-
-        .nav-button:hover {
-            background: #5a3e2b;
-        }
-
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
             .container {
                 padding: 20px;
             }
-
             header h1 {
-                font-size: 1.7em;
+                font-size: 1.6em;
             }
-
             header h2 {
-                font-size: 1.3em;
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
             }
         }
+
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>&#129302; Modulo 09: Ricerca assistita AI</h1>
+            <h1>📚 Modulo 03: Ricerca assistita AI</h1>
         </header>
 
         <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_08_supporto_faq.html" class="nav-button">&#8592; Mod.08 &mdash; Documentazione, Supporto e FAQ</a>
+            <a href="guida_02_operazioni_base.html" class="nav-button">&#8592; Mod.02 &mdash; Operazioni di Base</a>
             <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
+            <a href="guida_04_visualizzazione_immagini.html" class="nav-button">Mod.04 &mdash; Visualizzazione Immagini &#8594;</a>
         </div>
 
         <div class="section">
@@ -352,11 +418,12 @@
         </div>
 
         <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_08_supporto_faq.html" class="nav-button">&#8592; Mod.08 &mdash; Documentazione, Supporto e FAQ</a>
+            <a href="guida_02_operazioni_base.html" class="nav-button">&#8592; Mod.02 &mdash; Operazioni di Base</a>
             <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
+            <a href="guida_04_visualizzazione_immagini.html" class="nav-button">Mod.04 &mdash; Visualizzazione Immagini &#8594;</a>
         </div>
 
-        <footer style="text-align: center;">
+        <footer>
             <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
         </footer>
     </div>

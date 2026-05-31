@@ -17,7 +17,7 @@ OLD_EXAMPLE_INPUT_FILES = (
     "input_link_base_.txt",
 )
 
-GUIDE_MODULES = [
+BASE_GUIDE_MODULES = [
     "guida_01_installazione_configurazione.html",
     "guida_02_operazioni_base.html",
     "guida_03_visualizzazione_immagini.html",
@@ -26,6 +26,18 @@ GUIDE_MODULES = [
     "guida_06_traduzione.html",
     "guida_07_esportazione_gedcom.html",
     "guida_08_supporto_faq.html",
+]
+
+ITALIAN_GUIDE_MODULES = [
+    "guida_01_installazione_configurazione.html",
+    "guida_02_operazioni_base.html",
+    "guida_03_ricerca_assistita_ai.html",
+    "guida_04_visualizzazione_immagini.html",
+    "guida_05_visualizzazione_metadati.html",
+    "guida_06_ocr_avanzato.html",
+    "guida_07_traduzione.html",
+    "guida_08_esportazione_gedcom.html",
+    "guida_09_supporto_faq.html",
 ]
 
 MENU_DOCUMENTS = {
@@ -58,6 +70,12 @@ LOCAL_REF_RE = re.compile(
 
 def language_dirs() -> list[Path]:
     return sorted(path for path in ASSETS_DIR.iterdir() if path.is_dir() and path.name != "common")
+
+
+def expected_guide_modules(lang_dir: Path) -> list[str]:
+    if lang_dir.name == "it":
+        return ITALIAN_GUIDE_MODULES
+    return BASE_GUIDE_MODULES
 
 
 def is_external_or_inline(ref: str) -> bool:
@@ -125,7 +143,7 @@ def check_guide_set(lang_dir: Path) -> list[str]:
         issues.append(f"{lang_dir.name}: missing guida.html")
         return issues
 
-    for module in GUIDE_MODULES:
+    for module in expected_guide_modules(lang_dir):
         module_path = text_dir / module
         if not module_path.is_file():
             issues.append(f"{lang_dir.name}: missing guide module {module}")
@@ -187,7 +205,7 @@ def main() -> int:
 
     print("Document assets are complete and locally linked.")
     print(f"- Languages checked: {len(langs)}")
-    print(f"- Guide modules per language: {len(GUIDE_MODULES)}")
+    print(f"- Guide modules checked: Italian {len(ITALIAN_GUIDE_MODULES)}, other languages {len(BASE_GUIDE_MODULES)}")
     print("- Menu documents checked: Disclaimer, author, project, guide")
     return 0
 

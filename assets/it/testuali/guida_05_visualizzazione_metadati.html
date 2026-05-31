@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 03: Visualizzazione Immagini</title>
-    <meta name="description" content="ATK-Pro — Visualizzazione Immagini">
+    <title>📚 Modulo 05: Visualizzazione Metadati JSON</title>
+    <meta name="description" content="ATK-Pro — Visualizzazione Metadati JSON">
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -327,78 +327,54 @@
 <body>
 <div class="container">
     <header>
-        <h1>📚 Modulo 03: Visualizzazione Immagini</h1>
+        <h1>📚 Modulo 05: Visualizzazione Metadati JSON</h1>
     </header>
 
     <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_02_operazioni_base.html" class="nav-button">⬅️ Mod.02 — Operazioni di Base</a>
+        <a href="guida_04_visualizzazione_immagini.html" class="nav-button">⬅️ Mod.04 — Visualizzazione Immagini</a>
             <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_04_visualizzazione_metadati.html" class="nav-button">Mod.04 — Visualizzazione Metadati JSON ➡️</a>
+            <a href="guida_06_ocr_avanzato.html" class="nav-button">Mod.06 — Funzioni Avanzate OCR ➡️</a>
         </div>
 
     <div class="section">
         <h2>&#128204; Panoramica</h2>
-        <p>Il <strong>Viewer Immagini</strong> di ATK-Pro &egrave; un visualizzatore integrato per l&apos;analisi di documenti genealogici digitalizzati. Si apre attraverso il menu <em>Servizi &rarr; Visualizzazione Immagini</em> dell&apos;applicazione principale. Supporta JPEG, PNG e TIFF (inclusi file multi-pagina).</p>
+        <p>Il <strong>Viewer Metadati JSON</strong> di ATK-Pro &egrave; dedicato alla visualizzazione dei file JSON generati durante l&apos;elaborazione dei documenti. Si apre dal menu <em>Servizi &rarr; Visualizzazione Metadati JSON</em> dell&apos;applicazione.</p>
+        <p>Il viewer apre qualsiasi file <code>.json</code>. Cerca automaticamente un&apos;immagine con lo stesso nome nella stessa cartella (estensioni: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tif</code>, <code>.tiff</code>) e, se la trova, la mostra nel pannello destro.</p>
     </div>
 
     <div class="section">
-        <h2>&#128194; Formati Supportati</h2>
-        <div class="section-box">
-            <table>
-                <thead><tr><th>Formato</th><th>Estensione</th><th>Note</th></tr></thead>
-                <tbody>
-                    <tr><td><strong>JPEG</strong></td><td>.jpg, .jpeg</td><td>Supporto completo</td></tr>
-                    <tr><td><strong>PNG</strong></td><td>.png</td><td>Supporto completo</td></tr>
-                    <tr><td><strong>TIFF</strong></td><td>.tif, .tiff</td><td>Supporto multi-pagina con navigazione dedicata</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        <h2>&#127795;&#65039; Interfaccia</h2>
+        <p>La finestra &egrave; divisa in due pannelli affiancati:</p>
 
-    <div class="section">
-        <h2>&#128421;&#65039; Interfaccia e Controlli</h2>
         <div class="section-box">
-            <h3>&#128269; Zoom</h3>
+            <h3>Pannello Sinistro &mdash; Tabella Metadati</h3>
+            <p>I dati del file JSON vengono visualizzati come una <strong>tabella a due colonne</strong>:</p>
             <ul>
-                <li><strong>Rotella del mouse</strong>: Zoom incrementale (passo 15%) centrato sul cursore</li>
-                <li><strong>Pulsante &ldquo; + &rdquo;</strong>: Zoom avanti del 15%</li>
-                <li><strong>Pulsante &ldquo; &minus; &rdquo;</strong>: Zoom indietro del 15%</li>
-                <li><strong>Pulsante &ldquo;Adatta alla finestra&rdquo;</strong>: Ridimensiona l&apos;immagine per occupare l&apos;area disponibile (proporzionalmente)</li>
-                <li><strong>Pulsante &ldquo;1:1&rdquo;</strong>: Visualizzazione a risoluzione nativa (un pixel immagine = un pixel schermo)</li>
+                <li><strong>Campo</strong>: il nome della chiave JSON</li>
+                <li><strong>Valore metadato</strong>: il valore corrispondente</li>
             </ul>
-            <p style="margin-top:0.8rem;">Il livello di zoom corrente &egrave; sempre visibile nell&apos;indicatore percentuale tra i pulsanti + e &minus;. Il range va dal 5% all&apos;800%.</p>
+            <p style="margin-top:0.8rem;">Vengono visualizzati solo i campi di <strong>primo livello</strong> del JSON. I campi il cui nome inizia con <code>_</code> (underscore) sono omessi perch&eacute; riservati all&apos;uso interno. Strutture annidate (oggetti o array) appaiono come rappresentazione testuale nella colonna Valore.</p>
         </div>
 
         <div class="section-box">
-            <h3>&#9995;&#65039; Pan (Spostamento)</h3>
-            <p><strong>Click e trascinamento</strong>: Tieni premuto il tasto sinistro del mouse e trascina per spostare l&apos;immagine. Il cursore cambia in mano chiusa durante il trascinamento e in mano aperta al passaggio sull&apos;area dell&apos;immagine.</p>
+            <h3>Pannello Destro &mdash; Anteprima Immagine</h3>
+            <p>Se viene trovata un&apos;immagine abbinata, questa viene caricata con le stesse funzionalit&agrave; del Viewer Immagini (zoom con rotella, pulsanti +/&minus;, Adatta alla finestra, 1:1, pan con trascinamento).</p>
+            <p style="margin-top:0.8rem;">Se non viene trovata alcuna immagine abbinata, il pannello mostra <em>&ldquo;Nessuna immagine abbinata trovata&rdquo;</em>.</p>
         </div>
 
         <div class="section-box">
-            <h3>&#128197; TIFF Multi-Pagina</h3>
-            <p>Per i file TIFF contenenti pi&ugrave; fotogrammi, compare una barra di navigazione aggiuntiva nella toolbar:</p>
+            <h3>Toggle Pannelli</h3>
             <ul>
-                <li><strong>Campo numerico (spinbox)</strong>: Inserisci il numero della pagina desiderata; il viewer carica immediatamente il fotogramma corrispondente</li>
-                <li><strong>Indicatore &ldquo;/ N&rdquo;</strong>: Mostra il numero totale di pagine accanto al campo numerico</li>
-            </ul>
-            <p style="margin-top:0.8rem;"><em>Nota:</em> I registri del Portale Antenati sono spesso distribuiti come TIFF multi-pagina; ogni fotogramma corrisponde a una pagina del registro.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>&#128203; Pannello Metadati Sidecar (Pannello Destro)</h3>
-            <p>Se nella stessa cartella dell&apos;immagine esiste un file JSON con lo stesso nome base (es. <code>documento.jpg</code> &rarr; cerca <code>documento.json</code>), il pannello destro visualizza i metadati in forma di tabella.</p>
-            <ul>
-                <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello destro per ampliare l&apos;area di visualizzazione dell&apos;immagine</li>
+                <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello sinistro con i metadati</li>
                 <li><strong>Pulsante &ldquo;&#9658; Mostra metadati&rdquo;</strong>: Ripristina il pannello metadati</li>
             </ul>
-            <p style="margin-top:0.8rem;">Se non viene trovato alcun sidecar JSON, il pannello destro mostra <em>&ldquo;Nessun sidecar JSON trovato&rdquo;</em>.</p>
         </div>
     </div>
 
      <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_02_operazioni_base.html" class="nav-button">⬅️ Mod.02 — Operazioni di Base</a>
+        <a href="guida_04_visualizzazione_immagini.html" class="nav-button">⬅️ Mod.04 — Visualizzazione Immagini</a>
             <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_04_visualizzazione_metadati.html" class="nav-button">Mod.04 — Visualizzazione Metadati JSON ➡️</a>
+            <a href="guida_06_ocr_avanzato.html" class="nav-button">Mod.06 — Funzioni Avanzate OCR ➡️</a>
         </div>
 
     <footer>

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>&#128302; Modulo 07: Esportazione GEDCOM</title>
+    <title>📚 Modulo 04: Visualizzazione Immagini</title>
+    <meta name="description" content="ATK-Pro — Visualizzazione Immagini">
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -171,7 +172,6 @@
         
         .box {
             background: #fafaf5;
-            border: 2px solid #a67c52;
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
@@ -324,101 +324,86 @@
 
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <header>
-            <h1>&#128302; Modulo 07: Esportazione GEDCOM</h1>
-        </header>
+<div class="container">
+    <header>
+        <h1>📚 Modulo 04: Visualizzazione Immagini</h1>
+    </header>
 
-        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_06_traduzione.html" class="nav-button">&#8592; Mod.06 &mdash; Traduzione</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_08_supporto_faq.html" class="nav-button">Mod.08 &mdash; Documentazione, Supporto e FAQ &#8594;</a>
+    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+        <a href="guida_03_ricerca_assistita_ai.html" class="nav-button">⬅️ Mod.03 — Ricerca assistita AI</a>
+            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
+            <a href="guida_05_visualizzazione_metadati.html" class="nav-button">Mod.05 — Visualizzazione Metadati JSON ➡️</a>
         </div>
 
-        <div class="section">
-            <h2>&#128204; Panoramica</h2>
-            <p>Il modulo <strong>Esportazione GEDCOM</strong> della v3 e&apos; un ambiente di analisi genealogica assistita: prende testi, immagini o documenti selezionati, usa un provider IA configurato in ATK-Pro e genera un file <code>.ged</code> nella cartella di output scelta.</p>
-            <p>Si apre dal menu <em>Servizi &rarr; Esportazione GEDCOM</em>. Il nome pubblico resta legato al formato GEDCOM, ma il lavoro effettivo comprende anche estrazione genealogica, uso di note paleografiche, eventuale incremento di una base esistente e gestione delle chiavi IA.</p>
-            <p>Il risultato deve essere verificato prima di importarlo in un software genealogico: l&apos;IA puo&apos; aiutare a strutturare dati e relazioni, ma non sostituisce la lettura critica delle fonti.</p>
-        </div>
-
-        <div class="section">
-            <h2>&#128421;&#65039; Interfaccia</h2>
-            <div class="section-box">
-                <h3>1. Metodo e input universale</h3>
-                <p>La prima sezione permette di scegliere il metodo di lavoro e i file da analizzare.</p>
-                <ul>
-                    <li><strong>Auto-Discovery</strong>: scelta adatta quando vuoi lasciare al modulo il compito di interpretare il materiale selezionato.</li>
-                    <li><strong>Vision IA</strong>: usa un modello capace di leggere immagini quando il materiale di partenza e&apos; visivo.</li>
-                    <li><strong>Refinery LLM</strong>: utile per lavorare su testo gia&apos; estratto o trascritto.</li>
-                    <li><strong>Input</strong>: seleziona uno o piu&apos; atti, immagini, trascrizioni o documenti compatibili con il flusso scelto.</li>
-                </ul>
-            </div>
-
-            <div class="section-box">
-                <h3>2. Incrementa base esistente</h3>
-                <p>Il pulsante <strong>CARICA BASE</strong> consente di indicare una base genealogica gia&apos; esistente in formato GEDCOM o CSV. Se non carichi nulla, il modulo crea un nuovo lavoro.</p>
-            </div>
-
-            <div class="section-box">
-                <h3>3. Banca dati note paleografiche</h3>
-                <p>Questa sezione collega il lavoro genealogico alle tipologie documentali e alle note operative. Puoi scegliere il tipo di atto, richiamare una nota salvata, crearne una nuova, modificarla o eliminarla.</p>
-                <p>Le note servono a spiegare al modello abbreviazioni, formule locali, lingua del documento, regole di parentela, dubbi di lettura o criteri di estrazione.</p>
-            </div>
-
-            <div class="section-box">
-                <h3>4. Destinazione output</h3>
-                <p>Scegli la cartella in cui salvare il risultato. Il file generato usa un nome del tipo <code>genealogia_*.ged</code>.</p>
-            </div>
-
-            <div class="section-box">
-                <h3>5. Motore IA e caveau chiavi</h3>
-                <ul>
-                    <li><strong>Provider</strong>: scegli il servizio IA tra quelli configurati, ad esempio Claude, OpenAI, Gemini, Mistral, xAI, DeepSeek, Groq, HuggingFace o Ollama.</li>
-                    <li><strong>Override modello</strong>: campo opzionale per indicare un modello specifico supportato dal provider scelto.</li>
-                    <li><strong>GESTISCI CAVEAU CHIAVI (CSV)</strong>: apre la gestione delle chiavi disponibili.</li>
-                    <li><strong>AVVIA ESTRAZIONE COMPLETA</strong>: avvia l&apos;analisi e la generazione del GEDCOM.</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>&#128221; Flusso consigliato</h2>
-            <ol>
-                <li>Prepara input leggibili: trascrizioni, immagini o file gia&apos; organizzati per atto.</li>
-                <li>Scegli il metodo di analisi piu&apos; adatto al materiale.</li>
-                <li>Se stai proseguendo un lavoro esistente, carica la base GEDCOM o CSV.</li>
-                <li>Seleziona la tipologia di atto e aggiungi una nota paleografica concreta.</li>
-                <li>Scegli cartella di output, provider e chiave.</li>
-                <li>Avvia l&apos;estrazione completa.</li>
-                <li>Controlla il file <code>.ged</code> generato prima di importarlo in altri programmi.</li>
-            </ol>
-        </div>
-
-        <div class="section">
-            <h2>&#9888;&#65039; Avvertenze</h2>
-            <div class="section-box">
-                <ul>
-                    <li>Il GEDCOM prodotto e&apos; una base di lavoro, non una prova definitiva.</li>
-                    <li>Relazioni familiari, date, luoghi e nomi devono essere verificati sulle fonti originali.</li>
-                    <li>Gli errori di OCR, trascrizione o interpretazione possono propagarsi nel file genealogico.</li>
-                    <li>Prima di importare il GEDCOM in software esterni, conserva una copia del file originale e controlla eventuali duplicati.</li>
-                    <li>Non inviare a provider esterni documenti riservati o soggetti a restrizioni senza aver verificato condizioni d&apos;uso, privacy e autorizzazioni.</li>
-                </ul>
-            </div>
-        </div>
-
-        <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_06_traduzione.html" class="nav-button">&#8592; Mod.06 &mdash; Traduzione</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_08_supporto_faq.html" class="nav-button">Mod.08 &mdash; Documentazione, Supporto e FAQ &#8594;</a>
-        </div>
-
-        <footer style="text-align: center;">
-            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-        </footer>
+    <div class="section">
+        <h2>&#128204; Panoramica</h2>
+        <p>Il <strong>Viewer Immagini</strong> di ATK-Pro &egrave; un visualizzatore integrato per l&apos;analisi di documenti genealogici digitalizzati. Si apre attraverso il menu <em>Servizi &rarr; Visualizzazione Immagini</em> dell&apos;applicazione principale. Supporta JPEG, PNG e TIFF (inclusi file multi-pagina).</p>
     </div>
+
+    <div class="section">
+        <h2>&#128194; Formati Supportati</h2>
+        <div class="section-box">
+            <table>
+                <thead><tr><th>Formato</th><th>Estensione</th><th>Note</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>JPEG</strong></td><td>.jpg, .jpeg</td><td>Supporto completo</td></tr>
+                    <tr><td><strong>PNG</strong></td><td>.png</td><td>Supporto completo</td></tr>
+                    <tr><td><strong>TIFF</strong></td><td>.tif, .tiff</td><td>Supporto multi-pagina con navigazione dedicata</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#128421;&#65039; Interfaccia e Controlli</h2>
+        <div class="section-box">
+            <h3>&#128269; Zoom</h3>
+            <ul>
+                <li><strong>Rotella del mouse</strong>: Zoom incrementale (passo 15%) centrato sul cursore</li>
+                <li><strong>Pulsante &ldquo; + &rdquo;</strong>: Zoom avanti del 15%</li>
+                <li><strong>Pulsante &ldquo; &minus; &rdquo;</strong>: Zoom indietro del 15%</li>
+                <li><strong>Pulsante &ldquo;Adatta alla finestra&rdquo;</strong>: Ridimensiona l&apos;immagine per occupare l&apos;area disponibile (proporzionalmente)</li>
+                <li><strong>Pulsante &ldquo;1:1&rdquo;</strong>: Visualizzazione a risoluzione nativa (un pixel immagine = un pixel schermo)</li>
+            </ul>
+            <p style="margin-top:0.8rem;">Il livello di zoom corrente &egrave; sempre visibile nell&apos;indicatore percentuale tra i pulsanti + e &minus;. Il range va dal 5% all&apos;800%.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#9995;&#65039; Pan (Spostamento)</h3>
+            <p><strong>Click e trascinamento</strong>: Tieni premuto il tasto sinistro del mouse e trascina per spostare l&apos;immagine. Il cursore cambia in mano chiusa durante il trascinamento e in mano aperta al passaggio sull&apos;area dell&apos;immagine.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#128197; TIFF Multi-Pagina</h3>
+            <p>Per i file TIFF contenenti pi&ugrave; fotogrammi, compare una barra di navigazione aggiuntiva nella toolbar:</p>
+            <ul>
+                <li><strong>Campo numerico (spinbox)</strong>: Inserisci il numero della pagina desiderata; il viewer carica immediatamente il fotogramma corrispondente</li>
+                <li><strong>Indicatore &ldquo;/ N&rdquo;</strong>: Mostra il numero totale di pagine accanto al campo numerico</li>
+            </ul>
+            <p style="margin-top:0.8rem;"><em>Nota:</em> I registri del Portale Antenati sono spesso distribuiti come TIFF multi-pagina; ogni fotogramma corrisponde a una pagina del registro.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#128203; Pannello Metadati Sidecar (Pannello Destro)</h3>
+            <p>Se nella stessa cartella dell&apos;immagine esiste un file JSON con lo stesso nome base (es. <code>documento.jpg</code> &rarr; cerca <code>documento.json</code>), il pannello destro visualizza i metadati in forma di tabella.</p>
+            <ul>
+                <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello destro per ampliare l&apos;area di visualizzazione dell&apos;immagine</li>
+                <li><strong>Pulsante &ldquo;&#9658; Mostra metadati&rdquo;</strong>: Ripristina il pannello metadati</li>
+            </ul>
+            <p style="margin-top:0.8rem;">Se non viene trovato alcun sidecar JSON, il pannello destro mostra <em>&ldquo;Nessun sidecar JSON trovato&rdquo;</em>.</p>
+        </div>
+    </div>
+
+     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+        <a href="guida_03_ricerca_assistita_ai.html" class="nav-button">⬅️ Mod.03 — Ricerca assistita AI</a>
+            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
+            <a href="guida_05_visualizzazione_metadati.html" class="nav-button">Mod.05 — Visualizzazione Metadati JSON ➡️</a>
+        </div>
+
+    <footer>
+        <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+    </footer>
+</div>
 </body>
 </html>

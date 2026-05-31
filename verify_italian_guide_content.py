@@ -18,26 +18,26 @@ CHECK_FILES = [
     GUIDE_DIR / "guida.html",
     GUIDE_DIR / "guida_01_installazione_configurazione.html",
     GUIDE_DIR / "guida_02_operazioni_base.html",
-    GUIDE_DIR / "guida_03_visualizzazione_immagini.html",
-    GUIDE_DIR / "guida_04_visualizzazione_metadati.html",
-    GUIDE_DIR / "guida_05_ocr_avanzato.html",
-    GUIDE_DIR / "guida_06_traduzione.html",
-    GUIDE_DIR / "guida_07_esportazione_gedcom.html",
-    GUIDE_DIR / "guida_08_supporto_faq.html",
-    GUIDE_DIR / "guida_09_ricerca_assistita_ai.html",
+    GUIDE_DIR / "guida_03_ricerca_assistita_ai.html",
+    GUIDE_DIR / "guida_04_visualizzazione_immagini.html",
+    GUIDE_DIR / "guida_05_visualizzazione_metadati.html",
+    GUIDE_DIR / "guida_06_ocr_avanzato.html",
+    GUIDE_DIR / "guida_07_traduzione.html",
+    GUIDE_DIR / "guida_08_esportazione_gedcom.html",
+    GUIDE_DIR / "guida_09_supporto_faq.html",
     AUDIT_FILE,
 ]
 
 GUIDE_INDEX_MODULES = [
     "guida_01_installazione_configurazione.html",
     "guida_02_operazioni_base.html",
-    "guida_03_visualizzazione_immagini.html",
-    "guida_04_visualizzazione_metadati.html",
-    "guida_05_ocr_avanzato.html",
-    "guida_06_traduzione.html",
-    "guida_07_esportazione_gedcom.html",
-    "guida_08_supporto_faq.html",
-    "guida_09_ricerca_assistita_ai.html",
+    "guida_03_ricerca_assistita_ai.html",
+    "guida_04_visualizzazione_immagini.html",
+    "guida_05_visualizzazione_metadati.html",
+    "guida_06_ocr_avanzato.html",
+    "guida_07_traduzione.html",
+    "guida_08_esportazione_gedcom.html",
+    "guida_09_supporto_faq.html",
 ]
 
 STALE_PATTERNS = [
@@ -112,9 +112,16 @@ def check_guide_index() -> list[str]:
         return [f"{path.relative_to(ROOT)}: missing file"]
 
     html = path.read_text(encoding="utf-8", errors="replace")
+    module_positions: list[tuple[str, int]] = []
     for module in GUIDE_INDEX_MODULES:
-        if f'href="{module}"' not in html:
+        position = html.find(f'href="{module}"')
+        if position == -1:
             issues.append(f"{path.relative_to(ROOT)}: missing module link {module}")
+        else:
+            module_positions.append((module, position))
+
+    if module_positions != sorted(module_positions, key=lambda item: item[1]):
+        issues.append(f"{path.relative_to(ROOT)}: module links are not in the expected guide order")
 
     text = visible_body_text(html)
     if len(text) > 9000:
@@ -138,7 +145,7 @@ def check_guide_index() -> list[str]:
 
 def check_translation_targets() -> list[str]:
     issues: list[str] = []
-    guide_path = GUIDE_DIR / "guida_06_traduzione.html"
+    guide_path = GUIDE_DIR / "guida_07_traduzione.html"
     dialog_text = TRANSLATION_DIALOG.read_text(encoding="utf-8", errors="replace")
     guide_text = visible_body_text(guide_path.read_text(encoding="utf-8", errors="replace"))
 

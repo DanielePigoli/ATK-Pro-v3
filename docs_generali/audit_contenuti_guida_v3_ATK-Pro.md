@@ -2,9 +2,11 @@
 
 Data audit: 2026-05-26
 
-Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_09_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_06_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_07_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. La guida principale italiana e `assets/it/testuali/guida_02_operazioni_base.html` sono state aggiornate nella sezione Servizi per descrivere i sei moduli v3 come operativi. I percorsi menu residui in guida 03, 04 e 05 sono stati aggiornati al menu attuale, e le FAQ italiane sono state ripulite dai riferimenti obsoleti individuati. Il file esempio e' ora normalizzato come `input_link_base.txt`. Resta da valutare la propagazione multilingue.
+Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_03_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_07_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_08_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. La guida principale italiana e `assets/it/testuali/guida_02_operazioni_base.html` sono state aggiornate nella sezione Servizi per descrivere i sei moduli v3 come operativi. I percorsi menu residui in guida 03, 04 e 05 sono stati aggiornati al menu attuale, e le FAQ italiane sono state ripulite dai riferimenti obsoleti individuati. Il file esempio e' ora normalizzato come `input_link_base.txt`. Resta da valutare la propagazione multilingue.
 
 Nota successiva 2026-05-27: `assets/it/testuali/guida.html` e' stato riportato alla funzione corretta di indice modulare. Il corpo operativo duplicato e' stato rimosso dalla guida principale, lasciando il contenuto dettagliato nei file `guida_01...guida_09`. Il verificatore `verify_italian_guide_content.py` ora controlla che l'indice linki tutti i moduli italiani e non torni a contenere blocchi estesi duplicati.
+
+Nota successiva 2026-05-31: la guida italiana e' stata rinumerata per rispecchiare l'ordine reale del menu `Servizi`: Ricerca assistita AI e' ora `guida_03_ricerca_assistita_ai.html`, seguita da immagini, metadati, OCR, traduzione, GEDCOM e supporto/FAQ. Il verificatore controlla anche l'ordine dei link nell'indice.
 
 ## Esito sintetico aggiornato
 
@@ -30,19 +32,19 @@ La scansione dei marker critici sulla guida italiana non trova piu' riferimenti 
    - Il corpo operativo resta nei file sezionali dedicati, evitando duplicazioni.
 
 2. Ricerca assistita AI.
-   - Fatto per la guida italiana con `assets/it/testuali/guida_09_ricerca_assistita_ai.html`.
+   - Fatto per la guida italiana con `assets/it/testuali/guida_03_ricerca_assistita_ai.html`.
    - Il menu reale espone `Servizi -> Ricerca assistita AI`.
    - Il dialog consente query genealogica, scelta provider, modello opzionale, prompt standard, elaborazione multi-provider, note personali, salvataggio risultati testuali e HTML, e gestione del caveau chiavi.
 
-3. `assets/it/testuali/guida_07_esportazione_gedcom.html`.
+3. `assets/it/testuali/guida_08_esportazione_gedcom.html`.
    - Fatto per la guida italiana.
    - La pagina ora descrive il dialog di analisi genealogica con input universale, base GEDCOM/CSV opzionale, note paleografiche, provider IA, caveau chiavi e output `genealogia_*.ged`.
 
 4. Percorsi di menu nelle sotto-guide operative.
-   - Fatto per la guida italiana: guida 03, guida 04 e guida 05 usano ora il menu `Servizi`.
-   - `guida_06_traduzione.html` usa ora `Servizi -> Traduzione OCR`.
+   - Fatto per la guida italiana: i moduli 03-09 seguono ora l'ordine reale del menu `Servizi` e della guida.
+   - `guida_07_traduzione.html` usa ora `Servizi -> Traduzione OCR`.
 
-5. `assets/it/testuali/guida_06_traduzione.html`.
+5. `assets/it/testuali/guida_07_traduzione.html`.
    - Fatto per la guida italiana.
    - La pagina ora descrive il percorso `Servizi -> Traduzione OCR`, tipologia documento, modello opzionale, Cassaforte chiavi, pulsante `Traduci Testo ORA` e salvataggio TXT/DOCX.
 
@@ -50,7 +52,7 @@ La scansione dei marker critici sulla guida italiana non trova piu' riferimenti 
    - Fatto per la sezione Servizi italiana.
    - La pagina descrive ora le 6 funzioni attuali: Ricerca assistita AI, Visualizzazione Immagini, Visualizzazione Metadati JSON, OCR Avanzato, Traduzione OCR, Esportazione GEDCOM.
 
-7. `assets/it/testuali/guida_08_supporto_faq.html`.
+7. `assets/it/testuali/guida_09_supporto_faq.html`.
    - Fatto per i riferimenti piu' critici nella guida italiana.
    - Rimane consigliata una revisione editoriale completa della FAQ, ma non risultano piu' riferimenti diretti ai marker obsoleti controllati.
 
@@ -66,12 +68,13 @@ La scansione dei marker critici sulla guida italiana non trova piu' riferimenti 
 | `guida.html` | Riallineata come indice | La guida principale non duplica piu' i moduli sezionali; linka `guida_01...guida_09` | Verificare propagazione futura |
 | `guida_01_installazione_configurazione.html` | Parziale | Mappa funzioni aggiornata nei marker critici; resta revisione editoriale complessiva | Rilettura finale |
 | `guida_02_operazioni_base.html` | Riallineata in italiano | Sezione Servizi aggiornata ai sei moduli operativi v3 | Verificare propagazione futura |
-| `guida_03_visualizzazione_immagini.html` | Riallineata in italiano | Percorso menu aggiornato | Verificare propagazione futura |
-| `guida_04_visualizzazione_metadati.html` | Riallineata in italiano | Percorso menu aggiornato | Verificare propagazione futura |
-| `guida_05_ocr_avanzato.html` | Parziale | Percorso menu aggiornato e note provider rese stabili; resta revisione piu' ampia del modulo OCR | Verificare caveau chiavi, provider e prompt in una passata dedicata |
-| `guida_06_traduzione.html` | Riallineata in italiano | Copertura aggiornata al dialog v3; resta da propagare alle altre lingue quando si fara' il riallineamento multilingue | Verificare link e propagazione futura |
-| `guida_07_esportazione_gedcom.html` | Riallineata in italiano | Copertura aggiornata al dialog v3; resta da propagare alle altre lingue quando si fara' il riallineamento multilingue | Verificare link e propagazione futura |
-| `guida_08_supporto_faq.html` | Parziale | Rimossi riferimenti diretti a placeholder e versioni v2.x; resta revisione editoriale completa | Verificare FAQ v3 e supporto |
+| `guida_03_ricerca_assistita_ai.html` | Riallineata in italiano | Posizionata come primo servizio, coerente con il menu `Servizi` | Verificare propagazione futura |
+| `guida_04_visualizzazione_immagini.html` | Riallineata in italiano | Percorso menu aggiornato | Verificare propagazione futura |
+| `guida_05_visualizzazione_metadati.html` | Riallineata in italiano | Percorso menu aggiornato | Verificare propagazione futura |
+| `guida_06_ocr_avanzato.html` | Parziale | Percorso menu aggiornato e note provider rese stabili; resta revisione piu' ampia del modulo OCR | Verificare caveau chiavi, provider e prompt in una passata dedicata |
+| `guida_07_traduzione.html` | Riallineata in italiano | Copertura aggiornata al dialog v3; resta da propagare alle altre lingue quando si fara' il riallineamento multilingue | Verificare link e propagazione futura |
+| `guida_08_esportazione_gedcom.html` | Riallineata in italiano | Copertura aggiornata al dialog v3; resta da propagare alle altre lingue quando si fara' il riallineamento multilingue | Verificare link e propagazione futura |
+| `guida_09_supporto_faq.html` | Parziale | Rimossi riferimenti diretti a placeholder e versioni v2.x; resta revisione editoriale completa | Verificare FAQ v3 e supporto |
 
 ## Sequenza consigliata
 
