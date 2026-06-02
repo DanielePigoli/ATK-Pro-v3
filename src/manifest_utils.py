@@ -640,44 +640,46 @@ def build_bncf_teca_synthetic_manifest(page_url: str, working_folder: str) -> di
     Crea un manifest sintetico per BNCF Teca quando il manifest IIIF standard fallisce.
     Interroga la servlet readBook per ottenere l'elenco delle immagini.
     """
-    import re, requests, os, traceback
-    logger.critical(f"[BNCF Synthetic][DEBUG] INGRESSO build_bncf_teca_synthetic_manifest: page_url={page_url}, working_folder={working_folder}")
-    # Forza errore volontario per verifica logging
-    # raise RuntimeError("TEST ERRORE VOLONTARIO BNCF SYNTH")
+    import os
+    import re
+    import requests
+    import traceback
+
+    logger.debug(
+        "[BNCF Synthetic] build_bncf_teca_synthetic_manifest: "
+        f"page_url={page_url}, working_folder={working_folder}"
+    )
     m = re.search(r'[?&]idr=([A-Za-z0-9]+)', page_url)
     if not m:
-        logger.error(f"[BNCF Synthetic][DEBUG] Impossibile estrarre idr da page_url: {page_url}")
+        logger.error(f"[BNCF Synthetic] Impossibile estrarre idr da page_url: {page_url}")
         return None
     work_idr = m.group(1)
 
     xml_url = f"https://teca.bncf.firenze.sbn.it/ImageViewer/servlet/ImageViewer?idr={work_idr}&azione=readBook"
-    logger.info(f"[BNCF Synthetic][DEBUG] xml_url={xml_url}")
+    logger.debug(f"[BNCF Synthetic] xml_url={xml_url}")
     try:
         h = {"User-Agent": "Mozilla/5.0"}
         r = requests.get(xml_url, headers=h, timeout=15)
         if not r.ok:
-            logger.error(f"[BNCF Synthetic][DEBUG] Errore HTTP {r.status_code} su {xml_url}")
+            logger.error(f"[BNCF Synthetic] Errore HTTP {r.status_code} su {xml_url}")
             return None
 
-        logger.debug(f"[BNCF Synthetic][DEBUG] XML ricevuto ({len(r.text)} byte). Primi 500 car: {r.text[:500]}")
-        # Salva sempre l'XML su file per debug, anche se working_folder non è valorizzato
-        xml_debug_path = None
-        try:
-            folder = working_folder if working_folder else os.path.join(os.getcwd(), "bncf_xml_debug_fallback")
-            os.makedirs(folder, exist_ok=True)
-            xml_debug_path = os.path.join(folder, f"bncf_xml_debug.xml")
-            with open(xml_debug_path, "w", encoding="utf-8") as fxml:
-                fxml.write(r.text)
-            logger.info(f"[BNCF Synthetic][DEBUG] XML salvato per debug: {xml_debug_path}")
-        except Exception as e2:
-            logger.error(f"[BNCF Synthetic][DEBUG] Errore salvataggio XML: {e2}\n{traceback.format_exc()}")
+        logger.debug(f"[BNCF Synthetic] XML ricevuto ({len(r.text)} byte).")
+        if os.environ.get("ATKPRO_BNCF_DEBUG_XML") == "1" and working_folder:
+            try:
+                os.makedirs(working_folder, exist_ok=True)
+                xml_debug_path = os.path.join(working_folder, "bncf_xml_debug.xml")
+                with open(xml_debug_path, "w", encoding="utf-8") as fxml:
+                    fxml.write(r.text)
+                logger.debug(f"[BNCF Synthetic] XML salvato per debug: {xml_debug_path}")
+            except Exception as e2:
+                logger.error(f"[BNCF Synthetic] Errore salvataggio XML: {e2}\n{traceback.format_exc()}")
 
         matches = re.findall(r'ID="([^"]+)"[^>]+?sequenza="([^"]+)"', r.text, re.DOTALL)
-        logger.debug(f"[BNCF Synthetic][DEBUG] Numero match trovati: {len(matches)}")
+        logger.debug(f"[BNCF Synthetic] Numero match trovati: {len(matches)}")
 
         images = []
         for img_id, seq in matches:
-            logger.debug(f"[BNCF Synthetic][DEBUG] Match trovato: ID={img_id}, SEQ={seq}")
             images.append((img_id, seq))
 
         logger.info(f"[BNCF Synthetic] Trovate {len(images)} immagini tramite Regex ultra-permissiva")
@@ -686,11 +688,11 @@ def build_bncf_teca_synthetic_manifest(page_url: str, working_folder: str) -> di
             # Tentativo disperato: cerca solo gli ID se sequenza fallisce
             ids = re.findall(r'ID="(BNCF[0-9]+)"', r.text)
             if ids:
-                logger.warning(f"[BNCF Synthetic][DEBUG] Trovati {len(ids)} ID senza sequenza esplicita, genero sequenza numerica")
+                logger.warning(f"[BNCF Synthetic] Trovati {len(ids)} ID senza sequenza esplicita, genero sequenza numerica")
                 images = [(id_val, str(i+1)) for i, id_val in enumerate(ids)]
 
         if not images:
-            logger.error("[BNCF Synthetic][DEBUG] Nessuna immagine trovata nell'XML con nessun metodo. Controlla il file XML salvato per debug.")
+            logger.error("[BNCF Synthetic] Nessuna immagine trovata nell'XML con nessun metodo.")
             return None
 
         # Costruisci manifest sintetico
