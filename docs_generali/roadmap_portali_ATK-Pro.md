@@ -64,10 +64,21 @@ tecnico e verificabilita delle fonti:
   non commerciali, con citazione e preferenza per IIIF ufficiale quando
   disponibile.
 
+Stato operativo:
+
+- la capability `record_mode_policy` e' centralizzata in `src/portal_registry.py`;
+- `R_OK` consente registro completo con avviso;
+- `R_LIMITED` richiede range canvas esplicito e blocca batch `R` senza range;
+- `D_ONLY` blocca i record `R` prima dell'avvio;
+- `VARIABLE` richiede conferma esplicita per il manifest diretto;
+- `portal_policy_overrides.json` permette aggiornamenti locali della policy
+  senza attendere una nuova release;
+- `verify_portal_policy.py` segnala policy da riverificare e puo' generare un
+  template locale di override.
+
 Interventi consigliati:
 
-- aggiungere una tabella interna di capability per portale;
-- aggiungere avvisi sintetici nel flusso UI prima del download;
+- mantenere avvisi sintetici nel flusso UI prima del download;
 - creare fixture offline di manifest/item rappresentativi;
 - mantenere rate limit espliciti dove gia previsti.
 
@@ -141,9 +152,9 @@ Matrice iniziale di scouting:
 
 ## Sequenza tecnica consigliata
 
-1. Continuare a estendere la registry `portale -> capability`; gruppi UI,
-   avvisi operativi, referer HTTP, famiglia tecnica e policy tile sono gia
-   centralizzati.
+1. Mantenere allineata la registry `portale -> capability`; gruppi UI,
+   avvisi operativi, referer HTTP, famiglia tecnica, policy tile e policy
+   `D/R` sono centralizzati.
 2. Spostare progressivamente nella registry le altre capability tecniche
    ancora implicite in `elaborazione`, `manifest_utils` e `tile_downloader`.
 3. Estendere gli adapter IIIF diretti senza creare scraping: link Mirador con

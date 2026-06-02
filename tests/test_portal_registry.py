@@ -1,17 +1,25 @@
 import src.manifest_utils as manifest_utils
+from datetime import date
+import json
+
 from src.portal_registry import (
     PORTAL_REGISTRY,
     PORTAL_WARNING_MESSAGE_KEYS,
+    RECORD_MODE_POLICIES,
+    R_POLICY_LABELS,
     TECHNICAL_FAMILIES,
+    get_effective_portal_policy,
     get_portal,
     get_portal_groups,
     get_portal_referer,
+    get_portal_record_mode_policy,
     get_portal_technical_family,
     get_portal_tile_download_policy,
     get_portal_warning_message_key,
     normalize_portal_key,
     portal_keys,
     portals_by_technical_family,
+    write_portal_policy_override_template,
 )
 
 
@@ -88,3 +96,74 @@ def test_tile_download_policy_marks_heidelberg_rate_limit():
     assert get_portal_tile_download_policy("heidelberg") == (1, 0.3)
     assert get_portal_tile_download_policy("gallica") == (None, 0.0)
     assert get_portal_tile_download_policy("non_esiste") == (None, 0.0)
+
+
+def test_record_mode_policy_values_are_known_and_classified():
+    policies = {portal.record_mode_policy for portal in PORTAL_REGISTRY.values()}
+    assert policies <= RECORD_MODE_POLICIES
+    assert set(R_POLICY_LABELS) == RECORD_MODE_POLICIES
+
+    assert get_portal_record_mode_policy("antenati") == "r_ok"
+    assert get_portal_record_mode_policy("gallica") == "r_ok"
+    assert get_portal_record_mode_policy("bncf_teca") == "d_only"
+    assert get_portal_record_mode_policy("museogalileo") == "d_only"
+    assert get_portal_record_mode_policy("matricula") == "r_limited"
+    assert get_portal_record_mode_policy("manifest_diretto") == "variable"
+
+
+def test_effective_policy_marks_stale_checks_prudently():
+    fresh = get_effective_portal_policy("gallica", today=date(2026, 6, 2))
+    stale = get_effective_portal_policy("gallica", today=date(2026, 12, 2))
+
+    assert fresh is not None
+    assert fresh.record_mode_policy == "r_ok"
+    assert not fresh.recheck_due
+    assert stale is not None
+    assert stale.record_mode_policy == "r_ok"
+    assert stale.recheck_due
+
+
+def test_manifest_direct_policy_is_variable_not_periodically_stale():
+    policy = get_effective_portal_policy("manifest_diretto", today=date(2026, 12, 2))
+
+    assert policy is not None
+    assert policy.record_mode_policy == "variable"
+    assert not policy.recheck_due
+
+
+def test_local_policy_override_can_update_record_mode_without_release(tmp_path):
+    override_path = tmp_path / "portal_policy_overrides.json"
+    override_path.write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "portals": {
+                    "bncf_teca": {
+                        "record_mode_policy": "r_limited",
+                        "policy_checked_at": "2026-06-01",
+                        "policy_recheck_days": 365,
+                        "policy_source_urls": ["https://example.test/terms"],
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    policy = get_effective_portal_policy("bncf_teca", local_policy_path=override_path, today=date(2026, 6, 2))
+
+    assert policy is not None
+    assert policy.policy_source == "local"
+    assert policy.record_mode_policy == "r_limited"
+    assert policy.policy_checked_at == "2026-06-01"
+    assert policy.policy_source_urls == ("https://example.test/terms",)
+    assert not policy.recheck_due
+
+
+def test_write_portal_policy_override_template(tmp_path):
+    output_path = write_portal_policy_override_template(tmp_path / "portal_policy_overrides.json")
+    data = json.loads(output_path.read_text(encoding="utf-8"))
+
+    assert set(data["portals"]) == set(PORTAL_REGISTRY)
+    assert data["portals"]["antenati"]["record_mode_policy"] == "r_ok"
+    assert data["portals"]["manifest_diretto"]["record_mode_policy"] == "variable"

@@ -65,6 +65,7 @@ _archive/
 # ⚙️ Configurazioni locali
 *.local
 *.env
+portal_policy_overrides.json
 *.ini
 !pytest.ini
 *.cfg

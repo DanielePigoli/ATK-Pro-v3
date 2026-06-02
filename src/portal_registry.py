@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import date, datetime, timedelta
+import json
+from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -19,6 +22,22 @@ class PortalInfo:
     tile_inter_delay: float = 0.0
     public_only: bool = True
     requires_rights_check: bool = True
+    record_mode_policy: str = "r_limited"
+    policy_checked_at: str = "2026-05-26"
+    policy_recheck_days: int = 180
+    policy_source_urls: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class EffectivePortalPolicy:
+    portal_key: str
+    label: str
+    record_mode_policy: str
+    policy_checked_at: str
+    policy_recheck_days: int
+    policy_source_urls: tuple[str, ...]
+    policy_source: str
+    recheck_due: bool
 
 
 TECHNICAL_FAMILIES: frozenset[str] = frozenset(
@@ -30,6 +49,22 @@ TECHNICAL_FAMILIES: frozenset[str] = frozenset(
         "user_supplied_manifest",
     }
 )
+
+RECORD_MODE_POLICIES: frozenset[str] = frozenset(
+    {
+        "r_ok",
+        "r_limited",
+        "d_only",
+        "variable",
+    }
+)
+
+R_POLICY_LABELS: dict[str, str] = {
+    "r_ok": "Registro completo consentito con avviso",
+    "r_limited": "Registro consentito solo con range esplicito",
+    "d_only": "Solo documento singolo",
+    "variable": "Dipende dal manifest fornito dall'utente",
+}
 
 
 _PORTALS: tuple[PortalInfo, ...] = (
@@ -43,6 +78,11 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Medio",
         roadmap_priority="maintain_with_warning",
         operational_note="Consultazione gratuita; riuso immagini non automaticamente aperto.",
+        record_mode_policy="r_ok",
+        policy_source_urls=(
+            "https://icar.cultura.gov.it/sistemi-e-portali/antenati",
+            "https://antenati.cultura.gov.it/",
+        ),
     ),
     PortalInfo(
         key="bnc_roma",
@@ -55,6 +95,10 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="do_not_extend",
         operational_note="Solo risorse pubbliche/no-login; escludere OpenAthens e alta risoluzione.",
         default_referer="http://digitale.bnc.roma.sbn.it",
+        record_mode_policy="r_limited",
+        policy_source_urls=(
+            "https://www.bncrm.beniculturali.it/it/32/biblioteca-digitale",
+        ),
     ),
     PortalInfo(
         key="bncf_teca",
@@ -66,6 +110,10 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Alto",
         roadmap_priority="do_not_extend",
         operational_note="Consultazione puntuale con cautela su pubblicazione e riproduzione.",
+        record_mode_policy="d_only",
+        policy_source_urls=(
+            "https://bncf.cultura.gov.it/servizi/riproduzioni/",
+        ),
     ),
     PortalInfo(
         key="museogalileo",
@@ -78,6 +126,10 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="do_not_extend",
         operational_note="Endpoint non documentato/stabile; niente nuove automazioni.",
         default_referer="https://opac.museogalileo.it",
+        record_mode_policy="d_only",
+        policy_source_urls=(
+            "https://www2.museogalileo.it/it/16-visita/876-riprese-filmate-e-riproduzioni-fotografiche.html",
+        ),
     ),
     PortalInfo(
         key="internetculturale_estense",
@@ -90,6 +142,10 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="consolidate",
         operational_note="Contenuti pubblici web non commerciali con citazione.",
         default_referer="https://www.internetculturale.it",
+        record_mode_policy="r_ok",
+        policy_source_urls=(
+            "https://www.internetculturale.it/it/15/termini-d-uso",
+        ),
     ),
     PortalInfo(
         key="brixiana",
@@ -101,6 +157,11 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Medio",
         roadmap_priority="maintain_with_warning",
         operational_note="Solo risorse pubbliche/no-login e condizioni del singolo ente.",
+        record_mode_policy="r_limited",
+        policy_source_urls=(
+            "https://www.comune.brescia.it/it/servizi/piattaforma-brixiana",
+            "https://www.memooria.org/servizi-openjarvis/",
+        ),
     ),
     PortalInfo(
         key="memooria",
@@ -112,6 +173,10 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Medio",
         roadmap_priority="maintain_with_warning",
         operational_note="Capability tecnica; verificare ente, accesso pubblico e licenza.",
+        record_mode_policy="r_limited",
+        policy_source_urls=(
+            "https://www.memooria.org/servizi-openjarvis/",
+        ),
     ),
     PortalInfo(
         key="vatlib",
@@ -124,6 +189,11 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="maintain_with_warning",
         operational_note="Uso studio/personale; riproduzione o pubblicazione richiede autorizzazione BAV.",
         default_referer="https://digi.vatlib.it",
+        record_mode_policy="r_limited",
+        policy_source_urls=(
+            "https://www.vaticanlibrary.va/en/information-for-readers/photographic-reproductions.html",
+            "https://digi.vatlib.it/",
+        ),
     ),
     PortalInfo(
         key="findbuch",
@@ -136,6 +206,11 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="do_not_extend",
         operational_note="Solo istanze pubbliche gia verificate e range puntuale.",
         default_referer="https://www.findbuch.net",
+        record_mode_policy="r_limited",
+        policy_source_urls=(
+            "https://www.findbuch.net/hp/Funktionen/",
+            "https://beni-culturali.provincia.bz.it/de/landesarchiv/kirchenbucher-sudtirol",
+        ),
     ),
     PortalInfo(
         key="matricula",
@@ -148,6 +223,10 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="do_not_extend",
         operational_note="CC BY-NC-ND 2.0: no commerciale, no derivati, no bulk.",
         default_referer="https://data.matricula-online.eu",
+        record_mode_policy="r_limited",
+        policy_source_urls=(
+            "https://data.matricula-online.eu/de/nutzungsbedingungen/",
+        ),
     ),
     PortalInfo(
         key="gallica",
@@ -160,6 +239,11 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="consolidate",
         operational_note="Riuso non commerciale con citazione; cautela sui partner.",
         default_referer="https://gallica.bnf.fr",
+        record_mode_policy="r_ok",
+        policy_source_urls=(
+            "https://api.bnf.fr/fr/api-iiif-de-recuperation-des-images-de-gallica",
+            "https://gallica.bnf.fr/accueil/fr/html/conditions-dutilisation-de-gallica",
+        ),
     ),
     PortalInfo(
         key="heidelberg",
@@ -174,6 +258,10 @@ _PORTALS: tuple[PortalInfo, ...] = (
         default_referer="https://digi.ub.uni-heidelberg.de",
         tile_max_workers=1,
         tile_inter_delay=0.3,
+        record_mode_policy="r_ok",
+        policy_source_urls=(
+            "https://www.ub.uni-heidelberg.de/Englisch/helios/digi/nutzung/",
+        ),
     ),
     PortalInfo(
         key="bodleian",
@@ -186,6 +274,11 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="consolidate",
         operational_note="Attribuzione, uso non commerciale e no re-hosting sistematico.",
         default_referer="https://digital.bodleian.ox.ac.uk",
+        record_mode_policy="r_ok",
+        policy_source_urls=(
+            "https://digital.bodleian.ox.ac.uk/terms/",
+            "https://digital.bodleian.ox.ac.uk/developer/iiif/",
+        ),
     ),
     PortalInfo(
         key="e_rara",
@@ -198,6 +291,11 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="consolidate",
         operational_note="Controllare licenza per documento e citare la fonte.",
         default_referer="https://www.e-rara.ch",
+        record_mode_policy="r_ok",
+        policy_source_urls=(
+            "https://www.e-rara.ch/wiki/termsOfUse?lang=en",
+            "https://www.e-rara.ch/wiki/apiinfo",
+        ),
     ),
     PortalInfo(
         key="e_codices",
@@ -210,6 +308,11 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="consolidate",
         operational_note="Uso non commerciale con citazione salvo item Public Domain/CC.",
         default_referer="https://www.e-codices.unifr.ch",
+        record_mode_policy="r_ok",
+        policy_source_urls=(
+            "https://www.e-codices.unifr.ch/en/about/terms",
+            "https://www.e-codices.unifr.ch/en/about/webapplication",
+        ),
     ),
     PortalInfo(
         key="e_manuscripta",
@@ -222,6 +325,11 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="consolidate",
         operational_note="Controllare licenza per documento; evitare copia sistematica.",
         default_referer="https://www.e-manuscripta.ch",
+        record_mode_policy="r_ok",
+        policy_source_urls=(
+            "https://www.e-manuscripta.ch/wiki/termsOfUse?lang=en",
+            "https://www.e-manuscripta.ch/wiki/apiinfo",
+        ),
     ),
     PortalInfo(
         key="internet_archive",
@@ -234,6 +342,12 @@ _PORTALS: tuple[PortalInfo, ...] = (
         roadmap_priority="maintain_with_warning",
         operational_note="Solo item pubblici scaricabili con diritti chiari.",
         default_referer="https://archive.org",
+        record_mode_policy="r_limited",
+        policy_source_urls=(
+            "https://archive.org/about/terms",
+            "https://archive.org/services/docs/api/",
+            "https://archive.org/metadata/",
+        ),
     ),
     PortalInfo(
         key="europeana",
@@ -245,6 +359,11 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Basso-Medio",
         roadmap_priority="consolidate",
         operational_note="Verificare rights statement e attribuzione ai provider.",
+        record_mode_policy="r_limited",
+        policy_source_urls=(
+            "https://www.europeana.eu/en/rights/terms-of-use",
+            "https://api.europeana.eu/en",
+        ),
     ),
     PortalInfo(
         key="manifest_diretto",
@@ -256,6 +375,9 @@ _PORTALS: tuple[PortalInfo, ...] = (
         maintenance_risk="Variabile",
         roadmap_priority="consolidate",
         operational_note="Termini e diritti dipendono dal sito di origine scelto dall'utente.",
+        record_mode_policy="variable",
+        policy_checked_at="",
+        policy_source_urls=(),
     ),
 )
 
@@ -310,6 +432,147 @@ def get_portal_tile_download_policy(portale: str | None) -> tuple[int | None, fl
     if not portal:
         return None, 0.0
     return portal.tile_max_workers, portal.tile_inter_delay
+
+
+def get_portal_policy_override_path() -> Path:
+    try:
+        from .config_utils import _config_file_path
+    except ImportError:
+        from config_utils import _config_file_path
+
+    return Path(_config_file_path()).with_name("portal_policy_overrides.json")
+
+
+def _parse_policy_date(value: str | None) -> date | None:
+    if not value:
+        return None
+    try:
+        return datetime.strptime(str(value), "%Y-%m-%d").date()
+    except ValueError:
+        return None
+
+
+def _normalize_policy_override(raw: object) -> dict[str, object]:
+    if not isinstance(raw, dict):
+        return {}
+
+    normalized: dict[str, object] = {}
+    policy = raw.get("record_mode_policy")
+    if isinstance(policy, str) and policy in RECORD_MODE_POLICIES:
+        normalized["record_mode_policy"] = policy
+
+    checked_at = raw.get("policy_checked_at")
+    if isinstance(checked_at, str) and _parse_policy_date(checked_at):
+        normalized["policy_checked_at"] = checked_at
+
+    recheck_days = raw.get("policy_recheck_days")
+    if isinstance(recheck_days, int) and recheck_days > 0:
+        normalized["policy_recheck_days"] = recheck_days
+
+    urls = raw.get("policy_source_urls")
+    if isinstance(urls, list):
+        clean_urls = tuple(str(url).strip() for url in urls if str(url).strip())
+        normalized["policy_source_urls"] = clean_urls
+
+    return normalized
+
+
+def load_portal_policy_overrides(path: str | Path | None = None) -> dict[str, dict[str, object]]:
+    override_path = Path(path) if path else get_portal_policy_override_path()
+    if not override_path.exists():
+        return {}
+
+    try:
+        data = json.loads(override_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+    portal_data = data.get("portals") if isinstance(data, dict) else None
+    if not isinstance(portal_data, dict):
+        return {}
+
+    overrides: dict[str, dict[str, object]] = {}
+    for raw_key, raw_override in portal_data.items():
+        key = normalize_portal_key(str(raw_key))
+        if key not in PORTAL_REGISTRY:
+            continue
+        override = _normalize_policy_override(raw_override)
+        if override:
+            overrides[key] = override
+    return overrides
+
+
+def get_effective_portal_policy(
+    portale: str | None,
+    local_policy_path: str | Path | None = None,
+    today: date | None = None,
+) -> EffectivePortalPolicy | None:
+    portal = get_portal(portale)
+    if not portal:
+        return None
+
+    policy_data: dict[str, object] = {
+        "record_mode_policy": portal.record_mode_policy,
+        "policy_checked_at": portal.policy_checked_at,
+        "policy_recheck_days": portal.policy_recheck_days,
+        "policy_source_urls": portal.policy_source_urls,
+    }
+    overrides = load_portal_policy_overrides(local_policy_path)
+    source = "registry"
+    if portal.key in overrides:
+        policy_data.update(overrides[portal.key])
+        source = "local"
+
+    record_mode_policy = str(policy_data["record_mode_policy"])
+    checked_at = str(policy_data.get("policy_checked_at") or "")
+    recheck_days = int(policy_data.get("policy_recheck_days") or portal.policy_recheck_days)
+    source_urls = tuple(policy_data.get("policy_source_urls") or ())
+    checked_date = _parse_policy_date(checked_at)
+    today_date = today or date.today()
+    recheck_due = checked_date is None or today_date >= checked_date + timedelta(days=recheck_days)
+    if record_mode_policy == "variable" and checked_date is None:
+        recheck_due = False
+
+    return EffectivePortalPolicy(
+        portal_key=portal.key,
+        label=portal.label,
+        record_mode_policy=record_mode_policy,
+        policy_checked_at=checked_at,
+        policy_recheck_days=recheck_days,
+        policy_source_urls=source_urls,
+        policy_source=source,
+        recheck_due=recheck_due,
+    )
+
+
+def get_portal_record_mode_policy(
+    portale: str | None,
+    local_policy_path: str | Path | None = None,
+    today: date | None = None,
+) -> str | None:
+    policy = get_effective_portal_policy(portale, local_policy_path=local_policy_path, today=today)
+    return policy.record_mode_policy if policy else None
+
+
+def write_portal_policy_override_template(path: str | Path | None = None) -> Path:
+    output_path = Path(path) if path else get_portal_policy_override_path()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    template = {
+        "version": 1,
+        "updated_at": date.today().isoformat(),
+        "note": "Aggiorna solo dopo aver ricontrollato le fonti ufficiali del portale.",
+        "portals": {
+            portal.key: {
+                "record_mode_policy": portal.record_mode_policy,
+                "policy_checked_at": portal.policy_checked_at,
+                "policy_recheck_days": portal.policy_recheck_days,
+                "policy_source_urls": list(portal.policy_source_urls),
+            }
+            for portal in _PORTALS
+        },
+    }
+    output_path.write_text(json.dumps(template, ensure_ascii=False, indent=2), encoding="utf-8")
+    return output_path
 
 
 def portals_by_technical_family(technical_family: str) -> tuple[PortalInfo, ...]:

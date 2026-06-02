@@ -810,7 +810,7 @@ class _DownloadThread(QThread):
             self.error_occurred.emit(str(exc))
 
 
-def _ask_canvas_range(parent, glossario_data, lingua):
+def _ask_canvas_range(parent, glossario_data, lingua, required=False):
     """Dialog opzionale per limitare il range di canvas elaborati (solo registri R).
     Restituisce (canvas_da, canvas_a) come interi 1-based, oppure (None, None) per elaborare tutto.
     """
@@ -834,10 +834,14 @@ def _ask_canvas_range(parent, glossario_data, lingua):
     """)
     layout = QVBoxLayout(dlg)
 
-    info = QLabel(gm(
+    info_key = (
+        "La policy del portale attivo richiede un range di canvas esplicito per la modalità R.\n"
+        "Indica il primo e l'ultimo canvas da elaborare, oppure annulla l'operazione."
+        if required else
         "Vuoi limitare l'elaborazione a un range di canvas?\n"
         "Clicca OK per usare il range, oppure \"Tutti i canvas\" per elaborare tutto."
-    ))
+    )
+    info = QLabel(gm(info_key))
     info.setWordWrap(True)
     info.setStyleSheet("color: #fff; font-size: 13px;")
     layout.addWidget(info)
@@ -863,7 +867,7 @@ def _ask_canvas_range(parent, glossario_data, lingua):
 
     btn_row = QHBoxLayout()
     ok_btn = QPushButton(gm("OK (usa range)"))
-    skip_btn = QPushButton(gm("Tutti i canvas"))
+    skip_btn = QPushButton(gm("Annulla") if required else gm("Tutti i canvas"))
     ok_btn.clicked.connect(dlg.accept)
     skip_btn.clicked.connect(dlg.reject)
     btn_row.addWidget(ok_btn)
@@ -1494,13 +1498,101 @@ class MainWindow(QMainWindow):
             if not formats:
                 return
 
-            # Dialog range canvas: solo per singolo record R (non disturba i batch)
+            def _gm_policy(key):
+                return get_msg(glossario, key, lingua) or key
+
+            def _confirm_policy_message(message):
+                dlg = QMessageBox(self)
+                dlg.setWindowTitle(_gm_policy("Attenzione"))
+                dlg.setIcon(QMessageBox.Warning)
+                dlg.setText(message)
+                yes_btn = dlg.addButton(_gm_policy("Si"), QMessageBox.YesRole)
+                dlg.addButton(_gm_policy("No"), QMessageBox.NoRole)
+                dlg.exec()
+                return dlg.clickedButton() is yes_btn
+
+            def _has_explicit_range(record):
+                return record.get('canvas_da') is not None or record.get('canvas_a') is not None
+
             reg_records = [r for r in records if str(r.get('modalita', '')).strip().upper() == 'R']
-            if len(reg_records) == 1:
-                canvas_da_glob, canvas_a_glob = _ask_canvas_range(self, glossario, lingua)
-                if canvas_da_glob is not None or canvas_a_glob is not None:
-                    reg_records[0]['canvas_da'] = canvas_da_glob
-                    reg_records[0]['canvas_a'] = canvas_a_glob
+            if reg_records:
+                try:
+                    from portal_registry import get_effective_portal_policy, get_portal_policy_override_path
+                except ImportError:
+                    from src.portal_registry import get_effective_portal_policy, get_portal_policy_override_path
+
+                portale_attivo = state.get("portale_attivo", "antenati")
+                policy = get_effective_portal_policy(portale_attivo)
+                policy_code = policy.record_mode_policy if policy else "r_limited"
+                if policy and policy.recheck_due and policy_code == "r_ok":
+                    policy_code = "r_limited"
+
+                if policy and policy.recheck_due:
+                    stale_template = _gm_policy(
+                        "La policy del portale attivo deve essere riverificata. ATK-Pro applicherà un limite prudente per la modalità R finché non aggiorni il file locale: {path}"
+                    )
+                    show_msgbox_localized(
+                        self,
+                        glossario,
+                        lingua,
+                        _gm_policy("Attenzione"),
+                        stale_template.format(path=str(get_portal_policy_override_path())),
+                        QMessageBox.Warning,
+                        buttons=("Conferma",),
+                        default="Conferma",
+                    )
+
+                if policy_code == "d_only":
+                    block_template = _gm_policy(
+                        "La policy del portale attivo consente solo record D. Converti i record R in documenti singoli o scegli un portale compatibile con la modalità R."
+                    )
+                    show_msgbox_localized(
+                        self,
+                        glossario,
+                        lingua,
+                        _gm_policy("Attenzione"),
+                        block_template,
+                        QMessageBox.Critical,
+                        buttons=("Conferma",),
+                        default="Conferma",
+                    )
+                    return
+
+                if policy_code == "variable":
+                    variable_template = _gm_policy(
+                        "Il manifest diretto dipende dalla fonte scelta dall'utente. Confermi che il portale di origine consente l'elaborazione R richiesta?"
+                    )
+                    if not _confirm_policy_message(variable_template):
+                        return
+
+                if policy_code == "r_limited":
+                    missing_range_records = [r for r in reg_records if not _has_explicit_range(r)]
+                    if missing_range_records and len(reg_records) == 1:
+                        canvas_da_glob, canvas_a_glob = _ask_canvas_range(self, glossario, lingua, required=True)
+                        if canvas_da_glob is None and canvas_a_glob is None:
+                            return
+                        reg_records[0]['canvas_da'] = canvas_da_glob
+                        reg_records[0]['canvas_a'] = canvas_a_glob
+                    elif missing_range_records:
+                        batch_template = _gm_policy(
+                            "La policy del portale attivo richiede un range canvas esplicito per ogni record R. Riduci il batch a un solo registro oppure prepara record R con range già indicato."
+                        )
+                        show_msgbox_localized(
+                            self,
+                            glossario,
+                            lingua,
+                            _gm_policy("Attenzione"),
+                            batch_template,
+                            QMessageBox.Critical,
+                            buttons=("Conferma",),
+                            default="Conferma",
+                        )
+                        return
+                elif len(reg_records) == 1:
+                    canvas_da_glob, canvas_a_glob = _ask_canvas_range(self, glossario, lingua)
+                    if canvas_da_glob is not None or canvas_a_glob is not None:
+                        reg_records[0]['canvas_da'] = canvas_da_glob
+                        reg_records[0]['canvas_a'] = canvas_a_glob
 
             # Import dinamico per evitare problemi di import circolare
             import elaborazione
