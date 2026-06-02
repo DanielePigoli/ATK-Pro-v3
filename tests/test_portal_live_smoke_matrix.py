@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from src.portal_registry import PORTAL_REGISTRY, portal_keys
+import verify_portal_live_smoke as smoke
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,3 +41,28 @@ def test_live_smoke_matrix_repeats_registry_metadata():
         assert row["technical_family"] == portal.technical_family
         assert row["record_mode_policy"] == portal.record_mode_policy
         assert row["policy_checked_at"] == (portal.policy_checked_at or "per-request")
+
+
+def test_live_smoke_fetch_uses_synthetic_builder_for_synthetic_portals(monkeypatch, tmp_path):
+    def fake_builder(sample_url: str) -> dict:
+        assert sample_url == "https://bibdig.museogalileo.it/Teca/Viewer?an=000000006600"
+        return {
+            "@id": "synthetic://museogalileo/test",
+            "sequences": [{"canvases": [{"@id": "canvas-1"}]}],
+        }
+
+    monkeypatch.setitem(smoke.LIVE_SYNTHETIC_BUILDERS, "museogalileo", fake_builder)
+
+    result = smoke.run_case(
+        {
+            "portal_key": "museogalileo",
+            "label": PORTAL_REGISTRY["museogalileo"].label,
+            "sample_url": "https://bibdig.museogalileo.it/Teca/Viewer?an=000000006600",
+        },
+        fetch_manifest=True,
+        output_dir=tmp_path,
+    )
+
+    assert result.status == "PASS"
+    assert result.manifest_url == "synthetic://museogalileo/test"
+    assert result.canvas_count == 1

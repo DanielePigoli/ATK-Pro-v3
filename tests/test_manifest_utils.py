@@ -58,6 +58,12 @@ def test_robust_find_manifest_uses_viewer_query_without_fetch(monkeypatch):
     assert url == "https://pm20.zbw.eu/iiif/folder/co/043177/public.manifest.json"
 
 
+def test_resolve_bnc_roma_returns_synthetic_placeholder_without_empty_html_fetch():
+    url = "http://digitale.bnc.roma.sbn.it/printedbooks/bncr_142624/bncr_142624_001"
+
+    assert mu.resolve_manifest_url(url, "bnc_roma") == url
+
+
 def _sample_v3_manifest():
     return {
         "@context": "http://iiif.io/api/presentation/3/context.json",

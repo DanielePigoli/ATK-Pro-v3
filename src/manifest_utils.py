@@ -1373,11 +1373,6 @@ def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
     if portale_key == "manifest_diretto":
         return page_url
 
-    # Builder sintetici (restituiscono dict invece di stringa URL)
-    if portale_key == "bnc_roma":
-        from .manifest_utils import build_bnc_roma_synthetic_manifest
-        return build_bnc_roma_synthetic_manifest(page_url, "")
-
     if portale_key == "bncf_teca":
         # Prima proviamo IIIF standard (tentativi multipli)
         urls = _build_bncf_teca_manifest(page_url)

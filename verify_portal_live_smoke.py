@@ -12,12 +12,31 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.manifest_utils import _PORTAL_BUILDERS, download_manifest, resolve_manifest_url, robust_find_manifest
+from src.manifest_utils import (
+    _PORTAL_BUILDERS,
+    build_bnc_roma_synthetic_manifest,
+    build_findbuch_synthetic_manifest,
+    build_ia_synthetic_manifest,
+    build_internetculturale_estense_synthetic_manifest,
+    build_matricula_synthetic_manifest,
+    build_museogalileo_synthetic_manifest,
+    download_manifest,
+    resolve_manifest_url,
+    robust_find_manifest,
+)
 from src.portal_registry import PORTAL_REGISTRY, get_portal_referer, normalize_portal_key
 
 
 DEFAULT_MATRIX = ROOT / "docs_generali" / "portal_live_smoke_samples.md"
 DEFAULT_REPORT = ROOT / ".codex_tmp" / "portal_live_smoke_report.csv"
+LIVE_SYNTHETIC_BUILDERS = {
+    "bnc_roma": build_bnc_roma_synthetic_manifest,
+    "findbuch": build_findbuch_synthetic_manifest,
+    "internet_archive": build_ia_synthetic_manifest,
+    "internetculturale_estense": build_internetculturale_estense_synthetic_manifest,
+    "matricula": build_matricula_synthetic_manifest,
+    "museogalileo": build_museogalileo_synthetic_manifest,
+}
 
 
 @dataclass(frozen=True)
@@ -147,6 +166,17 @@ def _resolve_without_remote_fetch(portal_key: str, sample_url: str) -> str | lis
     return builder(sample_url)
 
 
+def _resolve_with_remote_fetch(portal_key: str, sample_url: str) -> str | dict | list | None:
+    if portal_key == "antenati":
+        return robust_find_manifest(sample_url)
+
+    synthetic_builder = LIVE_SYNTHETIC_BUILDERS.get(portal_key)
+    if synthetic_builder:
+        return synthetic_builder(sample_url)
+
+    return resolve_manifest_url(sample_url, portal_key)
+
+
 def run_case(row: dict[str, str], fetch_manifest: bool, output_dir: Path) -> SmokeResult:
     portal_key = normalize_portal_key(row.get("portal_key"))
     sample_url = (row.get("sample_url") or "").strip()
@@ -183,10 +213,7 @@ def run_case(row: dict[str, str], fetch_manifest: bool, output_dir: Path) -> Smo
                 "Sample URL configured and recognized; remote manifest not fetched.",
             )
 
-        if portal_key == "antenati":
-            resolved = robust_find_manifest(sample_url)
-        else:
-            resolved = resolve_manifest_url(sample_url, portal_key)
+        resolved = _resolve_with_remote_fetch(portal_key, sample_url)
 
         if resolved is None:
             return SmokeResult(portal_key, label, "FAIL", sample_url, "", 0, "No manifest resolved.")
