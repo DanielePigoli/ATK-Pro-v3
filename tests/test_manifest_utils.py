@@ -64,6 +64,35 @@ def test_resolve_bnc_roma_returns_synthetic_placeholder_without_empty_html_fetch
     assert mu.resolve_manifest_url(url, "bnc_roma") == url
 
 
+@patch("src.manifest_utils.requests.get")
+def test_bncf_synthetic_manifest_does_not_write_debug_xml_by_default(mock_get, tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+
+    class MockResponse:
+        ok = True
+        status_code = 200
+        text = (
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<mx-libro:readBook xmlns:mx-libro="http://www.imageViewer.mx/schema/gestioneLibro">'
+            '<mx-libro:immagini numImg="1">'
+            '<immagine ID="BNCF0000000001" mx-libro:sequenza="1">'
+            '<altezza>100</altezza><larghezza>100</larghezza>'
+            '</immagine>'
+            '</mx-libro:immagini>'
+            '</mx-libro:readBook>'
+        )
+
+    mock_get.return_value = MockResponse()
+
+    manifest = mu.build_bncf_teca_synthetic_manifest(
+        "https://teca.bncf.firenze.sbn.it/ImageViewer/servlet/ImageViewer?idr=BNCF0000000000&azione=readBook",
+        "",
+    )
+
+    assert manifest["sequences"][0]["canvases"]
+    assert not (tmp_path / "bncf_xml_debug_fallback" / "bncf_xml_debug.xml").exists()
+
+
 def _sample_v3_manifest():
     return {
         "@context": "http://iiif.io/api/presentation/3/context.json",
