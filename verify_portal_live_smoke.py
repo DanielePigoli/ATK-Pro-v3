@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import csv
 import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -29,6 +30,8 @@ from src.portal_registry import PORTAL_REGISTRY, get_portal_referer, normalize_p
 
 DEFAULT_MATRIX = ROOT / "docs_generali" / "portal_live_smoke_samples.md"
 DEFAULT_REPORT = ROOT / ".codex_tmp" / "portal_live_smoke_report.csv"
+LIVE_FETCH_ATTEMPTS = 3
+LIVE_FETCH_RETRY_DELAY_SECONDS = 2
 LIVE_SYNTHETIC_BUILDERS = {
     "bnc_roma": build_bnc_roma_synthetic_manifest,
     "findbuch": build_findbuch_synthetic_manifest,
@@ -177,6 +180,16 @@ def _resolve_with_remote_fetch(portal_key: str, sample_url: str) -> str | dict |
     return resolve_manifest_url(sample_url, portal_key)
 
 
+def _resolve_with_remote_fetch_retries(portal_key: str, sample_url: str) -> tuple[str | dict | list | None, int]:
+    for attempt in range(1, LIVE_FETCH_ATTEMPTS + 1):
+        resolved = _resolve_with_remote_fetch(portal_key, sample_url)
+        if resolved is not None:
+            return resolved, attempt
+        if attempt < LIVE_FETCH_ATTEMPTS:
+            time.sleep(LIVE_FETCH_RETRY_DELAY_SECONDS)
+    return None, LIVE_FETCH_ATTEMPTS
+
+
 def run_case(row: dict[str, str], fetch_manifest: bool, output_dir: Path) -> SmokeResult:
     portal_key = normalize_portal_key(row.get("portal_key"))
     sample_url = (row.get("sample_url") or "").strip()
@@ -213,10 +226,10 @@ def run_case(row: dict[str, str], fetch_manifest: bool, output_dir: Path) -> Smo
                 "Sample URL configured and recognized; remote manifest not fetched.",
             )
 
-        resolved = _resolve_with_remote_fetch(portal_key, sample_url)
+        resolved, attempts = _resolve_with_remote_fetch_retries(portal_key, sample_url)
 
         if resolved is None:
-            return SmokeResult(portal_key, label, "FAIL", sample_url, "", 0, "No manifest resolved.")
+            return SmokeResult(portal_key, label, "FAIL", sample_url, "", 0, f"No manifest resolved after {attempts} attempts.")
 
         if isinstance(resolved, dict):
             count = _canvas_count(resolved)

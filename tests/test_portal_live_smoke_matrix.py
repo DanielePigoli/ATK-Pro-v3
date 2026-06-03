@@ -66,3 +66,33 @@ def test_live_smoke_fetch_uses_synthetic_builder_for_synthetic_portals(monkeypat
     assert result.status == "PASS"
     assert result.manifest_url == "synthetic://museogalileo/test"
     assert result.canvas_count == 1
+
+
+def test_live_smoke_fetch_retries_transient_resolution_failure(monkeypatch, tmp_path):
+    calls = {"count": 0}
+
+    def flaky_builder(_sample_url: str):
+        calls["count"] += 1
+        if calls["count"] == 1:
+            return None
+        return {
+            "@id": "synthetic://museogalileo/retry-ok",
+            "sequences": [{"canvases": [{"@id": "canvas-1"}]}],
+        }
+
+    monkeypatch.setitem(smoke.LIVE_SYNTHETIC_BUILDERS, "museogalileo", flaky_builder)
+    monkeypatch.setattr(smoke, "LIVE_FETCH_RETRY_DELAY_SECONDS", 0)
+
+    result = smoke.run_case(
+        {
+            "portal_key": "museogalileo",
+            "label": PORTAL_REGISTRY["museogalileo"].label,
+            "sample_url": "https://bibdig.museogalileo.it/Teca/Viewer?an=000000006600",
+        },
+        fetch_manifest=True,
+        output_dir=tmp_path,
+    )
+
+    assert result.status == "PASS"
+    assert result.manifest_url == "synthetic://museogalileo/retry-ok"
+    assert calls["count"] == 2
