@@ -142,6 +142,12 @@ Scheda minima prima di proporre un nuovo portale:
 - fixture offline prevista;
 - decisione: integrare, verificare ancora, solo link, non supportare.
 
+Per candidati non-IIIF ma con download pubblico dichiarato, come il Museu da
+Imigracao de Sao Paulo, non usare builder HTML improvvisati. Prima serve una
+capability tecnica esplicita per PDF/immagini dirette pubbliche, separata dagli
+adapter IIIF, con blocco prudente dei registri completi quando la policy non
+consente un download ampio.
+
 Matrice iniziale di scouting:
 
 - `docs_generali/matrice_portali_candidati_ATK-Pro.md`.
