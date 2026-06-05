@@ -160,6 +160,13 @@ diretto anche quando i documenti sono gratuiti o disponibili dopo registrazione.
 Eventuali basi parallele no-login vanno valutate separatamente, senza riusare
 credenziali, sessioni o percorsi autenticati.
 
+Se un portale pubblico consente download PDF tramite form di ricerca ma non
+espone API, IIIF o endpoint documentati, come il buscador inmigrantes AGN
+Argentina nel controllo 2026-06-05, trattarlo prima come integrazione
+metadata/link assistito. Il passaggio a download diretto richiede un campione
+pubblico stabile, limiti di interrogazione espliciti, fixture offline e blocco
+di ricerche ampie non richieste dall'utente.
+
 Matrice iniziale di scouting:
 
 - `docs_generali/matrice_portali_candidati_ATK-Pro.md`.
