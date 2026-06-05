@@ -172,6 +172,12 @@ metadata/link assistito. Il passaggio a download diretto richiede un campione
 pubblico stabile, limiti di interrogazione espliciti, fixture offline e blocco
 di ricerche ampie non richieste dall'utente.
 
+Per portali con metadati pubblicati su piattaforme open data e contenuti
+digitali soggetti a termini separati, come DataViva Colombia nel controllo
+2026-06-05, separare le due capability: metadata/API puo essere valutata come
+integrazione prioritaria, mentre download immagini/PDF richiede una verifica
+item-level dei diritti, dei termini specifici e dei limiti operativi.
+
 Matrice iniziale di scouting:
 
 - `docs_generali/matrice_portali_candidati_ATK-Pro.md`.
