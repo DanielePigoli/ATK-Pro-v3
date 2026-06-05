@@ -125,6 +125,28 @@ Esito primo controllo Svizzera italiana / Grigioni / Coira (2026-06-05):
 - `diocesi_chur_coira` offre orientamento ecclesiastico e Findbuch; va trattata
   come link/discovery, non come downloader generico.
 
+Esito primo scouting biblioteche digitali italiane (2026-06-05):
+
+- Questo e il primo blocco italiano/italofono con reale potenziale di nuova
+  integrazione di download, perche alcuni portali espongono pubblico dominio,
+  immagini scaricabili, IIIF, OAI-PMH o endpoint PDF pubblici.
+- `biblioteca_digitale_trentina` e il candidato piu pulito da sondare: accesso
+  pubblico, download gratuito e riuso dichiarato anche commerciale con
+  citazione. Prima di integrarlo serve solo verificare il metodo tecnico stabile
+  migliore: IIIF, file diretti, OAI o pattern immagini.
+- `beic_digitale` e il secondo candidato forte: termini favorevoli per pubblico
+  dominio, dati CC0 e OAI-PMH documentato. Va pero distinta la parte metadata
+  dalla parte immagini/PDF, verificando campioni pubblici prima del codice.
+- `biblioteca_digitale_lombarda` e tecnicamente promettente per record e PDF
+  pubblici, ma molti contenuti hanno licenze non commerciale/no-derivati. Va
+  trattata con policy prudente e range esplicito, non come scarico generale.
+- `ambrosiana_digitale` e `rovereto_digital_library` restano sonde importanti:
+  la prima dichiara IIIF, la seconda e descritta come DSpace GLAM/IIIF, ma
+  servono termini e campioni prima di qualsiasi integrazione.
+- Il prossimo sviluppo concreto, se si procede con nuovi portali, dovrebbe
+  essere una sonda tecnica su `biblioteca_digitale_trentina`, non un adapter
+  generico per tutte le biblioteche digitali.
+
 ## Priorita 1 - Consolidare
 
 Portali da trattare per primi per rapporto favorevole tra valore, metodo
