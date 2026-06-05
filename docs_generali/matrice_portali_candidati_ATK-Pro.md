@@ -28,7 +28,7 @@ diretto. Possono comparire solo come riferimento esterno/manuale.
 | `san_risorse_digitali` | SAN - documenti digitali / open data | Italia | `https://www.san.beniculturali.it/web/san/risorse-per-le-ricerche`; `https://cultura.gov.it/open-data-e-linked-data` | Alta: risorse digitali e metadati archivistici nazionali | Esistono metadati/OAI e risorse collegate a teche o sistemi aderenti; licenze e immagini dipendono dal sistema sorgente | B - valutare metadati/OAI, non scaricare immagini senza fonte specifica |
 | `siusa` | SIUSA | Italia | `https://siusa-archivi.cultura.gov.it/cgi-bin/siusa/pagina.pl?RicLin=en&TipoPag=informazioni` | Media-alta: censimento archivi vigilati, contesto fondi e soggetti conservatori | Fonte descrittiva; non appare come portale primario di download immagini | C - ottimo supporto ricerca, non integrazione downloader |
 | `biblioteca_digitale_siena` | Biblioteca Digitale Siena | Italia | `https://bds.comune.siena.it/`; `https://bds.comune.siena.it/it/169/` | Media-alta: manoscritti, periodici, disegni, archivi e carteggi senesi/toscani | Piattaforma pubblica IIIF; termini ufficiali consentono JPG web-resolution per uso personale, studio e ricerca con citazione, vietando uso commerciale e trasformazioni non autorizzate; smoke live 2026-06-05 passato su manifest da 106 canvas | A - builder viewer->manifest aggiunto e verificato live |
-| `museu_imigracao_sp` | Museu da Imigracao do Estado de Sao Paulo - Acervo Digital | Brasile / diaspora italiana | `https://museudaimigracao.org.br/acervo/sobre-acervo`; `https://www.museudaimigracao.org.br/acervo/passageiros` | Molto alta per immigrati italiani in Brasile/Sao Paulo | Acervo digitale pubblico con registri, liste di bordo e documenti; API/termini da verificare, evitare scraping fragile | B - candidato forte per scouting tecnico |
+| `museu_imigracao_sp` | Museu da Imigracao do Estado de Sao Paulo - Acervo Digital | Brasile / diaspora italiana | `https://museudaimigracao.org.br/acervo/sobre-acervo`; `https://www.museudaimigracao.org.br/acervo/passageiros`; `https://museudaimigracao.org.br/acervo-e-pesquisa/acervo` | Molto alta per immigrati italiani in Brasile/Sao Paulo | Acervo digitale pubblico con piu di 250 mila immagini, registri di matricola, liste di bordo, carte di chiamata, richieste SACOP, iconografie, cartografie e giornali; le fonti ufficiali indicano uso/download non commerciale, ma il percorso tecnico appare basato su ricerca web e PDF/immagini pubbliche, non su IIIF/API documentata | B - candidato forte, ma non integrare finche non viene validata una capability `pdf_direct`/download diretto pubblica e testabile |
 | `apesp_digitalizados` | Arquivo Publico do Estado de Sao Paulo - Acervo digitalizado | Brasile / diaspora italiana | `https://web.arquivoestado.sp.gov.br/web/acervo/digitalizados`; `https://www.arquivoestado.sp.gov.br/web/digitalizado/textual/nucleos_coloniais` | Molto alta: Hospedaria, nuclei coloniali, documenti di immigrazione | Documenti digitalizzati e base consultabile; verificare termini, pattern tecnico e limiti di riproduzione | B - candidato da analizzare con fixture |
 | `arquivo_nacional_br_sian` | Arquivo Nacional do Brasil / SIAN | Brasile / diaspora italiana | `https://www.gov.br/arquivonacional/pt-br/canais_atendimento/imprensa/copy_of_noticias/a-imigracao-italiana-e-o-acervo-do-an` | Alta: ingresso di stranieri, vapori, acervo nazionale | Fonte ufficiale molto rilevante; SIAN e file digitali vanno verificati per accesso pubblico/no-login e modalita tecniche | B/C - valutare; no automazione se login obbligatorio |
 | `agn_argentina_inmigrantes` | Archivo General de la Nacion Argentina - buscador inmigrantes | Argentina / diaspora italiana | `https://www.argentina.gob.ar/interior/archivo-general-de-la-nacion`; `https://www.argentina.gob.ar/node/478702` | Molto alta: ingressi al porto di Buenos Aires 1882/1883-1937 | Buscador ufficiale; prima verificare se esistono API o endpoint consentiti, altrimenti solo link esterno | B/C - candidato informativo, non downloader finche non documentato |
@@ -67,9 +67,13 @@ istituzionale verificabile.
 
 ### Blocco A - Diaspora italiana ad alto valore
 
-- `museu_imigracao_sp`: verificare se esistono endpoint stabili o modalita
-  tecniche documentabili per liste passeggeri e acervo digitale; in assenza di
-  API chiara, trattarlo come link assistito.
+- `museu_imigracao_sp`: valore genealogico molto alto per la diaspora italiana
+  in Brasile. Le pagine ufficiali descrivono accesso pubblico, download
+  gratuito e uso non commerciale dell'acervo digitale; la tecnica, pero, non e
+  IIIF/API documentata. Prima di integrarlo serve una capability separata e
+  prudente per PDF/immagini dirette pubbliche, con policy `D_ONLY` o al massimo
+  `R_LIMITED` su range esplicito, fixture offline e smoke live su un esempio
+  istituzionale stabile. In assenza di questo passaggio resta link assistito.
 - `apesp_digitalizados`: cercare un esempio pubblico riproducibile e valutare
   se il viewer espone immagini o metadati senza login, senza aggiramenti e con
   limiti di riuso rispettabili.
