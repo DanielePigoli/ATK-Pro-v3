@@ -154,6 +154,12 @@ assistiti. La presenza di una base pubblica consultabile non basta per
 abilitare download diretto se la consultazione effettiva passa da autenticazione
 o da regole di riproduzione non compatibili con automazione.
 
+Se il sito espone CAPTCHA, challenge anti-spam o verifica umana, come osservato
+su SIAN nel controllo 2026-06-05, il candidato resta escluso dal download
+diretto anche quando i documenti sono gratuiti o disponibili dopo registrazione.
+Eventuali basi parallele no-login vanno valutate separatamente, senza riusare
+credenziali, sessioni o percorsi autenticati.
+
 Matrice iniziale di scouting:
 
 - `docs_generali/matrice_portali_candidati_ATK-Pro.md`.
