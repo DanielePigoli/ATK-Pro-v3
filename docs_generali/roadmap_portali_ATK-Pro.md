@@ -160,6 +160,11 @@ diretto anche quando i documenti sono gratuiti o disponibili dopo registrazione.
 Eventuali basi parallele no-login vanno valutate separatamente, senza riusare
 credenziali, sessioni o percorsi autenticati.
 
+Per fonti private/non governative con buscador pubblico e possibile CAPTCHA,
+come CEMLA nel controllo 2026-06-05, mantenere link assistito e note di ricerca.
+La grande utilita genealogica non basta per automatizzare interrogazioni o
+scarichi quando non esistono API, endpoint documentati o termini espliciti.
+
 Se un portale pubblico consente download PDF tramite form di ricerca ma non
 espone API, IIIF o endpoint documentati, come il buscador inmigrantes AGN
 Argentina nel controllo 2026-06-05, trattarlo prima come integrazione
