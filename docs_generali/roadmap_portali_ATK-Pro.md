@@ -79,6 +79,20 @@ Esito primo controllo Archivi Nazionali/Archivio Digitale (2026-06-05):
   apertura link, ricerca assistita, note di contesto e, se utile in futuro,
   collegamento documentato verso pagine pubbliche, non scaricamento.
 
+Esito primo controllo SAN/SIAS/SIUSA (2026-06-05):
+
+- `san_risorse_digitali` e soprattutto catalogo, interoperabilita e strumenti
+  di ricerca. La pista tecnica ammissibile e metadata/OAI, non immagini.
+- `sias` resta utile per descrizioni archivistiche, inventari e rimandi a
+  strumenti online; le riproduzioni digitali collegate non costituiscono una
+  base per download generale.
+- `siusa` resta utile per archivi non statali, soggetti conservatori/produttori
+  e inventari interni o esterni; i testi hanno licenza aperta salvo diversa
+  specificazione, ma il portale non e una fonte immagini.
+- Il prossimo passo italiano non e un downloader nazionale, ma una eventuale
+  capability di ricerca/metadati e apertura guidata di inventari, distinta dal
+  motore di scaricamento immagini.
+
 ## Priorita 1 - Consolidare
 
 Portali da trattare per primi per rapporto favorevole tra valore, metodo
