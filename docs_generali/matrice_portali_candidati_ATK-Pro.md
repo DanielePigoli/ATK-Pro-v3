@@ -23,7 +23,7 @@ diretto. Possono comparire solo come riferimento esterno/manuale.
 
 | Chiave candidata | Portale | Area strategica | Fonte ufficiale consultata | Rilevanza genealogica | Prima lettura tecnica/legale | Decisione provvisoria |
 |---|---|---|---|---|---|---|
-| `archivi_nazionali` | Portale Archivi Nazionali | Italia | `https://www.territori.san.beniculturali.it/sistemi-e-portali/archivi-nazionali/portale-archivi-nazionali` | Molto alta: ricerca trasversale su fondi archivistici, Antenati e Partigiani d'Italia | Portale in evoluzione: promette dati descrittivi e risorse digitali del SIA; attendere stabilita pubblica e documentazione tecnica/API | B - monitorare e rivalutare appena il portale e stabile |
+| `archivi_nazionali` | Portale Archivi Nazionali / SIA / Archivio Digitale | Italia | `https://icar.cultura.gov.it/sistemi-e-portali/archivi-nazionali`; `https://archivinazionali.cultura.gov.it/`; `https://archiviodigitale-icar.cultura.gov.it/`; `https://salastudio-archivi.cultura.gov.it/` | Molto alta: ricerca trasversale su fondi archivistici, Antenati, Archivi di Stato, Soprintendenze e progetti di digitalizzazione | Controllo 2026-06-05: il nuovo portale Archivi Nazionali risulta ancora in sviluppo; ICAR documenta la reingegnerizzazione SIA e l'integrazione di SIAS, SIUSA, Strumenti di ricerca online e Archivio Digitale. Archivio Digitale e gia consultabile e aggrega progetti/risorse digitalizzate, ma non emerge ancora una API pubblica stabile o una policy downloader generale | B - candidato strategico italiano; prima metadata/discovery su Archivio Digitale/SIA, download diretto solo per risorse pubbliche con endpoint e diritti specifici |
 | `sias` | Sistema Informativo degli Archivi di Stato | Italia | `https://archivi.cultura.gov.it/strumenti-di-ricerca-online/sistema-informativo-degli-archivi-di-stato-sias`; `https://icar.cultura.gov.it/sistemi-e-portali/sistemi-nazionali-di-descrizione-archivistica/sistema-informativo-degli-archivi-di-stato-sias-1` | Alta: descrizioni di Archivi di Stato, inventari e talvolta immagini | Fonte piu descrittiva che downloader; utile per discovery, non per acquisizione massiva immagini | C - link/discovery prima di ogni download |
 | `san_risorse_digitali` | SAN - documenti digitali / open data | Italia | `https://www.san.beniculturali.it/web/san/risorse-per-le-ricerche`; `https://cultura.gov.it/open-data-e-linked-data` | Alta: risorse digitali e metadati archivistici nazionali | Esistono metadati/OAI e risorse collegate a teche o sistemi aderenti; licenze e immagini dipendono dal sistema sorgente | B - valutare metadati/OAI, non scaricare immagini senza fonte specifica |
 | `siusa` | SIUSA | Italia | `https://siusa-archivi.cultura.gov.it/cgi-bin/siusa/pagina.pl?RicLin=en&TipoPag=informazioni` | Media-alta: censimento archivi vigilati, contesto fondi e soggetti conservatori | Fonte descrittiva; non appare come portale primario di download immagini | C - ottimo supporto ricerca, non integrazione downloader |
@@ -48,15 +48,41 @@ diretto. Possono comparire solo come riferimento esterno/manuale.
 
 Prime piste da approfondire tecnicamente:
 
-1. `nara_catalog`, per API ufficiale e rilevanza su immigrazione/naturalizzazioni.
-2. `museu_imigracao_sp` e `apesp_digitalizados`, per altissimo valore sulla
-   diaspora italiana in Brasile.
-3. `agn_colombia_dataviva`, per volume di immagini digitali e accesso pubblico
-   dichiarato, ma partendo dai metadati open data e non dal download immagini.
-4. `francearchives` e `papers_past_digitalnz`, per API/open data e utilita di
-   discovery/contesto.
-5. `archivi_nazionali`, da monitorare perche potrebbe diventare centrale per
-   l'area italiana.
+1. `archivi_nazionali`, `san_risorse_digitali`, `sias` e `siusa`, per riportare
+   il lavoro sull'asse italiano/italofono e capire quali funzioni siano
+   metadata/discovery e quali, eventualmente, download puntuale.
+2. `beweb` e archivi diocesani/parrocchiali italiani, per verificare se esista
+   un percorso di discovery utile senza automatizzare contenuti sensibili o
+   soggetti a limitazioni pastorali, privacy o consultazione locale.
+3. `archivio_stato_ticino`, `servizio_archivi_locali_ticino`,
+   `archivio_stato_grigioni` e `diocesi_chur_coira`, per coprire l'area
+   italofona svizzera e le zone storicamente connesse al contesto italiano.
+4. Biblioteche digitali locali italiane con manifest IIIF pubblico, sul modello
+   di `biblioteca_digitale_siena`.
+5. Le piste internazionali gia valutate restano in memoria, ma sono sospese
+   finche non si chiude il nuovo passaggio sull'ambito italiano/italofono.
+
+## Shortlist italiana/italofona gia individuata
+
+Questa lista e il punto di ripresa dopo la pausa dell'ambito internazionale.
+Non implica integrazione automatica: ogni candidato va verificato con fonti
+ufficiali, endpoint stabili, condizioni d'uso compatibili e almeno un campione
+pubblico no-login.
+
+| Chiave provvisoria | Area | Fonte o base di verifica | Prima decisione |
+| --- | --- | --- | --- |
+| `archivi_nazionali` / `archivio_digitale_icar` | Italia | `https://icar.cultura.gov.it/sistemi-e-portali/archivi-nazionali`; `https://archiviodigitale-icar.cultura.gov.it/` | Priorita massima come discovery/metadata; download solo per singole risorse pubbliche con policy chiara |
+| `san_risorse_digitali` | Italia | `https://www.san.beniculturali.it/web/san/risorse-per-le-ricerche` | Discovery e collegamento alle risorse; immagini demandate al sistema sorgente |
+| `sias` | Italia | `https://archivi.cultura.gov.it/strumenti-di-ricerca-online/sistema-informativo-degli-archivi-di-stato-sias` | Discovery sugli Archivi di Stato; non trattarlo come downloader |
+| `siusa` | Italia | `https://siusa-archivi.cultura.gov.it/` | Discovery su soggetti conservatori e fondi vigilati; utile per orientare l'utente |
+| `beweb` | Italia ecclesiastica | `https://www.beweb.chiesacattolica.it/subeweb/` | Alta priorita informativa; prima link/discovery, download solo se emergono immagini pubbliche e condizioni esplicite |
+| `archivi_diocesani_italiani` | Italia ecclesiastica | Portali diocesani/parrocchiali da verificare caso per caso | Candidato a schede/link assistiti; escludere aree riservate, dati recenti o consultazioni locali |
+| `archivio_stato_ticino` / `servizio_archivi_locali_ticino` | Svizzera italiana | `https://www4.ti.ch/decs/dcsu/asti/servizi/servizio-archivi-locali-sal/`; disposizioni ASTi sulle ricerche genealogiche | Molto rilevante per Ticino; prima discovery/link e verifica delle singole risorse digitali |
+| `archivio_diocesano_lugano` | Svizzera italiana ecclesiastica | citato nelle disposizioni ASTi per registri parrocchiali/microfilm | Link/manuale; nessun download senza portale pubblico autonomo e termini compatibili |
+| `archivio_stato_grigioni` | Grigioni italofoni | `https://www.gr.ch/IT/istituzioni/amministrazione/ekud/afk/servizi/sag/Seiten/default.aspx` | Alta priorita per aree italofone e mobilita alpina; prima inventari/discovery |
+| `diocesi_chur_coira` | Grigioni / area retica ecclesiastica | `https://www.archiv-bistum-chur.ch/` | Fonte ecclesiastica da trattare con cautela; link/manuale finche non emergono immagini pubbliche e termini chiari |
+| `biblioteche_digitali_locali_iiif` | Italia | esempi da selezionare da biblioteche civiche, universitarie, comunali o regionali | Buona pista tecnica se IIIF pubblico e policy prudente `R_LIMITED` |
+| `memooria_jarvis_istanze_italiane` | Italia | istanze pubbliche Jarvis/Memooria da verificare per ente | Solo risorse pubbliche no-login, con diritti e referer specifici |
 
 ## Shortlist operativa provvisoria
 
@@ -64,6 +90,11 @@ Questa shortlist ordina il lavoro senza derogare alla priorita italiana e
 italofona. I portali di diaspora entrano in testa solo quando sono strettamente
 legati alla ricerca genealogica italiana e hanno una base pubblica o
 istituzionale verificabile.
+
+Nota operativa 2026-06-05: dopo le valutazioni su Brasile, Argentina e Colombia,
+il lavoro immediato torna alla shortlist italiana/italofona precedente. I blocchi
+internazionali sotto restano come memoria delle decisioni gia prese, non come
+prossimo sviluppo.
 
 ### Blocco A - Diaspora italiana ad alto valore
 
@@ -109,8 +140,11 @@ istituzionale verificabile.
 
 ### Blocco C - Italia e fonti istituzionali nazionali
 
-- `archivi_nazionali`: monitorare lo sviluppo del portale perche potrebbe
-  diventare l'asse pubblico piu importante per l'area italiana.
+- `archivi_nazionali`: dopo il controllo 2026-06-05 e il candidato strategico
+  piu importante, ma il portale unico risulta ancora in sviluppo. Trattare
+  subito Archivio Digitale/SIA come pista metadata/discovery; rimandare il
+  download diretto a singole risorse pubbliche con endpoint stabile, condizioni
+  specifiche e fixture.
 - `biblioteca_digitale_siena`: candidato IIIF italiano compatibile con
   risoluzione manifest da URL viewer; smoke live passato su manifest da 106
   canvas. Prima della RC restano fixture offline e test UI/manuale di download
@@ -141,7 +175,15 @@ Portali da non automatizzare in questa fase:
 
 ## Prossimo batch suggerito
 
-- Uruguay, Venezuela, Canada e Regno Unito, se lo scouting diaspora viene
-  ampliato.
-- Archivi regionali/diocesani italiani non gia coperti da Antenati.
-- Portali IIIF nazionali o regionali con API documentate.
+- Completare la verifica tecnico-legale di `archivi_nazionali`,
+  `archivio_digitale_icar`, `san_risorse_digitali`, `sias` e `siusa`.
+- Valutare `beweb` e una prima mappa degli archivi diocesani/parrocchiali
+  italiani, restando su link/discovery finche non emergono immagini pubbliche
+  con termini compatibili.
+- Valutare Ticino, Grigioni e Diocesi di Coira come area italofona svizzera,
+  distinguendo inventari pubblici, consultazione locale e possibili risorse
+  digitali.
+- Cercare ulteriori biblioteche digitali italiane con IIIF pubblico, partendo da
+  esempi tecnicamente simili a Biblioteca Digitale Siena.
+- Riprendere Uruguay, Venezuela, Canada, Regno Unito e altre piste diaspora solo
+  dopo questo passaggio italiano/italofono.

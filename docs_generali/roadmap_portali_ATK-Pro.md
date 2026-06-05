@@ -46,6 +46,27 @@ integrazione automatica: ogni portale candidato deve superare i criteri
 go/no-go gia documentati e deve poter essere mantenuto senza aggirare login,
 paywall, restrizioni tecniche o limiti contrattuali.
 
+Aggiornamento operativo 2026-06-05: il ciclo internazionale resta sospeso dopo
+le prime valutazioni su Brasile, Argentina e Colombia. Il lavoro torna
+all'ambito italiano e italofono, con precedenza a Archivi Nazionali/SIA,
+Archivio Digitale, SAN, SIAS, SIUSA, fonti ecclesiastiche italiane e aree
+italofone o storicamente connesse.
+
+Sequenza di ripresa italiana/italofona:
+
+1. completare la mappa tecnica di Archivi Nazionali/SIA, Archivio Digitale,
+   SAN, SIAS e SIUSA, separando ricerca, metadati e scaricamento;
+2. valutare BeWeB e archivi diocesani/parrocchiali italiani come discovery o
+   link assistito, senza automatizzare materiali sensibili o non chiaramente
+   pubblici;
+3. valutare Ticino, Grigioni e Diocesi di Coira per fonti italofone svizzere e
+   storico-ecclesiastiche, con attenzione a registri parrocchiali, microfilm,
+   inventari e condizioni di riproduzione;
+4. cercare altri portali italiani IIIF pubblici simili a Biblioteca Digitale
+   Siena, preferendo `R_LIMITED` con range esplicito e fonti ufficiali;
+5. riprendere le piste diaspora non italiane solo dopo avere chiuso questo
+   blocco o dopo una decisione esplicita di priorita.
+
 ## Priorita 1 - Consolidare
 
 Portali da trattare per primi per rapporto favorevole tra valore, metodo
@@ -141,6 +162,12 @@ Scheda minima prima di proporre un nuovo portale:
 - limiti: login, rate limit, copyright, riuso, non commerciale, no-derivati;
 - fixture offline prevista;
 - decisione: integrare, verificare ancora, solo link, non supportare.
+
+Per Archivi Nazionali/SIA il primo obiettivo non e il download, ma la mappatura
+delle capability: il portale unico Archivi Nazionali risulta ancora in sviluppo,
+mentre Archivio Digitale e gia consultabile come aggregatore di progetti e
+risorse digitalizzate. Qualunque download diretto va quindi deciso su singole
+risorse pubbliche, non sul nome generico del portale nazionale.
 
 Per candidati non-IIIF ma con download pubblico dichiarato, come il Museu da
 Imigracao de Sao Paulo, non usare builder HTML improvvisati. Prima serve una
