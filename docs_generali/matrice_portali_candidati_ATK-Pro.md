@@ -23,7 +23,8 @@ diretto. Possono comparire solo come riferimento esterno/manuale.
 
 | Chiave candidata | Portale | Area strategica | Fonte ufficiale consultata | Rilevanza genealogica | Prima lettura tecnica/legale | Decisione provvisoria |
 |---|---|---|---|---|---|---|
-| `archivi_nazionali` | Portale Archivi Nazionali / SIA / Archivio Digitale | Italia | `https://icar.cultura.gov.it/sistemi-e-portali/archivi-nazionali`; `https://archivinazionali.cultura.gov.it/`; `https://archiviodigitale-icar.cultura.gov.it/`; `https://salastudio-archivi.cultura.gov.it/` | Molto alta: ricerca trasversale su fondi archivistici, Antenati, Archivi di Stato, Soprintendenze e progetti di digitalizzazione | Controllo 2026-06-05: il nuovo portale Archivi Nazionali risulta ancora in sviluppo; ICAR documenta la reingegnerizzazione SIA e l'integrazione di SIAS, SIUSA, Strumenti di ricerca online e Archivio Digitale. Archivio Digitale e gia consultabile e aggrega progetti/risorse digitalizzate, ma non emerge ancora una API pubblica stabile o una policy downloader generale | B - candidato strategico italiano; prima metadata/discovery su Archivio Digitale/SIA, download diretto solo per risorse pubbliche con endpoint e diritti specifici |
+| `archivi_nazionali` | Portale Archivi Nazionali / SIA / Sala Studio | Italia | `https://icar.cultura.gov.it/sistemi-e-portali/archivi-nazionali`; `https://archivinazionali.cultura.gov.it/`; `https://icar.cultura.gov.it/sistemi-e-portali/archivi-nazionali/sala-studio` | Molto alta: ricerca trasversale su fondi archivistici, Antenati, Archivi di Stato, Soprintendenze e progetti di digitalizzazione | Controllo 2026-06-05: il nuovo portale Archivi Nazionali risulta ancora in sviluppo; la pagina ICAR prevede accesso gratuito ma anche risorse fruibili solo previa identita digitale; Sala Studio richiede SPID/CIE/eIDAS per richieste e riproduzioni | C - candidato strategico solo per discovery/link assistito; nessun downloader finche il portale non e pubblico, stabile e dotato di API/IIIF e termini compatibili |
+| `archivio_digitale_icar` | Archivio Digitale ICAR | Italia | `https://archiviodigitale-icar.cultura.gov.it/`; `https://archiviodigitale-icar.cultura.gov.it/it/172/termini-d-uso`; `https://archiviodigitale-icar.cultura.gov.it/it/163/guida-alla-ricerca` | Molto alta: 46 istituti sul portale, progetti di digitalizzazione, fondi, complessi e unita documentarie; contiene anche fonti genealogiche e archivistiche molto rilevanti | Consultazione gratuita e no-login; termini d'uso CC BY-NC-SA dove non diversamente specificato, ma divieto espresso di copia/estrazione massiva, robot o metodi analoghi, reverse engineering e aggiramento sicurezza. Tecnicamente utile come portale di ricerca, ma non compatibile con downloader ATK-Pro | C - link/discovery assistito; vietare builder/downloader e live smoke di download, salvo futuro endpoint ufficiale documentato e autorizzato |
 | `sias` | Sistema Informativo degli Archivi di Stato | Italia | `https://archivi.cultura.gov.it/strumenti-di-ricerca-online/sistema-informativo-degli-archivi-di-stato-sias`; `https://icar.cultura.gov.it/sistemi-e-portali/sistemi-nazionali-di-descrizione-archivistica/sistema-informativo-degli-archivi-di-stato-sias-1` | Alta: descrizioni di Archivi di Stato, inventari e talvolta immagini | Fonte piu descrittiva che downloader; utile per discovery, non per acquisizione massiva immagini | C - link/discovery prima di ogni download |
 | `san_risorse_digitali` | SAN - documenti digitali / open data | Italia | `https://www.san.beniculturali.it/web/san/risorse-per-le-ricerche`; `https://cultura.gov.it/open-data-e-linked-data` | Alta: risorse digitali e metadati archivistici nazionali | Esistono metadati/OAI e risorse collegate a teche o sistemi aderenti; licenze e immagini dipendono dal sistema sorgente | B - valutare metadati/OAI, non scaricare immagini senza fonte specifica |
 | `siusa` | SIUSA | Italia | `https://siusa-archivi.cultura.gov.it/cgi-bin/siusa/pagina.pl?RicLin=en&TipoPag=informazioni` | Media-alta: censimento archivi vigilati, contesto fondi e soggetti conservatori | Fonte descrittiva; non appare come portale primario di download immagini | C - ottimo supporto ricerca, non integrazione downloader |
@@ -71,7 +72,7 @@ pubblico no-login.
 
 | Chiave provvisoria | Area | Fonte o base di verifica | Prima decisione |
 | --- | --- | --- | --- |
-| `archivi_nazionali` / `archivio_digitale_icar` | Italia | `https://icar.cultura.gov.it/sistemi-e-portali/archivi-nazionali`; `https://archiviodigitale-icar.cultura.gov.it/` | Priorita massima come discovery/metadata; download solo per singole risorse pubbliche con policy chiara |
+| `archivi_nazionali` / `archivio_digitale_icar` | Italia | `https://icar.cultura.gov.it/sistemi-e-portali/archivi-nazionali`; `https://archiviodigitale-icar.cultura.gov.it/`; termini d'uso Archivio Digitale | Priorita massima come discovery/link assistito; niente downloader per Archivio Digitale per divieto robot/estrazione massiva |
 | `san_risorse_digitali` | Italia | `https://www.san.beniculturali.it/web/san/risorse-per-le-ricerche` | Discovery e collegamento alle risorse; immagini demandate al sistema sorgente |
 | `sias` | Italia | `https://archivi.cultura.gov.it/strumenti-di-ricerca-online/sistema-informativo-degli-archivi-di-stato-sias` | Discovery sugli Archivi di Stato; non trattarlo come downloader |
 | `siusa` | Italia | `https://siusa-archivi.cultura.gov.it/` | Discovery su soggetti conservatori e fondi vigilati; utile per orientare l'utente |
@@ -140,11 +141,14 @@ prossimo sviluppo.
 
 ### Blocco C - Italia e fonti istituzionali nazionali
 
-- `archivi_nazionali`: dopo il controllo 2026-06-05 e il candidato strategico
-  piu importante, ma il portale unico risulta ancora in sviluppo. Trattare
-  subito Archivio Digitale/SIA come pista metadata/discovery; rimandare il
-  download diretto a singole risorse pubbliche con endpoint stabile, condizioni
-  specifiche e fixture.
+- `archivi_nazionali`: dopo il controllo 2026-06-05 resta il candidato
+  strategico piu importante per orientamento e ricerca, ma il portale unico
+  risulta ancora in sviluppo e alcune risorse saranno accessibili solo previa
+  identita digitale. Trattarlo come link/discovery assistito, non come
+  downloader.
+- `archivio_digitale_icar`: portale pubblico e no-login, molto utile per la
+  ricerca, ma i termini vietano copia/estrazione massiva e robot. Escludere
+  builder/downloader; mantenere solo apertura guidata e supporto alla ricerca.
 - `biblioteca_digitale_siena`: candidato IIIF italiano compatibile con
   risoluzione manifest da URL viewer; smoke live passato su manifest da 106
   canvas. Prima della RC restano fixture offline e test UI/manuale di download
@@ -175,8 +179,12 @@ Portali da non automatizzare in questa fase:
 
 ## Prossimo batch suggerito
 
-- Completare la verifica tecnico-legale di `archivi_nazionali`,
-  `archivio_digitale_icar`, `san_risorse_digitali`, `sias` e `siusa`.
+- Considerare chiuso il primo controllo su `archivi_nazionali` e
+  `archivio_digitale_icar`: entrambi restano discovery/link assistito, non
+  downloader.
+- Completare la verifica tecnico-legale di `san_risorse_digitali`, `sias` e
+  `siusa`, verificando se esistono solo metadati o anche risorse digitali
+  raggiungibili con condizioni compatibili.
 - Valutare `beweb` e una prima mappa degli archivi diocesani/parrocchiali
   italiani, restando su link/discovery finche non emergono immagini pubbliche
   con termini compatibili.

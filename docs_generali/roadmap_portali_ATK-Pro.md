@@ -67,6 +67,18 @@ Sequenza di ripresa italiana/italofona:
 5. riprendere le piste diaspora non italiane solo dopo avere chiuso questo
    blocco o dopo una decisione esplicita di priorita.
 
+Esito primo controllo Archivi Nazionali/Archivio Digitale (2026-06-05):
+
+- `archivi_nazionali` resta strategico ma non implementabile come downloader in
+  questa fase: il portale pubblico risulta ancora in sviluppo e la documentazione
+  ICAR prevede anche risorse accessibili solo con identita digitale.
+- `archivio_digitale_icar` e pubblico e consultabile senza registrazione, ma i
+  termini d'uso vietano copia/estrazione massiva e robot o metodi analoghi.
+  Deve quindi restare fuori dai builder/downloader di ATK-Pro.
+- La funzione compatibile per questa famiglia e un supporto di orientamento:
+  apertura link, ricerca assistita, note di contesto e, se utile in futuro,
+  collegamento documentato verso pagine pubbliche, non scaricamento.
+
 ## Priorita 1 - Consolidare
 
 Portali da trattare per primi per rapporto favorevole tra valore, metodo
