@@ -93,6 +93,21 @@ Esito primo controllo SAN/SIAS/SIUSA (2026-06-05):
   capability di ricerca/metadati e apertura guidata di inventari, distinta dal
   motore di scaricamento immagini.
 
+Esito primo controllo BeWeB/archivi ecclesiastici italiani (2026-06-05):
+
+- `beweb` e fonte nazionale molto rilevante per beni archivistici ecclesiastici,
+  inventari, soggetti conservatori, persone, famiglie e istituti culturali.
+  Include categorie di alto valore genealogico, ma non va trattato come
+  downloader.
+- I termini BeWeB indicano CC BY-NC-SA per i contenuti e CC0 solo per alcune
+  categorie catalografiche; esistono area riservata e servizi di prenotazione.
+  Senza API/IIIF pubblica generalizzabile, la sola integrazione prudente e
+  discovery/link assistito.
+- Gli archivi diocesani e parrocchiali italiani restano fonti primarie per
+  registri sacramentali e stati delle anime, ma accesso e riproduzione dipendono
+  da diocesi, parrocchia, privacy e consultazione locale. ATK-Pro puo aiutare a
+  orientarsi, non automatizzare.
+
 ## Priorita 1 - Consolidare
 
 Portali da trattare per primi per rapporto favorevole tra valore, metodo
