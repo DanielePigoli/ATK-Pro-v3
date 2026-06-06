@@ -82,6 +82,42 @@ def test_resolve_biblioteca_digitale_siena_defaults_to_sbn_type():
     )
 
 
+def test_resolve_biblioteca_digitale_trentina_item_url():
+    url = "https://bdt.bibcom.trento.it/Testi-a-stampa/113"
+
+    assert mu.resolve_manifest_url(url, "biblioteca_digitale_trentina") == url
+
+
+def test_build_biblioteca_digitale_trentina_synthetic_manifest_from_html():
+    html = """
+    <html>
+      <title>BDT sample</title>
+      <img src="/storage/images/10032-157-ita-IT/site_header_logo.png">
+      <a href="/content/download/78214/1625910/file/BDT-113-TIf37.pdf">Scarica PDF</a>
+      <img src="/storage/images/media/immagini-testi-a-stampa/page-1.jpg165/340889-1-ita-IT/page-1.jpg.jpg">
+      <img src="/storage/images/media/immagini-testi-a-stampa/page-1.jpg165/340889-1-ita-IT/page-1.jpg_large.jpg">
+      <img src="/storage/images/media/immagini-testi-a-stampa/page-2.jpg165/340893-1-ita-IT/page-2.jpg.jpg">
+    </html>
+    """
+
+    manifest = mu.build_biblioteca_digitale_trentina_synthetic_manifest(
+        "https://bdt.bibcom.trento.it/Testi-a-stampa/113",
+        html=html,
+    )
+
+    assert manifest["@id"] == "synthetic://biblioteca_digitale_trentina/113"
+    assert manifest["label"] == "BDT sample"
+    assert manifest["seeAlso"][0]["@id"] == "https://bdt.bibcom.trento.it/content/download/78214/1625910/file/BDT-113-TIf37.pdf"
+
+    canvases = manifest["sequences"][0]["canvases"]
+    assert len(canvases) == 2
+    assert canvases[0]["label"] == "Pagina 1"
+    resource = canvases[0]["images"][0]["resource"]
+    assert resource["@id"].endswith("page-1.jpg_large.jpg")
+    assert resource["service"]["@context"] == "bdt_direct"
+    assert canvases[1]["label"] == "Pagina 2"
+
+
 @patch("src.manifest_utils.requests.get")
 def test_bncf_synthetic_manifest_does_not_write_debug_xml_by_default(mock_get, tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)

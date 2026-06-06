@@ -80,7 +80,7 @@ import os
 import json
 from logging.handlers import RotatingFileHandler
 import time
-from urllib.parse import parse_qs, quote_plus, unquote_plus, urlparse
+from urllib.parse import parse_qs, quote_plus, unquote_plus, urljoin, urlparse
 ATKPRO_ENV = os.environ.get("ATKPRO_ENV", "development").lower()
 logger = logging.getLogger(__name__)
 if not logger.hasHandlers():
@@ -607,6 +607,182 @@ def _build_biblioteca_digitale_siena_manifest(page_url: str) -> str | None:
         return None
 
     return f"https://bds.comune.siena.it/metadata/{doc_id}/manifest.json?type={quote_plus(doc_type)}"
+
+
+_BDT_ATTR_URL_RE = re.compile(
+    r"""(?ix)
+    \b(?:href|src|data-[a-z0-9_-]+|content)\s*=\s*
+    (?P<quote>["'])
+    (?P<url>[^"']+)
+    (?P=quote)
+    """
+)
+_BDT_ABSOLUTE_URL_RE = re.compile(r"https?://[^\s\"'<>\\)]+", re.IGNORECASE)
+
+
+def _bdt_is_supported_url(page_url: str) -> bool:
+    parsed = urlparse(page_url)
+    host = parsed.netloc.lower()
+    return host.endswith("bdt.bibcom.trento.it")
+
+
+def _build_biblioteca_digitale_trentina_manifest(page_url: str) -> str | None:
+    """Biblioteca Digitale Trentina: pagina item-level gestita via manifest sintetico."""
+    if not _bdt_is_supported_url(page_url):
+        return None
+    if re.search(r"/(?:Iconografia|Testi-a-stampa)/\d+", urlparse(page_url).path, re.IGNORECASE):
+        return page_url
+    return None
+
+
+def _bdt_clean_url(raw: str, base_url: str) -> str | None:
+    value = raw.strip()
+    if not value or value.startswith(("#", "javascript:", "mailto:", "tel:")):
+        return None
+    return urljoin(base_url, value)
+
+
+def _bdt_image_role(url: str) -> str | None:
+    lowered = url.lower()
+    path = urlparse(url).path.lower()
+    if not path.endswith((".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff")):
+        return None
+    if any(token in lowered for token in ("_header_logo", "/header", "/logo", "favicon")):
+        return "site_asset"
+    if any(token in lowered for token in ("/media/immagini-", "_large.", "/storage/images/media/")):
+        return "content_image"
+    return "image_candidate"
+
+
+def _bdt_page_number(url: str) -> int | None:
+    match = re.search(r"(?:^|/)page-(\d+)\.jpe?g", url, re.IGNORECASE)
+    return int(match.group(1)) if match else None
+
+
+def _bdt_image_group_key(url: str) -> tuple[str, int | str]:
+    page_number = _bdt_page_number(url)
+    if page_number is not None:
+        return ("page", page_number)
+    filename = urlparse(url).path.rsplit("/", 1)[-1].lower().replace("_large.", ".")
+    return ("image", filename)
+
+
+def _bdt_prefer_image_variant(existing: str | None, candidate: str) -> str:
+    if existing is None:
+        return candidate
+    existing_large = "_large." in existing.lower()
+    candidate_large = "_large." in candidate.lower()
+    if candidate_large and not existing_large:
+        return candidate
+    if candidate_large == existing_large and len(candidate) > len(existing):
+        return candidate
+    return existing
+
+
+def _bdt_image_sort_key(url: str) -> tuple[int, int, str]:
+    page_number = _bdt_page_number(url)
+    variant_rank = 1 if "_large." in url.lower() else 0
+    return (page_number if page_number is not None else 10**9, variant_rank, url)
+
+
+def _extract_bdt_content_image_urls(html: str, base_url: str) -> list[str]:
+    raw_urls: list[str] = []
+    raw_urls.extend(match.group("url") for match in _BDT_ATTR_URL_RE.finditer(html))
+    raw_urls.extend(match.group(0) for match in _BDT_ABSOLUTE_URL_RE.finditer(html))
+
+    grouped: dict[tuple[str, int | str], str] = {}
+    for raw in raw_urls:
+        normalized = _bdt_clean_url(raw, base_url)
+        if not normalized:
+            continue
+        if _bdt_image_role(normalized) != "content_image":
+            continue
+        group_key = _bdt_image_group_key(normalized)
+        grouped[group_key] = _bdt_prefer_image_variant(grouped.get(group_key), normalized)
+
+    return sorted(grouped.values(), key=_bdt_image_sort_key)
+
+
+def _extract_bdt_pdf_url(html: str, base_url: str) -> str | None:
+    for match in _BDT_ATTR_URL_RE.finditer(html):
+        normalized = _bdt_clean_url(match.group("url"), base_url)
+        if not normalized:
+            continue
+        parsed = urlparse(normalized)
+        if parsed.path.lower().endswith(".pdf"):
+            return normalized
+    return None
+
+
+def build_biblioteca_digitale_trentina_synthetic_manifest(
+    page_url: str,
+    html: str | None = None,
+) -> dict | None:
+    """Costruisce un manifest sintetico BDT da immagini JPEG pubbliche in pagina."""
+    if not _bdt_is_supported_url(page_url):
+        return None
+
+    if html is None:
+        response = _http_get(page_url, timeout=25)
+        if not response or not response.ok:
+            logger.error(f"[BDT] Impossibile scaricare pagina: {page_url}")
+            return None
+        html = response.text or ""
+
+    image_urls = _extract_bdt_content_image_urls(html, page_url)
+    if not image_urls:
+        logger.error(f"[BDT] Nessuna immagine di contenuto trovata: {page_url}")
+        return None
+
+    title_match = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.IGNORECASE | re.DOTALL)
+    if not title_match:
+        title_match = re.search(r"<title[^>]*>(.*?)</title>", html, re.IGNORECASE | re.DOTALL)
+    title = re.sub(r"\s+", " ", title_match.group(1)).strip() if title_match else page_url
+    title = re.sub(r"<[^>]+>", "", title).strip() or page_url
+
+    pdf_url = _extract_bdt_pdf_url(html, page_url)
+    safe_id_match = re.search(r"/(?:Iconografia|Testi-a-stampa)/(\d+)", urlparse(page_url).path, re.IGNORECASE)
+    safe_id = safe_id_match.group(1) if safe_id_match else re.sub(r"[^A-Za-z0-9._-]+", "_", page_url)
+
+    canvases = []
+    for idx, img_url in enumerate(image_urls, start=1):
+        page_number = _bdt_page_number(img_url) or idx
+        label = f"Pagina {page_number}" if _bdt_page_number(img_url) else f"Immagine {idx}"
+        canvases.append({
+            '@id': f"synthetic://biblioteca_digitale_trentina/{safe_id}/canvas/{idx}",
+            '@type': 'sc:Canvas',
+            'label': label,
+            'images': [{
+                '@type': 'oa:Annotation',
+                'motivation': 'sc:painting',
+                'resource': {
+                    '@type': 'dctypes:Image',
+                    '@id': img_url,
+                    'format': 'image/jpeg',
+                    'service': {
+                        '@context': 'bdt_direct',
+                        '@id': img_url,
+                        'profile': 'bdt_direct',
+                        'source_page': page_url,
+                        'pdf_url': pdf_url,
+                    }
+                }
+            }]
+        })
+
+    logger.info(f"[BDT] Manifest sintetico: '{title}', {len(canvases)} immagini")
+    return {
+        '@context': 'http://iiif.io/api/presentation/2/context.json',
+        '@id': f"synthetic://biblioteca_digitale_trentina/{safe_id}",
+        '@type': 'sc:Manifest',
+        'label': title,
+        'seeAlso': [{'@id': pdf_url, 'format': 'application/pdf'}] if pdf_url else [],
+        'sequences': [{
+            '@id': f"synthetic://biblioteca_digitale_trentina/{safe_id}/sequence/1",
+            '@type': 'sc:Sequence',
+            'canvases': canvases,
+        }],
+    }
 
 
 def _build_memooria_manifest(page_url: str) -> str | None:
@@ -1372,6 +1548,7 @@ _PORTAL_BUILDERS = {
     "e_codices":        _build_ecodices_manifest,
     "e_manuscripta":    _build_e_manuscripta_manifest,
     "biblioteca_digitale_siena": _build_biblioteca_digitale_siena_manifest,
+    "biblioteca_digitale_trentina": _build_biblioteca_digitale_trentina_manifest,
     "museogalileo":     _build_museogalileo_manifest,
     "internetculturale_estense": _build_internetculturale_estense_manifest,
     "heidelberg":       _build_heidelberg_manifest,

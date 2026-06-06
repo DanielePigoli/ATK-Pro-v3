@@ -15,6 +15,7 @@ if str(ROOT) not in sys.path:
 
 from src.manifest_utils import (
     _PORTAL_BUILDERS,
+    build_biblioteca_digitale_trentina_synthetic_manifest,
     build_bnc_roma_synthetic_manifest,
     build_findbuch_synthetic_manifest,
     build_ia_synthetic_manifest,
@@ -33,6 +34,7 @@ DEFAULT_REPORT = ROOT / ".codex_tmp" / "portal_live_smoke_report.csv"
 LIVE_FETCH_ATTEMPTS = 3
 LIVE_FETCH_RETRY_DELAY_SECONDS = 2
 LIVE_SYNTHETIC_BUILDERS = {
+    "biblioteca_digitale_trentina": build_biblioteca_digitale_trentina_synthetic_manifest,
     "bnc_roma": build_bnc_roma_synthetic_manifest,
     "findbuch": build_findbuch_synthetic_manifest,
     "internet_archive": build_ia_synthetic_manifest,
