@@ -40,6 +40,22 @@ def test_extract_candidates_finds_relative_links_and_assets():
     assert any(candidate.url == "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf" for candidate in candidates)
 
 
+def test_extract_candidates_classifies_bdl_cantaloupe_image_and_derives_info_json():
+    html = """
+    <img src="https://www.bdl.servizirl.it/cantaloupe/iiif/2/6823693/full/250,300/0/default.jpg">
+    <img src="https://www.bdl.servizirl.it/vufind/themes/biblioteche/images/logo-rl.png">
+    """
+
+    candidates = probe.extract_candidates(html, "https://www.bdl.servizirl.it/vufind/Record/BDL-OGGETTO-133442")
+    by_role = {candidate.role: candidate for candidate in candidates}
+
+    assert by_role["iiif_content_image"].kind == "image"
+    assert by_role["iiif_content_image"].identifier == "6823693"
+    assert by_role["derived_info_json"].kind == "iiif_info"
+    assert by_role["derived_info_json"].url == "https://www.bdl.servizirl.it/cantaloupe/iiif/2/6823693/info.json"
+    assert by_role["site_asset"].url.endswith("/vufind/themes/biblioteche/images/logo-rl.png")
+
+
 def test_extract_candidates_ignores_duplicates_and_non_download_links():
     html = """
     <a href="#content">anchor</a>

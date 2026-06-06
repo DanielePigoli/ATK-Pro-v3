@@ -163,7 +163,10 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   campione `https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf`
   risponde come PDF reale; la sonda `verify_bdl_technical_probe.py` serve a
   raccogliere record VuFind, shortlink, PDF REST, immagini e manifest prima di
-  decidere se supportare solo PDF puntuali o una capability `R_LIMITED`.
+  decidere se supportare solo PDF puntuali o una capability `R_LIMITED`. Il
+  test live sul record `BDL-OGGETTO-133442` ha mostrato una miniatura
+  Cantaloupe/IIIF insieme ad asset grafici del sito: prima di qualunque
+  supporto immagini va verificato l'`info.json` derivato su piu campioni.
 - `biblioteca_digitale_siena` e integrata come IIIF diretto prudente. I test
   manuali su BDS hanno mostrato possibili interruzioni dello stream tile:
   ATK-Pro usa quindi download sequenziale con breve pausa e ritenta gli stream

@@ -35,6 +35,10 @@ ATTR_URL_RE = re.compile(
 ABSOLUTE_URL_RE = re.compile(r"https?://[^\s\"'<>\\)]+", re.IGNORECASE)
 BDL_OBJECT_RE = re.compile(r"\bBDL-OGGETTO-(?P<object_id>\d+)\b", re.IGNORECASE)
 BDL_ITEM_RE = re.compile(r"/bdl/public/rest/srv/item/(?P<item_id>\d+)/(?:pdf|shortlink)\b", re.IGNORECASE)
+BDL_CANTALOUPE_IMAGE_RE = re.compile(
+    r"(?P<base>/cantaloupe/iiif/2/(?P<image_id>[^/]+))/(?:full|pct:[^/]+|[^/]+)/[^/]+/[^/]+/[^/]+\.(?:jpg|jpeg|png)",
+    re.IGNORECASE,
+)
 
 
 def _load_url(url: str, timeout: int) -> str:
@@ -83,6 +87,14 @@ def _classify_url(url: str) -> tuple[str, str, str] | None:
             return "pdf", "document_pdf", item_id
         return "shortlink", "item_shortlink", item_id
 
+    iiif_image_match = BDL_CANTALOUPE_IMAGE_RE.search(path)
+    if "bdl.servizirl.it" in lowered_netloc and iiif_image_match:
+        return "image", "iiif_content_image", iiif_image_match.group("image_id")
+
+    if any(token in path_lower for token in ("/themes/", "/images/logo", "/images//icons/", "/images/icons/")):
+        if path_lower.endswith((".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff")):
+            return "image", "site_asset", ""
+
     if path_lower.endswith(".pdf"):
         return "pdf", "candidate", ""
     if path_lower.endswith((".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff")):
@@ -121,8 +133,31 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
                 source=source,
             )
         )
+        iiif_info = _derive_bdl_iiif_info(normalized)
+        if iiif_info and ("iiif_info", iiif_info) not in seen:
+            image_id = BDL_CANTALOUPE_IMAGE_RE.search(urlparse(normalized).path).group("image_id")
+            seen.add(("iiif_info", iiif_info))
+            candidates.append(
+                ProbeCandidate(
+                    kind="iiif_info",
+                    role="derived_info_json",
+                    identifier=image_id,
+                    url=iiif_info,
+                    source="derived_from_cantaloupe_image",
+                )
+            )
 
     return sorted(candidates, key=lambda c: (c.kind, c.role, int(c.identifier or 0), c.url))
+
+
+def _derive_bdl_iiif_info(url: str) -> str | None:
+    parsed = urlparse(url)
+    if "bdl.servizirl.it" not in parsed.netloc.lower():
+        return None
+    match = BDL_CANTALOUPE_IMAGE_RE.search(parsed.path)
+    if not match:
+        return None
+    return f"{parsed.scheme}://{parsed.netloc}{match.group('base')}/info.json"
 
 
 def write_report(path: Path, candidates: list[ProbeCandidate]) -> None:
