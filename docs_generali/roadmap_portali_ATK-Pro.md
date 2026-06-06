@@ -166,7 +166,10 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   decidere se supportare solo PDF puntuali o una capability `R_LIMITED`. Il
   test live sul record `BDL-OGGETTO-133442` ha mostrato una miniatura
   Cantaloupe/IIIF insieme ad asset grafici del sito: prima di qualunque
-  supporto immagini va verificato l'`info.json` derivato su piu campioni.
+  supporto immagini va verificato l'`info.json` derivato su piu campioni. Il
+  primo test live su `info.json` ha dato timeout: per ora BDL va quindi
+  considerata solo per una eventuale capability PDF puntuale, non per immagini
+  o registro completo.
 - `biblioteca_digitale_siena` e integrata come IIIF diretto prudente. I test
   manuali su BDS hanno mostrato possibili interruzioni dello stream tile:
   ATK-Pro usa quindi download sequenziale con breve pausa e ritenta gli stream
