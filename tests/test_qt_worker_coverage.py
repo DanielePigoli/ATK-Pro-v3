@@ -110,6 +110,33 @@ class TestElaborazioneWorkerProcessing:
         # Non deve crashare durante init
         assert worker is not None
 
+    def test_worker_stores_results_after_run(self, monkeypatch, tmp_path):
+        """ElaborazioneWorker espone i risultati per la dialog finale."""
+        import src.qt_worker as qw
+
+        class FakeElab:
+            def __init__(self, *args, **kwargs):
+                pass
+            def set_nome_file(self, name):
+                self.name = name
+            def run(self, formats=None):
+                return True
+
+        monkeypatch.setattr(qw, "Elaborazione", FakeElab)
+        worker = ElaborazioneWorker([
+            {"modalita": "D", "url": "https://example.test/doc", "nome_file": "doc", "output": str(tmp_path)}
+        ], formats=["PDF"])
+
+        worker.run()
+
+        assert worker.results == [{
+            "file": "doc",
+            "modalita": "D",
+            "output": str(tmp_path),
+            "formati": ["PDF"],
+            "status": "SUCCESS",
+        }]
+
 
 class TestElaborazioneWorkerLocalization:
     """Test localizzazione messaggi nel worker."""

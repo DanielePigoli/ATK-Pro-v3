@@ -37,6 +37,7 @@ class ElaborazioneWorker(QThread):
         self.lingua = lingua
         self.portale = portale
         self._is_cancelled = False
+        self.results = []
         self.signals = WorkerSignals()
 
     def cancel(self):
@@ -167,6 +168,7 @@ class ElaborazioneWorker(QThread):
                 })
 
         # Fine
+        self.results = results
         try:
             self.signals.finished.emit(results)
         except Exception:

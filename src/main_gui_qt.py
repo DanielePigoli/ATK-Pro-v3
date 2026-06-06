@@ -1679,12 +1679,6 @@ class MainWindow(QMainWindow):
                         risultati = worker.results if hasattr(worker, 'results') else None
                     except Exception:
                         risultati = None
-                    # Se non disponibili dal worker, prova a ricaricare da stato globale
-                    if not risultati and hasattr(elaborazione, 'esegui_elaborazione'):
-                        try:
-                            risultati = elaborazione.esegui_elaborazione(state, glossario, lingua, records, formats)
-                        except Exception:
-                            risultati = None
                     show_operation_completed_dialog(self, self.glossario_data, self.lingua, risultati=risultati)
                 except Exception as e:
                     logging.warning(f"Impossibile mostrare dialog operazione completata: {e}")
