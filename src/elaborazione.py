@@ -581,6 +581,28 @@ class Elaborazione:
                     logger.error("[BNC] Impossibile costruire manifest sintetico per BNC Roma")
                     return None
 
+            # --- Biblioteca Digitale Trentina: manifest sintetico da immagini pubbliche ---
+            if portale_key == "biblioteca_digitale_trentina":
+                from manifest_utils import build_biblioteca_digitale_trentina_synthetic_manifest
+                _scraped_html = getattr(self, '_scraped_html', None)
+                manifest = build_biblioteca_digitale_trentina_synthetic_manifest(self.ark_url, html=_scraped_html)
+                if manifest:
+                    os.makedirs(working_folder, exist_ok=True)
+                    bdt_id_match = re.search(r"/(?:Iconografia|Testi-a-stampa)/(\d+)", self.ark_url, re.IGNORECASE)
+                    bdt_id = bdt_id_match.group(1) if bdt_id_match else container_id
+                    manifest_filename = f"manifest_bdt_{bdt_id}_{titolo_pulito}.json"
+                    manifest_path = os.path.join(working_folder, manifest_filename)
+                    with open(manifest_path, 'w', encoding='utf-8') as _f:
+                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
+                    self.manifest_path = manifest_path
+                    self.output_dir = working_folder
+                    n_canvas = len(manifest['sequences'][0]['canvases'])
+                    logger.info(f"[BDT] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
+                    return manifest
+                else:
+                    logger.error("[BDT] Impossibile costruire manifest sintetico")
+                    return None
+
             # --- Museogalileo Digiteca: manifest sintetico da TecaService ---
             if portale_key == "museogalileo":
                 from manifest_utils import build_museogalileo_synthetic_manifest
@@ -920,6 +942,42 @@ class Elaborazione:
                     return False
                 final_img = Image.open(_BytesIO(_r_ic.content)).copy()
                 logger.info(f"[InternetCulturale] Documento scaricato: {_r_ic.headers.get('content-length','?')} byte")
+                ua = _parse_ua_from_url(self.ark_url)
+                ark = _parse_ark_from_url(self.ark_url)
+                page_label = canvas.get('label', None)
+                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
+                if not formats:
+                    formats = ['PNG', 'JPEG', 'TIFF']
+                _norm_fmts = [_normalize_format(f) for f in formats]
+                _img_fmts = [f for f in formats if _normalize_format(f) != 'PDF']
+                _pdf_in_fmts = 'PDF' in _norm_fmts
+                if _img_fmts:
+                    save_image_variants(final_img, self.output_dir, self.nome_file, _img_fmts, meta=meta)
+                if _pdf_in_fmts:
+                    _tmp_dir = os.path.join(self.output_dir, "_tmp_pdf_images")
+                    os.makedirs(_tmp_dir, exist_ok=True)
+                    _tmp_png = os.path.join(_tmp_dir, f"{self.nome_file}_pdftmp.png")
+                    final_img.save(_tmp_png, format='PNG')
+                    _pdf_out = os.path.join(self.output_dir, f"{self.nome_file}.pdf")
+                    create_pdf_from_images(_tmp_dir, _pdf_out)
+                    shutil.rmtree(_tmp_dir, ignore_errors=True)
+                return True
+            # --- Biblioteca Digitale Trentina: download diretto JPEG pubblico ---
+            if isinstance(svc, dict) and svc.get('@context') == 'bdt_direct':
+                from io import BytesIO as _BytesIO
+                import requests as _req
+                _img_url = svc.get('@id') or service_id
+                _h_bdt = {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Referer': 'https://bdt.bibcom.trento.it/',
+                }
+                _r_bdt = _req.get(_img_url, headers=_h_bdt, timeout=45)
+                if not _r_bdt.ok:
+                    logger.error(f"[BDT] HTTP {_r_bdt.status_code} per documento: {_img_url[:80]}")
+                    return False
+                final_img = Image.open(_BytesIO(_r_bdt.content)).copy()
+                logger.info(f"[BDT] Documento scaricato: {_r_bdt.headers.get('content-length','?')} byte")
                 ua = _parse_ua_from_url(self.ark_url)
                 ark = _parse_ark_from_url(self.ark_url)
                 page_label = canvas.get('label', None)
@@ -1362,6 +1420,38 @@ class Elaborazione:
                                 _use_img.save(_pdf_png_path, format='PNG')
                             except Exception as _e:
                                 logger.error(f"[PDF] Errore PNG InternetCulturale canvas {idx}: {_e}")
+                        return  # nessuna cartella tile da pulire
+                    # --- Biblioteca Digitale Trentina: download diretto JPEG pubblico ---
+                    if isinstance(_svc, dict) and _svc.get('@context') == 'bdt_direct':
+                        from io import BytesIO as _BytesIO
+                        import requests as _req
+                        _img_url = _svc.get('@id') or service_id
+                        _h_bdt = {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                            'Referer': 'https://bdt.bibcom.trento.it/',
+                        }
+                        _r_bdt = _req.get(_img_url, headers=_h_bdt, timeout=45)
+                        if _r_bdt.ok and len(_r_bdt.content) > 0:
+                            final_img = Image.open(_BytesIO(_r_bdt.content)).copy()
+                            logger.info(f"[BDT] Pagina {idx} scaricata: {len(_r_bdt.content)} byte")
+                        else:
+                            logger.error(f"[BDT] Errore download pagina {idx}: HTTP {_r_bdt.status_code} size={len(_r_bdt.content)}")
+                            final_img = None
+                        ua = _parse_ua_from_url(self.ark_url)
+                        ark = _parse_ark_from_url(self.ark_url)
+                        page_label = canvas.get('label', None)
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        _use_img = final_img if final_img is not None else _make_placeholder_image(
+                            str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
+                            canvas_url=canvas.get('@id') or canvas.get('id'))
+                        if image_formats:
+                            save_image_variants(_use_img, self.output_dir, nome_base, image_formats, meta=meta)
+                        if pdf_in_formats:
+                            _pdf_png_path = os.path.join(temp_pdf_dir, f"{nome_base}_pdftmp.png")
+                            try:
+                                _use_img.save(_pdf_png_path, format='PNG')
+                            except Exception as _e:
+                                logger.error(f"[PDF] Errore PNG BDT canvas {idx}: {_e}")
                         return  # nessuna cartella tile da pulire
                     # --- Museogalileo: download diretto JPEG da TecaService ---
                     if isinstance(_svc, dict) and _svc.get('@context') == 'museogalileo_teca_direct':

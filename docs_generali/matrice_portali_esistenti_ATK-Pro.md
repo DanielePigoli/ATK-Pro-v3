@@ -1,6 +1,6 @@
 # Matrice portali esistenti ATK-Pro
 
-Data snapshot: 2026-05-26
+Data snapshot: 2026-06-06
 
 Questa matrice fotografa i portali gia presenti nel selettore di ATK-Pro e il
 modo in cui il codice li tratta oggi. Le colonne legali sono volutamente
@@ -39,6 +39,7 @@ Fonti interne usate:
 | `museogalileo` | Museo Galileo Digiteca | Italia | Manifest sintetico da TecaService, token GetObject | Alto | Uso privato/non commerciale e autorizzazione per riproduzione materiale fotografico | Evitare estensioni finche non esiste endpoint stabile/documentato; usare solo accesso pubblico puntuale |
 | `internetculturale_estense` | Internet Culturale / Estense / ICCU | Italia | Manifest sintetico da magparser | Medio-Alto | File web liberi e gratuiti non commerciali, CC BY-NC-SA; metadati CC0 | Consolidabile con citazione, no commerciale e rispetto dei fornitori; preferire endpoint ufficiali/IIIF se disponibili |
 | `brixiana` | Brixiana / Jarvis | Italia | Alias Memooria/Jarvis IIIF | Medio | Accesso gratuito, ma alcune funzionalita sono legate a credenziali MLOL/Brixiana | Supportare solo risorse pubbliche/no-login e verificare condizioni del singolo ente |
+| `biblioteca_digitale_trentina` | Biblioteca Digitale Trentina | Italia / Trentino | Manifest sintetico da immagini pubbliche in pagina | Basso-Medio | Materiali in pubblico dominio; pagina Riuso favorevole con citazione della fonte | Supporto tecnico iniziale su immagini pubbliche; per testi a stampa preferire in futuro PDF diretto ufficiale quando disponibile |
 | `memooria` | Memooria/Jarvis | Italia | IIIF da meta/iiif/{guid}/manifest | Medio | Piattaforma IIIF/API; diritti e accessi dipendono dall'ente che pubblica la collezione | Usare come capability tecnica, non come portale unico: richiedere verifica per ogni istanza |
 | `vatlib` | DigiVatLib | Italia / Vaticano | IIIF diretto da view/mss/iiif | Basso-Medio | Solo studio/personale; riproduzione o pubblicazione richiede autorizzazione BAV | Mantenere con avviso forte e senza presentarlo come fonte liberamente riusabile |
 | `findbuch` | Kirchenbuecher Suedtirol / findbuch.net | Alto Adige / Sudtirol | Manifest sintetico da HTML + gtpc.php | Alto | Piattaforma tecnica per molti enti; diritti/contenuti dipendono dalla singola subdomain | Mantenere solo per risorse pubbliche e range puntuale; non estendere senza termini dell'ente |
@@ -62,7 +63,7 @@ Priorita tecnica dopo il primo controllo fonti ufficiali:
    `e_manuscripta`, `manifest_diretto`.
 2. Portali tecnicamente IIIF ma con avviso legale piu forte: `vatlib`.
 3. Portali con discovery/fallback ma valore alto: `antenati`, `gallica`,
-   `memooria`, `brixiana`.
+   `memooria`, `brixiana`, `biblioteca_digitale_trentina`.
 4. Portali sintetici o endpoint non standard da trattare con cautela:
    `internetculturale_estense`, `internet_archive`, `bnc_roma`,
    `bncf_teca`, `museogalileo`.

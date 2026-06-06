@@ -1,6 +1,6 @@
 # Roadmap portali ATK-Pro
 
-Data snapshot: 2026-05-26
+Data snapshot: 2026-06-06
 
 Questa roadmap traduce la matrice dei portali esistenti in una sequenza pratica
 di lavoro. Non e una consulenza legale: applica al progetto i paletti gia
@@ -130,10 +130,10 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
 - Questo e il primo blocco italiano/italofono con reale potenziale di nuova
   integrazione di download, perche alcuni portali espongono pubblico dominio,
   immagini scaricabili, IIIF, OAI-PMH o endpoint PDF pubblici.
-- `biblioteca_digitale_trentina` e il candidato piu pulito da sondare: accesso
+- `biblioteca_digitale_trentina` e il candidato piu pulito del blocco: accesso
   pubblico, download gratuito e riuso dichiarato anche commerciale con
-  citazione. Prima di integrarlo serve solo verificare il metodo tecnico stabile
-  migliore: IIIF, file diretti, OAI o pattern immagini. La sonda
+  citazione. La sonda tecnica ha confermato che il metodo stabile non e IIIF,
+  ma immagine/PDF diretti dalla pagina pubblica. La sonda
   `verify_bdt_technical_probe.py` serve a raccogliere candidati manifest,
   immagini e PDF da una pagina pubblica prima di qualsiasi integrazione.
   Prima esecuzione su `Iconografia/4052`: trovati JPEG diretti su storage S3,
@@ -144,7 +144,8 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   Seconda esecuzione su `Testi-a-stampa/113`: trovati PDF diretto e immagini
   pagina-per-pagina. Per i testi a stampa, il percorso tecnico piu prudente e
   prima il PDF diretto pubblico; le immagini restano utili per download puntuali
-  o per casi senza PDF.
+  o per casi senza PDF. Il primo supporto ATK-Pro usa manifest sintetico da
+  immagini pubbliche; il PDF diretto resta la prossima estensione tecnica.
 - `beic_digitale` e il secondo candidato forte: termini favorevoli per pubblico
   dominio, dati CC0 e OAI-PMH documentato. Va pero distinta la parte metadata
   dalla parte immagini/PDF, verificando campioni pubblici prima del codice.
@@ -154,9 +155,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
 - `ambrosiana_digitale` e `rovereto_digital_library` restano sonde importanti:
   la prima dichiara IIIF, la seconda e descritta come DSpace GLAM/IIIF, ma
   servono termini e campioni prima di qualsiasi integrazione.
-- Il prossimo sviluppo concreto, se si procede con nuovi portali, dovrebbe
-  essere una sonda tecnica su `biblioteca_digitale_trentina`, non un adapter
-  generico per tutte le biblioteche digitali.
+- Il prossimo sviluppo concreto su `biblioteca_digitale_trentina` dovrebbe
+  essere la capability `pdf_direct` per testi a stampa, non un adapter generico
+  per tutte le biblioteche digitali.
 
 ## Priorita 1 - Consolidare
 
