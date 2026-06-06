@@ -133,7 +133,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
 - `biblioteca_digitale_trentina` e il candidato piu pulito da sondare: accesso
   pubblico, download gratuito e riuso dichiarato anche commerciale con
   citazione. Prima di integrarlo serve solo verificare il metodo tecnico stabile
-  migliore: IIIF, file diretti, OAI o pattern immagini.
+  migliore: IIIF, file diretti, OAI o pattern immagini. La sonda
+  `verify_bdt_technical_probe.py` serve a raccogliere candidati manifest,
+  immagini e PDF da una pagina pubblica prima di qualsiasi integrazione.
 - `beic_digitale` e il secondo candidato forte: termini favorevoli per pubblico
   dominio, dati CC0 e OAI-PMH documentato. Va pero distinta la parte metadata
   dalla parte immagini/PDF, verificando campioni pubblici prima del codice.
