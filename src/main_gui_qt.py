@@ -1566,7 +1566,11 @@ class MainWindow(QMainWindow):
                         return
 
                 if policy_code == "r_limited":
-                    missing_range_records = [r for r in reg_records if not _has_explicit_range(r)]
+                    missing_range_records = [
+                        r for r in reg_records
+                        if not _has_explicit_range(r)
+                        and not _is_bdt_direct_pdf_full_record_allowed(portale_attivo, formats, r)
+                    ]
                     if missing_range_records and len(reg_records) == 1:
                         canvas_da_glob, canvas_a_glob = _ask_canvas_range(self, glossario, lingua, required=True)
                         if canvas_da_glob is None and canvas_a_glob is None:
@@ -2199,6 +2203,25 @@ def mostra_disclaimer(glossario_data, lingua):
     layout.addLayout(btns)
 
     return dlg.exec() == QDialog.Accepted
+
+
+def _is_bdt_direct_pdf_full_record_allowed(portale_attivo, formats, record):
+    """Consente R senza range solo per PDF ufficiali BDT Testi-a-stampa."""
+    portal_key = str(portale_attivo or "").strip().lower().replace("-", "_").replace(" ", "_")
+    if portal_key != "biblioteca_digitale_trentina":
+        return False
+
+    normalized_formats = [str(fmt).strip().upper() for fmt in (formats or []) if str(fmt).strip()]
+    if normalized_formats != ["PDF"]:
+        return False
+
+    if str(record.get("modalita", "")).strip().upper() != "R":
+        return False
+    if record.get("canvas_da") is not None or record.get("canvas_a") is not None:
+        return False
+
+    url = str(record.get("url") or "")
+    return "bdt.bibcom.trento.it" in url.lower() and "/testi-a-stampa/" in url.lower()
 
 
 def action_show_example_input(glossario_data, lingua, parent=None):
