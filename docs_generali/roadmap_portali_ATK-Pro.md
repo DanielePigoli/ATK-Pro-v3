@@ -150,8 +150,13 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   range obbligatorio per i portali `r_limited` resta attiva, con eccezione
   mirata per BDT `Testi-a-stampa` in modalita solo PDF.
 - `beic_digitale` e il secondo candidato forte: termini favorevoli per pubblico
-  dominio, dati CC0 e OAI-PMH documentato. Va pero distinta la parte metadata
-  dalla parte immagini/PDF, verificando campioni pubblici prima del codice.
+  dominio, immagini scaricabili/riutilizzabili, dati CC0 e OAI-PMH
+  documentato. Va pero distinta la parte metadata dalla parte immagini/PDF:
+  l'infrastruttura pubblica usa Primo VE/Rosetta/Preserver e, prima del codice,
+  servono campioni reali che dimostrino endpoint file/immagini stabili o un
+  manifest IIIF pubblico. La sonda `verify_beic_technical_probe.py` raccoglie
+  record Primo, link Preserver DeliveryManager, manifest, immagini e PDF senza
+  integrare ancora BEIC nel menu.
 - `biblioteca_digitale_lombarda` e tecnicamente promettente per record e PDF
   pubblici, ma molti contenuti hanno licenze non commerciale/no-derivati. Va
   trattata con policy prudente e range esplicito, non come scarico generale.
