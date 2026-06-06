@@ -159,7 +159,11 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   integrare ancora BEIC nel menu.
 - `biblioteca_digitale_lombarda` e tecnicamente promettente per record e PDF
   pubblici, ma molti contenuti hanno licenze non commerciale/no-derivati. Va
-  trattata con policy prudente e range esplicito, non come scarico generale.
+  trattata con policy prudente e range esplicito, non come scarico generale. Il
+  campione `https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf`
+  risponde come PDF reale; la sonda `verify_bdl_technical_probe.py` serve a
+  raccogliere record VuFind, shortlink, PDF REST, immagini e manifest prima di
+  decidere se supportare solo PDF puntuali o una capability `R_LIMITED`.
 - `biblioteca_digitale_siena` e integrata come IIIF diretto prudente. I test
   manuali su BDS hanno mostrato possibili interruzioni dello stream tile:
   ATK-Pro usa quindi download sequenziale con breve pausa e ritenta gli stream
