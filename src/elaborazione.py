@@ -203,6 +203,49 @@ def _normalize_format(fmt):
     return fmt_upper
 
 
+def _extract_pdf_url_from_entry(entry):
+    """Estrae un URL PDF da voci IIIF seeAlso o da servizi sintetici."""
+    if isinstance(entry, str):
+        return entry if entry.lower().split("?", 1)[0].endswith(".pdf") else None
+    if not isinstance(entry, dict):
+        return None
+
+    url = entry.get("@id") or entry.get("id") or entry.get("url")
+    if not url:
+        return None
+    url_text = str(url)
+    fmt = str(entry.get("format") or entry.get("type") or entry.get("profile") or "").lower()
+    if url_text.lower().split("?", 1)[0].endswith(".pdf") or "pdf" in fmt:
+        return url_text
+    return None
+
+
+def _find_bdt_direct_pdf_url(tiles_info=None, manifest=None):
+    """Trova il PDF diretto ufficiale nei manifest sintetici BDT, se presente."""
+    if isinstance(manifest, dict):
+        see_also_entries = manifest.get("seeAlso") or manifest.get("see_also") or []
+        if isinstance(see_also_entries, dict):
+            see_also_entries = [see_also_entries]
+        for entry in see_also_entries:
+            pdf_url = _extract_pdf_url_from_entry(entry)
+            if pdf_url:
+                return pdf_url
+
+    for canvas in tiles_info or []:
+        try:
+            service = canvas.get("images", [{}])[0].get("resource", {}).get("service")
+        except Exception:
+            continue
+        services = service if isinstance(service, list) else [service]
+        for svc in services:
+            if not isinstance(svc, dict) or svc.get("@context") != "bdt_direct":
+                continue
+            pdf_url = svc.get("pdf_url")
+            if pdf_url:
+                return str(pdf_url)
+    return None
+
+
 def save_image_variants(image: Image.Image, output_folder: str, base_filename: str, 
                        formats=['PNG', 'JPEG', 'TIFF'], meta: dict = None):
     """
@@ -775,6 +818,57 @@ class Elaborazione:
             logger.error(f"Errore build_manifest_url: {e}")
             return None
 
+    def _has_canvas_range_filter(self):
+        return getattr(self, 'canvas_da', None) is not None or getattr(self, 'canvas_a', None) is not None
+
+    def _download_bdt_direct_pdf(self, pdf_url: str):
+        """Scarica il PDF diretto ufficiale BDT quando l'utente richiede solo PDF."""
+        if not pdf_url:
+            return False
+
+        try:
+            os.makedirs(self.output_dir, exist_ok=True)
+            safe_name = re.sub(r'[\\/*?:"<>|]', "", self.nome_file).replace(" ", "_").strip("_")
+            if not safe_name:
+                safe_name = "documento_bdt"
+            pdf_filename = f"{safe_name}.pdf"
+            pdf_path = os.path.join(self.output_dir, pdf_filename)
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Referer': 'https://bdt.bibcom.trento.it/',
+            }
+
+            response = requests.get(pdf_url, headers=headers, timeout=60)
+            if not response.ok:
+                logger.error(f"[BDT] PDF diretto non disponibile: HTTP {response.status_code} {pdf_url[:100]}")
+                return False
+
+            content = response.content or b""
+            content_type = response.headers.get("Content-Type", "").lower()
+            if not content or ("pdf" not in content_type and not content.lstrip().startswith(b"%PDF")):
+                logger.error(f"[BDT] Risposta PDF non valida: Content-Type={content_type or '?'} url={pdf_url[:100]}")
+                return False
+
+            with open(pdf_path, "wb") as pdf_file:
+                pdf_file.write(content)
+
+            logger.info(f"[BDT] PDF diretto salvato: {pdf_path} ({len(content)} byte)")
+            if self.manifest_path and os.path.exists(self.manifest_path):
+                try:
+                    estrai_metadati_da_manifest(
+                        self.manifest_path,
+                        record_prefix=self.record_type,
+                        record_url=self.ark_url,
+                        record_nome_file=self.nome_file,
+                        immagini_generate=[pdf_filename],
+                    )
+                except Exception as meta_error:
+                    logger.warning(f"[BDT] Metadati PDF diretto non aggiornati: {meta_error}")
+            return True
+        except Exception as exc:
+            logger.error(f"[BDT] Errore download PDF diretto: {exc}", exc_info=True)
+            return False
+
     def _process_document(self, tiles_info, metadata):
         """Elabora documento singolo (D/d) con verifica immagini finali e richiesta PDF opzionale."""
         try:
@@ -787,6 +881,10 @@ class Elaborazione:
             pdf_in_formats = 'PDF' in _norm_formats
             image_formats = [f for f in formats if _normalize_format(f) != 'PDF']
             only_pdf = pdf_in_formats and not image_formats
+            if only_pdf and not self._has_canvas_range_filter():
+                bdt_pdf_url = _find_bdt_direct_pdf_url(tiles_info, manifest=self.manifest)
+                if bdt_pdf_url:
+                    return self._download_bdt_direct_pdf(bdt_pdf_url)
             temp_pdf_dir = os.path.join(self.output_dir, "_tmp_pdf_images") if only_pdf else None
             if temp_pdf_dir:
                 os.makedirs(temp_pdf_dir, exist_ok=True)
@@ -1233,6 +1331,10 @@ class Elaborazione:
             pdf_in_formats = 'PDF' in _norm_formats
             image_formats = [f for f in formats if _normalize_format(f) != 'PDF']
             only_pdf = pdf_in_formats and not image_formats
+            if only_pdf and not self._has_canvas_range_filter():
+                bdt_pdf_url = _find_bdt_direct_pdf_url(tiles_info, manifest=self.manifest)
+                if bdt_pdf_url:
+                    return self._download_bdt_direct_pdf(bdt_pdf_url)
             temp_pdf_dir = os.path.join(self.output_dir, "_tmp_pdf_images") if pdf_in_formats else None
             if temp_pdf_dir:
                 os.makedirs(temp_pdf_dir, exist_ok=True)

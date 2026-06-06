@@ -144,8 +144,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   Seconda esecuzione su `Testi-a-stampa/113`: trovati PDF diretto e immagini
   pagina-per-pagina. Per i testi a stampa, il percorso tecnico piu prudente e
   prima il PDF diretto pubblico; le immagini restano utili per download puntuali
-  o per casi senza PDF. Il primo supporto ATK-Pro usa manifest sintetico da
-  immagini pubbliche; il PDF diretto resta la prossima estensione tecnica.
+  o per casi senza PDF. ATK-Pro usa manifest sintetico da immagini pubbliche e,
+  quando l'utente richiede solo PDF e non imposta un range di pagine, scarica il
+  PDF diretto ufficiale invece di ricostruirlo dalle immagini.
 - `beic_digitale` e il secondo candidato forte: termini favorevoli per pubblico
   dominio, dati CC0 e OAI-PMH documentato. Va pero distinta la parte metadata
   dalla parte immagini/PDF, verificando campioni pubblici prima del codice.
@@ -155,9 +156,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
 - `ambrosiana_digitale` e `rovereto_digital_library` restano sonde importanti:
   la prima dichiara IIIF, la seconda e descritta come DSpace GLAM/IIIF, ma
   servono termini e campioni prima di qualsiasi integrazione.
-- Il prossimo sviluppo concreto su `biblioteca_digitale_trentina` dovrebbe
-  essere la capability `pdf_direct` per testi a stampa, non un adapter generico
-  per tutte le biblioteche digitali.
+- Su `biblioteca_digitale_trentina` la capability tecnica resta specifica del
+  portale: immagini dirette pubbliche e PDF diretto per testi a stampa, senza
+  trasformarla in un adapter generico per tutte le biblioteche digitali.
 
 ## Priorita 1 - Consolidare
 
