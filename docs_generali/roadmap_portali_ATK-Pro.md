@@ -136,6 +136,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   migliore: IIIF, file diretti, OAI o pattern immagini. La sonda
   `verify_bdt_technical_probe.py` serve a raccogliere candidati manifest,
   immagini e PDF da una pagina pubblica prima di qualsiasi integrazione.
+  Prima esecuzione su `Iconografia/4052`: trovati JPEG diretti su storage S3,
+  nessun manifest IIIF reale; l'implementazione piu probabile e quindi un
+  adapter per immagini dirette da pagina pubblica, non un adapter IIIF.
 - `beic_digitale` e il secondo candidato forte: termini favorevoli per pubblico
   dominio, dati CC0 e OAI-PMH documentato. Va pero distinta la parte metadata
   dalla parte immagini/PDF, verificando campioni pubblici prima del codice.

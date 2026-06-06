@@ -30,6 +30,7 @@ def test_extract_candidates_ignores_duplicates_and_non_download_links():
     html = """
     <a href="#page/n0">anchor</a>
     <a href="mailto:info@example.test">mail</a>
+    <a href="/Progetti/Tridentina-manifesta">project page, not an IIIF manifest</a>
     <img src="/storage/image/page-0001.jpg">
     <a href="/storage/image/page-0001.jpg">same image</a>
     """

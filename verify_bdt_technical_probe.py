@@ -67,7 +67,13 @@ def _classify_url(url: str) -> str | None:
 
     if path.endswith("info.json") or "/info.json" in lowered:
         return "iiif_info"
-    if "manifest" in path or "manifest" in query:
+    if (
+        path.endswith(("manifest", "manifest.json"))
+        or "/manifest/" in path
+        or "manifest.json" in query
+        or "manifest=" in query
+        or "manifestid=" in query
+    ):
         return "manifest"
     if path.endswith((".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff")):
         return "image"
