@@ -20,6 +20,7 @@ class ProbeCandidate:
     kind: str
     url: str
     source: str
+    role: str = "candidate"
 
 
 ATTR_URL_RE = re.compile(
@@ -84,6 +85,18 @@ def _classify_url(url: str) -> str | None:
     return None
 
 
+def _classify_role(kind: str, url: str) -> str:
+    if kind != "image":
+        return "candidate"
+
+    lowered = url.lower()
+    if any(token in lowered for token in ("_header_logo", "/header", "/logo", "favicon")):
+        return "site_asset"
+    if any(token in lowered for token in ("/media/immagini-", "_large.", "/storage/images/media/")):
+        return "content_image"
+    return "image_candidate"
+
+
 def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
     seen: set[tuple[str, str]] = set()
     candidates: list[ProbeCandidate] = []
@@ -103,7 +116,14 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
         if key in seen:
             continue
         seen.add(key)
-        candidates.append(ProbeCandidate(kind=kind, url=normalized, source=source))
+        candidates.append(
+            ProbeCandidate(
+                kind=kind,
+                url=normalized,
+                source=source,
+                role=_classify_role(kind, normalized),
+            )
+        )
 
     return sorted(candidates, key=lambda item: (item.kind, item.url))
 
@@ -111,12 +131,13 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
 def write_report(path: Path, candidates: list[ProbeCandidate]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=["kind", "url", "source"])
+        writer = csv.DictWriter(fh, fieldnames=["kind", "role", "url", "source"])
         writer.writeheader()
         for candidate in candidates:
             writer.writerow(
                 {
                     "kind": candidate.kind,
+                    "role": candidate.role,
                     "url": candidate.url,
                     "source": candidate.source,
                 }
@@ -129,7 +150,12 @@ def _summarize(candidates: list[ProbeCandidate]) -> str:
         counts[candidate.kind] = counts.get(candidate.kind, 0) + 1
     if not counts:
         return "Nessun manifest, PDF o URL immagine candidato trovato."
-    return ", ".join(f"{kind}: {count}" for kind, count in sorted(counts.items()))
+    roles: dict[str, int] = {}
+    for candidate in candidates:
+        roles[candidate.role] = roles.get(candidate.role, 0) + 1
+    kind_summary = ", ".join(f"{kind}: {count}" for kind, count in sorted(counts.items()))
+    role_summary = ", ".join(f"{role}: {count}" for role, count in sorted(roles.items()))
+    return f"{kind_summary} | {role_summary}"
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -165,7 +191,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Report: {args.output}")
     print(_summarize(candidates))
     for candidate in candidates[:20]:
-        print(f"- {candidate.kind}: {candidate.url}")
+        print(f"- {candidate.kind} [{candidate.role}]: {candidate.url}")
     if len(candidates) > 20:
         print(f"... altri {len(candidates) - 20} candidati nel report CSV")
     return 0
