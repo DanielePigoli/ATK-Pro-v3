@@ -42,8 +42,22 @@ def test_extract_candidates_ignores_duplicates_and_non_download_links():
             kind="image",
             url="https://bdt.bibcom.trento.it/storage/image/page-0001.jpg",
             source="html_attribute",
+            role="image_candidate",
         )
     ]
+
+
+def test_extract_candidates_marks_bdt_content_images_and_site_assets():
+    html = """
+    <img src="https://s3-eu-west-1.amazonaws.com/static.comunitatrentina.it/var/trentoarchiviobiblioteca/storage/images/10032-157-ita-IT/Biblioteca-Digitale-Trentina-Biblioteca-comunale-di-Trento_header_logo.png">
+    <img src="https://s3-eu-west-1.amazonaws.com/static.comunitatrentina.it/var/trentoarchiviobiblioteca/storage/images/media/immagini-iconografie/gg1atc30tav11.jpg/494856-1-ita-IT/GG1atc30TAV11.jpg_large.jpg">
+    """
+
+    candidates = probe.extract_candidates(html, "https://bdt.bibcom.trento.it/Iconografia/4052")
+    roles = {candidate.url.rsplit("/", 1)[-1]: candidate.role for candidate in candidates}
+
+    assert roles["Biblioteca-Digitale-Trentina-Biblioteca-comunale-di-Trento_header_logo.png"] == "site_asset"
+    assert roles["GG1atc30TAV11.jpg_large.jpg"] == "content_image"
 
 
 def test_write_report_creates_csv(tmp_path: Path):
@@ -59,5 +73,5 @@ def test_write_report_creates_csv(tmp_path: Path):
         ],
     )
 
-    assert "kind,url,source" in report.read_text(encoding="utf-8")
+    assert "kind,role,url,source" in report.read_text(encoding="utf-8")
     assert "documento.pdf" in report.read_text(encoding="utf-8")

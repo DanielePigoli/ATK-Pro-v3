@@ -138,7 +138,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   immagini e PDF da una pagina pubblica prima di qualsiasi integrazione.
   Prima esecuzione su `Iconografia/4052`: trovati JPEG diretti su storage S3,
   nessun manifest IIIF reale; l'implementazione piu probabile e quindi un
-  adapter per immagini dirette da pagina pubblica, non un adapter IIIF.
+  adapter per immagini dirette da pagina pubblica, non un adapter IIIF. La
+  sonda distingue ora immagini di contenuto da asset del sito, per evitare di
+  trattare loghi/header come pagine scaricabili.
 - `beic_digitale` e il secondo candidato forte: termini favorevoli per pubblico
   dominio, dati CC0 e OAI-PMH documentato. Va pero distinta la parte metadata
   dalla parte immagini/PDF, verificando campioni pubblici prima del codice.
