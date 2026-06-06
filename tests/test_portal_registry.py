@@ -96,6 +96,7 @@ def test_technical_family_lookup_and_grouping():
 
 def test_tile_download_policy_marks_heidelberg_rate_limit():
     assert get_portal_tile_download_policy("heidelberg") == (1, 0.3)
+    assert get_portal_tile_download_policy("biblioteca_digitale_siena") == (1, 0.3)
     assert get_portal_tile_download_policy("gallica") == (None, 0.0)
     assert get_portal_tile_download_policy("non_esiste") == (None, 0.0)
 

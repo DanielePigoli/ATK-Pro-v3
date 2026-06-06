@@ -68,6 +68,41 @@ def test_download_tile_too_small(tmp_path, monkeypatch, caplog):
     assert any("Tile troppo piccolo" in rec.message for rec in caplog.records)
 
 
+def test_download_tile_retries_incomplete_chunked_stream(tmp_path, monkeypatch, caplog):
+    calls = {"count": 0}
+
+    class BrokenResponse:
+        status_code = 200
+
+        def iter_content(self, chunk_size=8192):
+            yield b"x" * 1024
+            raise td.requests.exceptions.ChunkedEncodingError("incomplete chunked read")
+
+    class GoodResponse:
+        status_code = 200
+
+        def iter_content(self, chunk_size=8192):
+            yield b"x" * 2048
+
+    def fake_get(*a, **k):
+        calls["count"] += 1
+        return BrokenResponse() if calls["count"] == 1 else GoodResponse()
+
+    monkeypatch.setattr(td.requests, "get", fake_get)
+    monkeypatch.setattr(td.time, "sleep", lambda *a, **k: None)
+
+    out_file = tmp_path / "tile_0_0.jpg"
+    with caplog.at_level("WARNING"):
+        result = td.download_tile("http://fake", 0, 0, 256, tmp_path)
+
+    assert result == str(out_file)
+    assert out_file.exists()
+    assert out_file.stat().st_size == 2048
+    assert not (tmp_path / "tile_0_0.jpg.part").exists()
+    assert calls["count"] == 2
+    assert any("interrotto durante lo stream" in rec.message for rec in caplog.records)
+
+
 def test_download_tiles_invokes_download_tile(monkeypatch):
     info = {
         "@id": "http://fake",

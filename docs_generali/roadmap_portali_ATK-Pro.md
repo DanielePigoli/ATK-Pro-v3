@@ -155,6 +155,10 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
 - `biblioteca_digitale_lombarda` e tecnicamente promettente per record e PDF
   pubblici, ma molti contenuti hanno licenze non commerciale/no-derivati. Va
   trattata con policy prudente e range esplicito, non come scarico generale.
+- `biblioteca_digitale_siena` e integrata come IIIF diretto prudente. I test
+  manuali su BDS hanno mostrato possibili interruzioni dello stream tile:
+  ATK-Pro usa quindi download sequenziale con breve pausa e ritenta gli stream
+  incompleti senza conservare file parziali.
 - `ambrosiana_digitale` e `rovereto_digital_library` restano sonde importanti:
   la prima dichiara IIIF, la seconda e descritta come DSpace GLAM/IIIF, ma
   servono termini e campioni prima di qualsiasi integrazione.

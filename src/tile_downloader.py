@@ -58,6 +58,24 @@ def _headers_for_tile_url(url, referer=None):
         headers.pop("Origin", None)
     return headers
 
+
+def _remove_partial_tile(filename):
+    try:
+        if os.path.exists(filename):
+            os.remove(filename)
+    except OSError:
+        logger.debug("Impossibile rimuovere tile parziale: %s", filename, exc_info=True)
+
+
+def _stream_response_to_file(response, filename):
+    tmp_filename = f"{filename}.part"
+    _remove_partial_tile(tmp_filename)
+    with open(tmp_filename, "wb") as f:
+        for chunk in response.iter_content(8192):
+            if chunk:
+                f.write(chunk)
+    os.replace(tmp_filename, filename)
+
 def download_tile(url, x, y, tile_size, output_dir, quality="default", img_width=None, img_height=None, inter_delay=0.0, referer=None, size_keyword="full"):
     """Scarica un singolo tile IIIF e lo salva nella cartella di output."""
     # x,y possono arrivare come offset in pixel oppure come indici di col/row.
@@ -104,10 +122,13 @@ def download_tile(url, x, y, tile_size, output_dir, quality="default", img_width
             continue
 
         if response.status_code == 200:
-            with open(filename, "wb") as f:
-                for chunk in response.iter_content(8192):
-                    if chunk:
-                        f.write(chunk)
+            try:
+                _stream_response_to_file(response, filename)
+            except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError, OSError) as e:
+                _remove_partial_tile(filename)
+                _remove_partial_tile(f"{filename}.part")
+                logger.warning("Tentativo %d interrotto durante lo stream per %s: %s", attempt, url_tile, e)
+                continue
             # Controllo dimensione minima proporzionale
             if os.path.getsize(filename) < min_file_size:
                 logger.warning("[Warning] Tile troppo piccolo (%d byte, min=%d): %s",
@@ -124,10 +145,7 @@ def download_tile(url, x, y, tile_size, output_dir, quality="default", img_width
             try:
                 resp_png = requests.get(url_tile_png, headers=_headers_for_tile_url(url_tile_png, referer=referer), stream=True, timeout=30)
                 if resp_png.status_code == 200:
-                    with open(filename, "wb") as f:
-                        for chunk in resp_png.iter_content(8192):
-                            if chunk:
-                                f.write(chunk)
+                    _stream_response_to_file(resp_png, filename)
                     if os.path.getsize(filename) >= min_file_size:
                         logger.info("[OK] Tile .png salvato come %s", filename)
                         return filename
