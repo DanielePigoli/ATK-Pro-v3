@@ -146,7 +146,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   prima il PDF diretto pubblico; le immagini restano utili per download puntuali
   o per casi senza PDF. ATK-Pro usa manifest sintetico da immagini pubbliche e,
   quando l'utente richiede solo PDF e non imposta un range di pagine, scarica il
-  PDF diretto ufficiale invece di ricostruirlo dalle immagini.
+  PDF diretto ufficiale invece di ricostruirlo dalle immagini. La richiesta di
+  range obbligatorio per i portali `r_limited` resta attiva, con eccezione
+  mirata per BDT `Testi-a-stampa` in modalita solo PDF.
 - `beic_digitale` e il secondo candidato forte: termini favorevoli per pubblico
   dominio, dati CC0 e OAI-PMH documentato. Va pero distinta la parte metadata
   dalla parte immagini/PDF, verificando campioni pubblici prima del codice.
