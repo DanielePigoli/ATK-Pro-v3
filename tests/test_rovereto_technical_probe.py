@@ -6,6 +6,7 @@ import verify_rovereto_technical_probe as probe
 
 
 ITEM_UUID = "e4199e9b-c79b-4c3d-b157-be2dcfc0407f"
+BUNDLE_UUID = "6c76babc-df6f-41a7-9084-40279e01b800"
 BITSTREAM_UUID = "13077fcb-4069-4034-8cfe-d815f0808e04"
 
 
@@ -88,6 +89,34 @@ def test_extract_candidates_classifies_input_entity_and_derives_api_item():
         f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/items/{ITEM_UUID}"
     )
     assert by_role["dspace_rest_item"].source == "derived_from_entity"
+
+
+def test_extract_candidates_reads_json_hal_links_and_subresources():
+    html = f"""
+    {{
+        "_links": {{
+            "self": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/items/{ITEM_UUID}"}},
+            "bundles": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/items/{ITEM_UUID}/bundles"}},
+            "thumbnail": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/items/{ITEM_UUID}/thumbnail"}},
+            "bundle": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bundles/{BUNDLE_UUID}"}},
+            "bitstreams": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bundles/{BUNDLE_UUID}/bitstreams"}},
+            "content": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}/content"}}
+        }}
+    }}
+    """
+
+    candidates = probe.extract_candidates(
+        html,
+        f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/items/{ITEM_UUID}/bundles",
+    )
+    by_role = {candidate.role: candidate for candidate in candidates}
+
+    assert by_role["dspace_rest_item"].source == "json_link"
+    assert by_role["dspace_item_bundles"].kind == "api_item"
+    assert by_role["dspace_item_thumbnail"].identifier == ITEM_UUID
+    assert by_role["bundle_metadata"].kind == "bundle"
+    assert by_role["bundle_bitstreams"].identifier == BUNDLE_UUID
+    assert by_role["bitstream_content"].kind == "bitstream"
 
 
 def test_write_report_creates_csv(tmp_path: Path):
