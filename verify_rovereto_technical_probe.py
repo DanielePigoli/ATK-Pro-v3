@@ -199,6 +199,55 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
     return sorted(candidates, key=lambda c: (c.kind, c.role, c.identifier, c.url))
 
 
+def _should_follow_candidate(candidate: ProbeCandidate) -> bool:
+    if candidate.kind not in {"api_item", "bundle", "bitstream"}:
+        return False
+    if candidate.role.endswith("_content"):
+        return False
+    return "digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/" in candidate.url.lower()
+
+
+def collect_candidates(
+    html: str,
+    base_url: str,
+    *,
+    follow_json: bool = False,
+    timeout: int = 25,
+    max_depth: int = 2,
+) -> list[ProbeCandidate]:
+    candidates = extract_candidates(html, base_url)
+    if not follow_json or max_depth <= 0:
+        return candidates
+
+    by_key: dict[tuple[str, str], ProbeCandidate] = {(candidate.kind, candidate.url): candidate for candidate in candidates}
+    visited: set[str] = set()
+    frontier = [candidate for candidate in candidates if _should_follow_candidate(candidate)]
+
+    for _depth in range(max_depth):
+        next_frontier: list[ProbeCandidate] = []
+        for candidate in frontier:
+            if candidate.url in visited:
+                continue
+            visited.add(candidate.url)
+            try:
+                linked_html = _load_url(candidate.url, timeout)
+            except Exception as exc:
+                print(f"AVVISO: impossibile seguire {candidate.url}: {exc}", file=sys.stderr)
+                continue
+            for linked_candidate in extract_candidates(linked_html, candidate.url):
+                key = (linked_candidate.kind, linked_candidate.url)
+                if key in by_key:
+                    continue
+                by_key[key] = linked_candidate
+                if _should_follow_candidate(linked_candidate):
+                    next_frontier.append(linked_candidate)
+        if not next_frontier:
+            break
+        frontier = next_frontier
+
+    return sorted(by_key.values(), key=lambda c: (c.kind, c.role, c.identifier, c.url))
+
+
 def write_report(path: Path, candidates: list[ProbeCandidate]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as fh:
@@ -240,6 +289,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--html-fixture", type=Path, help="Fixture HTML locale per test offline.")
     parser.add_argument("--output", type=Path, default=DEFAULT_REPORT, help="Report CSV da creare.")
     parser.add_argument("--timeout", type=int, default=25, help="Timeout rete in secondi.")
+    parser.add_argument(
+        "--follow-json",
+        action="store_true",
+        help="Segue in modo limitato i link API/HAL DSpace trovati, senza aprire contenuti binari.",
+    )
+    parser.add_argument("--max-depth", type=int, default=2, help="Profondita massima per --follow-json.")
     args = parser.parse_args(argv)
 
     if not args.url and not args.html_fixture:
@@ -254,7 +309,13 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERRORE: impossibile leggere la pagina Rovereto: {exc}", file=sys.stderr)
         return 2
 
-    candidates = extract_candidates(html, base_url)
+    candidates = collect_candidates(
+        html,
+        base_url,
+        follow_json=args.follow_json,
+        timeout=args.timeout,
+        max_depth=args.max_depth,
+    )
     write_report(args.output, candidates)
 
     print(f"Pagina: {base_url}")
