@@ -192,7 +192,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   risoluzione web secondo le licenze specifiche, con alta definizione su
   richiesta. I campioni osservati sono CC BY-NC-ND: prima del codice servono
   smoke live su manifest/API e decisione prudente tra PDF/JPEG puntuali e
-  eventuale `R_LIMITED`.
+  eventuale `R_LIMITED`. La sonda Rovereto riconosce ora anche i link HAL/JSON
+  delle sotto-risorse DSpace (`bundles`, `thumbnail`, bundle e bitstream), cosi
+  i test manuali possono procedere oltre la sola pagina entity.
 - Su `biblioteca_digitale_trentina` la capability tecnica resta specifica del
   portale: immagini dirette pubbliche e PDF diretto per testi a stampa, senza
   trasformarla in un adapter generico per tutte le biblioteche digitali.
