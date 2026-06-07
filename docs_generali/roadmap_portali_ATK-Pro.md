@@ -185,6 +185,14 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   supporto nel menu. Il primo test live su `ambro:catalog:24203` non ha trovato
   manifest, info.json, immagini Cantaloupe o viewer utili: per ora Ambrosiana
   resta in scouting, senza integrazione downloader.
+- Per Rovereto, il controllo 2026-06-07 ha trovato il portale operativo
+  `digitallibrary.bibliotecacivica.rovereto.tn.it`: item pubblici DSpace-GLAM
+  con Open in Mirador, IIIF/Open Manifest, file PDF/JPEG e licenza item-level.
+  I termini ufficiali consentono accesso libero e gratuito ai file digitali in
+  risoluzione web secondo le licenze specifiche, con alta definizione su
+  richiesta. I campioni osservati sono CC BY-NC-ND: prima del codice servono
+  smoke live su manifest/API e decisione prudente tra PDF/JPEG puntuali e
+  eventuale `R_LIMITED`.
 - Su `biblioteca_digitale_trentina` la capability tecnica resta specifica del
   portale: immagini dirette pubbliche e PDF diretto per testi a stampa, senza
   trasformarla in un adapter generico per tutte le biblioteche digitali.
