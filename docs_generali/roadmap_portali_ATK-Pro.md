@@ -194,7 +194,10 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   smoke live su manifest/API e decisione prudente tra PDF/JPEG puntuali e
   eventuale `R_LIMITED`. La sonda Rovereto riconosce ora anche i link HAL/JSON
   delle sotto-risorse DSpace (`bundles`, `thumbnail`, bundle e bitstream), cosi
-  i test manuali possono procedere oltre la sola pagina entity.
+  i test manuali possono procedere oltre la sola pagina entity. Con
+  `--follow-json` puo seguire in modo limitato la catena API DSpace, fermandosi
+  prima dei link di contenuto binario: utile per capire se esistono file
+  pubblici stabili senza anticipare una capability ATK-Pro.
 - Su `biblioteca_digitale_trentina` la capability tecnica resta specifica del
   portale: immagini dirette pubbliche e PDF diretto per testi a stampa, senza
   trasformarla in un adapter generico per tutte le biblioteche digitali.

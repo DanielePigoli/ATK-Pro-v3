@@ -119,6 +119,70 @@ def test_extract_candidates_reads_json_hal_links_and_subresources():
     assert by_role["bitstream_content"].kind == "bitstream"
 
 
+def test_collect_candidates_follows_json_links_with_limited_depth(monkeypatch):
+    item_url = f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/items/{ITEM_UUID}"
+    bundles_url = f"{item_url}/bundles"
+    bundle_url = f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bundles/{BUNDLE_UUID}"
+    bitstreams_url = f"{bundle_url}/bitstreams"
+    bitstream_url = f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}"
+    content_url = f"{bitstream_url}/content"
+    responses = {
+        item_url: f'{{"_links": {{"bundles": {{"href": "{bundles_url}"}}}}}}',
+        bundles_url: f'{{"_embedded": {{"bundles": [{{"_links": {{"self": {{"href": "{bundle_url}"}}}}}}]}}}}',
+        bundle_url: f'{{"_links": {{"bitstreams": {{"href": "{bitstreams_url}"}}}}}}',
+        bitstreams_url: f'{{"_embedded": {{"bitstreams": [{{"_links": {{"self": {{"href": "{bitstream_url}"}}, "content": {{"href": "{content_url}"}}}}}}]}}}}',
+        bitstream_url: f'{{"_links": {{"content": {{"href": "{content_url}"}}}}}}',
+    }
+
+    def fake_load_url(url: str, timeout: int) -> str:
+        return responses[url]
+
+    monkeypatch.setattr(probe, "_load_url", fake_load_url)
+
+    candidates = probe.collect_candidates(
+        f'{{"_links": {{"self": {{"href": "{item_url}"}}}}}}',
+        item_url,
+        follow_json=True,
+        max_depth=5,
+    )
+    by_role = {candidate.role: candidate for candidate in candidates}
+
+    assert by_role["dspace_item_bundles"].url == bundles_url
+    assert by_role["bundle_metadata"].url == bundle_url
+    assert by_role["bundle_bitstreams"].url == bitstreams_url
+    assert by_role["bitstream_metadata"].url == bitstream_url
+    assert by_role["bitstream_content"].url == content_url
+
+
+def test_collect_candidates_does_not_follow_content_links(monkeypatch):
+    content_url = f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}/content"
+    calls: list[str] = []
+
+    def fake_load_url(url: str, timeout: int) -> str:
+        calls.append(url)
+        return ""
+
+    monkeypatch.setattr(probe, "_load_url", fake_load_url)
+
+    candidates = probe.collect_candidates(
+        f'{{"_links": {{"content": {{"href": "{content_url}"}}}}}}',
+        content_url,
+        follow_json=True,
+        max_depth=2,
+    )
+
+    assert calls == []
+    assert candidates == [
+        probe.ProbeCandidate(
+            kind="bitstream",
+            role="bitstream_content",
+            identifier=BITSTREAM_UUID,
+            url=content_url,
+            source="input_url",
+        )
+    ]
+
+
 def test_write_report_creates_csv(tmp_path: Path):
     report = tmp_path / "rovereto_probe.csv"
     probe.write_report(
