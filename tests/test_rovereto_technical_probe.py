@@ -59,13 +59,35 @@ def test_extract_candidates_ignores_duplicates_and_non_download_links():
 
     assert candidates == [
         probe.ProbeCandidate(
+            kind="api_item",
+            role="dspace_rest_item",
+            identifier=ITEM_UUID,
+            url=f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/items/{ITEM_UUID}",
+            source="derived_from_entity",
+        ),
+        probe.ProbeCandidate(
             kind="entity",
             role="dspace_publication",
             identifier=ITEM_UUID,
             url=f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/entities/publication/{ITEM_UUID}",
             source="html_attribute",
-        )
+        ),
     ]
+
+
+def test_extract_candidates_classifies_input_entity_and_derives_api_item():
+    entity_url = f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/entities/picture/{ITEM_UUID}"
+
+    candidates = probe.extract_candidates("<html></html>", entity_url)
+    by_source = {candidate.source: candidate for candidate in candidates}
+    by_role = {candidate.role: candidate for candidate in candidates}
+
+    assert by_source["input_url"].kind == "entity"
+    assert by_source["input_url"].role == "dspace_picture"
+    assert by_role["dspace_rest_item"].url == (
+        f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/items/{ITEM_UUID}"
+    )
+    assert by_role["dspace_rest_item"].source == "derived_from_entity"
 
 
 def test_write_report_creates_csv(tmp_path: Path):

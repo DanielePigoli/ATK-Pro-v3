@@ -114,11 +114,22 @@ def _classify_url(url: str) -> tuple[str, str, str] | None:
     return None
 
 
+def _derive_rovereto_api_item(url: str) -> str | None:
+    parsed = urlparse(url)
+    if "digitallibrary.bibliotecacivica.rovereto.tn.it" not in parsed.netloc.lower():
+        return None
+    entity_match = ENTITY_RE.search(parsed.path)
+    if not entity_match:
+        return None
+    return f"{parsed.scheme}://{parsed.netloc}/server/api/core/items/{entity_match.group('uuid')}"
+
+
 def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
     seen: set[tuple[str, str]] = set()
     candidates: list[ProbeCandidate] = []
 
     raw_urls: list[tuple[str, str]] = []
+    raw_urls.append((base_url, "input_url"))
     raw_urls.extend((m.group("url"), "html_attribute") for m in ATTR_URL_RE.finditer(html))
     raw_urls.extend((m.group(0), "absolute_text") for m in ABSOLUTE_URL_RE.finditer(html))
 
@@ -143,6 +154,21 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
                 source=source,
             )
         )
+        api_item_url = _derive_rovereto_api_item(normalized)
+        if api_item_url and ("api_item", api_item_url) not in seen:
+            api_classification = _classify_url(api_item_url)
+            if api_classification:
+                api_kind, api_role, api_identifier = api_classification
+                seen.add((api_kind, api_item_url))
+                candidates.append(
+                    ProbeCandidate(
+                        kind=api_kind,
+                        role=api_role,
+                        identifier=api_identifier,
+                        url=api_item_url,
+                        source="derived_from_entity",
+                    )
+                )
 
     return sorted(candidates, key=lambda c: (c.kind, c.role, c.identifier, c.url))
 
