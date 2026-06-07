@@ -182,7 +182,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   cita Mirador e Cantaloupe. Tuttavia i campioni facilmente reperibili possono
   passare da Comperio o da manifest esterni/aggregatori: la sonda
   `verify_ambrosiana_technical_probe.py` va usata prima di decidere qualunque
-  supporto nel menu.
+  supporto nel menu. Il primo test live su `ambro:catalog:24203` non ha trovato
+  manifest, info.json, immagini Cantaloupe o viewer utili: per ora Ambrosiana
+  resta in scouting, senza integrazione downloader.
 - Su `biblioteca_digitale_trentina` la capability tecnica resta specifica del
   portale: immagini dirette pubbliche e PDF diretto per testi a stampa, senza
   trasformarla in un adapter generico per tutte le biblioteche digitali.
