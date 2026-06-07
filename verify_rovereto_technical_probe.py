@@ -50,7 +50,10 @@ REST_ITEM_SUBRESOURCE_RE = re.compile(
     re.IGNORECASE,
 )
 REST_BUNDLE_RE = re.compile(rf"/server/api/core/bundles/(?P<uuid>{UUID_RE})(?:/(?P<subresource>[a-zA-Z][a-zA-Z0-9_-]*))?\b", re.IGNORECASE)
-REST_BITSTREAM_RE = re.compile(rf"/server/api/core/bitstreams/(?P<uuid>{UUID_RE})(?:/content)?\b", re.IGNORECASE)
+REST_BITSTREAM_RE = re.compile(
+    rf"/server/api/core/bitstreams/(?P<uuid>{UUID_RE})(?:/(?P<subresource>[a-zA-Z][a-zA-Z0-9_-]*))?\b",
+    re.IGNORECASE,
+)
 
 
 def _load_url(url: str, timeout: int) -> str:
@@ -113,8 +116,11 @@ def _classify_url(url: str) -> tuple[str, str, str] | None:
 
         bitstream_match = REST_BITSTREAM_RE.search(path)
         if bitstream_match:
-            if path_lower.rstrip("/").endswith("/content"):
+            subresource = bitstream_match.group("subresource")
+            if subresource and subresource.lower() == "content":
                 return "bitstream", "bitstream_content", bitstream_match.group("uuid")
+            if subresource:
+                return "bitstream", f"bitstream_{subresource.lower()}", bitstream_match.group("uuid")
             return "bitstream", "bitstream_metadata", bitstream_match.group("uuid")
 
         item_match = REST_ITEM_RE.search(path)
