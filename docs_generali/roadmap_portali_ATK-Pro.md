@@ -176,7 +176,13 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   incompleti senza conservare file parziali.
 - `ambrosiana_digitale` e `rovereto_digital_library` restano sonde importanti:
   la prima dichiara IIIF, la seconda e descritta come DSpace GLAM/IIIF, ma
-  servono termini e campioni prima di qualsiasi integrazione.
+  servono termini e campioni prima di qualsiasi integrazione. Per Ambrosiana,
+  il controllo 2026-06-07 conferma il valore della pista IIIF: la pagina
+  ufficiale parla di accesso libero e standard IIIF, e la letteratura tecnica
+  cita Mirador e Cantaloupe. Tuttavia i campioni facilmente reperibili possono
+  passare da Comperio o da manifest esterni/aggregatori: la sonda
+  `verify_ambrosiana_technical_probe.py` va usata prima di decidere qualunque
+  supporto nel menu.
 - Su `biblioteca_digitale_trentina` la capability tecnica resta specifica del
   portale: immagini dirette pubbliche e PDF diretto per testi a stampa, senza
   trasformarla in un adapter generico per tutte le biblioteche digitali.
