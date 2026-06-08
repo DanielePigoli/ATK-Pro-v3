@@ -190,6 +190,102 @@ def test_collect_candidates_does_not_follow_content_links(monkeypatch):
     ]
 
 
+def test_summarize_bitstreams_reads_metadata_and_format_without_content(monkeypatch):
+    bitstream_url = f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}"
+    content_url = f"{bitstream_url}/content"
+    format_url = f"{bitstream_url}/format"
+    bundle_url = f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bundles/{BUNDLE_UUID}"
+    thumbnail_url = f"{bitstream_url}/thumbnail"
+    opened: list[str] = []
+    responses = {
+        bitstream_url: f"""{{
+            "uuid": "{BITSTREAM_UUID}",
+            "name": "page-10.jpg",
+            "sequenceId": 10,
+            "sizeBytes": 123456,
+            "checkSum": {{"algorithm": "MD5", "value": "abc123"}},
+            "_links": {{
+                "content": {{"href": "{content_url}"}},
+                "format": {{"href": "{format_url}"}},
+                "bundle": {{"href": "{bundle_url}"}},
+                "thumbnail": {{"href": "{thumbnail_url}"}}
+            }}
+        }}""",
+        format_url: '{"shortDescription": "JPEG", "mimetype": "image/jpeg"}',
+    }
+
+    def fake_load_url(url: str, timeout: int) -> str:
+        opened.append(url)
+        return responses[url]
+
+    monkeypatch.setattr(probe, "_load_url", fake_load_url)
+
+    summaries = probe.summarize_bitstreams(
+        [
+            probe.ProbeCandidate(
+                kind="bitstream",
+                role="bitstream_metadata",
+                identifier=BITSTREAM_UUID,
+                url=bitstream_url,
+                source="json_link",
+            ),
+            probe.ProbeCandidate(
+                kind="bitstream",
+                role="bitstream_content",
+                identifier=BITSTREAM_UUID,
+                url=content_url,
+                source="json_link",
+            ),
+        ]
+    )
+
+    assert opened == [bitstream_url, format_url]
+    assert summaries == [
+        probe.BitstreamSummary(
+            identifier=BITSTREAM_UUID,
+            name="page-10.jpg",
+            sequence_id="10",
+            size_bytes="123456",
+            checksum="abc123",
+            checksum_algorithm="MD5",
+            format_label="JPEG",
+            format_mimetype="image/jpeg",
+            metadata_url=bitstream_url,
+            content_url=content_url,
+            bundle_url=bundle_url,
+            thumbnail_url=thumbnail_url,
+        )
+    ]
+
+
+def test_write_bitstream_report_creates_csv(tmp_path: Path):
+    report = tmp_path / "bitstreams.csv"
+    probe.write_bitstream_report(
+        report,
+        [
+            probe.BitstreamSummary(
+                identifier=BITSTREAM_UUID,
+                name="page-1.jpg",
+                sequence_id="1",
+                size_bytes="42",
+                checksum="abc123",
+                checksum_algorithm="MD5",
+                format_label="JPEG",
+                format_mimetype="image/jpeg",
+                metadata_url=f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}",
+                content_url=f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}/content",
+                bundle_url=f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bundles/{BUNDLE_UUID}",
+                thumbnail_url="",
+            )
+        ],
+    )
+
+    text = report.read_text(encoding="utf-8")
+    assert "identifier,name,sequence_id,size_bytes" in text
+    assert "page-1.jpg" in text
+    assert "image/jpeg" in text
+
+
 def test_write_report_creates_csv(tmp_path: Path):
     report = tmp_path / "rovereto_probe.csv"
     probe.write_report(

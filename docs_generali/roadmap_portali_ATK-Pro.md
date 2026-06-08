@@ -201,7 +201,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   successivi sullo stesso giorno hanno trovato 133 link `bitstream_content` per
   il campione publication e 4 per il campione picture: la pista tecnica e
   concreta, ma vanno ancora verificati ordine pagina, formato effettivo,
-  duplicati/thumbnail e licenza item-level prima di una capability.
+  duplicati/thumbnail e licenza item-level prima di una capability. La sonda
+  puo produrre anche un CSV qualitativo dei bitstream con
+  `--summarize-bitstreams`, leggendo solo metadati/formato e non i contenuti.
 - Su `biblioteca_digitale_trentina` la capability tecnica resta specifica del
   portale: immagini dirette pubbliche e PDF diretto per testi a stampa, senza
   trasformarla in un adapter generico per tutte le biblioteche digitali.
