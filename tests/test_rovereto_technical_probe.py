@@ -100,7 +100,9 @@ def test_extract_candidates_reads_json_hal_links_and_subresources():
             "thumbnail": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/items/{ITEM_UUID}/thumbnail"}},
             "bundle": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bundles/{BUNDLE_UUID}"}},
             "bitstreams": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bundles/{BUNDLE_UUID}/bitstreams"}},
-            "content": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}/content"}}
+            "content": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}/content"}},
+            "format": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}/format"}},
+            "thumbnail": {{"href": "https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}/thumbnail"}}
         }}
     }}
     """
@@ -117,6 +119,8 @@ def test_extract_candidates_reads_json_hal_links_and_subresources():
     assert by_role["bundle_metadata"].kind == "bundle"
     assert by_role["bundle_bitstreams"].identifier == BUNDLE_UUID
     assert by_role["bitstream_content"].kind == "bitstream"
+    assert by_role["bitstream_format"].identifier == BITSTREAM_UUID
+    assert by_role["bitstream_thumbnail"].identifier == BITSTREAM_UUID
 
 
 def test_collect_candidates_follows_json_links_with_limited_depth(monkeypatch):
@@ -126,12 +130,14 @@ def test_collect_candidates_follows_json_links_with_limited_depth(monkeypatch):
     bitstreams_url = f"{bundle_url}/bitstreams"
     bitstream_url = f"https://digitallibrary.bibliotecacivica.rovereto.tn.it/server/api/core/bitstreams/{BITSTREAM_UUID}"
     content_url = f"{bitstream_url}/content"
+    format_url = f"{bitstream_url}/format"
     responses = {
         item_url: f'{{"_links": {{"bundles": {{"href": "{bundles_url}"}}}}}}',
         bundles_url: f'{{"_embedded": {{"bundles": [{{"_links": {{"self": {{"href": "{bundle_url}"}}}}}}]}}}}',
         bundle_url: f'{{"_links": {{"bitstreams": {{"href": "{bitstreams_url}"}}}}}}',
         bitstreams_url: f'{{"_embedded": {{"bitstreams": [{{"_links": {{"self": {{"href": "{bitstream_url}"}}, "content": {{"href": "{content_url}"}}}}}}]}}}}',
-        bitstream_url: f'{{"_links": {{"content": {{"href": "{content_url}"}}}}}}',
+        bitstream_url: f'{{"_links": {{"content": {{"href": "{content_url}"}}, "format": {{"href": "{format_url}"}}}}}}',
+        format_url: '{"format": "JPEG"}',
     }
 
     def fake_load_url(url: str, timeout: int) -> str:
@@ -152,6 +158,7 @@ def test_collect_candidates_follows_json_links_with_limited_depth(monkeypatch):
     assert by_role["bundle_bitstreams"].url == bitstreams_url
     assert by_role["bitstream_metadata"].url == bitstream_url
     assert by_role["bitstream_content"].url == content_url
+    assert by_role["bitstream_format"].url == format_url
 
 
 def test_collect_candidates_does_not_follow_content_links(monkeypatch):

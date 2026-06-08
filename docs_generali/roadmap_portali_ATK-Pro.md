@@ -197,7 +197,11 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   i test manuali possono procedere oltre la sola pagina entity. Con
   `--follow-json` puo seguire in modo limitato la catena API DSpace, fermandosi
   prima dei link di contenuto binario: utile per capire se esistono file
-  pubblici stabili senza anticipare una capability ATK-Pro.
+  pubblici stabili senza anticipare una capability ATK-Pro. Test live
+  successivi sullo stesso giorno hanno trovato 133 link `bitstream_content` per
+  il campione publication e 4 per il campione picture: la pista tecnica e
+  concreta, ma vanno ancora verificati ordine pagina, formato effettivo,
+  duplicati/thumbnail e licenza item-level prima di una capability.
 - Su `biblioteca_digitale_trentina` la capability tecnica resta specifica del
   portale: immagini dirette pubbliche e PDF diretto per testi a stampa, senza
   trasformarla in un adapter generico per tutte le biblioteche digitali.
