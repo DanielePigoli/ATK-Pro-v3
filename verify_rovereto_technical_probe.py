@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import re
 import sys
 from dataclasses import dataclass
@@ -12,6 +13,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_REPORT = ROOT / ".codex_tmp" / "rovereto_technical_probe.csv"
+DEFAULT_BITSTREAM_REPORT = ROOT / ".codex_tmp" / "rovereto_bitstream_summary.csv"
 DEFAULT_USER_AGENT = "ATK-Pro Rovereto technical probe (user-run local verification)"
 
 
@@ -22,6 +24,22 @@ class ProbeCandidate:
     identifier: str
     url: str
     source: str
+
+
+@dataclass(frozen=True)
+class BitstreamSummary:
+    identifier: str
+    name: str
+    sequence_id: str
+    size_bytes: str
+    checksum: str
+    checksum_algorithm: str
+    format_label: str
+    format_mimetype: str
+    metadata_url: str
+    content_url: str
+    bundle_url: str
+    thumbnail_url: str
 
 
 ATTR_URL_RE = re.compile(
@@ -72,6 +90,14 @@ def _load_url(url: str, timeout: int) -> str:
     if content_type == "application/pdf":
         return f'<a href="{url}">PDF diretto Rovereto</a>'
     return raw.decode(encoding, errors="replace")
+
+
+def _load_json_url(url: str, timeout: int) -> dict:
+    text = _load_url(url, timeout)
+    data = json.loads(text)
+    if not isinstance(data, dict):
+        raise ValueError("risposta JSON non oggetto")
+    return data
 
 
 def _load_fixture(path: Path) -> str:
@@ -271,6 +297,127 @@ def write_report(path: Path, candidates: list[ProbeCandidate]) -> None:
             )
 
 
+def _json_link(data: dict, name: str) -> str:
+    links = data.get("_links")
+    if not isinstance(links, dict):
+        return ""
+    entry = links.get(name)
+    if not isinstance(entry, dict):
+        return ""
+    href = entry.get("href")
+    return href if isinstance(href, str) else ""
+
+
+def _extract_format_info(data: dict, timeout: int) -> tuple[str, str]:
+    embedded_format = data.get("format")
+    if isinstance(embedded_format, dict):
+        label = embedded_format.get("shortDescription") or embedded_format.get("description") or embedded_format.get("mimetype")
+        mimetype = embedded_format.get("mimetype")
+        return str(label or ""), str(mimetype or "")
+
+    format_url = _json_link(data, "format")
+    if not format_url:
+        return "", ""
+    try:
+        format_data = _load_json_url(format_url, timeout)
+    except Exception as exc:
+        print(f"AVVISO: impossibile leggere formato bitstream {format_url}: {exc}", file=sys.stderr)
+        return "", ""
+    label = format_data.get("shortDescription") or format_data.get("description") or format_data.get("mimetype")
+    mimetype = format_data.get("mimetype")
+    return str(label or ""), str(mimetype or "")
+
+
+def summarize_bitstreams(candidates: list[ProbeCandidate], timeout: int = 25) -> list[BitstreamSummary]:
+    summaries: list[BitstreamSummary] = []
+    seen: set[str] = set()
+    metadata_candidates = [
+        candidate
+        for candidate in candidates
+        if candidate.kind == "bitstream" and candidate.role == "bitstream_metadata"
+    ]
+
+    for candidate in sorted(metadata_candidates, key=lambda item: (item.identifier, item.url)):
+        if candidate.identifier in seen:
+            continue
+        seen.add(candidate.identifier)
+        try:
+            data = _load_json_url(candidate.url, timeout)
+        except Exception as exc:
+            print(f"AVVISO: impossibile leggere metadati bitstream {candidate.url}: {exc}", file=sys.stderr)
+            continue
+        checksum = data.get("checkSum") if isinstance(data.get("checkSum"), dict) else {}
+        format_label, format_mimetype = _extract_format_info(data, timeout)
+        summaries.append(
+            BitstreamSummary(
+                identifier=str(data.get("uuid") or candidate.identifier),
+                name=str(data.get("name") or ""),
+                sequence_id=str(data.get("sequenceId") or ""),
+                size_bytes=str(data.get("sizeBytes") or ""),
+                checksum=str(checksum.get("value") or ""),
+                checksum_algorithm=str(checksum.get("algorithm") or ""),
+                format_label=format_label,
+                format_mimetype=format_mimetype,
+                metadata_url=candidate.url,
+                content_url=_json_link(data, "content"),
+                bundle_url=_json_link(data, "bundle"),
+                thumbnail_url=_json_link(data, "thumbnail"),
+            )
+        )
+
+    return sorted(summaries, key=lambda item: (_natural_sort_key(item.name), item.sequence_id, item.identifier))
+
+
+def _natural_sort_key(value: str) -> list[tuple[int, int | str]]:
+    parts: list[tuple[int, int | str]] = []
+    for part in re.split(r"(\d+)", value.lower()):
+        if part.isdigit():
+            parts.append((0, int(part)))
+        elif part:
+            parts.append((1, part))
+    return parts
+
+
+def write_bitstream_report(path: Path, summaries: list[BitstreamSummary]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(
+            fh,
+            fieldnames=[
+                "identifier",
+                "name",
+                "sequence_id",
+                "size_bytes",
+                "format_label",
+                "format_mimetype",
+                "checksum_algorithm",
+                "checksum",
+                "metadata_url",
+                "content_url",
+                "bundle_url",
+                "thumbnail_url",
+            ],
+        )
+        writer.writeheader()
+        for item in summaries:
+            writer.writerow(
+                {
+                    "identifier": item.identifier,
+                    "name": item.name,
+                    "sequence_id": item.sequence_id,
+                    "size_bytes": item.size_bytes,
+                    "format_label": item.format_label,
+                    "format_mimetype": item.format_mimetype,
+                    "checksum_algorithm": item.checksum_algorithm,
+                    "checksum": item.checksum,
+                    "metadata_url": item.metadata_url,
+                    "content_url": item.content_url,
+                    "bundle_url": item.bundle_url,
+                    "thumbnail_url": item.thumbnail_url,
+                }
+            )
+
+
 def _summarize(candidates: list[ProbeCandidate]) -> str:
     if not candidates:
         return "Nessun candidato Rovereto/DSpace-GLAM, manifest, info.json, file o viewer trovato."
@@ -294,6 +441,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--url", help="Pagina pubblica Rovereto/DSpace-GLAM da sondare.")
     parser.add_argument("--html-fixture", type=Path, help="Fixture HTML locale per test offline.")
     parser.add_argument("--output", type=Path, default=DEFAULT_REPORT, help="Report CSV da creare.")
+    parser.add_argument(
+        "--bitstream-output",
+        type=Path,
+        default=DEFAULT_BITSTREAM_REPORT,
+        help="Report CSV qualitativo dei bitstream da creare con --summarize-bitstreams.",
+    )
     parser.add_argument("--timeout", type=int, default=25, help="Timeout rete in secondi.")
     parser.add_argument(
         "--follow-json",
@@ -301,6 +454,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Segue in modo limitato i link API/HAL DSpace trovati, senza aprire contenuti binari.",
     )
     parser.add_argument("--max-depth", type=int, default=2, help="Profondita massima per --follow-json.")
+    parser.add_argument(
+        "--summarize-bitstreams",
+        action="store_true",
+        help="Legge solo metadati/formato dei bitstream trovati e crea un CSV qualitativo, senza aprire /content.",
+    )
     args = parser.parse_args(argv)
 
     if not args.url and not args.html_fixture:
@@ -335,6 +493,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"- {label}: {candidate.url}")
     if len(candidates) > 20:
         print(f"... altri {len(candidates) - 20} candidati nel report CSV")
+    if args.summarize_bitstreams:
+        summaries = summarize_bitstreams(candidates, timeout=args.timeout)
+        write_bitstream_report(args.bitstream_output, summaries)
+        print(f"Report bitstream: {args.bitstream_output}")
+        print(f"Bitstream sintetizzati: {len(summaries)}")
     return 0
 
 
