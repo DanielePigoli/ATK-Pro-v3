@@ -244,6 +244,9 @@ def test_summarize_bitstreams_reads_metadata_and_format_without_content(monkeypa
         probe.BitstreamSummary(
             identifier=BITSTREAM_UUID,
             name="page-10.jpg",
+            category="thumbnail_or_cover",
+            download_candidate="no",
+            page_number="",
             sequence_id="10",
             size_bytes="123456",
             checksum="abc123",
@@ -266,6 +269,9 @@ def test_write_bitstream_report_creates_csv(tmp_path: Path):
             probe.BitstreamSummary(
                 identifier=BITSTREAM_UUID,
                 name="page-1.jpg",
+                category="thumbnail_or_cover",
+                download_candidate="no",
+                page_number="",
                 sequence_id="1",
                 size_bytes="42",
                 checksum="abc123",
@@ -281,9 +287,18 @@ def test_write_bitstream_report_creates_csv(tmp_path: Path):
     )
 
     text = report.read_text(encoding="utf-8")
-    assert "identifier,name,sequence_id,size_bytes" in text
+    assert "identifier,name,category,download_candidate,page_number,sequence_id,size_bytes" in text
     assert "page-1.jpg" in text
     assert "image/jpeg" in text
+
+
+def test_classify_bitstream_marks_pages_and_derivatives():
+    assert probe._classify_bitstream("iiifpdf-0.png", "image/png") == ("page_image", "yes", "1")
+    assert probe._classify_bitstream("iiifpdf-128.png", "image/png") == ("page_image", "yes", "129")
+    assert probe._classify_bitstream("book.pdf", "application/pdf") == ("source_pdf", "yes", "")
+    assert probe._classify_bitstream("license.txt", "text/plain") == ("license", "no", "")
+    assert probe._classify_bitstream("book.pdf.txt", "text/plain") == ("text_derivative", "no", "")
+    assert probe._classify_bitstream("book.pdf.jpg", "image/jpeg") == ("thumbnail_or_cover", "no", "")
 
 
 def test_write_report_creates_csv(tmp_path: Path):

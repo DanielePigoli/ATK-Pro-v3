@@ -30,6 +30,9 @@ class ProbeCandidate:
 class BitstreamSummary:
     identifier: str
     name: str
+    category: str
+    download_candidate: str
+    page_number: str
     sequence_id: str
     size_bytes: str
     checksum: str
@@ -328,6 +331,26 @@ def _extract_format_info(data: dict, timeout: int) -> tuple[str, str]:
     return str(label or ""), str(mimetype or "")
 
 
+def _classify_bitstream(name: str, mimetype: str) -> tuple[str, str, str]:
+    name_lower = name.lower()
+    mimetype_lower = mimetype.lower()
+
+    page_match = re.fullmatch(r"iiifpdf-(\d+)\.png", name_lower)
+    if page_match and mimetype_lower == "image/png":
+        return "page_image", "yes", str(int(page_match.group(1)) + 1)
+    if mimetype_lower == "application/pdf" or name_lower.endswith(".pdf"):
+        return "source_pdf", "yes", ""
+    if name_lower == "license.txt":
+        return "license", "no", ""
+    if name_lower.endswith(".txt") or mimetype_lower.startswith("text/plain"):
+        return "text_derivative", "no", ""
+    if name_lower.endswith((".jpg", ".jpeg")) and mimetype_lower == "image/jpeg":
+        return "thumbnail_or_cover", "no", ""
+    if mimetype_lower.startswith("image/"):
+        return "image_other", "review", ""
+    return "other", "review", ""
+
+
 def summarize_bitstreams(candidates: list[ProbeCandidate], timeout: int = 25) -> list[BitstreamSummary]:
     summaries: list[BitstreamSummary] = []
     seen: set[str] = set()
@@ -348,10 +371,15 @@ def summarize_bitstreams(candidates: list[ProbeCandidate], timeout: int = 25) ->
             continue
         checksum = data.get("checkSum") if isinstance(data.get("checkSum"), dict) else {}
         format_label, format_mimetype = _extract_format_info(data, timeout)
+        name = str(data.get("name") or "")
+        category, download_candidate, page_number = _classify_bitstream(name, format_mimetype)
         summaries.append(
             BitstreamSummary(
                 identifier=str(data.get("uuid") or candidate.identifier),
-                name=str(data.get("name") or ""),
+                name=name,
+                category=category,
+                download_candidate=download_candidate,
+                page_number=page_number,
                 sequence_id=str(data.get("sequenceId") or ""),
                 size_bytes=str(data.get("sizeBytes") or ""),
                 checksum=str(checksum.get("value") or ""),
@@ -386,6 +414,9 @@ def write_bitstream_report(path: Path, summaries: list[BitstreamSummary]) -> Non
             fieldnames=[
                 "identifier",
                 "name",
+                "category",
+                "download_candidate",
+                "page_number",
                 "sequence_id",
                 "size_bytes",
                 "format_label",
@@ -404,6 +435,9 @@ def write_bitstream_report(path: Path, summaries: list[BitstreamSummary]) -> Non
                 {
                     "identifier": item.identifier,
                     "name": item.name,
+                    "category": item.category,
+                    "download_candidate": item.download_candidate,
+                    "page_number": item.page_number,
                     "sequence_id": item.sequence_id,
                     "size_bytes": item.size_bytes,
                     "format_label": item.format_label,
