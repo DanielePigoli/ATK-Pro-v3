@@ -609,6 +609,22 @@ def _build_biblioteca_digitale_siena_manifest(page_url: str) -> str | None:
     return f"https://bds.comune.siena.it/metadata/{doc_id}/manifest.json?type={quote_plus(doc_type)}"
 
 
+def _build_bub_digitale_manifest(page_url: str) -> str | None:
+    """BUB Digitale: pagine viewer con parametro manifest -> URL manifest IIIF diretto."""
+    parsed = urlparse(page_url)
+    if not parsed.netloc.lower().endswith("bub.unibo.it"):
+        return None
+
+    query = parse_qs(parsed.query or "")
+    manifest = (query.get("manifest") or query.get("manifestId") or [""])[0].strip()
+    if manifest and manifest.startswith("https://bub.unibo.it/iiif/2/manifest/"):
+        return manifest
+
+    if page_url.startswith("https://bub.unibo.it/iiif/2/manifest/"):
+        return page_url
+    return None
+
+
 _BDT_ATTR_URL_RE = re.compile(
     r"""(?ix)
     \b(?:href|src|data-[a-z0-9_-]+|content)\s*=\s*
@@ -1878,6 +1894,7 @@ _PORTAL_BUILDERS = {
     "e_codices":        _build_ecodices_manifest,
     "e_manuscripta":    _build_e_manuscripta_manifest,
     "biblioteca_digitale_siena": _build_biblioteca_digitale_siena_manifest,
+    "bub_digitale": _build_bub_digitale_manifest,
     "biblioteca_digitale_trentina": _build_biblioteca_digitale_trentina_manifest,
     "biblioteca_digitale_lombarda": _build_biblioteca_digitale_lombarda_manifest,
     "rovereto_digital_library": _build_rovereto_manifest,

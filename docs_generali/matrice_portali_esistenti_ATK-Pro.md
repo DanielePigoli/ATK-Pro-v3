@@ -39,6 +39,7 @@ Fonti interne usate:
 | `museogalileo` | Museo Galileo Digiteca | Italia | Manifest sintetico da TecaService, token GetObject | Alto | Uso privato/non commerciale e autorizzazione per riproduzione materiale fotografico | Evitare estensioni finche non esiste endpoint stabile/documentato; usare solo accesso pubblico puntuale |
 | `internetculturale_estense` | Internet Culturale / Estense / ICCU | Italia | Manifest sintetico da magparser | Medio-Alto | File web liberi e gratuiti non commerciali, CC BY-NC-SA; metadati CC0 | Consolidabile con citazione, no commerciale e rispetto dei fornitori; preferire endpoint ufficiali/IIIF se disponibili |
 | `brixiana` | Brixiana / Jarvis | Italia | Alias Memooria/Jarvis IIIF | Medio | Accesso gratuito, ma alcune funzionalita sono legate a credenziali MLOL/Brixiana | Supportare solo risorse pubbliche/no-login e verificare condizioni del singolo ente |
+| `bub_digitale` | BUB Digitale | Italia / Emilia-Romagna | IIIF diretto da parametro `manifest=` nelle pagine BUB | Basso-Medio | Accesso libero per studio/ricerca; licenza e riuso da verificare per singolo oggetto | Supportare solo manifest BUB pubblici, con range esplicito e avviso licenza item-level |
 | `biblioteca_digitale_trentina` | Biblioteca Digitale Trentina | Italia / Trentino | Manifest sintetico da immagini pubbliche in pagina + PDF diretto ufficiale per testi a stampa | Basso-Medio | Materiali in pubblico dominio; pagina Riuso favorevole con citazione della fonte | Supporto tecnico su immagini pubbliche; quando l'utente richiede solo PDF e non imposta range, usare il PDF diretto ufficiale |
 | `biblioteca_digitale_lombarda` | Biblioteca Digitale Lombarda | Italia / Lombardia | Manifest sintetico da endpoint PDF REST pubblico | Basso-Medio | Molti record dichiarano licenze non commerciale/no-derivati; diritti da verificare per item | Supportare solo documento singolo PDF da endpoint REST pubblico; niente immagini, registro o sequenze finche IIIF/info.json non risultano stabili |
 | `rovereto_digital_library` | Rovereto Digital Library | Italia / Trentino | Manifest sintetico da API DSpace-GLAM e bitstream pagina pubblici | Medio | Accesso libero ai file digitali in risoluzione web secondo licenza item-level; campioni osservati CC BY-NC-ND | Supportare solo bitstream classificati come pagine `iiifpdf-*.png`, con range esplicito per record e controllo licenza del singolo item |
@@ -65,7 +66,7 @@ Priorita tecnica dopo il primo controllo fonti ufficiali:
    `e_manuscripta`, `manifest_diretto`.
 2. Portali tecnicamente IIIF ma con avviso legale piu forte: `vatlib`.
 3. Portali con discovery/fallback ma valore alto: `antenati`, `gallica`,
-   `memooria`, `brixiana`, `biblioteca_digitale_trentina`,
+   `memooria`, `brixiana`, `bub_digitale`, `biblioteca_digitale_trentina`,
    `biblioteca_digitale_lombarda`, `rovereto_digital_library`.
 4. Portali sintetici o endpoint non standard da trattare con cautela:
    `internetculturale_estense`, `internet_archive`, `bnc_roma`,

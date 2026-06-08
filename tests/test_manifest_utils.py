@@ -82,6 +82,34 @@ def test_resolve_biblioteca_digitale_siena_defaults_to_sbn_type():
     )
 
 
+def test_resolve_bub_digitale_manifest_from_viewer_url():
+    url = (
+        "https://bub.unibo.it/it/bub-digitale/bollettini-parrocchiali/parola-di-vita"
+        "?manifest=https%3A%2F%2Fbub.unibo.it%2Fiiif%2F2%2Fmanifest%2Fbub%2Fbollettiniparrocchiali%2F"
+        "_castenaso_-_s_giovanni_battista%2Fjpg%2F1933.json&view=BookView"
+    )
+
+    assert (
+        mu.resolve_manifest_url(url, "bub_digitale")
+        == "https://bub.unibo.it/iiif/2/manifest/bub/bollettiniparrocchiali/_castenaso_-_s_giovanni_battista/jpg/1933.json"
+    )
+
+
+def test_resolve_bub_digitale_accepts_direct_manifest_url():
+    url = "https://bub.unibo.it/iiif/2/manifest/bub/bollettiniparrocchiali/_castenaso_-_s_giovanni_battista/jpg/1933.json"
+
+    assert mu.resolve_manifest_url(url, "bub_digitale") == url
+
+
+def test_resolve_bub_digitale_rejects_non_bub_manifest_parameter():
+    url = (
+        "https://bub.unibo.it/it/bub-digitale/bollettini-parrocchiali/parola-di-vita"
+        "?manifest=https%3A%2F%2Fexample.test%2Fmanifest.json&view=BookView"
+    )
+
+    assert mu.resolve_manifest_url(url, "bub_digitale") is None
+
+
 def test_resolve_biblioteca_digitale_trentina_item_url():
     url = "https://bdt.bibcom.trento.it/Testi-a-stampa/113"
 

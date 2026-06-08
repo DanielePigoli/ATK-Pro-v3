@@ -217,8 +217,9 @@ Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
   Secondo test live su Castenaso 1933:
   `https://bub.unibo.it/iiif/2/manifest/bub/bollettiniparrocchiali/_castenaso_-_s_giovanni_battista/jpg/1933.json`
   scaricato con codice 200 e 32 canvas. Il pattern manifest appare stabile su
-  piu bollettini; prossimo passo: licenza item-level, range esplicito e prova
-  di download controllata prima della promozione nel registro portali.
+  piu bollettini. `bub_digitale` viene promosso a supporto IIIF diretto
+  prudente: solo manifest BUB pubblici, referer BUB, policy `R_LIMITED`, range
+  esplicito e avviso di verifica licenza item-level.
 - `dl_ficlit` entra come candidato Omeka S/IIIF. La pagina ufficiale FICLIT
   indica uso di tecnologia IIIF e Mirador Viewer; puo servire anche a capire se
   esiste un pattern riusabile per altri portali Omeka italiani. La sonda
