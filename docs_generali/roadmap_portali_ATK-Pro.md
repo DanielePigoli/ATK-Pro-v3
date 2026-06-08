@@ -203,7 +203,9 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   concreta, ma vanno ancora verificati ordine pagina, formato effettivo,
   duplicati/thumbnail e licenza item-level prima di una capability. La sonda
   puo produrre anche un CSV qualitativo dei bitstream con
-  `--summarize-bitstreams`, leggendo solo metadati/formato e non i contenuti.
+  `--summarize-bitstreams`, leggendo solo metadati/formato e non i contenuti;
+  il report classifica pagine `iiifpdf-*.png`, PDF originale, licenza, OCR e
+  miniature/cover per valutare un eventuale percorso `R_LIMITED`.
 - Su `biblioteca_digitale_trentina` la capability tecnica resta specifica del
   portale: immagini dirette pubbliche e PDF diretto per testi a stampa, senza
   trasformarla in un adapter generico per tutte le biblioteche digitali.
