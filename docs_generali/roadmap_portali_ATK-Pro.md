@@ -149,14 +149,16 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   PDF diretto ufficiale invece di ricostruirlo dalle immagini. La richiesta di
   range obbligatorio per i portali `r_limited` resta attiva, con eccezione
   mirata per BDT `Testi-a-stampa` in modalita solo PDF.
-- `beic_digitale` e il secondo candidato forte: termini favorevoli per pubblico
-  dominio, immagini scaricabili/riutilizzabili, dati CC0 e OAI-PMH
-  documentato. Va pero distinta la parte metadata dalla parte immagini/PDF:
-  l'infrastruttura pubblica usa Primo VE/Rosetta/Preserver e, prima del codice,
-  servono campioni reali che dimostrino endpoint file/immagini stabili o un
-  manifest IIIF pubblico. La sonda `verify_beic_technical_probe.py` raccoglie
-  record Primo, link Preserver DeliveryManager, manifest, immagini e PDF senza
-  integrare ancora BEIC nel menu.
+- `beic_digitale` resta un candidato forte per metadata, pubblico dominio e
+  valore culturale, ma non ancora per download. I termini sono favorevoli per
+  opere in pubblico dominio, immagini scaricabili/riutilizzabili e dati CC0;
+  l'infrastruttura pubblica usa Primo VE/Rosetta/Preserver e OAI-PMH
+  documentato. I primi test live non hanno pero individuato un endpoint
+  ripetibile: su Preserver `IE7400509` la sonda ha trovato solo il logo del
+  viewer, mentre sul record Primo `alma9925210904741` non sono emersi manifest,
+  PDF o immagini utili. La sonda `verify_beic_technical_probe.py` resta attiva
+  per raccogliere nuovi campioni, ma BEIC non entra nel menu finche non emerge
+  un endpoint file/manifest stabile con policy item-level chiara.
 - `biblioteca_digitale_lombarda` e promossa solo per PDF puntuale pubblico.
   ATK-Pro accetta endpoint REST del tipo
   `https://www.bdl.servizirl.it/bdl/public/rest/srv/item/{id}/pdf`, costruisce
