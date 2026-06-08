@@ -17,9 +17,9 @@ from manifest_utils import (
     robust_find_manifest,
 )
 try:
-    from portal_registry import get_portal_referer, normalize_portal_key
+    from portal_registry import get_portal_referer, get_portal_tile_download_policy, normalize_portal_key
 except ImportError:
-    from src.portal_registry import get_portal_referer, normalize_portal_key
+    from src.portal_registry import get_portal_referer, get_portal_tile_download_policy, normalize_portal_key
 from canvas_id_extractor import extract_canvas_id_from_url, extract_ud_canvas_id_from_infojson_xhr
 from browser_setup import setup_selenium, setup_playwright
 try:
@@ -85,6 +85,22 @@ def _parse_ua_from_url(url: str):
     if m:
         return m.group(1)
     return None
+
+
+def _canvas_max_workers_for_portal(portale: str | None, cpu_count: int | None = None) -> int:
+    """Restituisce il parallelismo canvas rispettando la policy prudenziale del portale."""
+    try:
+        portal_max_workers, _ = get_portal_tile_download_policy(portale)
+        if portal_max_workers == 1:
+            return 1
+    except Exception:
+        pass
+
+    try:
+        available_cpus = cpu_count or os.cpu_count() or 4
+        return min(8, max(2, available_cpus // 2))
+    except Exception:
+        return 4
 
 
 def _parse_ark_from_url(url: str):
@@ -1843,16 +1859,8 @@ class Elaborazione:
                         shutil.rmtree(tile_dir, ignore_errors=True)
                         logger.info(f"[Cleanup] Cartella tiles eliminata (dopo errore): {tile_dir}")
 
-            # Parallelizzazione automatica: usa metà dei core disponibili, minimo 2, massimo 8
-            # Heidelberg UB: canvas sequenziali per evitare blocco connessioni simultanee
-            try:
-                cpu_count = os.cpu_count() or 4
-                if self.portale and "heidelberg" in self.portale.lower():
-                    max_workers = 1
-                else:
-                    max_workers = min(8, max(2, cpu_count // 2))
-            except Exception:
-                max_workers = 4
+            # Parallelizzazione automatica: rispetta i portali che richiedono accesso sequenziale.
+            max_workers = _canvas_max_workers_for_portal(self._portal_key())
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
                 futures = [executor.submit(process_canvas, idx, canvas) for idx, canvas in enumerate(tiles_info, 1)]
                 for f in concurrent.futures.as_completed(futures):
