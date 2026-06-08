@@ -201,8 +201,10 @@ Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
   della Biblioteca Universitaria di Bologna dichiara accesso libero e gratuito
   per studio/ricerca, standard IIIF e visualizzatore Mirador; le collezioni
   includono anche bollettini parrocchiali bolognesi, fotografie, periodici,
-  manoscritti e opere a stampa. Prossimo passo: probe su item reali e licenze
-  item-level prima di qualsiasi supporto nel menu.
+  manoscritti e opere a stampa. La sonda `verify_bub_technical_probe.py` e
+  pronta per cercare pagine/record BUB, viewer Mirador, manifest IIIF,
+  info.json e immagini candidate. Prossimo passo: eseguirla su item reali e
+  verificare licenze item-level prima di qualsiasi supporto nel menu.
 - `dl_ficlit` entra come candidato Omeka S/IIIF. La pagina ufficiale FICLIT
   indica uso di tecnologia IIIF e Mirador Viewer; puo servire anche a capire se
   esiste un pattern riusabile per altri portali Omeka italiani, ma resta da
