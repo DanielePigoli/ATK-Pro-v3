@@ -195,6 +195,23 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   portale: immagini dirette pubbliche e PDF diretto per testi a stampa, senza
   trasformarla in un adapter generico per tutte le biblioteche digitali.
 
+Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
+
+- `bub_digitale` entra come candidato forte da sondare. La pagina ufficiale
+  della Biblioteca Universitaria di Bologna dichiara accesso libero e gratuito
+  per studio/ricerca, standard IIIF e visualizzatore Mirador; le collezioni
+  includono anche bollettini parrocchiali bolognesi, fotografie, periodici,
+  manoscritti e opere a stampa. Prossimo passo: probe su item reali e licenze
+  item-level prima di qualsiasi supporto nel menu.
+- `dl_ficlit` entra come candidato Omeka S/IIIF. La pagina ufficiale FICLIT
+  indica uso di tecnologia IIIF e Mirador Viewer; puo servire anche a capire se
+  esiste un pattern riusabile per altri portali Omeka italiani, ma resta da
+  verificare con campioni e termini di riuso.
+- `orientales_unior` entra come candidato IIIF/Mirador con download condizionato
+  alla licenza dell'oggetto. La fonte ufficiale cita licenze Creative Commons,
+  framework IIIF, Mirador, OCR e scarico metadati; per ATK-Pro la policy potra
+  essere solo prudente e item-level.
+
 ## Priorita 1 - Consolidare
 
 Portali da trattare per primi per rapporto favorevole tra valore, metodo
