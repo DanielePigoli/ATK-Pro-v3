@@ -157,19 +157,15 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   manifest IIIF pubblico. La sonda `verify_beic_technical_probe.py` raccoglie
   record Primo, link Preserver DeliveryManager, manifest, immagini e PDF senza
   integrare ancora BEIC nel menu.
-- `biblioteca_digitale_lombarda` e tecnicamente promettente per record e PDF
-  pubblici, ma molti contenuti hanno licenze non commerciale/no-derivati. Va
-  trattata con policy prudente e range esplicito, non come scarico generale. Il
-  campione `https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf`
-  risponde come PDF reale; la sonda `verify_bdl_technical_probe.py` serve a
-  raccogliere record VuFind, shortlink, PDF REST, immagini e manifest prima di
-  decidere se supportare solo PDF puntuali o una capability `R_LIMITED`. Il
-  test live sul record `BDL-OGGETTO-133442` ha mostrato una miniatura
-  Cantaloupe/IIIF insieme ad asset grafici del sito: prima di qualunque
-  supporto immagini va verificato l'`info.json` derivato su piu campioni. Il
-  primo test live su `info.json` ha dato timeout: per ora BDL va quindi
-  considerata solo per una eventuale capability PDF puntuale, non per immagini
-  o registro completo.
+- `biblioteca_digitale_lombarda` e promossa solo per PDF puntuale pubblico.
+  ATK-Pro accetta endpoint REST del tipo
+  `https://www.bdl.servizirl.it/bdl/public/rest/srv/item/{id}/pdf`, costruisce
+  un manifest sintetico minimale e salva il PDF quando l'utente richiede un
+  documento singolo in formato PDF. La policy resta `D_ONLY`: niente record
+  `R`, niente immagini e niente sequenze IIIF finche `info.json`, manifest o
+  ordinamento pagine non risultano stabili su piu campioni. Molti record
+  dichiarano licenze non commerciale/no-derivati, quindi resta necessaria la
+  verifica item-level.
 - `biblioteca_digitale_siena` e integrata come IIIF diretto prudente. I test
   manuali su BDS hanno mostrato possibili interruzioni dello stream tile:
   ATK-Pro usa quindi download sequenziale con breve pausa e ritenta gli stream

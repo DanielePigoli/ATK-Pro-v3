@@ -40,6 +40,7 @@ Fonti interne usate:
 | `internetculturale_estense` | Internet Culturale / Estense / ICCU | Italia | Manifest sintetico da magparser | Medio-Alto | File web liberi e gratuiti non commerciali, CC BY-NC-SA; metadati CC0 | Consolidabile con citazione, no commerciale e rispetto dei fornitori; preferire endpoint ufficiali/IIIF se disponibili |
 | `brixiana` | Brixiana / Jarvis | Italia | Alias Memooria/Jarvis IIIF | Medio | Accesso gratuito, ma alcune funzionalita sono legate a credenziali MLOL/Brixiana | Supportare solo risorse pubbliche/no-login e verificare condizioni del singolo ente |
 | `biblioteca_digitale_trentina` | Biblioteca Digitale Trentina | Italia / Trentino | Manifest sintetico da immagini pubbliche in pagina + PDF diretto ufficiale per testi a stampa | Basso-Medio | Materiali in pubblico dominio; pagina Riuso favorevole con citazione della fonte | Supporto tecnico su immagini pubbliche; quando l'utente richiede solo PDF e non imposta range, usare il PDF diretto ufficiale |
+| `biblioteca_digitale_lombarda` | Biblioteca Digitale Lombarda | Italia / Lombardia | Manifest sintetico da endpoint PDF REST pubblico | Basso-Medio | Molti record dichiarano licenze non commerciale/no-derivati; diritti da verificare per item | Supportare solo documento singolo PDF da endpoint REST pubblico; niente immagini, registro o sequenze finche IIIF/info.json non risultano stabili |
 | `rovereto_digital_library` | Rovereto Digital Library | Italia / Trentino | Manifest sintetico da API DSpace-GLAM e bitstream pagina pubblici | Medio | Accesso libero ai file digitali in risoluzione web secondo licenza item-level; campioni osservati CC BY-NC-ND | Supportare solo bitstream classificati come pagine `iiifpdf-*.png`, con range esplicito per record e controllo licenza del singolo item |
 | `memooria` | Memooria/Jarvis | Italia | IIIF da meta/iiif/{guid}/manifest | Medio | Piattaforma IIIF/API; diritti e accessi dipendono dall'ente che pubblica la collezione | Usare come capability tecnica, non come portale unico: richiedere verifica per ogni istanza |
 | `vatlib` | DigiVatLib | Italia / Vaticano | IIIF diretto da view/mss/iiif | Basso-Medio | Solo studio/personale; riproduzione o pubblicazione richiede autorizzazione BAV | Mantenere con avviso forte e senza presentarlo come fonte liberamente riusabile |
@@ -65,7 +66,7 @@ Priorita tecnica dopo il primo controllo fonti ufficiali:
 2. Portali tecnicamente IIIF ma con avviso legale piu forte: `vatlib`.
 3. Portali con discovery/fallback ma valore alto: `antenati`, `gallica`,
    `memooria`, `brixiana`, `biblioteca_digitale_trentina`,
-   `rovereto_digital_library`.
+   `biblioteca_digitale_lombarda`, `rovereto_digital_library`.
 4. Portali sintetici o endpoint non standard da trattare con cautela:
    `internetculturale_estense`, `internet_archive`, `bnc_roma`,
    `bncf_teca`, `museogalileo`.
