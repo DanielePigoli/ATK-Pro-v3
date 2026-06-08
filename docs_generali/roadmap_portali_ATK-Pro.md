@@ -207,8 +207,10 @@ Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
   verificare licenze item-level prima di qualsiasi supporto nel menu.
 - `dl_ficlit` entra come candidato Omeka S/IIIF. La pagina ufficiale FICLIT
   indica uso di tecnologia IIIF e Mirador Viewer; puo servire anche a capire se
-  esiste un pattern riusabile per altri portali Omeka italiani, ma resta da
-  verificare con campioni e termini di riuso.
+  esiste un pattern riusabile per altri portali Omeka italiani. La sonda
+  `verify_ficlit_technical_probe.py` e pronta per cercare pagine Omeka,
+  item/media/API, viewer Mirador, manifest IIIF, info.json e immagini
+  candidate, ma resta da verificare con campioni e termini di riuso.
 - `orientales_unior` entra come candidato IIIF/Mirador con download condizionato
   alla licenza dell'oggetto. La fonte ufficiale cita licenze Creative Commons,
   framework IIIF, Mirador, OCR e scarico metadati; per ATK-Pro la policy potra
