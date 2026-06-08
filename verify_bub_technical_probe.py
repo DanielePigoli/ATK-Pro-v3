@@ -26,7 +26,7 @@ class ProbeCandidate:
 
 ATTR_URL_RE = re.compile(
     r"""(?ix)
-    \b(?:href|src|data-[a-z0-9_-]+|content)\s*=\s*
+    \b(?:href|src|poster|data-(?:href|src|url|manifest|iiif|json)|content)\s*=\s*
     (?P<quote>["'])
     (?P<url>[^"']+)
     (?P=quote)
@@ -60,6 +60,12 @@ def _load_fixture(path: Path) -> str:
 def _clean_url(raw: str, base_url: str) -> str | None:
     value = raw.strip().replace("&amp;", "&").rstrip(".,;")
     if not value or value.startswith(("#", "javascript:", "mailto:", "tel:")):
+        return None
+    if not (
+        value.startswith(("http://", "https://", "/"))
+        or "manifest=" in value.lower()
+        or "manifestid=" in value.lower()
+    ):
         return None
     return urljoin(base_url, value)
 

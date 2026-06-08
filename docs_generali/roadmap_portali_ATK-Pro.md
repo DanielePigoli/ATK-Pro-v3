@@ -210,7 +210,11 @@ Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
   pagine del portale e immagini Plone `@@images`. La sonda classifica ora tali
   immagini come `plone_page_image`. Il test successivo va fatto su una pagina
   di bollettino/anno con parametro `manifest=`, ad esempio il campione
-  Bondanello 1934 emerso dalla ricerca pubblica.
+  Bondanello 1934 emerso dalla ricerca pubblica. Test live mirato sul campione:
+  trovato manifest IIIF v2 come `viewer_manifest_parameter` verso
+  `https://bub.unibo.it/iiif/2/manifest/bub/bollettiniparrocchiali/_castelmaggiore_-_s_bartolomeo_di_bondanello/jpg/1934.json`.
+  Prossimo passo: verificare manifest/canvas, licenza item-level e almeno un
+  secondo anno/bollettino prima di promuovere BUB nel registro portali.
 - `dl_ficlit` entra come candidato Omeka S/IIIF. La pagina ufficiale FICLIT
   indica uso di tecnologia IIIF e Mirador Viewer; puo servire anche a capire se
   esiste un pattern riusabile per altri portali Omeka italiani. La sonda
