@@ -68,6 +68,26 @@ def test_extract_candidates_marks_plone_page_images_separately():
     assert by_role["site_asset"].kind == "image"
 
 
+def test_extract_candidates_ignores_non_url_attribute_values():
+    html = """
+    <meta content="IE=edge">
+    <span data-label="Mensile" data-value="True" data-state="is-opened">x</span>
+    <a href="/it/bub-digitale/bollettini-parrocchiali">real page</a>
+    """
+
+    candidates = probe.extract_candidates(html, "https://bub.unibo.it/it/bub-digitale/bollettini-parrocchiali")
+
+    assert candidates == [
+        probe.ProbeCandidate(
+            kind="portal_page",
+            role="bub_digitale_page",
+            identifier="",
+            url="https://bub.unibo.it/it/bub-digitale/bollettini-parrocchiali",
+            source="html_attribute",
+        )
+    ]
+
+
 def test_write_report_creates_csv(tmp_path: Path):
     report = tmp_path / "bub_probe.csv"
     probe.write_report(
