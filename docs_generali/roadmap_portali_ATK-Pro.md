@@ -214,9 +214,11 @@ Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
   trovato manifest IIIF v2 come `viewer_manifest_parameter` verso
   `https://bub.unibo.it/iiif/2/manifest/bub/bollettiniparrocchiali/_castelmaggiore_-_s_bartolomeo_di_bondanello/jpg/1934.json`.
   `download_manifest` scarica il manifest con codice 200 e rileva 44 canvas.
-  Prossimo passo: verificare licenza item-level, almeno un secondo
-  anno/bollettino e una prova di download controllata prima di promuovere BUB
-  nel registro portali.
+  Secondo test live su Castenaso 1933:
+  `https://bub.unibo.it/iiif/2/manifest/bub/bollettiniparrocchiali/_castenaso_-_s_giovanni_battista/jpg/1933.json`
+  scaricato con codice 200 e 32 canvas. Il pattern manifest appare stabile su
+  piu bollettini; prossimo passo: licenza item-level, range esplicito e prova
+  di download controllata prima della promozione nel registro portali.
 - `dl_ficlit` entra come candidato Omeka S/IIIF. La pagina ufficiale FICLIT
   indica uso di tecnologia IIIF e Mirador Viewer; puo servire anche a capire se
   esiste un pattern riusabile per altri portali Omeka italiani. La sonda
