@@ -301,6 +301,69 @@ def test_classify_bitstream_marks_pages_and_derivatives():
     assert probe._classify_bitstream("book.pdf.jpg", "image/jpeg") == ("thumbnail_or_cover", "no", "")
 
 
+def test_summarize_bitstream_rows_reports_categories_and_page_gaps():
+    summaries = [
+        probe.BitstreamSummary(
+            identifier="page-1",
+            name="iiifpdf-0.png",
+            category="page_image",
+            download_candidate="yes",
+            page_number="1",
+            sequence_id="5",
+            size_bytes="100",
+            checksum="",
+            checksum_algorithm="",
+            format_label="PNG",
+            format_mimetype="image/png",
+            metadata_url="https://example.test/1",
+            content_url="https://example.test/1/content",
+            bundle_url="",
+            thumbnail_url="",
+        ),
+        probe.BitstreamSummary(
+            identifier="page-3",
+            name="iiifpdf-2.png",
+            category="page_image",
+            download_candidate="yes",
+            page_number="3",
+            sequence_id="7",
+            size_bytes="100",
+            checksum="",
+            checksum_algorithm="",
+            format_label="PNG",
+            format_mimetype="image/png",
+            metadata_url="https://example.test/3",
+            content_url="https://example.test/3/content",
+            bundle_url="",
+            thumbnail_url="",
+        ),
+        probe.BitstreamSummary(
+            identifier="pdf",
+            name="book.pdf",
+            category="source_pdf",
+            download_candidate="yes",
+            page_number="",
+            sequence_id="2",
+            size_bytes="200",
+            checksum="",
+            checksum_algorithm="",
+            format_label="PDF",
+            format_mimetype="application/pdf",
+            metadata_url="https://example.test/pdf",
+            content_url="https://example.test/pdf/content",
+            bundle_url="",
+            thumbnail_url="",
+        ),
+    ]
+
+    lines = probe._summarize_bitstream_rows(summaries)
+
+    assert "Bitstream sintetizzati: 3" in lines
+    assert "- page_image (yes): 2" in lines
+    assert "- source_pdf (yes): 1" in lines
+    assert "Pagine candidate: 2; intervallo 1-3; buchi: 2" in lines
+
+
 def test_write_report_creates_csv(tmp_path: Path):
     report = tmp_path / "rovereto_probe.csv"
     probe.write_report(

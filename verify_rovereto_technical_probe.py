@@ -452,6 +452,35 @@ def write_bitstream_report(path: Path, summaries: list[BitstreamSummary]) -> Non
             )
 
 
+def _summarize_bitstream_rows(summaries: list[BitstreamSummary]) -> list[str]:
+    if not summaries:
+        return ["Bitstream sintetizzati: 0"]
+
+    category_counts: dict[tuple[str, str], int] = {}
+    for item in summaries:
+        key = (item.category, item.download_candidate)
+        category_counts[key] = category_counts.get(key, 0) + 1
+
+    lines = [f"Bitstream sintetizzati: {len(summaries)}"]
+    for (category, download_candidate), count in sorted(category_counts.items(), key=lambda entry: (-entry[1], entry[0])):
+        lines.append(f"- {category} ({download_candidate}): {count}")
+
+    page_numbers = sorted(
+        int(item.page_number)
+        for item in summaries
+        if item.category == "page_image" and item.page_number.isdigit()
+    )
+    if page_numbers:
+        expected = set(range(page_numbers[0], page_numbers[-1] + 1))
+        missing = sorted(expected - set(page_numbers))
+        missing_text = ", ".join(str(number) for number in missing) if missing else "nessuno"
+        lines.append(
+            f"Pagine candidate: {len(page_numbers)}; intervallo {page_numbers[0]}-{page_numbers[-1]}; buchi: {missing_text}"
+        )
+
+    return lines
+
+
 def _summarize(candidates: list[ProbeCandidate]) -> str:
     if not candidates:
         return "Nessun candidato Rovereto/DSpace-GLAM, manifest, info.json, file o viewer trovato."
@@ -531,7 +560,8 @@ def main(argv: list[str] | None = None) -> int:
         summaries = summarize_bitstreams(candidates, timeout=args.timeout)
         write_bitstream_report(args.bitstream_output, summaries)
         print(f"Report bitstream: {args.bitstream_output}")
-        print(f"Bitstream sintetizzati: {len(summaries)}")
+        for line in _summarize_bitstream_rows(summaries):
+            print(line)
     return 0
 
 
