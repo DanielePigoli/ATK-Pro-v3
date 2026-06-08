@@ -785,6 +785,73 @@ def build_biblioteca_digitale_trentina_synthetic_manifest(
     }
 
 
+def _bdl_is_supported_url(page_url: str) -> bool:
+    parsed = urlparse(page_url)
+    return parsed.netloc.lower().endswith("bdl.servizirl.it")
+
+
+def _bdl_extract_pdf_item_id(page_url: str) -> str | None:
+    parsed = urlparse(page_url)
+    match = re.search(r"/bdl/public/rest/srv/item/(\d+)/pdf\b", parsed.path, re.IGNORECASE)
+    return match.group(1) if match else None
+
+
+def _build_biblioteca_digitale_lombarda_manifest(page_url: str) -> str | None:
+    """Biblioteca Digitale Lombarda: solo endpoint PDF REST pubblico."""
+    if not _bdl_is_supported_url(page_url):
+        return None
+    return page_url if _bdl_extract_pdf_item_id(page_url) else None
+
+
+def build_biblioteca_digitale_lombarda_pdf_manifest(pdf_url: str) -> dict | None:
+    """Costruisce un manifest sintetico minimale per un PDF pubblico BDL."""
+    item_id = _bdl_extract_pdf_item_id(pdf_url)
+    if not item_id:
+        return None
+
+    return {
+        "@context": "http://iiif.io/api/presentation/2/context.json",
+        "@id": f"synthetic://biblioteca_digitale_lombarda/{item_id}",
+        "@type": "sc:Manifest",
+        "label": f"Biblioteca Digitale Lombarda - item {item_id}",
+        "metadata": [
+            {"label": "Portale", "value": "Biblioteca Digitale Lombarda"},
+            {"label": "PDF REST", "value": pdf_url},
+        ],
+        "seeAlso": [{"@id": pdf_url, "format": "application/pdf"}],
+        "sequences": [
+            {
+                "@id": f"synthetic://biblioteca_digitale_lombarda/{item_id}/sequence/1",
+                "@type": "sc:Sequence",
+                "canvases": [
+                    {
+                        "@id": f"synthetic://biblioteca_digitale_lombarda/{item_id}/canvas/1",
+                        "@type": "sc:Canvas",
+                        "label": "PDF diretto",
+                        "images": [
+                            {
+                                "@type": "oa:Annotation",
+                                "motivation": "sc:painting",
+                                "resource": {
+                                    "@type": "dctypes:Image",
+                                    "@id": pdf_url,
+                                    "format": "application/pdf",
+                                    "service": {
+                                        "@context": "bdl_direct_pdf",
+                                        "@id": pdf_url,
+                                        "profile": "bdl_direct_pdf",
+                                        "pdf_url": pdf_url,
+                                    },
+                                },
+                            }
+                        ],
+                    }
+                ],
+            }
+        ],
+    }
+
+
 def _rovereto_is_supported_url(page_url: str) -> bool:
     parsed = urlparse(page_url)
     return parsed.netloc.lower().endswith("digitallibrary.bibliotecacivica.rovereto.tn.it")
@@ -1812,6 +1879,7 @@ _PORTAL_BUILDERS = {
     "e_manuscripta":    _build_e_manuscripta_manifest,
     "biblioteca_digitale_siena": _build_biblioteca_digitale_siena_manifest,
     "biblioteca_digitale_trentina": _build_biblioteca_digitale_trentina_manifest,
+    "biblioteca_digitale_lombarda": _build_biblioteca_digitale_lombarda_manifest,
     "rovereto_digital_library": _build_rovereto_manifest,
     "museogalileo":     _build_museogalileo_manifest,
     "internetculturale_estense": _build_internetculturale_estense_manifest,

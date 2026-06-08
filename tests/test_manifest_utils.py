@@ -118,6 +118,26 @@ def test_build_biblioteca_digitale_trentina_synthetic_manifest_from_html():
     assert canvases[1]["label"] == "Pagina 2"
 
 
+def test_resolve_biblioteca_digitale_lombarda_pdf_url():
+    url = "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf"
+
+    assert mu.resolve_manifest_url(url, "biblioteca_digitale_lombarda") == url
+
+
+def test_build_biblioteca_digitale_lombarda_pdf_manifest():
+    url = "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf"
+
+    manifest = mu.build_biblioteca_digitale_lombarda_pdf_manifest(url)
+
+    assert manifest["@id"] == "synthetic://biblioteca_digitale_lombarda/12404"
+    assert manifest["seeAlso"][0]["@id"] == url
+    canvas = manifest["sequences"][0]["canvases"][0]
+    resource = canvas["images"][0]["resource"]
+    assert resource["format"] == "application/pdf"
+    assert resource["service"]["@context"] == "bdl_direct_pdf"
+    assert resource["service"]["pdf_url"] == url
+
+
 def test_resolve_rovereto_item_url():
     url = "https://digitallibrary.bibliotecacivica.rovereto.tn.it/entities/publication/e4199e9b-c79b-4c3d-b157-be2dcfc0407f"
 

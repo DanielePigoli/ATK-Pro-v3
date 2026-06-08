@@ -222,6 +222,11 @@ def _extract_pdf_url_from_entry(entry):
 
 def _find_bdt_direct_pdf_url(tiles_info=None, manifest=None):
     """Trova il PDF diretto ufficiale nei manifest sintetici BDT, se presente."""
+    return _find_direct_pdf_url(tiles_info, manifest, allowed_contexts={"bdt_direct"})
+
+
+def _find_direct_pdf_url(tiles_info=None, manifest=None, allowed_contexts=None):
+    """Trova un PDF diretto da seeAlso o da servizi sintetici espliciti."""
     if isinstance(manifest, dict):
         see_also_entries = manifest.get("seeAlso") or manifest.get("see_also") or []
         if isinstance(see_also_entries, dict):
@@ -238,9 +243,11 @@ def _find_bdt_direct_pdf_url(tiles_info=None, manifest=None):
             continue
         services = service if isinstance(service, list) else [service]
         for svc in services:
-            if not isinstance(svc, dict) or svc.get("@context") != "bdt_direct":
+            if not isinstance(svc, dict):
                 continue
-            pdf_url = svc.get("pdf_url")
+            if allowed_contexts and svc.get("@context") not in allowed_contexts:
+                continue
+            pdf_url = svc.get("pdf_url") or _extract_pdf_url_from_entry(svc)
             if pdf_url:
                 return str(pdf_url)
     return None
@@ -646,6 +653,25 @@ class Elaborazione:
                     logger.error("[BDT] Impossibile costruire manifest sintetico")
                     return None
 
+            # --- Biblioteca Digitale Lombarda: PDF REST pubblico puntuale ---
+            if portale_key == "biblioteca_digitale_lombarda":
+                from manifest_utils import build_biblioteca_digitale_lombarda_pdf_manifest
+                manifest = build_biblioteca_digitale_lombarda_pdf_manifest(self.ark_url)
+                if manifest:
+                    os.makedirs(working_folder, exist_ok=True)
+                    bdl_id_match = re.search(r"/bdl/public/rest/srv/item/(\d+)/pdf", self.ark_url, re.IGNORECASE)
+                    bdl_id = bdl_id_match.group(1) if bdl_id_match else container_id
+                    manifest_filename = f"manifest_bdl_{bdl_id}_{titolo_pulito}.json"
+                    manifest_path = os.path.join(working_folder, manifest_filename)
+                    with open(manifest_path, 'w', encoding='utf-8') as _f:
+                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
+                    self.manifest_path = manifest_path
+                    self.output_dir = working_folder
+                    logger.info(f"[BDL] Manifest sintetico PDF salvato: {manifest_path}")
+                    return manifest
+                logger.error("[BDL] URL non compatibile con PDF REST pubblico")
+                return None
+
             # --- Rovereto Digital Library: manifest sintetico da API DSpace-GLAM ---
             if portale_key == "rovereto_digital_library":
                 from manifest_utils import build_rovereto_synthetic_manifest
@@ -845,8 +871,20 @@ class Elaborazione:
     def _has_canvas_range_filter(self):
         return getattr(self, 'canvas_da', None) is not None or getattr(self, 'canvas_a', None) is not None
 
+    def _portal_key(self):
+        return str(getattr(self, "portale", "") or "").strip().lower().replace("-", "_").replace(" ", "_")
+
     def _download_bdt_direct_pdf(self, pdf_url: str):
         """Scarica il PDF diretto ufficiale BDT quando l'utente richiede solo PDF."""
+        return self._download_direct_pdf(
+            pdf_url,
+            portal_label="BDT",
+            referer="https://bdt.bibcom.trento.it/",
+            default_name="documento_bdt",
+        )
+
+    def _download_direct_pdf(self, pdf_url: str, portal_label: str, referer: str, default_name: str):
+        """Scarica un PDF diretto ufficiale quando l'utente richiede solo PDF."""
         if not pdf_url:
             return False
 
@@ -854,29 +892,29 @@ class Elaborazione:
             os.makedirs(self.output_dir, exist_ok=True)
             safe_name = re.sub(r'[\\/*?:"<>|]', "", self.nome_file).replace(" ", "_").strip("_")
             if not safe_name:
-                safe_name = "documento_bdt"
+                safe_name = default_name
             pdf_filename = f"{safe_name}.pdf"
             pdf_path = os.path.join(self.output_dir, pdf_filename)
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                'Referer': 'https://bdt.bibcom.trento.it/',
+                'Referer': referer,
             }
 
             response = requests.get(pdf_url, headers=headers, timeout=60)
             if not response.ok:
-                logger.error(f"[BDT] PDF diretto non disponibile: HTTP {response.status_code} {pdf_url[:100]}")
+                logger.error(f"[{portal_label}] PDF diretto non disponibile: HTTP {response.status_code} {pdf_url[:100]}")
                 return False
 
             content = response.content or b""
             content_type = response.headers.get("Content-Type", "").lower()
             if not content or ("pdf" not in content_type and not content.lstrip().startswith(b"%PDF")):
-                logger.error(f"[BDT] Risposta PDF non valida: Content-Type={content_type or '?'} url={pdf_url[:100]}")
+                logger.error(f"[{portal_label}] Risposta PDF non valida: Content-Type={content_type or '?'} url={pdf_url[:100]}")
                 return False
 
             with open(pdf_path, "wb") as pdf_file:
                 pdf_file.write(content)
 
-            logger.info(f"[BDT] PDF diretto salvato: {pdf_path} ({len(content)} byte)")
+            logger.info(f"[{portal_label}] PDF diretto salvato: {pdf_path} ({len(content)} byte)")
             if self.manifest_path and os.path.exists(self.manifest_path):
                 try:
                     estrai_metadati_da_manifest(
@@ -887,10 +925,10 @@ class Elaborazione:
                         immagini_generate=[pdf_filename],
                     )
                 except Exception as meta_error:
-                    logger.warning(f"[BDT] Metadati PDF diretto non aggiornati: {meta_error}")
+                    logger.warning(f"[{portal_label}] Metadati PDF diretto non aggiornati: {meta_error}")
             return True
         except Exception as exc:
-            logger.error(f"[BDT] Errore download PDF diretto: {exc}", exc_info=True)
+            logger.error(f"[{portal_label}] Errore download PDF diretto: {exc}", exc_info=True)
             return False
 
     def _process_document(self, tiles_info, metadata):
@@ -906,9 +944,23 @@ class Elaborazione:
             image_formats = [f for f in formats if _normalize_format(f) != 'PDF']
             only_pdf = pdf_in_formats and not image_formats
             if only_pdf and not self._has_canvas_range_filter():
-                bdt_pdf_url = _find_bdt_direct_pdf_url(tiles_info, manifest=self.manifest)
-                if bdt_pdf_url:
-                    return self._download_bdt_direct_pdf(bdt_pdf_url)
+                if self._portal_key() == "biblioteca_digitale_trentina":
+                    bdt_pdf_url = _find_bdt_direct_pdf_url(tiles_info, manifest=self.manifest)
+                    if bdt_pdf_url:
+                        return self._download_bdt_direct_pdf(bdt_pdf_url)
+                if self._portal_key() == "biblioteca_digitale_lombarda":
+                    bdl_pdf_url = _find_direct_pdf_url(
+                        tiles_info,
+                        manifest=self.manifest,
+                        allowed_contexts={"bdl_direct_pdf"},
+                    )
+                    if bdl_pdf_url:
+                        return self._download_direct_pdf(
+                            bdl_pdf_url,
+                            portal_label="BDL",
+                            referer="https://www.bdl.servizirl.it/",
+                            default_name="documento_bdl",
+                        )
             temp_pdf_dir = os.path.join(self.output_dir, "_tmp_pdf_images") if only_pdf else None
             if temp_pdf_dir:
                 os.makedirs(temp_pdf_dir, exist_ok=True)
@@ -1085,6 +1137,22 @@ class Elaborazione:
                     create_pdf_from_images(_tmp_dir, _pdf_out)
                     shutil.rmtree(_tmp_dir, ignore_errors=True)
                 return True
+            # --- Biblioteca Digitale Lombarda: solo PDF REST diretto, niente immagini ---
+            if isinstance(svc, dict) and svc.get('@context') == 'bdl_direct_pdf':
+                formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
+                if not formats:
+                    formats = ['PNG', 'JPEG', 'TIFF']
+                _norm_fmts = [_normalize_format(f) for f in formats]
+                _img_fmts = [f for f in formats if _normalize_format(f) != 'PDF']
+                if 'PDF' in _norm_fmts and not _img_fmts:
+                    return self._download_direct_pdf(
+                        svc.get("pdf_url") or svc.get("@id"),
+                        portal_label="BDL",
+                        referer="https://www.bdl.servizirl.it/",
+                        default_name="documento_bdl",
+                    )
+                logger.error("[BDL] Il supporto attuale consente solo PDF diretto, non immagini o PDF ricostruiti.")
+                return False
             # --- Biblioteca Digitale Trentina: download diretto JPEG pubblico ---
             if isinstance(svc, dict) and svc.get('@context') == 'bdt_direct':
                 from io import BytesIO as _BytesIO
@@ -1392,9 +1460,10 @@ class Elaborazione:
             image_formats = [f for f in formats if _normalize_format(f) != 'PDF']
             only_pdf = pdf_in_formats and not image_formats
             if only_pdf and not self._has_canvas_range_filter():
-                bdt_pdf_url = _find_bdt_direct_pdf_url(tiles_info, manifest=self.manifest)
-                if bdt_pdf_url:
-                    return self._download_bdt_direct_pdf(bdt_pdf_url)
+                if self._portal_key() == "biblioteca_digitale_trentina":
+                    bdt_pdf_url = _find_bdt_direct_pdf_url(tiles_info, manifest=self.manifest)
+                    if bdt_pdf_url:
+                        return self._download_bdt_direct_pdf(bdt_pdf_url)
             temp_pdf_dir = os.path.join(self.output_dir, "_tmp_pdf_images") if pdf_in_formats else None
             if temp_pdf_dir:
                 os.makedirs(temp_pdf_dir, exist_ok=True)
