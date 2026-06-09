@@ -103,6 +103,40 @@ def _canvas_max_workers_for_portal(portale: str | None, cpu_count: int | None = 
         return 4
 
 
+def _ficlit_direct_image_url_from_canvas(canvas: dict) -> str | None:
+    """Estrae l'immagine diretta FICLIT dal canvas quando il tile service non e affidabile."""
+    try:
+        resource = canvas.get("images", [{}])[0].get("resource", {})
+        image_url = (resource.get("@id") or resource.get("id") or "").strip()
+        service = resource.get("service") or {}
+        if isinstance(service, list):
+            service = service[0] if service else {}
+        service_id = (service.get("@id") or service.get("id") or "").strip() if isinstance(service, dict) else ""
+        if (
+            image_url.startswith("https://dl.ficlit.unibo.it/iiif/2/")
+            and service_id.startswith("https://dl.ficlit.unibo.it/iiif/2/")
+        ):
+            return image_url
+    except Exception:
+        pass
+    return None
+
+
+def _download_direct_image(image_url: str, referer: str, timeout: int = 45):
+    """Scarica una immagine diretta e restituisce una copia PIL."""
+    from io import BytesIO
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Referer": referer,
+    }
+    response = requests.get(image_url, headers=headers, timeout=timeout)
+    if not response.ok or not response.content:
+        return None, response.status_code if response is not None else None, 0
+    image = Image.open(BytesIO(response.content)).copy()
+    return image, response.status_code, len(response.content)
+
+
 def _parse_ark_from_url(url: str):
     """Estrae l'ARK completo da un URL antenati."""
     m = re.search(r'/ark:/12657/([^/#\s]+(?:/[^#\s]+)?)', url)
@@ -1205,6 +1239,36 @@ class Elaborazione:
                     create_pdf_from_images(_tmp_dir, _pdf_out)
                     shutil.rmtree(_tmp_dir, ignore_errors=True)
                 return True
+            # --- FICLIT Digital Library: immagine diretta dal manifest Omeka/IIIF ---
+            if self._portal_key() == "dl_ficlit":
+                _img_url = _ficlit_direct_image_url_from_canvas(canvas)
+                if _img_url:
+                    final_img, _status, _size = _download_direct_image(_img_url, "https://dl.ficlit.unibo.it/")
+                    if final_img is None:
+                        logger.error(f"[FICLIT] HTTP {_status} per documento: {_img_url[:100]}")
+                        return False
+                    logger.info(f"[FICLIT] Documento scaricato da immagine diretta: {_size} byte")
+                    ua = _parse_ua_from_url(self.ark_url)
+                    ark = _parse_ark_from_url(self.ark_url)
+                    page_label = canvas.get('label', None)
+                    meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                    formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
+                    if not formats:
+                        formats = ['PNG', 'JPEG', 'TIFF']
+                    _norm_fmts = [_normalize_format(f) for f in formats]
+                    _img_fmts = [f for f in formats if _normalize_format(f) != 'PDF']
+                    _pdf_in_fmts = 'PDF' in _norm_fmts
+                    if _img_fmts:
+                        save_image_variants(final_img, self.output_dir, self.nome_file, _img_fmts, meta=meta)
+                    if _pdf_in_fmts:
+                        _tmp_dir = os.path.join(self.output_dir, "_tmp_pdf_images")
+                        os.makedirs(_tmp_dir, exist_ok=True)
+                        _tmp_png = os.path.join(_tmp_dir, f"{self.nome_file}_pdftmp.png")
+                        final_img.save(_tmp_png, format='PNG')
+                        _pdf_out = os.path.join(self.output_dir, f"{self.nome_file}.pdf")
+                        create_pdf_from_images(_tmp_dir, _pdf_out)
+                        shutil.rmtree(_tmp_dir, ignore_errors=True)
+                    return True
             # --- Rovereto Digital Library: download diretto PNG pubblico da DSpace bitstream ---
             if isinstance(svc, dict) and svc.get('@context') == 'rovereto_direct':
                 from io import BytesIO as _BytesIO
@@ -1699,6 +1763,34 @@ class Elaborazione:
                                 _use_img.save(_pdf_png_path, format='PNG')
                             except Exception as _e:
                                 logger.error(f"[PDF] Errore PNG BDT canvas {idx}: {_e}")
+                        return  # nessuna cartella tile da pulire
+                    # --- FICLIT Digital Library: immagine diretta dal manifest Omeka/IIIF ---
+                    if self._portal_key() == "dl_ficlit":
+                        _img_url = _ficlit_direct_image_url_from_canvas(canvas)
+                        final_img = None
+                        if _img_url:
+                            final_img, _status, _size = _download_direct_image(_img_url, "https://dl.ficlit.unibo.it/")
+                            if final_img is not None:
+                                logger.info(f"[FICLIT] Pagina {idx} scaricata da immagine diretta: {_size} byte")
+                            else:
+                                logger.error(f"[FICLIT] Errore download pagina {idx}: HTTP {_status} url={_img_url[:100]}")
+                        else:
+                            logger.error(f"[FICLIT] Nessuna immagine diretta nel canvas {idx}")
+                        ua = _parse_ua_from_url(self.ark_url)
+                        ark = _parse_ark_from_url(self.ark_url)
+                        page_label = canvas.get('label', None)
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        _use_img = final_img if final_img is not None else _make_placeholder_image(
+                            _img_url or service_id, glossario_data=self.glossario_data, lingua=self.lingua,
+                            canvas_url=canvas.get('@id') or canvas.get('id'))
+                        if image_formats:
+                            save_image_variants(_use_img, self.output_dir, nome_base, image_formats, meta=meta)
+                        if pdf_in_formats:
+                            _pdf_png_path = os.path.join(temp_pdf_dir, f"{nome_base}_pdftmp.png")
+                            try:
+                                _use_img.save(_pdf_png_path, format='PNG')
+                            except Exception as _e:
+                                logger.error(f"[PDF] Errore PNG FICLIT canvas {idx}: {_e}")
                         return  # nessuna cartella tile da pulire
                     # --- Rovereto Digital Library: download diretto PNG pubblico da DSpace bitstream ---
                     if isinstance(_svc, dict) and _svc.get('@context') == 'rovereto_direct':
