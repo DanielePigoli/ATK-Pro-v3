@@ -231,9 +231,9 @@ Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
   lo scarica con codice 200 e rileva 1 canvas. Secondo test live su item
   Camporesi `28429`: stesso pattern immagine originale + manifest
   `https://dl.ficlit.unibo.it/iiif/2/28429/manifest`, codice 200 e 239 canvas.
-  Il candidato e tecnicamente forte; prima della promozione servono verifica
-  dei termini di riuso item-level, adapter ristretto a host FICLIT e policy
-  `R_LIMITED` con range esplicito.
+  Il candidato viene promosso a supporto tecnico prudente con adapter ristretto
+  a host FICLIT, referer FICLIT, policy `R_LIMITED`, range esplicito e verifica
+  dei termini di riuso item-level.
 - `orientales_unior` entra come candidato IIIF/Mirador con download condizionato
   alla licenza dell'oggetto. La fonte ufficiale cita licenze Creative Commons,
   framework IIIF, Mirador, OCR e scarico metadati. La sonda

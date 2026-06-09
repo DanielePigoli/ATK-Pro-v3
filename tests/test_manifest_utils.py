@@ -110,6 +110,24 @@ def test_resolve_bub_digitale_rejects_non_bub_manifest_parameter():
     assert mu.resolve_manifest_url(url, "bub_digitale") is None
 
 
+def test_resolve_dl_ficlit_item_url_to_manifest():
+    url = "https://dl.ficlit.unibo.it/s/lib/item/28429"
+
+    assert mu.resolve_manifest_url(url, "dl_ficlit") == "https://dl.ficlit.unibo.it/iiif/2/28429/manifest"
+
+
+def test_resolve_dl_ficlit_accepts_direct_manifest_url():
+    url = "https://dl.ficlit.unibo.it/iiif/2/199245/manifest"
+
+    assert mu.resolve_manifest_url(url, "dl_ficlit") == url
+
+
+def test_resolve_dl_ficlit_rejects_non_ficlit_manifest_parameter():
+    url = "https://dl.ficlit.unibo.it/s/lib/page/progetto?manifest=https%3A%2F%2Fexample.test%2Fmanifest"
+
+    assert mu.resolve_manifest_url(url, "dl_ficlit") is None
+
+
 def test_resolve_biblioteca_digitale_trentina_item_url():
     url = "https://bdt.bibcom.trento.it/Testi-a-stampa/113"
 

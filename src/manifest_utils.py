@@ -625,6 +625,34 @@ def _build_bub_digitale_manifest(page_url: str) -> str | None:
     return None
 
 
+def _build_dl_ficlit_manifest(page_url: str) -> str | None:
+    """DL FICLIT: item Omeka S o manifest IIIF v2 diretto sul dominio FICLIT."""
+    parsed = urlparse(page_url)
+    if parsed.netloc.lower() != "dl.ficlit.unibo.it":
+        return None
+
+    path = parsed.path.rstrip("/")
+    direct_match = re.fullmatch(r"/iiif/2/(\d+)/manifest", path, re.IGNORECASE)
+    if direct_match:
+        return f"https://dl.ficlit.unibo.it/iiif/2/{direct_match.group(1)}/manifest"
+
+    item_match = re.fullmatch(r"/s/lib/item/(\d+)", path, re.IGNORECASE)
+    if item_match:
+        return f"https://dl.ficlit.unibo.it/iiif/2/{item_match.group(1)}/manifest"
+
+    query = parse_qs(parsed.query or "")
+    manifest = (query.get("manifest") or query.get("manifestId") or [""])[0].strip()
+    manifest_parsed = urlparse(manifest)
+    if (
+        manifest
+        and manifest_parsed.netloc.lower() == "dl.ficlit.unibo.it"
+        and re.fullmatch(r"/iiif/2/\d+/manifest", manifest_parsed.path.rstrip("/"), re.IGNORECASE)
+    ):
+        return manifest
+
+    return None
+
+
 _BDT_ATTR_URL_RE = re.compile(
     r"""(?ix)
     \b(?:href|src|data-[a-z0-9_-]+|content)\s*=\s*
@@ -1895,6 +1923,7 @@ _PORTAL_BUILDERS = {
     "e_manuscripta":    _build_e_manuscripta_manifest,
     "biblioteca_digitale_siena": _build_biblioteca_digitale_siena_manifest,
     "bub_digitale": _build_bub_digitale_manifest,
+    "dl_ficlit": _build_dl_ficlit_manifest,
     "biblioteca_digitale_trentina": _build_biblioteca_digitale_trentina_manifest,
     "biblioteca_digitale_lombarda": _build_biblioteca_digitale_lombarda_manifest,
     "rovereto_digital_library": _build_rovereto_manifest,
