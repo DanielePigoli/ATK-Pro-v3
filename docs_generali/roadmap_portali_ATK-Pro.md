@@ -244,7 +244,10 @@ Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
   sia pattern DSpace (`entities`, REST item, bundle, bitstream, handle e link
   JSON/HAL), sia record Omeka se presenti, viewer Mirador, manifest IIIF,
   info.json, immagini, OCR/testi e metadati candidati; per ATK-Pro la policy
-  potra essere solo prudente e item-level.
+  potra essere solo prudente e item-level. Controllo 2026-06-10: le ricerche
+  pubbliche non hanno ancora restituito URL item/record indicizzati e ripetibili;
+  prima di qualsiasi adapter serve almeno un campione live con pagina pubblica,
+  licenza visibile e endpoint manifest/bitstream scaricabile senza autenticazione.
 
 ## Priorita 1 - Consolidare
 
