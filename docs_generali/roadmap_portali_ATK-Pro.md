@@ -233,7 +233,9 @@ Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
   `https://dl.ficlit.unibo.it/iiif/2/28429/manifest`, codice 200 e 239 canvas.
   Il candidato viene promosso a supporto tecnico prudente con adapter ristretto
   a host FICLIT, referer FICLIT, policy `R_LIMITED`, range esplicito e verifica
-  dei termini di riuso item-level.
+  dei termini di riuso item-level. Test app 2026-06-09: il manifest FICLIT e
+  corretto, ma il tile service risponde HTTP 500 sui ritagli 256px; ATK-Pro usa
+  quindi l'immagine diretta `resource.@id` del canvas, senza tassellare.
 - `orientales_unior` entra come candidato IIIF/Mirador con download condizionato
   alla licenza dell'oggetto. La fonte ufficiale cita licenze Creative Commons,
   framework IIIF, Mirador, OCR e scarico metadati. La sonda
