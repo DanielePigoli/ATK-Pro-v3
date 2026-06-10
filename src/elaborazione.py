@@ -873,7 +873,14 @@ class Elaborazione:
             logger.info(f"[Manifest] URL è già un manifest diretto: {self.ark_url}")
             return self.ark_url
 
-        # Tentativo 1: Prova browser automation
+        # Tentativo 1: costruzione diretta per portale noto.
+        # Evita browser headless quando il portale ha un pattern stabile e testato.
+        manifest_direct = _resolve_manifest_url(self.ark_url, self.portale)
+        if manifest_direct:
+            logger.info(f"[Manifest] resolve_manifest_url ({self.portale}): {manifest_direct}")
+            return manifest_direct
+
+        # Tentativo 2: Prova browser automation
         try:
             driver = setup_selenium()
             if driver:
@@ -901,12 +908,6 @@ class Elaborazione:
                     return manifest_url
         except Exception as e:
             logger.debug(f"[Playwright] Errore: {e}")
-
-        # Tentativo 3: resolve_manifest_url (costruzione diretta per portale noto)
-        manifest_direct = _resolve_manifest_url(self.ark_url, self.portale)
-        if manifest_direct:
-            logger.info(f"[Manifest] resolve_manifest_url ({self.portale}): {manifest_direct}")
-            return manifest_direct
 
         # Tentativo 4: Usa mappatura hardcoded o costruzione URL standard
         logger.info("Usando fallback build_manifest_url (mappatura hardcoded)")
