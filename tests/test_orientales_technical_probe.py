@@ -25,6 +25,46 @@ def test_extract_candidates_finds_unior_page_and_omeka_records():
     assert by_role["omeka_api_media"].kind == "api_record"
 
 
+def test_extract_candidates_finds_dspace_entity_and_api_links():
+    uuid = "2cbeaeab-833a-48c2-9b39-29484ed1c681"
+    html = f"""
+    <a href="https://orientales.unior.it/entities/publication/{uuid}">entity</a>
+    <a href="https://orientales.unior.it/server/api/core/items/{uuid}">item</a>
+    <a href="https://orientales.unior.it/server/api/core/items/{uuid}/bundles">bundles</a>
+    <a href="https://orientales.unior.it/server/api/core/bundles/{uuid}/bitstreams">bitstreams</a>
+    <a href="https://orientales.unior.it/server/api/core/bitstreams/{uuid}/content">content</a>
+    <a href="https://orientales.unior.it/handle/20.500.14379/12345">handle</a>
+    """
+
+    candidates = probe.extract_candidates(html, "https://orientales.unior.it/")
+    by_role = {candidate.role: candidate for candidate in candidates}
+
+    assert by_role["dspace_publication"].kind == "entity"
+    assert by_role["dspace_rest_item"].kind == "api_item"
+    assert by_role["dspace_item_bundles"].kind == "api_item"
+    assert by_role["bundle_bitstreams"].kind == "bundle"
+    assert by_role["bitstream_content"].kind == "bitstream"
+    assert by_role["persistent_handle"].identifier == "20.500.14379/12345"
+
+
+def test_extract_candidates_finds_dspace_json_links():
+    uuid = "2cbeaeab-833a-48c2-9b39-29484ed1c681"
+    html = f'''
+    {{
+      "_links": {{
+        "self": {{"href": "https://orientales.unior.it/server/api/core/items/{uuid}"}},
+        "bundles": {{"href": "https://orientales.unior.it/server/api/core/items/{uuid}/bundles"}}
+      }}
+    }}
+    '''
+
+    candidates = probe.extract_candidates(html, "https://orientales.unior.it/")
+    roles = {candidate.role for candidate in candidates}
+
+    assert "dspace_rest_item" in roles
+    assert "dspace_item_bundles" in roles
+
+
 def test_extract_candidates_finds_mirador_manifest_info_image_and_text_derivatives():
     html = """
     <a href="/mirador?manifest=https%3A%2F%2Forientales.unior.it%2Fiiif%2Fabc%2Fmanifest.json">Mirador</a>

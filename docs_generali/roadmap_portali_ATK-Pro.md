@@ -238,11 +238,13 @@ Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
   quindi l'immagine diretta `resource.@id` del canvas, senza tassellare.
 - `orientales_unior` entra come candidato IIIF/Mirador con download condizionato
   alla licenza dell'oggetto. La fonte ufficiale cita licenze Creative Commons,
-  framework IIIF, Mirador, OCR e scarico metadati. La sonda
-  `verify_orientales_technical_probe.py` e pronta per cercare pagina Unior,
-  record Omeka se presenti, viewer Mirador, manifest IIIF, info.json, immagini,
-  OCR/testi e metadati candidati; per ATK-Pro la policy potra essere solo
-  prudente e item-level.
+  framework IIIF, Mirador, OCR e scarico metadati; la stessa fonte descrive la
+  piattaforma come DSpace, pur richiamando anche l'evoluzione dai progetti
+  precedenti. La sonda `verify_orientales_technical_probe.py` riconosce quindi
+  sia pattern DSpace (`entities`, REST item, bundle, bitstream, handle e link
+  JSON/HAL), sia record Omeka se presenti, viewer Mirador, manifest IIIF,
+  info.json, immagini, OCR/testi e metadati candidati; per ATK-Pro la policy
+  potra essere solo prudente e item-level.
 
 ## Priorita 1 - Consolidare
 

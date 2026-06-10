@@ -33,9 +33,30 @@ ATTR_URL_RE = re.compile(
     """
 )
 ABSOLUTE_URL_RE = re.compile(r"https?://[^\s\"'<>\\)]+", re.IGNORECASE)
+JSON_URL_RE = re.compile(
+    r"""(?ix)
+    "(?:href|self|url)"\s*:\s*
+    (?P<quote>["'])
+    (?P<url>[^"']+)
+    (?P=quote)
+    """
+)
 OMEKA_ITEM_RE = re.compile(r"/s/[^/]+/item/(?P<item_id>\d+)\b", re.IGNORECASE)
 OMEKA_MEDIA_RE = re.compile(r"/s/[^/]+/media/(?P<media_id>\d+)\b", re.IGNORECASE)
 OMEKA_API_RE = re.compile(r"/api/(?P<resource>items|media)/(?P<id>\d+)\b", re.IGNORECASE)
+UUID_RE = r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+ENTITY_RE = re.compile(rf"/entities/(?P<entity_type>[a-z-]+)/(?P<uuid>{UUID_RE})\b", re.IGNORECASE)
+HANDLE_RE = re.compile(r"/handle/(?P<prefix>\d+(?:\.\d+)+)/(?P<handle_id>\d+)\b", re.IGNORECASE)
+REST_ITEM_RE = re.compile(rf"/server/api/core/items/(?P<uuid>{UUID_RE})\b", re.IGNORECASE)
+REST_ITEM_SUBRESOURCE_RE = re.compile(
+    rf"/server/api/core/items/(?P<uuid>{UUID_RE})/(?P<subresource>[a-zA-Z][a-zA-Z0-9_-]*)\b",
+    re.IGNORECASE,
+)
+REST_BUNDLE_RE = re.compile(rf"/server/api/core/bundles/(?P<uuid>{UUID_RE})(?:/(?P<subresource>[a-zA-Z][a-zA-Z0-9_-]*))?\b", re.IGNORECASE)
+REST_BITSTREAM_RE = re.compile(
+    rf"/server/api/core/bitstreams/(?P<uuid>{UUID_RE})(?:/(?P<subresource>[a-zA-Z][a-zA-Z0-9_-]*))?\b",
+    re.IGNORECASE,
+)
 
 
 def _load_url(url: str, timeout: int) -> str:
@@ -93,7 +114,42 @@ def _classify_url(url: str) -> tuple[str, str, str] | None:
     if "unior.it" in netloc and "/biblioteca-digitale" in path_lower:
         return "portal_page", "orientales_page", _identifier_from_path(path)
 
-    if any(token in netloc for token in ("orientales", "unior.it")):
+    is_orientales = any(token in netloc for token in ("orientales", "unior.it"))
+
+    if is_orientales:
+        entity_match = ENTITY_RE.search(path)
+        if entity_match:
+            return "entity", f"dspace_{entity_match.group('entity_type')}", entity_match.group("uuid")
+
+        handle_match = HANDLE_RE.search(path)
+        if handle_match:
+            return "handle", "persistent_handle", f"{handle_match.group('prefix')}/{handle_match.group('handle_id')}"
+
+        item_subresource_match = REST_ITEM_SUBRESOURCE_RE.search(path)
+        if item_subresource_match:
+            subresource = item_subresource_match.group("subresource").lower()
+            return "api_item", f"dspace_item_{subresource}", item_subresource_match.group("uuid")
+
+        bundle_match = REST_BUNDLE_RE.search(path)
+        if bundle_match:
+            subresource = bundle_match.group("subresource")
+            if subresource:
+                return "bundle", f"bundle_{subresource.lower()}", bundle_match.group("uuid")
+            return "bundle", "bundle_metadata", bundle_match.group("uuid")
+
+        bitstream_match = REST_BITSTREAM_RE.search(path)
+        if bitstream_match:
+            subresource = bitstream_match.group("subresource")
+            if subresource and subresource.lower() == "content":
+                return "bitstream", "bitstream_content", bitstream_match.group("uuid")
+            if subresource:
+                return "bitstream", f"bitstream_{subresource.lower()}", bitstream_match.group("uuid")
+            return "bitstream", "bitstream_metadata", bitstream_match.group("uuid")
+
+        item_match = REST_ITEM_RE.search(path)
+        if item_match:
+            return "api_item", "dspace_rest_item", item_match.group("uuid")
+
         api_match = OMEKA_API_RE.search(path)
         if api_match:
             resource = api_match.group("resource")
@@ -143,6 +199,7 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
     raw_urls: list[tuple[str, str]] = []
     raw_urls.extend((m.group("url"), "html_attribute") for m in ATTR_URL_RE.finditer(html))
     raw_urls.extend((m.group(0), "absolute_text") for m in ABSOLUTE_URL_RE.finditer(html))
+    raw_urls.extend((m.group("url"), "json_link") for m in JSON_URL_RE.finditer(html))
 
     for raw, source in raw_urls:
         normalized = _clean_url(raw, base_url)
