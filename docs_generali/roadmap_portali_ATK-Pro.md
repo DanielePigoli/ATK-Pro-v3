@@ -246,8 +246,11 @@ Secondo mini-scouting biblioteche digitali italiane IIIF (2026-06-08):
   info.json, immagini, OCR/testi e metadati candidati; per ATK-Pro la policy
   potra essere solo prudente e item-level. Controllo 2026-06-10: le ricerche
   pubbliche non hanno ancora restituito URL item/record indicizzati e ripetibili;
-  prima di qualsiasi adapter serve almeno un campione live con pagina pubblica,
-  licenza visibile e endpoint manifest/bitstream scaricabile senza autenticazione.
+  la verifica manuale sulle pagine record raggiunte mostra contenuti riservati
+  agli utenti affiliati e non visibili agli ospiti. OrienTales resta quindi
+  sospeso/escluso dal download automatico finche non emerge almeno un campione
+  live con pagina pubblica da ospite, licenza visibile e endpoint
+  manifest/bitstream scaricabile senza autenticazione.
 
 ## Priorita 1 - Consolidare
 
