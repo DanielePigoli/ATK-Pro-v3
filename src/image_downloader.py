@@ -29,7 +29,13 @@ def _origin_from_url(url):
 
 
 def _referer_for_info_url(url):
-    if "dam-antenati.cultura.gov.it" in url:
+    if any(
+        host in url
+        for host in (
+            "dam-antenati.cultura.gov.it",
+            "iiif-antenati.cultura.gov.it",
+        )
+    ):
         return "https://antenati.cultura.gov.it/"
     origin = _origin_from_url(url)
     return origin + "/" if origin else "https://antenati.cultura.gov.it/"
@@ -45,6 +51,8 @@ def download_info_json(url):
         "Accept": "application/ld+json, application/json, text/plain, */*",
         "Referer": _referer_for_info_url(url),
     }
+    if "iiif-antenati.cultura.gov.it" in url or "dam-antenati.cultura.gov.it" in url:
+        headers["Origin"] = "https://antenati.cultura.gov.it"
     response = requests.get(url, headers=headers, timeout=30)
     response.raise_for_status()
     return response.json()
