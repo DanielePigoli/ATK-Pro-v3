@@ -46,6 +46,23 @@ def test_download_info_json_error(monkeypatch):
     # Se non solleva, deve restituire un valore falsy
     assert not info
 
+
+def test_download_info_json_uses_antenati_headers_for_new_iiif_host(monkeypatch):
+    captured = {}
+
+    def fake_get(url, timeout=10, headers=None):
+        captured["headers"] = headers
+        return DummyRespOK({"@id": url.removesuffix("/info.json"), "width": 100, "height": 200})
+
+    monkeypatch.setattr("image_downloader.requests.get", fake_get, raising=True)
+
+    image_downloader.download_info_json(
+        "https://iiif-antenati.cultura.gov.it/iiif/2/wQNNjzL/info.json"
+    )
+
+    assert captured["headers"]["Referer"] == "https://antenati.cultura.gov.it/"
+    assert captured["headers"]["Origin"] == "https://antenati.cultura.gov.it"
+
 def test_tracciabilita_image_downloader():
     from src import image_downloader
     # Chiamata diretta senza monkeypatch

@@ -4,6 +4,15 @@ from unittest.mock import MagicMock
 import src.tile_downloader as td
 
 
+def test_new_antenati_iiif_host_uses_antenati_headers():
+    headers = td._headers_for_tile_url(
+        "https://iiif-antenati.cultura.gov.it/iiif/2/wQNNjzL/0,0,256,256/full/0/default.jpg"
+    )
+
+    assert headers["Referer"] == "https://antenati.cultura.gov.it/"
+    assert headers["Origin"] == "https://antenati.cultura.gov.it"
+
+
 def test_download_tile_success(tmp_path, monkeypatch, caplog):
     class DummyResponse:
         status_code = 200

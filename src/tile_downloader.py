@@ -50,7 +50,13 @@ def _headers_for_tile_url(url, referer=None):
         headers["Referer"] = origin + "/"
         headers["Origin"] = origin
         return headers
-    if "dam-antenati.cultura.gov.it" in url:
+    if any(
+        host in url
+        for host in (
+            "dam-antenati.cultura.gov.it",
+            "iiif-antenati.cultura.gov.it",
+        )
+    ):
         return headers
     origin = _origin_from_url(url)
     if origin:
