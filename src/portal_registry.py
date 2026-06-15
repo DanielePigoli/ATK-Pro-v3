@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 import json
 from pathlib import Path
+from urllib.parse import urlparse
 
 
 @dataclass(frozen=True)
@@ -509,6 +510,36 @@ PORTAL_WARNING_MESSAGE_KEYS: dict[str, str] = {
 }
 
 
+PORTAL_HOST_HINTS: dict[str, str] = {
+    "antenati.cultura.gov.it": "antenati",
+    "dam-antenati.cultura.gov.it": "antenati",
+    "digitale.bnc.roma.sbn.it": "bnc_roma",
+    "teca.bncf.firenze.sbn.it": "bncf_teca",
+    "bncf.firenze.sbn.it": "bncf_teca",
+    "bibdig.museogalileo.it": "museogalileo",
+    "opac.museogalileo.it": "museogalileo",
+    "www.internetculturale.it": "internetculturale_estense",
+    "brixiana.jarvis.memooria.org": "brixiana",
+    "bds.comune.siena.it": "biblioteca_digitale_siena",
+    "bub.unibo.it": "bub_digitale",
+    "dl.ficlit.unibo.it": "dl_ficlit",
+    "bdt.bibcom.trento.it": "biblioteca_digitale_trentina",
+    "www.bdl.servizirl.it": "biblioteca_digitale_lombarda",
+    "digitallibrary.bibliotecacivica.rovereto.tn.it": "rovereto_digital_library",
+    "digi.vatlib.it": "vatlib",
+    "www.findbuch.net": "findbuch",
+    "data.matricula-online.eu": "matricula",
+    "gallica.bnf.fr": "gallica",
+    "digi.ub.uni-heidelberg.de": "heidelberg",
+    "digital.bodleian.ox.ac.uk": "bodleian",
+    "www.e-rara.ch": "e_rara",
+    "www.e-codices.unifr.ch": "e_codices",
+    "www.e-manuscripta.ch": "e_manuscripta",
+    "archive.org": "internet_archive",
+    "www.europeana.eu": "europeana",
+}
+
+
 def normalize_portal_key(portale: str | None) -> str:
     if not portale:
         return ""
@@ -517,6 +548,26 @@ def normalize_portal_key(portale: str | None) -> str:
 
 def get_portal(portale: str | None) -> PortalInfo | None:
     return PORTAL_REGISTRY.get(normalize_portal_key(portale))
+
+
+def detect_portal_from_url(url: str | None) -> str | None:
+    """Rileva solo portali con host ufficiale univoco e registrato."""
+    try:
+        hostname = (urlparse(str(url or "")).hostname or "").lower()
+    except Exception:
+        return None
+    if not hostname:
+        return None
+
+    direct = PORTAL_HOST_HINTS.get(hostname)
+    if direct:
+        return direct
+
+    if hostname.endswith(".jarvis.memooria.org"):
+        return "memooria"
+    if hostname.endswith(".findbuch.net"):
+        return "findbuch"
+    return None
 
 
 def get_portal_warning_message_key(portale: str | None) -> str | None:

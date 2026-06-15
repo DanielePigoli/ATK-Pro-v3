@@ -6,6 +6,8 @@ import os
 from logging.handlers import RotatingFileHandler
 ATKPRO_ENV = os.environ.get("ATKPRO_ENV", "development").lower()
 logger = logging.getLogger(__name__)
+
+
 if not logger.hasHandlers():
     handler = logging.StreamHandler()
     handler.setLevel(logging.DEBUG if ATKPRO_ENV != "production" else logging.WARNING)
@@ -17,6 +19,10 @@ if not logger.hasHandlers():
 logger.setLevel(logging.DEBUG if ATKPRO_ENV != "production" else logging.WARNING)
 
 from elaborazione import Elaborazione
+try:
+    from portal_registry import detect_portal_from_url
+except ImportError:
+    from src.portal_registry import detect_portal_from_url
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +102,22 @@ class ElaborazioneWorker(QThread):
 
                 # Esegue l'elaborazione reale (sincrona)
 
-                elab = Elaborazione(modalita.lower(), url, out_dir, self.glossario, self.lingua, portale=self.portale)
+                detected_portal = detect_portal_from_url(url)
+                record_portal = detected_portal or self.portale
+                if record_portal != self.portale:
+                    logger.warning(
+                        f"[Worker] URL incompatibile con il portale selezionato: "
+                        f"correzione da {self.portale} a {record_portal} "
+                        f"in base all'URL del record"
+                    )
+                elab = Elaborazione(
+                    modalita.lower(),
+                    url,
+                    out_dir,
+                    self.glossario,
+                    self.lingua,
+                    portale=record_portal,
+                )
                 elab.set_nome_file(nome_file)
                 # Range canvas opzionale (es. canvas 1-5)
                 elab.canvas_da = record.get('canvas_da') or None
