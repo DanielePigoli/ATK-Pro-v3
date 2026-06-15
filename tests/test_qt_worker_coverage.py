@@ -137,6 +137,43 @@ class TestElaborazioneWorkerProcessing:
             "status": "SUCCESS",
         }]
 
+    def test_worker_forces_antenati_portal_for_antenati_url(self, monkeypatch, tmp_path):
+        import src.qt_worker as qw
+
+        captured = {}
+
+        class FakeElab:
+            def __init__(self, *args, **kwargs):
+                captured["portale"] = kwargs.get("portale")
+            def set_nome_file(self, name):
+                self.name = name
+            def run(self, formats=None):
+                return True
+
+        monkeypatch.setattr(qw, "Elaborazione", FakeElab)
+        worker = ElaborazioneWorker(
+            [{
+                "modalita": "D",
+                "url": "https://antenati.cultura.gov.it/ark:/12657/an_ua21449/wQNNjzL",
+                "nome_file": "Narducci Lorenzo",
+                "output": str(tmp_path),
+            }],
+            formats=["PDF"],
+            portale="dl_ficlit",
+        )
+
+        worker.run()
+
+        assert captured["portale"] == "antenati"
+
+    def test_worker_keeps_selected_portal_for_other_domains(self):
+        from src.portal_registry import detect_portal_from_url
+
+        assert (
+            detect_portal_from_url("https://dl.ficlit.unibo.it/s/lib/item/28429")
+            == "dl_ficlit"
+        )
+
 
 class TestElaborazioneWorkerLocalization:
     """Test localizzazione messaggi nel worker."""

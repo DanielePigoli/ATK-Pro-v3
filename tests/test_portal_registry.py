@@ -3,6 +3,7 @@ from datetime import date
 import json
 
 from src.portal_registry import (
+    detect_portal_from_url,
     PORTAL_REGISTRY,
     PORTAL_WARNING_MESSAGE_KEYS,
     RECORD_MODE_POLICIES,
@@ -33,6 +34,27 @@ def test_registry_has_expected_portal_count_and_unique_keys():
 def test_registry_covers_manifest_builders_and_special_portals():
     expected = set(manifest_utils._PORTAL_BUILDERS) | {"antenati", "manifest_diretto"}
     assert set(PORTAL_REGISTRY) == expected
+
+
+def test_detect_portal_from_unambiguous_official_hosts():
+    assert detect_portal_from_url(
+        "https://antenati.cultura.gov.it/ark:/12657/an_ua21449/wQNNjzL"
+    ) == "antenati"
+    assert detect_portal_from_url(
+        "https://dl.ficlit.unibo.it/s/lib/item/28429"
+    ) == "dl_ficlit"
+    assert detect_portal_from_url(
+        "https://bub.unibo.it/iiif/2/example/manifest"
+    ) == "bub_digitale"
+    assert detect_portal_from_url(
+        "https://example.jarvis.memooria.org/schedadl.aspx?id=123"
+    ) == "memooria"
+
+
+def test_detect_portal_keeps_ambiguous_or_unknown_urls_unclassified():
+    assert detect_portal_from_url("https://example.org/manifest.json") is None
+    assert detect_portal_from_url("not a url") is None
+    assert detect_portal_from_url(None) is None
 
 
 def test_portal_groups_preserve_selector_order():
