@@ -22,3 +22,9 @@ https://antenati.cultura.gov.it/ark:/12657/an_ud19467689
 R - Registro - Morti - 1808 - Poncarale con Borgo Poncarale (oggi Poncarale)
 https://antenati.cultura.gov.it/ark:/12657/an_ua331306/0Z89vd3
 
+r - Registro - Matrimoni - 1924 - Brescia
+https://antenati.cultura.gov.it/ark:/12657/an_ud19467689
+
+# (aggiungere altre coppie seguendo la stessa struttura)
+
+

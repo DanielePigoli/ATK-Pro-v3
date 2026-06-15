@@ -1030,16 +1030,17 @@ class Elaborazione:
             # ...estrazione canvas come prima...
             target_canvas_id = None
             if "an_ud" in self.ark_url:
-                logger.info("[Canvas] Estrazione UD - Caricamento pagina ARK con viewer IIIF")
+                logger.info("[Canvas] Estrazione UD - Lettura canvasId dalla pagina ARK")
+                target_canvas_id = extract_canvas_id_from_url(self.ark_url)
+                logger.info(f"[Canvas] Risultato estrazione HTML: {target_canvas_id}")
+                if not target_canvas_id:
+                    logger.warning("[Canvas] Estrazione HTML fallita, provo viewer IIIF")
                 try:
-                    target_canvas_id = extract_ud_canvas_id_from_infojson_xhr(self.ark_url, timeout_ms=30000)
-                    logger.info(f"[Canvas] Risultato estrazione Playwright: {target_canvas_id}")
+                    if not target_canvas_id:
+                        target_canvas_id = extract_ud_canvas_id_from_infojson_xhr(self.ark_url, timeout_ms=30000)
+                        logger.info(f"[Canvas] Risultato estrazione Playwright: {target_canvas_id}")
                 except Exception as e:
                     logger.warning(f"[Canvas] Estrazione Playwright fallita: {e}")
-                if not target_canvas_id:
-                    logger.warning("[Canvas] Estrazione UD fallita, provo fallback con URL diretto")
-                    target_canvas_id = extract_canvas_id_from_url(self.ark_url)
-                    logger.info(f"[Canvas] Risultato fallback: {target_canvas_id}")
             else:
                 target_canvas_id = extract_canvas_id_from_url(self.ark_url)
             if not target_canvas_id:

@@ -129,6 +129,20 @@ def extract_ud_canvas_id_from_infojson_xhr(url: str, timeout_ms: int = 30000) ->
             except Exception:
                 pass
             page = context.new_page()
+            response_urls = []
+
+            def _remember_response(response):
+                try:
+                    response_url = getattr(response, "url", "") or ""
+                except Exception:
+                    return
+                if "/iiif/2/" in response_url and response_url.endswith("/info.json"):
+                    response_urls.append(response_url)
+
+            try:
+                page.on("response", _remember_response)
+            except Exception:
+                pass
 
             try:
                 page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
@@ -136,16 +150,23 @@ def extract_ud_canvas_id_from_infojson_xhr(url: str, timeout_ms: int = 30000) ->
                 page.goto(url)
 
             try:
-                response = page.wait_for_response(
-                    lambda resp: "/iiif/2/" in getattr(resp, "url", "") and getattr(resp, "url", "").endswith("/info.json"),
-                    timeout=timeout_ms,
-                )
-                canvas_id = _extract_from_text(getattr(response, "url", ""))
+                page.wait_for_load_state("networkidle", timeout=min(timeout_ms, 5000))
+            except Exception:
+                pass
+
+            try:
+                page.wait_for_timeout(min(timeout_ms, 3000))
+            except Exception:
+                pass
+
+            for response_url in response_urls:
+                canvas_id = _extract_from_text(response_url)
                 if canvas_id:
                     log_to_file(f"[UD] Canvas ID da XHR info.json: {canvas_id}")
                     return canvas_id
-            except Exception as e:
-                log_to_file(f"[UD] XHR info.json non intercettato: {str(e)[:100]}")
+
+            if not response_urls:
+                log_to_file("[UD] XHR info.json non intercettato")
 
             try:
                 canvas_id = _extract_from_text(page.content())

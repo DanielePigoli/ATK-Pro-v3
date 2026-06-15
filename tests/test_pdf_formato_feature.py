@@ -268,6 +268,24 @@ class TestProcessDocumentPDF:
         assert 'PDF' not in save_called_formats
 
         # Nessuna cartella temp
+
+    def test_antenati_ud_prefers_html_canvas_before_playwright(self, tmp_path, monkeypatch):
+        self._patch_common(monkeypatch, tmp_path)
+        elab = _make_document_elab(tmp_path, ['PNG'])
+        elab.ark_url = 'https://antenati.cultura.gov.it/ark:/12657/an_ud19467689'
+        elab.portale = 'antenati'
+
+        monkeypatch.setattr('src.elaborazione.extract_canvas_id_from_url',
+                            lambda url: '1')
+        monkeypatch.setattr(
+            'src.elaborazione.extract_ud_canvas_id_from_infojson_xhr',
+            lambda *a, **k: (_ for _ in ()).throw(
+                AssertionError('Playwright should not run when HTML exposes canvasId')
+            ),
+        )
+
+        tiles_info = FAKE_MANIFEST['sequences'][0]['canvases']
+        assert elab._process_document(tiles_info, {}) is True
         assert not (tmp_path / '_tmp_pdf_images').exists()
 
     def test_no_pdf_in_formats_no_pdf_generated(self, tmp_path, monkeypatch):

@@ -12,17 +12,23 @@ class TestCanvasExtractorPlaywrightFallback:
     """Test fallback chain: Playwright → HTML → hardcoded."""
 
     def test_canvas_id_from_playwright_intercept(self, monkeypatch):
-        """Best case: intercetta info.json via wait_for_response."""
+        """Best case: intercetta info.json tramite evento response."""
         mock_page = Mock()
-        mock_response = Mock()
-        mock_response.url = 'https://base/iiif/2/CANVAS123/info.json'
-        
-        # Simula wait_for_response che trova il match
-        mock_page.wait_for_response.return_value = mock_response
+        callbacks = {}
+
+        def on_event(event, callback):
+            callbacks[event] = callback
+
+        def wait_for_timeout(*args, **kwargs):
+            response = Mock()
+            response.url = 'https://base/iiif/2/CANVAS123/info.json'
+            callbacks["response"](response)
+
+        mock_page.on = Mock(side_effect=on_event)
         mock_page.goto = Mock()
-        mock_page.on = Mock()
         mock_page.locator.return_value.click = Mock()
-        mock_page.wait_for_timeout = Mock()
+        mock_page.wait_for_timeout = Mock(side_effect=wait_for_timeout)
+        mock_page.wait_for_load_state = Mock()
         mock_page.content = Mock(return_value='<html></html>')
         
         mock_context = Mock()
@@ -70,11 +76,11 @@ class TestCanvasExtractorTimeout:
         captured_timeouts = {}
         
         mock_page = Mock()
-        mock_page.wait_for_response = Mock(side_effect=Exception("Timeout"))
         mock_page.goto = Mock()
         mock_page.on = Mock()
         mock_page.locator.return_value.click = Mock()
         mock_page.wait_for_timeout = Mock()
+        mock_page.wait_for_load_state = Mock()
         mock_page.content = Mock(return_value='<html></html>')
         mock_page.frames = []
         
@@ -158,11 +164,11 @@ class TestCanvasExtractorErrorHandling:
     def test_frame_parsing_error_continues(self, monkeypatch):
         """Errore parsing iframe non blocca, continua con altri fallback."""
         mock_page = Mock()
-        mock_page.wait_for_response.side_effect = Exception("No response")
         mock_page.goto = Mock()
         mock_page.on = Mock()
         mock_page.locator.return_value.click = Mock()
         mock_page.wait_for_timeout = Mock()
+        mock_page.wait_for_load_state = Mock()
         mock_page.content = Mock(return_value='<html><body>Fallback HTML</body></html>')
         
         # Uno dei frame crasha nel content()
