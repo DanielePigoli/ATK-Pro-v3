@@ -26,6 +26,13 @@ pre-RC e tracciato in `docs_generali/audit_contenuti_guida_v3_ATK-Pro.md`.
 La checklist di go/no-go per RC tecnica e release pubblica v3 e tracciata in
 `docs_generali/checklist_release_v3_ATK-Pro.md`.
 
+Baseline portali italiani/italofoni del 2026-06-22:
+
+- suite completa: 556 test passati, 38 skip attesi;
+- policy registry: 25 capability valide, nessun re-check scaduto;
+- smoke live: tutti i portali italiani superati; matrice globale 24/25, con
+  Gallica ancora aperta per risposta HTTP 403 del manifest campione.
+
 Subset portali/manifest/tile/worker:
 
 - comando:

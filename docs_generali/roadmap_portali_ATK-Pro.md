@@ -56,14 +56,14 @@ Sequenza di ripresa italiana/italofona:
 
 1. completare la mappa tecnica di Archivi Nazionali/SIA, Archivio Digitale,
    SAN, SIAS e SIUSA, separando ricerca, metadati e scaricamento;
-2. valutare BeWeB e archivi diocesani/parrocchiali italiani come discovery o
+2. mantenere BeWeB e archivi diocesani/parrocchiali italiani come discovery o
    link assistito, senza automatizzare materiali sensibili o non chiaramente
    pubblici;
-3. valutare Ticino, Grigioni e Diocesi di Coira per fonti italofone svizzere e
-   storico-ecclesiastiche, con attenzione a registri parrocchiali, microfilm,
-   inventari e condizioni di riproduzione;
-4. cercare altri portali italiani IIIF pubblici simili a Biblioteca Digitale
-   Siena, preferendo `R_LIMITED` con range esplicito e fonti ufficiali;
+3. mantenere Ticino, Grigioni e Diocesi di Coira come fonti di orientamento
+   manuale, poiche registri e microfilm non risultano esposti tramite endpoint
+   pubblici compatibili;
+4. consolidare i portali italiani gia integrati, senza aggiungerne altri prima
+   della RC salvo endpoint pubblico particolarmente stabile e documentato;
 5. riprendere le piste diaspora non italiane solo dopo avere chiuso questo
    blocco o dopo una decisione esplicita di priorita.
 

@@ -2097,9 +2097,16 @@ def download_manifest(manifest_url: str, output_folder: str, titolo_doc: str = "
             except Exception as e:
                 try:
                     content = getattr(response, "content", b"")
-                    manifest = json.loads(content.decode("utf-8-sig"))
+                    if isinstance(content, (bytes, bytearray)):
+                        content = content.decode("utf-8-sig")
+                    if not isinstance(content, str):
+                        raise TypeError("Contenuto risposta non testuale")
+                    manifest = json.loads(content)
                 except Exception:
-                    preview = (getattr(response, "text", "") or "")[:180].replace("\r", " ").replace("\n", " ")
+                    response_text = getattr(response, "text", "")
+                    if isinstance(response_text, (bytes, bytearray)):
+                        response_text = response_text.decode("utf-8", errors="replace")
+                    preview = response_text[:180].replace("\r", " ").replace("\n", " ") if isinstance(response_text, str) else ""
                     print(f"[Manifest] Contenuto manifest non decodificabile: {e}")
                     if preview:
                         print(f"[Manifest] Anteprima risposta non JSON: {preview}")

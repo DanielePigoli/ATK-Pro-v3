@@ -336,18 +336,33 @@
             <a href="guida_03_ricerca_assistita_ai.html" class="nav-button">Mod.03 &mdash; Ricerca assistita AI &#8594;</a>
         </div>
         <div class="section-box">
-            <h3>4. CARICAMENTO RECORD IIIF - FORMATI DI INPUT</h3>
+            <h3>4. CARICAMENTO RECORD - FORMATI DI INPUT</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
             <h4>📥 STRUTTURA DELL'INPUT E PORTALI SUPPORTATI</h4>
             <p>ATK-Pro accetta file di input con un formato specifico basato su COPPIE: Per OGNI record da elaborare, fornisci Modalità + URL.</p>
-            <p><strong>Portali supportati (copia e incolla l'URL della pagina, ATK-Pro farà il resto):</strong><br>
-            Antenati (Italia), Gallica (Francia), DigiVatLib (Archivio Apostolico Vaticano e registri parrocchiali romani), Bodleian Libraries (Oxford), Europeana IIIF, Matricula Online (Registri parrocchiali AT/DE/PL), Findbuch (Südtirol), e-codices/e-rara/e-manuscripta (Svizzera), Heidelberg UB, Internet Culturale (Archivio Estense, Brixiana, Memooria, BNC Roma), Museo Galileo, Internet Archive.</p>
+            <p><strong>Portali supportati:</strong> copia e incolla l'URL pubblico della pagina, del viewer, del manifest o del PDF compatibile. ATK-Pro riconosce il portale e applica la relativa modalità tecnica e prudenziale.</p>
+            <p>Antenati (Italia), Gallica (Francia), DigiVatLib (Vaticano), Bodleian Libraries (Oxford), Europeana IIIF, Matricula Online, Findbuch (Südtirol), e-codices/e-rara/e-manuscripta (Svizzera), Heidelberg UB, Internet Culturale/Estense, Brixiana, Memooria, BNC Roma, BNCF Teca, Museo Galileo e Internet Archive.</p>
+            <h4>🇮🇹 PORTALI ITALIANI AGGIUNTI NELLA V3</h4>
+            <table>
+                <thead>
+                    <tr><th>Portale</th><th>Input e modalità</th><th>Limiti operativi</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Biblioteca Digitale Siena</td><td>Pagina viewer IIIF; <code>D</code> o <code>R</code></td><td>Per <code>R</code> è richiesto un range esplicito; verificare i diritti dell'oggetto.</td></tr>
+                    <tr><td>Biblioteca Digitale Trentina</td><td>Pagina pubblica; immagini oppure PDF diretto</td><td>Per registri e sequenze usare un range. Se è richiesto solo il PDF senza range, ATK-Pro usa il PDF ufficiale quando disponibile.</td></tr>
+                    <tr><td>Biblioteca Digitale Lombarda</td><td>Endpoint PDF REST pubblico; solo <code>D</code></td><td>Supporto limitato al PDF singolo: niente registri, sequenze o immagini IIIF.</td></tr>
+                    <tr><td>Rovereto Digital Library</td><td>Pagina entity o URL API dell'item; <code>D</code> o <code>R</code></td><td>Scarica solo i bitstream pubblici riconosciuti come pagine; per <code>R</code> è richiesto un range.</td></tr>
+                    <tr><td>BUB Digitale</td><td>Pagina BUB con parametro <code>manifest=</code> o manifest IIIF BUB</td><td>Solo risorse pubbliche; per <code>R</code> è richiesto un range e va verificata la licenza del singolo oggetto.</td></tr>
+                    <tr><td>FICLIT Digital Library</td><td>Pagina item Omeka S o manifest IIIF FICLIT</td><td>Solo item pubblici; per <code>R</code> è richiesto un range. Le immagini sono acquisite dalla risorsa diretta del canvas.</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Nota:</strong> BEIC, Ambrosiana e OrienTales non sono inclusi nel downloader: non sono stati individuati endpoint pubblici stabili oppure i record esaminati richiedono accesso affiliato. Archivi Nazionali, SAN, SIAS, SIUSA, BeWeB e le fonti ticinesi, grigionesi e diocesane restano fonti di orientamento e consultazione manuale.</p>
             <h3>1. RIGA 1: Modalità + Nome (facoltativo)</h3>
             <ul>
                 <li>D = Documento singolo (una singola immagine/pagina)</li>
                 <li>R = Registro (collezione completa di pagine/documenti)</li>
             </ul>
-            <h3>2. RIGA 2: URL del Manifest IIIF</h3>
+            <h3>2. RIGA 2: URL pubblico del record o della risorsa</h3>
             <p><strong>Esempio di file input.txt corretto:</strong></p>
             <pre class="file-structure"># Commenti iniziano con #
 
@@ -366,7 +381,7 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             <ul>
                 <li>Righe vuote: ignorate (puoi usarle per leggibilità)</li>
                 <li>Righe con #: ignorate come commenti</li>
-                <li>Modalità D o R: sono obbligatorie (maiuscole)</li>
+                <li>Modalità D/d o R/r: sono obbligatorie; maiuscole e minuscole sono equivalenti</li>
                 <li>Nome file: facoltativo dopo modalità (es. "D - Nome" o solo "D")</li>
                 <li>URL: deve iniziare con http:// o https://</li>
                 <li>Coppie: modalità + URL devono stare su righe consecutive</li>
@@ -404,7 +419,7 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             <p>Dopo il caricamento, il programma verifica:</p>
             <ul>
                 <li>✓ URL accessibile e raggiungibile</li>
-                <li>✓ Formato IIIF valido (questa versione+)</li>
+                <li>✓ Risorsa compatibile: manifest IIIF v2/v3, pagina supportata, immagine o PDF diretto secondo il portale</li>
                 <li>✓ Numero immagini e canvas disponibili</li>
                 <li>✓ Metadata (titolo, autore, data)</li>
             </ul>

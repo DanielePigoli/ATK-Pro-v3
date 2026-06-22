@@ -249,8 +249,12 @@ Portali da non automatizzare in questa fase:
   `biblioteca_digitale_trentina`, `biblioteca_digitale_lombarda` e
   `rovereto_digital_library` sono entrate con policy puntuali; `beic_digitale`
   e `ambrosiana_digitale` restano sospese per mancanza di endpoint stabili.
-- Aprire il secondo sottoblocco IIIF italiano con `bub_digitale`,
-  `dl_ficlit` e `orientales_unior`, procedendo con una sonda tecnica per volta
-  e senza generalizzare il download prima della verifica item-level.
+- Considerare chiuso il secondo sottoblocco IIIF italiano: `bub_digitale` e
+  `dl_ficlit` sono supportati con policy `R_LIMITED`, mentre
+  `orientales_unior` resta escluso dal download finche i record pubblici non
+  risultano accessibili agli utenti ospiti.
+- Congelare l'aggiunta di ulteriori portali italiani prima della RC, salvo
+  endpoint pubblico stabile, policy compatibile e verifica tecnica a basso
+  rischio; BEIC e Ambrosiana restano nella roadmap futura.
 - Riprendere Uruguay, Venezuela, Canada, Regno Unito e altre piste diaspora solo
   dopo questo passaggio italiano/italofono.
