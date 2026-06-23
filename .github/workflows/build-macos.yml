@@ -11,7 +11,7 @@ permissions:
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Due job paralleli:
-#   build-macos-intel        → x86_64 via Rosetta  → Intel Mac (macOS 12+)
+#   build-macos-intel        → x86_64 nativo       → Intel Mac (macOS 12+)
 #   build-macos-silicon      → arm64 nativo         → Apple Silicon M1/M2/M3
 # Producono due DMG separati: ATK-Pro-macOS-Intel-vX.Y.Z.dmg
 #                              ATK-Pro-macOS-AppleSilicon-vX.Y.Z.dmg
@@ -20,10 +20,10 @@ permissions:
 jobs:
 
   # ═══════════════════════════════════════════════════════════════════════════
-  # JOB 1 — Intel x86_64 (via Rosetta 2)
+  # JOB 1 — Intel x86_64 (runner Intel nativo)
   # ═══════════════════════════════════════════════════════════════════════════
   build-macos-intel:
-    runs-on: macos-latest
+    runs-on: macos-13
     
     steps:
     - name: Checkout repository
@@ -36,30 +36,30 @@ jobs:
         sudo installer -pkg /tmp/py312.pkg -target /
         /usr/local/bin/python3.12 --version
         file /usr/local/bin/python3.12
-        echo "Verifica x86_64 via Rosetta:"
-        arch -x86_64 /usr/local/bin/python3.12 -c "import platform; print('arch:', platform.machine())"
+        echo "Verifica x86_64 nativo:"
+        /usr/local/bin/python3.12 -c "import platform; print('arch:', platform.machine())"
 
-    - name: Install dependencies (x86_64 via Rosetta)
+    - name: Install dependencies (x86_64 nativo)
       run: |
-        arch -x86_64 /usr/local/bin/python3.12 -m pip install --upgrade pip
-        arch -x86_64 /usr/local/bin/python3.12 -m pip install "setuptools<70.0" wheel
-        arch -x86_64 /usr/local/bin/python3.12 -m pip install --no-cache-dir pyinstaller -r requirements.txt
+        /usr/local/bin/python3.12 -m pip install --upgrade pip
+        /usr/local/bin/python3.12 -m pip install "setuptools<70.0" wheel
+        /usr/local/bin/python3.12 -m pip install --no-cache-dir pyinstaller -r requirements.txt
 
     - name: Install Playwright (x86_64)
-      run: arch -x86_64 /usr/local/bin/python3.12 -m playwright install chromium
+      run: /usr/local/bin/python3.12 -m playwright install chromium
 
     - name: Converti icona .ico → .icns (Intel)
       run: |
         mkdir -p /tmp/ATK-Pro.iconset
-        arch -x86_64 /usr/local/bin/python3.12 -c "from PIL import Image; img=Image.open('assets/common/grafici/ATK-Pro.ico').convert('RGBA'); [img.resize((s,s),Image.LANCZOS).save(f'/tmp/ATK-Pro.iconset/{n}.png') for s,n in [(16,'icon_16x16'),(32,'icon_16x16@2x'),(32,'icon_32x32'),(64,'icon_32x32@2x'),(128,'icon_128x128'),(256,'icon_128x128@2x'),(256,'icon_256x256'),(512,'icon_256x256@2x'),(512,'icon_512x512'),(1024,'icon_512x512@2x')]]"
+        /usr/local/bin/python3.12 -c "from PIL import Image; img=Image.open('assets/common/grafici/ATK-Pro.ico').convert('RGBA'); [img.resize((s,s),Image.LANCZOS).save(f'/tmp/ATK-Pro.iconset/{n}.png') for s,n in [(16,'icon_16x16'),(32,'icon_16x16@2x'),(32,'icon_32x32'),(64,'icon_32x32@2x'),(128,'icon_128x128'),(256,'icon_128x128@2x'),(256,'icon_256x256'),(512,'icon_256x256@2x'),(512,'icon_512x512'),(1024,'icon_512x512@2x')]]"
         iconutil -c icns /tmp/ATK-Pro.iconset -o /tmp/ATK-Pro.icns
         echo "✓ ATK-Pro.icns generato"
 
-    - name: Build app x86_64 (Intel / Rosetta)
+    - name: Build app x86_64 (Intel nativo)
       env:
         MACOSX_DEPLOYMENT_TARGET: "12.0"
       run: |
-        arch -x86_64 /usr/local/bin/python3.12 -m PyInstaller \
+        /usr/local/bin/python3.12 -m PyInstaller \
           --name ATK-Pro \
           --windowed \
           --paths src \
@@ -101,7 +101,7 @@ jobs:
     - name: Leggi versione
       id: ver
       run: |
-        VER=$(python3 -c "import sys; sys.path.insert(0, 'src'); from atk_version import VERSION; print(VERSION)")
+        VER=$(/usr/local/bin/python3.12 -c "import sys; sys.path.insert(0, 'src'); from atk_version import VERSION; print(VERSION)")
         echo "version=$VER" >> $GITHUB_OUTPUT
         echo "Versione: $VER"
 
@@ -246,7 +246,7 @@ jobs:
     - name: Leggi versione
       id: ver
       run: |
-        VER=$(python3 -c "import sys; sys.path.insert(0, 'src'); from atk_version import VERSION; print(VERSION)")
+        VER=$(/usr/local/bin/python3.12 -c "import sys; sys.path.insert(0, 'src'); from atk_version import VERSION; print(VERSION)")
         echo "version=$VER" >> $GITHUB_OUTPUT
         echo "Versione: $VER"
 
