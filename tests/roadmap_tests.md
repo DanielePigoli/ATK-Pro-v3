@@ -169,8 +169,8 @@ python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py test
 - [x] Riallineare contenutisticamente la guida italiana alla v3 reale.
 - [x] Confermare compilazione dei moduli centrali.
 - [x] Confermare subset portali/manifest/tile/worker.
-- [ ] Eseguire una suite piu ampia in ambiente controllato.
-- [ ] Documentare numero totale di test pass/fail/skip aggiornato a v3.
+- [x] Eseguire una suite piu ampia in ambiente controllato.
+- [x] Documentare numero totale di test pass/fail/skip aggiornato a v3.
 
 ### Fase 2 - Classificazione test
 
@@ -198,6 +198,9 @@ python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py test
 
 - Non aggiornare questa roadmap con numeri stimati.
 - Ogni baseline deve riportare il comando effettivo e il risultato osservato.
+- Baseline RC1 Windows portable del 2026-06-23: `python -m pytest -q` ha
+  restituito 559 test passati e 38 skip; la suite mirata RC1 ha restituito 28
+  test passati.
 - La guida italiana e' la fonte contenutistica v3 primaria; le altre lingue
   restano da riallineare o dichiarare esplicitamente come traduzioni successive
   prima di una release pubblica multilingue completa.

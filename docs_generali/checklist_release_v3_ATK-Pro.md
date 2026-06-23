@@ -1,6 +1,6 @@
 # Checklist release ATK-Pro v3.0.0
 
-Data snapshot: 2026-05-27
+Data snapshot: 2026-06-23
 
 Questa checklist raccoglie i criteri minimi per decidere se ATK-Pro puo' passare
 da baseline pre-release a RC tecnica v3.0.0, e distingue quel passaggio da una
@@ -10,7 +10,7 @@ release pubblica multilingue completa.
 
 | Stato | Esito | Motivazione |
 | --- | --- | --- |
-| RC tecnica v3.0.0 | Possibile dopo verifica finale | Localizzazione, glossario, documenti menu, guida italiana v3, portali e suite smoke risultano gia' tracciati e verificati. |
+| RC tecnica v3.0.0 | RC1 Windows portable validata | Localizzazione, glossario, documenti menu, guida italiana v3, portali italiani/italofoni, suite tecnica e smoke manuale Windows portable risultano verificati. |
 | Release pubblica multilingue completa | Non ancora | La guida italiana e' la fonte v3 primaria, ma la propagazione multilingue completa va eseguita dopo il consolidamento del perimetro finale. |
 | Nuove integrazioni portali | Non bloccanti per RC | La roadmap portali e il registro tecnico sono pronti per evoluzioni progressive senza bloccare la prima RC. |
 
@@ -27,8 +27,8 @@ release pubblica multilingue completa.
 | Disclaimer e policy portali | Go con consenso revisionato | Il disclaimer esclude scraping massivo, aggiramento login/paywall e portali commerciali chiusi; la revisione v3 deve essere accettata esplicitamente prima di installazione, aggiornamento automatico o avvio portable/bundle. Fino alla propagazione multilingue, il testo legale vincolante e' quello italiano. |
 | Policy runtime D/R portali | Go con re-check periodico | `src/portal_registry.py` applica `R_OK`, `R_LIMITED`, `D_ONLY` e `VARIABLE`; `verify_portal_policy.py` controlla scadenza delle policy e genera `portal_policy_overrides.json` per aggiornamenti locali senza nuova release. |
 | Portali esistenti | Go italiano; verifica globale aperta | Registry e policy comprendono 25 capability. Lo smoke live del 2026-06-22 passa su tutti i portali italiani e su 24/25 campioni complessivi; Gallica resta da riallineare per risposta HTTP 403 del manifest campione. |
-| Test tecnici | Go | Suite completa del 2026-06-22: 556 test passati e 38 skip attesi; verificatori guida italiana, asset documentali e policy portali superati. |
-| Packaging | Go con build da eseguire | Audit non distruttivo eseguito: spec PyInstaller, script Inno e README workflow sono allineati a v3.0.0; prima della RC restano da generare e provare le build. |
+| Test tecnici | Go | Suite completa del 2026-06-23: 559 test passati e 38 skip attesi; verificatori guida italiana, asset documentali e policy portali superati. |
+| Packaging | Go Windows portable; altre build aperte | Build PyInstaller onedir Windows RC1 generata, avviata e provata manualmente; restano da generare e provare installer Windows, macOS e Linux. |
 | File temporanei | Go con controllo finale | Inventario root eseguito: artefatti locali, cache, build, log, screenshot e output test risultano ignorati o coperti da regole di esclusione; prima del tag resta da confermare `git status --short --ignored`. |
 
 ## Suite smoke pre-RC
@@ -60,7 +60,8 @@ policy legale del portale.
 
 ## Verifiche manuali prima di RC
 
-- Avvio dell'applicazione da build locale.
+- Avvio dell'applicazione da build locale. Per RC1 Windows portable: eseguito,
+  con disclaimer visualizzato e accettato.
 - Apertura del menu Documenti: guida, disclaimer, presentazione progetto e presentazione autore.
 - Apertura della guida italiana e delle sotto-guide principali.
 - Smoke dei sei servizi: Ricerca assistita AI, Visualizzazione Immagini,
@@ -77,6 +78,23 @@ policy legale del portale.
 - Conferma che installer Windows, portable Windows, DMG/app macOS, pacchetto
   DEB, tarball Linux e aggiornamento automatico richiedano la revisione corrente
   del disclaimer prima di procedere.
+
+## RC1 Windows portable
+
+Artefatto generato e validato:
+
+- `ATK-Pro_v3.0.0-rc1_windows-portable.zip`
+- SHA256:
+  `52F05680C8FD0030AF8D55A58234B8B40FDF72403D9CC1FFD4A9A0C8CACAE111`
+
+Smoke manuale superato su:
+
+- Antenati documento.
+- BUB Castenaso 1933 con range limitato.
+- Biblioteca Digitale Lombarda PDF.
+- Biblioteca Digitale Trentina PDF.
+
+Documento collegato: `docs_generali/note_release_v3.0.0-rc1_ATK-Pro.md`.
 
 ## Bloccanti per release pubblica completa
 
@@ -99,3 +117,4 @@ policy legale del portale.
 - `docs_generali/matrice_portali_candidati_ATK-Pro.md`
 - `docs_generali/portal_live_smoke_samples.md`
 - `tests/roadmap_tests.md`
+- `docs_generali/note_release_v3.0.0-rc1_ATK-Pro.md`
