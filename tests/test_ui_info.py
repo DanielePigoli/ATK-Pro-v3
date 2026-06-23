@@ -18,5 +18,5 @@ def test_ui_info_localization():
     ui_info = importlib.import_module("ui_info")
     # gettext deve restituire le stesse stringhe definite
     assert ui_info.APP_NAME == "Antenati ToolKit Pro"
-    assert "ATK‑Pro v2.0" in ui_info.WELCOME_MSG
+    assert "ATK‑Pro v3.0.0 RC1" in ui_info.WELCOME_MSG
     assert "CLI" in ui_info.HELP_TEXT

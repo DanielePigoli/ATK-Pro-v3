@@ -33,6 +33,10 @@ from tile_rebuilder import rebuild_image, build_image_metadata
 from manifest_parser import estrai_metadati_da_manifest, build_manifest_url
 from pdf_generator import create_pdf_from_images, enrich_pdf_metadata
 from metadata_utils import embed_metadata_and_save, _save_sidecar_json_once
+try:
+    from atk_version import PACKAGE_VERSION as VERSION
+except ImportError:
+    from src.atk_version import PACKAGE_VERSION as VERSION
 
 
 
@@ -1084,7 +1088,7 @@ class Elaborazione:
                 ua = _parse_ua_from_url(self.ark_url)
                 ark = _parse_ark_from_url(self.ark_url)
                 page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
                 if not formats:
                     formats = ['PNG', 'JPEG', 'TIFF']
@@ -1116,7 +1120,7 @@ class Elaborazione:
                 ua = _parse_ua_from_url(self.ark_url)
                 ark = _parse_ark_from_url(self.ark_url)
                 page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
                 if not formats:
                     formats = ['PNG', 'JPEG', 'TIFF']
@@ -1150,7 +1154,7 @@ class Elaborazione:
                 ua = _parse_ua_from_url(self.ark_url)
                 ark = _parse_ark_from_url(self.ark_url)
                 page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
                 if not formats:
                     formats = ['PNG', 'JPEG', 'TIFF']
@@ -1183,7 +1187,7 @@ class Elaborazione:
                 ua = _parse_ua_from_url(self.ark_url)
                 ark = _parse_ark_from_url(self.ark_url)
                 page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
                 if not formats:
                     formats = ['PNG', 'JPEG', 'TIFF']
@@ -1235,7 +1239,7 @@ class Elaborazione:
                 ua = _parse_ua_from_url(self.ark_url)
                 ark = _parse_ark_from_url(self.ark_url)
                 page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
                 if not formats:
                     formats = ['PNG', 'JPEG', 'TIFF']
@@ -1265,7 +1269,7 @@ class Elaborazione:
                     ua = _parse_ua_from_url(self.ark_url)
                     ark = _parse_ark_from_url(self.ark_url)
                     page_label = canvas.get('label', None)
-                    meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                    meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                     formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
                     if not formats:
                         formats = ['PNG', 'JPEG', 'TIFF']
@@ -1301,7 +1305,7 @@ class Elaborazione:
                 ua = _parse_ua_from_url(self.ark_url)
                 ark = _parse_ark_from_url(self.ark_url)
                 page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
                 if not formats:
                     formats = ['PNG', 'JPEG', 'TIFF']
@@ -1335,7 +1339,7 @@ class Elaborazione:
                 ua = _parse_ua_from_url(self.ark_url)
                 ark = _parse_ark_from_url(self.ark_url)
                 page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
                 if not formats:
                     formats = ['PNG', 'JPEG', 'TIFF']
@@ -1377,7 +1381,7 @@ class Elaborazione:
                 ua = _parse_ua_from_url(self.ark_url)
                 ark = _parse_ark_from_url(self.ark_url)
                 page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
                 if not formats:
                     formats = ['PNG', 'JPEG', 'TIFF']
@@ -1446,7 +1450,7 @@ class Elaborazione:
                 page_label=page_label,
                 description=description,
                 source_url=self.ark_url,
-                atk_version="2.0"
+                atk_version=VERSION
             )
             formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
             if not formats:
@@ -1623,7 +1627,7 @@ class Elaborazione:
                             ua = _parse_ua_from_url(self.ark_url)
                             ark = _parse_ark_from_url(self.ark_url)
                             page_label = canvas.get('label', None)
-                            meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                            meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                             _use_img = final_img
                             if image_formats:
                                 save_image_variants(_use_img, self.output_dir, nome_base, image_formats, meta=meta)
@@ -1648,7 +1652,7 @@ class Elaborazione:
                         ua = _parse_ua_from_url(self.ark_url)
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             service_id, glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1674,7 +1678,7 @@ class Elaborazione:
                         ua = _parse_ua_from_url(self.ark_url)
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             service_id, glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1704,7 +1708,7 @@ class Elaborazione:
                         ua = _parse_ua_from_url(self.ark_url)
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1733,7 +1737,7 @@ class Elaborazione:
                         ua = _parse_ua_from_url(self.ark_url)
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1765,7 +1769,7 @@ class Elaborazione:
                         ua = _parse_ua_from_url(self.ark_url)
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1793,7 +1797,7 @@ class Elaborazione:
                         ua = _parse_ua_from_url(self.ark_url)
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             _img_url or service_id, glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1825,7 +1829,7 @@ class Elaborazione:
                         ua = _parse_ua_from_url(self.ark_url)
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1855,7 +1859,7 @@ class Elaborazione:
                         ua = _parse_ua_from_url(self.ark_url)
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1896,7 +1900,7 @@ class Elaborazione:
                         ua = _parse_ua_from_url(self.ark_url)
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version="2.0")
+                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1932,7 +1936,7 @@ class Elaborazione:
                         page_label=page_label,
                         description=self.nome_file,
                         source_url=self.ark_url,
-                        atk_version="2.0"
+                        atk_version=VERSION
                     )
                     _use_img = final_img if final_img is not None else _make_placeholder_image(
                         service_id, glossario_data=self.glossario_data, lingua=self.lingua,
@@ -2006,7 +2010,7 @@ class Elaborazione:
                             page_label=canvas.get('label', None),
                             description=self.nome_file,
                             source_url=self.ark_url,
-                            atk_version="2.0"
+                            atk_version=VERSION
                         )
                         save_image_variants(final_img, self.output_dir, nome_base, image_formats, meta=meta)
                         # Elimina la cartella dei tile dopo la ricostruzione anche nei retry

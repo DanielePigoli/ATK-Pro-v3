@@ -17,6 +17,10 @@ import os, glob, re
 from typing import List, Dict, Tuple
 from PIL import Image
 import logging
+try:
+    from atk_version import PACKAGE_VERSION
+except ImportError:
+    from src.atk_version import PACKAGE_VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -203,7 +207,7 @@ def enrich_pdf_metadata(pdf_path: str, title: str, subject: str, ua: str | None,
             "/Subject": str(subject or ""),
             "/Keywords": keywords,
             "/Creator": "Antenati ToolKit Pro",
-            "/Producer": "Antenati ToolKit Pro v2.0",
+            "/Producer": f"Antenati ToolKit Pro v{PACKAGE_VERSION}",
         })
         tmp = pdf_path + ".tmp"
         with open(tmp, "wb") as f:

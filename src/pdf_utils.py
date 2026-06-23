@@ -12,6 +12,10 @@ pdf_utils.py — ATK-Pro v2.0 (ripristino logica v1.4.1 con innesti Qt)
 import os
 import logging
 from logging.handlers import RotatingFileHandler
+try:
+    from atk_version import PACKAGE_VERSION
+except ImportError:
+    from src.atk_version import PACKAGE_VERSION
 ATKPRO_ENV = os.environ.get("ATKPRO_ENV", "development").lower()
 logger = logging.getLogger(__name__)
 if not logger.hasHandlers():
@@ -125,7 +129,7 @@ def build_metadata_dict(title, subject, ua, ark):
         "/Subject": str(subject or ""),
         "/Keywords": keywords,
         "/Creator": "Antenati ToolKit Pro",
-        "/Producer": "Antenati ToolKit Pro v2.0",
+        "/Producer": f"Antenati ToolKit Pro v{PACKAGE_VERSION}",
     }
 
 

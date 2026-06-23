@@ -14,6 +14,10 @@ import json
 import logging
 from PIL import Image, PngImagePlugin
 import piexif
+try:
+    from atk_version import PACKAGE_VERSION
+except ImportError:
+    from src.atk_version import PACKAGE_VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +30,7 @@ def _to_utf16le(s: str) -> bytes:
 def build_image_metadata(
     ua=None, ark=None, canvas_id=None, page_label=None,
     range_label=None, description=None, source_url=None,
-    atk_version="2.0"
+    atk_version=PACKAGE_VERSION
 ):
     """Costruisce un dizionario di metadati per un'immagine, con JSON sidecar embedded."""
     meta = {}

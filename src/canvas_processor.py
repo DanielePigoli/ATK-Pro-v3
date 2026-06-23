@@ -14,6 +14,7 @@ from src.image_saver import save_image_variants
 from src.metadata_utils import build_image_metadata, estrai_metadati_da_manifest
 from src.pdf_utils import create_pdf_from_images, enrich_pdf_metadata
 from src.url_utils import _last_segment, _parse_ark_from_url, _parse_ua_from_url
+from src.atk_version import PACKAGE_VERSION
 import builtins
 from pathlib import Path as _Path
 
@@ -208,7 +209,7 @@ def process_single_canvas(
             range_label=None,
             description=(record_nome_file or nome_base),
             source_url=page_url,
-            atk_version="2.0"
+            atk_version=PACKAGE_VERSION
         )
 
         save_image_variants(final_img, output_folder, nome_base, formats, meta=meta)
@@ -293,7 +294,7 @@ def process_all_canvases(
                 range_label=None,
                 description=base_filename_prefix,
                 source_url=page_url,
-                atk_version="2.0"
+                atk_version=PACKAGE_VERSION
             )
 
             save_image_variants(final_img, output_folder, nome_base, formats, meta=meta)
