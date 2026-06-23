@@ -12,6 +12,8 @@ from pathlib import Path
 # Aggiungi il percorso src al path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
+from atk_version import VERSION
+
 
 class TestLanguageSupport(unittest.TestCase):
     """Test per verificare che tutte le 20 lingue siano presenti e configurate"""
@@ -153,7 +155,7 @@ class TestBuildArtifacts(unittest.TestCase):
         self.workspace_root = Path(__file__).parent.parent
         self.dist_dir = self.workspace_root / 'dist' / 'ATK-Pro'
         self.exe_file = self.dist_dir / 'ATK-Pro.exe'
-        self.installer_file = self.workspace_root / 'Output' / 'ATK-Pro-Setup-v3.0.0.exe'
+        self.installer_file = self.workspace_root / 'Output' / f'ATK-Pro-Setup-v{VERSION}.exe'
 
     def require_build_artifacts(self):
         if not self.dist_dir.exists():

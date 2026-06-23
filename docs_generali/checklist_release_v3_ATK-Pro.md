@@ -28,7 +28,7 @@ release pubblica multilingue completa.
 | Policy runtime D/R portali | Go con re-check periodico | `src/portal_registry.py` applica `R_OK`, `R_LIMITED`, `D_ONLY` e `VARIABLE`; `verify_portal_policy.py` controlla scadenza delle policy e genera `portal_policy_overrides.json` per aggiornamenti locali senza nuova release. |
 | Portali esistenti | Go italiano; verifica globale aperta | Registry e policy comprendono 25 capability. Lo smoke live del 2026-06-22 passa su tutti i portali italiani e su 24/25 campioni complessivi; Gallica resta da riallineare per risposta HTTP 403 del manifest campione. |
 | Test tecnici | Go | Suite completa del 2026-06-23: 559 test passati e 38 skip attesi; verificatori guida italiana, asset documentali e policy portali superati. |
-| Packaging | Go Windows portable; altre build aperte | Build PyInstaller onedir Windows RC1 generata, avviata e provata manualmente; restano da generare e provare installer Windows, macOS e Linux. |
+| Packaging | Go Windows portable; installer generato | Build PyInstaller onedir Windows RC1 generata, avviata e provata manualmente; installer Windows RC1 generato con Inno Setup e verificato a livello build/test. Restano da provare manualmente installer Windows, macOS e Linux. |
 | File temporanei | Go con controllo finale | Inventario root eseguito: artefatti locali, cache, build, log, screenshot e output test risultano ignorati o coperti da regole di esclusione; prima del tag resta da confermare `git status --short --ignored`. |
 
 ## Suite smoke pre-RC
@@ -81,11 +81,17 @@ policy legale del portale.
 
 ## RC1 Windows portable
 
-Artefatto generato e validato:
+Artefatto portable generato e validato:
 
 - `ATK-Pro_v3.0.0-rc1_windows-portable.zip`
 - SHA256:
   `52F05680C8FD0030AF8D55A58234B8B40FDF72403D9CC1FFD4A9A0C8CACAE111`
+
+Installer Windows generato:
+
+- `ATK-Pro-Setup-v3.0.0-rc1.exe`
+- SHA256:
+  `A60B4FEC0BF38C453BA39A96D64D63F6A75AE60FF47A7028CB37FBD2D2555DA9`
 
 Smoke manuale superato su:
 

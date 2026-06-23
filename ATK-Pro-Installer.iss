@@ -3,7 +3,7 @@
 ; Legge i disclaimer direttamente da assets/ 
 
 #define MyAppName "ATK-Pro"
-#define MyAppVersion "3.0.0"
+#define MyAppVersion "3.0.0-rc1"
 #define MyAppPublisher "ATK-Pro Project"
 #define MyAppURL "https://github.com/DanielePigoli/ATK-Pro-v3"
 #define MyAppExeName "ATK-Pro.exe"

@@ -6,15 +6,16 @@ Questa nota accompagna la release candidate tecnica v3.0.0 RC1, generata dalla
 baseline `main` dopo la chiusura della preparazione dei portali italiani e
 italofoni e della metadata di versione RC1.
 
-## Artefatto Windows portable
+## Artefatti Windows
 
 | Campo | Valore |
 | --- | --- |
-| Pacchetto | `ATK-Pro_v3.0.0-rc1_windows-portable.zip` |
-| Tipo | Windows portable, build PyInstaller onedir |
-| Versione mostrata nell'app | `ATK-Pro v3.0.0 RC1` |
-| SHA256 | `52F05680C8FD0030AF8D55A58234B8B40FDF72403D9CC1FFD4A9A0C8CACAE111` |
-| Stato | Validato manualmente su Windows |
+| Pacchetto | Tipo | SHA256 | Stato |
+| --- | --- | --- | --- |
+| `ATK-Pro_v3.0.0-rc1_windows-portable.zip` | Windows portable, build PyInstaller onedir | `52F05680C8FD0030AF8D55A58234B8B40FDF72403D9CC1FFD4A9A0C8CACAE111` | Validato manualmente su Windows |
+| `ATK-Pro-Setup-v3.0.0-rc1.exe` | Windows installer Inno Setup | `A60B4FEC0BF38C453BA39A96D64D63F6A75AE60FF47A7028CB37FBD2D2555DA9` | Generato e verificato a livello build/test |
+
+Versione mostrata nell'app: `ATK-Pro v3.0.0 RC1`.
 
 La build richiede l'accettazione esplicita del disclaimer legale v3 prima di
 mostrare la finestra principale. La mancata accettazione deve impedire l'avvio
@@ -29,6 +30,7 @@ dell'applicazione.
 | Suite completa pytest | Pass | `559 passed, 38 skipped`. |
 | Suite mirata RC1 | Pass | `28 passed`. |
 | Build PyInstaller | Pass | Build onedir completata; esclusione `tkinter` attesa e gestita. |
+| Build installer Windows | Pass | Installer Inno Setup RC1 generato da build `dist` fresca. |
 | Smoke Antenati | Pass | Documento Antenati scaricato correttamente. |
 | Smoke BUB | Pass | Registro BUB Castenaso 1933 scaricato correttamente con range limitato. |
 | Smoke BDL PDF | Pass | PDF Biblioteca Digitale Lombarda estratto correttamente. |
@@ -58,7 +60,7 @@ utente di lavoro di ATK-Pro:
 | Piattaforma | Stato RC1 |
 | --- | --- |
 | Windows portable | Validata |
-| Windows installer | Da generare e provare |
+| Windows installer | Generato; da provare manualmente |
 | macOS | Da generare e provare |
 | Linux | Da generare e provare |
 

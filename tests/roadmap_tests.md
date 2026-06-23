@@ -81,7 +81,7 @@ alla v3:
   l'estrazione via browser e' disabilitata;
 - mock non aggiornati alle firme v3 con parametri `source_url` e `portale`;
 - test che cercano asset v2 o posizioni storiche, come glossario in root o
-  installer `ATK-Pro-Setup-v2.0.exe`;
+  installer precedenti alla v3;
 - aspettative UI datate su titolo applicazione e testo del progress dialog.
 
 Primo riallineamento successivo:
