@@ -2,11 +2,11 @@
 REM =============================================================
 REM  build_portable.bat — Crea la versione portable di ATK-Pro
 REM  Uso: build_portable.bat [versione]
-REM  Esempio: build_portable.bat 3.0.0-rc1
+REM  Esempio: build_portable.bat 3.0.0-rc2
 REM =============================================================
 
 SET VERSION=%1
-IF "%VERSION%"=="" SET VERSION=3.0.0-rc1
+IF "%VERSION%"=="" SET VERSION=3.0.0-rc2
 
 SET DIST_DIR=dist\ATK-Pro
 SET ZIP_NAME=ATK-Pro-v%VERSION%-Windows-Portable.zip
