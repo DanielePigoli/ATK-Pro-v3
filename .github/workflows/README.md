@@ -8,14 +8,13 @@ Workflow automatizzati per build multi-piattaforma di ATK-Pro usando GitHub Acti
 Compila l'applicazione per macOS e crea un installer DMG.
 
 **Trigger:**
-- Push su `main`
 - Tag `v*` (es. `v3.0.0-rc1` o `v3.0.0`)
-- Pull request
 - Manuale (workflow_dispatch)
 
 **Output:**
 - `ATK-Pro.app` - Applicazione macOS
-- `ATK-Pro-macOS.dmg` - Installer DMG drag & drop
+- `ATK-Pro-macOS-Intel-v<versione>.dmg` - DMG per Mac Intel
+- `ATK-Pro-macOS-AppleSilicon-v<versione>.dmg` - DMG per Apple Silicon
 
 **Come usare:**
 1. Vai su: https://github.com/DanielePigoli/ATK-Pro-v3/actions/workflows/build-macos.yml
@@ -27,14 +26,13 @@ Compila l'applicazione per macOS e crea un installer DMG.
 Compila l'eseguibile Windows e crea installer con Inno Setup.
 
 **Trigger:**
-- Push su `main`
 - Tag `v*` (es. `v3.0.0-rc1` o `v3.0.0`)
-- Pull request
 - Manuale (workflow_dispatch)
 
 **Output:**
 - `dist/ATK-Pro/ATK-Pro.exe` - Eseguibile portable
-- `ATK-Pro-Setup-v3.0.0.exe` - Installer Inno Setup
+- `ATK-Pro-Setup-v<versione>.exe` - Installer Inno Setup
+- `ATK-Pro-v<versione>-Windows-Portable.zip` - ZIP portable
 
 **Come usare:**
 1. Vai su: https://github.com/DanielePigoli/ATK-Pro-v3/actions/workflows/build-windows.yml
@@ -51,9 +49,12 @@ Per creare una release con installer automatici:
 git tag v3.0.0-rc1
 git push origin v3.0.0-rc1
 
-# 2. GitHub Actions compilerà automaticamente per Windows e macOS
+# 2. GitHub Actions compilerà automaticamente gli artifact taggati
 # 3. Gli installer saranno allegati alla release su GitHub
 ```
+
+Per tag contenenti `rc`, i workflow devono mantenere la release come
+pre-release e non promuoverla a release stabile.
 
 ## 🔧 Test Locale Prima del Push
 
@@ -83,6 +84,7 @@ open dist/ATK-Pro.app
 **Stato build:**
 - macOS: ![macOS Build](https://github.com/DanielePigoli/ATK-Pro-v3/actions/workflows/build-macos.yml/badge.svg)
 - Windows: ![Windows Build](https://github.com/DanielePigoli/ATK-Pro-v3/actions/workflows/build-windows.yml/badge.svg)
+- Linux: ![Linux Build](https://github.com/DanielePigoli/ATK-Pro-v3/actions/workflows/build-linux.yml/badge.svg)
 
 **Logs:**
 https://github.com/DanielePigoli/ATK-Pro-v3/actions
@@ -102,6 +104,10 @@ https://github.com/DanielePigoli/ATK-Pro-v3/actions
 - GitHub limita upload a 2 GB per release
 - Attuale: ~580 MB (OK)
 - Se supera: considera compressione asset o split multi-parte
+
+**Versione errata nel nome artifact:**
+- I workflow leggono la versione da `src/atk_version.py`.
+- Prima di un tag RC o finale, verificare `VERSION` e `DISPLAY_VERSION`.
 
 ## 📝 Note
 

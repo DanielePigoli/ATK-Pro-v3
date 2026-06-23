@@ -101,8 +101,7 @@ jobs:
     - name: Leggi versione
       id: ver
       run: |
-        VER=$(grep -m1 'VERSION' src/main_gui_qt.py | grep -o '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*')
-        [ -z "$VER" ] && VER="2.2.0"
+        VER=$(python3 -c "import sys; sys.path.insert(0, 'src'); from atk_version import VERSION; print(VERSION)")
         echo "version=$VER" >> $GITHUB_OUTPUT
         echo "Versione: $VER"
 
@@ -145,11 +144,17 @@ jobs:
           --jq "[.[] | select(.tag_name==\"${{ github.ref_name }}\")][0].id // empty" 2>/dev/null || true)
         if [ -n "$REL_ID" ]; then
           gh api "repos/$REPO/releases/$REL_ID" --method PATCH \
-            --field draft=false --field prerelease=false > /dev/null 2>&1 || true
+            --field draft=false > /dev/null 2>&1 || true
         else
-          gh release create "${{ github.ref_name }}" \
-            --title "ATK-Pro ${{ github.ref_name }}" \
-            --notes "" --draft=false 2>/dev/null || true
+          if [[ "${{ github.ref_name }}" == *"rc"* ]]; then
+            gh release create "${{ github.ref_name }}" \
+              --title "ATK-Pro ${{ github.ref_name }}" \
+              --notes "" --draft=false --prerelease 2>/dev/null || true
+          else
+            gh release create "${{ github.ref_name }}" \
+              --title "ATK-Pro ${{ github.ref_name }}" \
+              --notes "" --draft=false 2>/dev/null || true
+          fi
         fi
         gh release upload "${{ github.ref_name }}" \
           dist/ATK-Pro-macOS-Intel-v${{ steps.ver.outputs.version }}.dmg \
@@ -241,8 +246,7 @@ jobs:
     - name: Leggi versione
       id: ver
       run: |
-        VER=$(grep -m1 'VERSION' src/main_gui_qt.py | grep -o '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*')
-        [ -z "$VER" ] && VER="2.2.0"
+        VER=$(python3 -c "import sys; sys.path.insert(0, 'src'); from atk_version import VERSION; print(VERSION)")
         echo "version=$VER" >> $GITHUB_OUTPUT
         echo "Versione: $VER"
 
@@ -285,11 +289,17 @@ jobs:
           --jq "[.[] | select(.tag_name==\"${{ github.ref_name }}\")][0].id // empty" 2>/dev/null || true)
         if [ -n "$REL_ID" ]; then
           gh api "repos/$REPO/releases/$REL_ID" --method PATCH \
-            --field draft=false --field prerelease=false > /dev/null 2>&1 || true
+            --field draft=false > /dev/null 2>&1 || true
         else
-          gh release create "${{ github.ref_name }}" \
-            --title "ATK-Pro ${{ github.ref_name }}" \
-            --notes "" --draft=false 2>/dev/null || true
+          if [[ "${{ github.ref_name }}" == *"rc"* ]]; then
+            gh release create "${{ github.ref_name }}" \
+              --title "ATK-Pro ${{ github.ref_name }}" \
+              --notes "" --draft=false --prerelease 2>/dev/null || true
+          else
+            gh release create "${{ github.ref_name }}" \
+              --title "ATK-Pro ${{ github.ref_name }}" \
+              --notes "" --draft=false 2>/dev/null || true
+          fi
         fi
         gh release upload "${{ github.ref_name }}" \
           dist/ATK-Pro-macOS-AppleSilicon-v${{ steps.ver.outputs.version }}.dmg \
