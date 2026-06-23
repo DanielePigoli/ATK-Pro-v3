@@ -10,11 +10,9 @@ Builds exe from modular source with proper path handling for:
 - Glossario multilingue (i18n JSON)
 - Manifest + tile caching
 
-Build modes:
-- --onedir: Development (faster builds, easier debugging)
-- --onefile: Distribution (single executable, slower startup)
+Build mode: onedir, usato sia per la build portable sia dall'installer.
 
-NOTE: Run from project root: pyinstaller ATK-Pro.spec [--onefile]
+NOTE: Run from project root: pyinstaller ATK-Pro.spec
 """
 
 import sys

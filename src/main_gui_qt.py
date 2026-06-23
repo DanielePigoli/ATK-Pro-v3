@@ -8,9 +8,8 @@ from PySide6.QtWidgets import (
     QMenuBar, QMenu, QDialog, QComboBox, QCheckBox, QSizePolicy, QInputDialog, QFrame,
     QProgressDialog
 )
+from atk_version import DISPLAY_VERSION, VERSION, is_newer_version
 
-# Versione corrente dell'applicazione
-VERSION = "3.0.0"
 GITHUB_REPO = "DanielePigoli/ATK-Pro-v3"
 DISCLAIMER_REVISION = "v3.0.0-legal-disclaimer-2026-05-27"
 DISCLAIMER_ACCEPT_PARAM = f"/ATKACCEPTDISCLAIMER={DISCLAIMER_REVISION}"
@@ -770,12 +769,7 @@ class _UpdateCheckerThread(QThread):
             latest_version = data.get('tag_name', '').lstrip('v')
             release_url = data.get('html_url', '')
             assets = data.get('assets', [])
-            current = [int(x) for x in VERSION.split('.')]
-            latest  = [int(x) for x in latest_version.split('.')]
-            max_len = max(len(current), len(latest))
-            current += [0] * (max_len - len(current))
-            latest  += [0] * (max_len - len(latest))
-            self.result.emit(latest > current, latest_version, release_url, assets)
+            self.result.emit(is_newer_version(latest_version), latest_version, release_url, assets)
         except Exception:
             self.result.emit(False, '', '', [])
 
@@ -1006,12 +1000,7 @@ class MainWindow(QMainWindow):
             latest_version = data.get('tag_name', '').lstrip('v')
             release_url = data.get('html_url', '')
             assets = data.get('assets', [])
-            current = [int(x) for x in VERSION.split('.')]
-            latest  = [int(x) for x in latest_version.split('.')]
-            max_len = max(len(current), len(latest))
-            current += [0] * (max_len - len(current))
-            latest  += [0] * (max_len - len(latest))
-            is_newer = latest > current
+            is_newer = is_newer_version(latest_version)
         except urllib.error.HTTPError as exc:
             if exc.code == 404:
                 is_newer, latest_version, release_url, assets = False, VERSION, '', []
@@ -1035,10 +1024,10 @@ class MainWindow(QMainWindow):
             if silent_if_ok:
                 return
             result_msg = (f"{gm('Nessun aggiornamento disponibile')}\n\n"
-                         f"{gm('Versione corrente')}: {VERSION}")
+                         f"{gm('Versione corrente')}: {DISPLAY_VERSION}")
         else:
             result_msg = (f"{gm('Nuova versione disponibile')}!\n\n"
-                         f"{gm('Versione corrente')}: {VERSION}\n"
+                         f"{gm('Versione corrente')}: {DISPLAY_VERSION}\n"
                          f"{gm('Ultima versione')}: {latest_version}")
 
         dlg = QDialog(self)
@@ -1952,7 +1941,7 @@ class MainWindow(QMainWindow):
                 email = f.read().strip()
         except Exception:
             email = "info@atk-pro.org"
-        righe = [f"ATK-Pro v{VERSION}", "©2026 Daniele Pigoli", email]
+        righe = [f"ATK-Pro v{DISPLAY_VERSION}", "©2026 Daniele Pigoli", email]
         from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton
         dlg = QDialog(self)
         dlg.setWindowTitle(get_msg(self.glossario_data, "Informazioni", self.lingua) or "Informazioni")
@@ -3015,7 +3004,7 @@ def action_process(glossario_data, lingua, parent=None):
             layout.setSpacing(2)
             email_path = os.path.join(ASSET_COMMON, "testuali", "email.txt")
             email = (carica_testo_asset(email_path) or "").strip()
-            r1 = QLabel(f"ATK-Pro v{VERSION}")
+            r1 = QLabel(f"ATK-Pro v{DISPLAY_VERSION}")
             r2 = QLabel("©2026 Daniele Pigoli")
             unavailable_email = get_msg(self.glossario_data, "email non disponibile", self.lingua) or "email non disponibile"
             r3 = QLabel(email if email else unavailable_email)
