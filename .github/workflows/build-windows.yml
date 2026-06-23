@@ -69,7 +69,7 @@ jobs:
         
     - name: Build portable ZIP
       run: |
-        $VERSION = (Select-String 'VERSION = ' src/main_gui_qt.py | ForEach-Object { $_.Line -replace '.*"(.*)".*','$1' } | Select-Object -First 1)
+        $VERSION = (python -c "import sys; sys.path.insert(0, 'src'); from atk_version import VERSION; print(VERSION)").Trim()
         Write-Host "Building portable ZIP for version: $VERSION"
         # Crea il sentinel portable.txt (non e' in git, va generato qui)
         Set-Content -Path dist\ATK-Pro\portable.txt -Value "ATK-Pro Portable Mode`nThis file enables portable mode: config.json is saved next to the executable." -Encoding UTF8
@@ -126,11 +126,17 @@ jobs:
           --jq "[.[] | select(.tag_name==\"${{ github.ref_name }}\")][0].id // empty" 2>/dev/null || true)
         if [ -n "$REL_ID" ]; then
           gh api "repos/$REPO/releases/$REL_ID" --method PATCH \
-            --field draft=false --field prerelease=false > /dev/null 2>&1 || true
+            --field draft=false > /dev/null 2>&1 || true
         else
-          gh release create "${{ github.ref_name }}" \
-            --title "ATK-Pro ${{ github.ref_name }}" \
-            --notes "" --draft=false 2>/dev/null || true
+          if [[ "${{ github.ref_name }}" == *"rc"* ]]; then
+            gh release create "${{ github.ref_name }}" \
+              --title "ATK-Pro ${{ github.ref_name }}" \
+              --notes "" --draft=false --prerelease 2>/dev/null || true
+          else
+            gh release create "${{ github.ref_name }}" \
+              --title "ATK-Pro ${{ github.ref_name }}" \
+              --notes "" --draft=false 2>/dev/null || true
+          fi
         fi
         gh release upload "${{ github.ref_name }}" \
           "Output/ATK-Pro-Setup-v${APP_VERSION}.exe" \
