@@ -114,12 +114,31 @@ jobs:
         cp assets/it/testuali/disclaimer_legale_ATK-Pro.txt /tmp/atk-disclaimer.txt
         brew install create-dmg
         DMG_NAME="ATK-Pro-macOS-Intel-v${{ steps.ver.outputs.version }}.dmg"
-        create-dmg \
-          --volname "ATK-Pro v${{ steps.ver.outputs.version }} — Intel" \
-          --eula /tmp/atk-disclaimer.txt \
-          --no-internet-enable \
-          dist/${DMG_NAME} \
-          dist/dmg_intel/
+        cleanup_dmg_mounts() {
+          for mount in /Volumes/dmg.*; do
+            [ -e "$mount" ] || continue
+            hdiutil detach "$mount" -force || true
+          done
+        }
+        create_dmg_with_retry() {
+          for attempt in 1 2; do
+            cleanup_dmg_mounts
+            rm -f "dist/${DMG_NAME}" dist/rw.*."${DMG_NAME}"
+            if create-dmg \
+              --volname "ATK-Pro v${{ steps.ver.outputs.version }} — Intel" \
+              --eula /tmp/atk-disclaimer.txt \
+              --no-internet-enable \
+              "dist/${DMG_NAME}" \
+              dist/dmg_intel/; then
+              return 0
+            fi
+            cleanup_dmg_mounts
+            echo "create-dmg fallito sul tentativo ${attempt}/2"
+            sleep 10
+          done
+          return 1
+        }
+        create_dmg_with_retry
         echo "✓ $(du -sh dist/${DMG_NAME})"
 
     - name: Upload artifact (Intel app)
@@ -259,12 +278,31 @@ jobs:
         cp assets/it/testuali/disclaimer_legale_ATK-Pro.txt /tmp/atk-disclaimer.txt
         brew install create-dmg
         DMG_NAME="ATK-Pro-macOS-AppleSilicon-v${{ steps.ver.outputs.version }}.dmg"
-        create-dmg \
-          --volname "ATK-Pro v${{ steps.ver.outputs.version }} — Apple Silicon" \
-          --eula /tmp/atk-disclaimer.txt \
-          --no-internet-enable \
-          dist/${DMG_NAME} \
-          dist/dmg_arm64/
+        cleanup_dmg_mounts() {
+          for mount in /Volumes/dmg.*; do
+            [ -e "$mount" ] || continue
+            hdiutil detach "$mount" -force || true
+          done
+        }
+        create_dmg_with_retry() {
+          for attempt in 1 2; do
+            cleanup_dmg_mounts
+            rm -f "dist/${DMG_NAME}" dist/rw.*."${DMG_NAME}"
+            if create-dmg \
+              --volname "ATK-Pro v${{ steps.ver.outputs.version }} — Apple Silicon" \
+              --eula /tmp/atk-disclaimer.txt \
+              --no-internet-enable \
+              "dist/${DMG_NAME}" \
+              dist/dmg_arm64/; then
+              return 0
+            fi
+            cleanup_dmg_mounts
+            echo "create-dmg fallito sul tentativo ${attempt}/2"
+            sleep 10
+          done
+          return 1
+        }
+        create_dmg_with_retry
         echo "✓ $(du -sh dist/${DMG_NAME})"
 
     - name: Upload artifact (Apple Silicon app)
