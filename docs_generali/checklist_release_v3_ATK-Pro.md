@@ -130,6 +130,9 @@ RC2 aggiorna la RC1 con:
 
 Documento collegato: `docs_generali/note_release_v3.0.0-rc2_ATK-Pro.md`.
 
+Registro riscontri tester collegato:
+`docs_generali/registro_riscontri_tester_v3.0.0-rc2_ATK-Pro.md`.
+
 ## Bloccanti per release pubblica completa
 
 - Propagazione multilingue della guida v3 oppure avviso chiaro e coerente nelle
