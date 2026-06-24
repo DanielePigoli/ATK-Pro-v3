@@ -153,6 +153,7 @@ Registro riscontri tester collegato:
 - `docs_generali/matrice_portali_esistenti_ATK-Pro.md`
 - `docs_generali/matrice_portali_candidati_ATK-Pro.md`
 - `docs_generali/portal_live_smoke_samples.md`
+- `docs_generali/piano_consolidamento_post_rc_v3_ATK-Pro.md`
 - `tests/roadmap_tests.md`
 - `docs_generali/note_release_v3.0.0-rc1_ATK-Pro.md`
 - `docs_generali/note_release_v3.0.0-rc2_ATK-Pro.md`
