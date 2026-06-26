@@ -17,7 +17,7 @@ if not logging.getLogger('atkpro').hasHandlers():
     logging.getLogger('atkpro').setLevel(logging.DEBUG)
 logger = logging.getLogger('atkpro')
 import os
-from key_manager import KeyManager
+from key_manager import KeyManager, SUPPORTED_AI_PROVIDERS
 from ai_utils import get_best_gemini_model
 from multi_provider_handlers import get_handler
 
@@ -43,7 +43,7 @@ class RicercaAssistitaAIWorker(QThread):
             logger.debug(f"[AIWorker] Avvio ricerca: provider={self.provider}, query={self.query}")
             providers = [self.provider]
             # Fallback automatico: aggiungi altri provider con chiavi configurate
-            all_providers = ["Gemini", "Claude", "OpenAI", "Mistral", "xAI", "DeepSeek", "Groq", "HuggingFace", "Ollama"]
+            all_providers = list(SUPPORTED_AI_PROVIDERS)
             for p in all_providers:
                 if p not in providers and self.km.get_all_keys(p):
                     providers.append(p)
@@ -194,7 +194,7 @@ class RicercaAssistitaAIDialog(QDialog):
         self.combo_provider = QComboBox()
         self.combo_provider.setStyleSheet(inp_css)
         self.combo_provider.setMinimumHeight(24)
-        self.combo_provider.addItems(["Gemini", "Claude", "OpenAI", "Mistral", "xAI", "DeepSeek", "Groq", "HuggingFace", "Ollama"])
+        self.combo_provider.addItems(list(SUPPORTED_AI_PROVIDERS))
         lbl_prov = QLabel(self.gm("Provider AI:"))
         lbl_prov.setStyleSheet(lbl_style)
         lbl_prov.setMinimumHeight(24)
