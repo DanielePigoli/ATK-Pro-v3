@@ -12,6 +12,7 @@ SUPPORTED_AI_PROVIDERS = (
     "Groq",
     "HuggingFace",
     "Ollama",
+    "Transkribus",
 )
 
 PROVIDER_NOTES = {
@@ -24,6 +25,7 @@ PROVIDER_NOTES = {
     "Groq": "Inserisci qui la tua chiave Groq",
     "HuggingFace": "Inserisci qui la tua chiave Hugging Face",
     "Ollama": "Inserisci qui l'host Ollama se diverso da http://localhost:11434",
+    "Transkribus": "Inserisci email:password oppure Bearer token Transkribus",
 }
 
 PROVIDER_ALIASES = {
@@ -44,6 +46,7 @@ PROVIDER_ALIASES = {
     "HUGGING FACE": "HuggingFace",
     "HF": "HuggingFace",
     "OLLAMA": "Ollama",
+    "TRANSKRIBUS": "Transkribus",
 }
 
 

@@ -50,3 +50,23 @@ def test_provider_aliases_are_normalized_for_key_lookup_and_rotation(tmp_path):
     assert km.get_all_keys("HuggingFace") == ["hf-key"]
     assert km.has_keys("Hugging Face")
     assert km.get_next_key("Grok") == ("grok-key", False)
+
+
+def test_ui_provider_labels_are_known_by_key_manager():
+    labels = [
+        "Anthropic / Claude (Miglior Testo)",
+        "OpenAI (GPT-4o)",
+        "Google Gemini",
+        "DeepSeek (Economico/Testo)",
+        "Mistral",
+        "xAI / Grok",
+        "Groq (Veloce)",
+        "Hugging Face (Inference API)",
+        "Ollama (Locale/Privato)",
+        "Transkribus (Italian Handwriting HTR)",
+    ]
+
+    normalized = {normalize_provider_name(label) for label in labels}
+
+    assert normalized.issubset(set(SUPPORTED_AI_PROVIDERS))
+    assert "Transkribus" in normalized
