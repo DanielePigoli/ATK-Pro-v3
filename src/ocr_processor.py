@@ -4,7 +4,7 @@ import base64
 import logging
 import requests
 from PIL import Image
-from key_manager import KeyManager
+from key_manager import KeyManager, missing_provider_credentials_message
 
 
 class AdvancedOCRWorker:
@@ -26,7 +26,7 @@ class AdvancedOCRWorker:
             self.api_keys = [api_key]
             logging.info(f"[OCR] Chiave manuale in uso per {provider}.")
         else:
-            raise ValueError(f"Nessuna API Key disponibile per {provider}. Aprire la Cassaforte e inserire almeno una chiave.")
+            raise ValueError(missing_provider_credentials_message(provider))
 
         self.current_key_idx = 0
 

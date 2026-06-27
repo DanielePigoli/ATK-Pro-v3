@@ -9,9 +9,17 @@ from PySide6.QtGui import QFont
 from translation_processor import TranslationWorker
 
 try:
-    from key_manager import normalize_provider_name
+    from key_manager import (
+        missing_provider_credentials_message,
+        normalize_provider_name,
+        provider_requires_credentials,
+    )
 except ImportError:
-    from src.key_manager import normalize_provider_name
+    from src.key_manager import (
+        missing_provider_credentials_message,
+        normalize_provider_name,
+        provider_requires_credentials,
+    )
 
 TARGET_LANGUAGES = [
     "Italiano", "English", "Español", "Français", "Deutsch", "Português",
@@ -437,14 +445,17 @@ class TranslationDialog(QDialog):
             return
 
         api_key = self.txt_api.text().strip()
-        # Ollama non richiede API key (usa host locale)
-        if not api_key and "Ollama" not in self.combo_prov.currentText():
-            QMessageBox.warning(self, self.gm("Attenzione"), self.gm("Inserire la API Key per il provider scelto."))
+        prov_str = normalize_provider_name(self.combo_prov.currentText())
+        # I provider locali non richiedono chiavi remote.
+        if not api_key and provider_requires_credentials(prov_str):
+            QMessageBox.warning(
+                self,
+                self.gm("Attenzione"),
+                self.gm(missing_provider_credentials_message(prov_str)),
+            )
             return
 
         self.save_settings()
-
-        prov_str = normalize_provider_name(self.combo_prov.currentText())
 
         # Costruisce il prompt dalla tipologia documentale selezionata
         doc_type = self.combo_type.currentText()

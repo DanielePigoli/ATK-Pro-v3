@@ -3,7 +3,9 @@ import csv
 from src.key_manager import (
     SUPPORTED_AI_PROVIDERS,
     KeyManager,
+    missing_provider_credentials_message,
     normalize_provider_name,
+    provider_requires_credentials,
 )
 
 
@@ -77,3 +79,17 @@ def test_ui_provider_labels_are_known_by_key_manager():
 
     assert normalized.issubset(set(SUPPORTED_AI_PROVIDERS))
     assert "Transkribus" in normalized
+
+
+def test_provider_credential_policy_distinguishes_local_provider():
+    assert provider_requires_credentials("Gemini")
+    assert provider_requires_credentials("Transkribus")
+    assert not provider_requires_credentials("Ollama (Locale/Privato)")
+
+    remote_message = missing_provider_credentials_message("Google Gemini")
+    local_message = missing_provider_credentials_message("Ollama")
+
+    assert "Gemini" in remote_message
+    assert "Cassaforte" in remote_message
+    assert "Ollama non richiede una API Key" in local_message
+    assert "servizio locale" in local_message

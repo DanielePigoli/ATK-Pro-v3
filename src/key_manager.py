@@ -49,6 +49,8 @@ PROVIDER_ALIASES = {
     "TRANSKRIBUS": "Transkribus",
 }
 
+LOCAL_AI_PROVIDERS = ("Ollama",)
+
 
 def _empty_key_map():
     return {provider: [] for provider in SUPPORTED_AI_PROVIDERS}
@@ -67,6 +69,24 @@ def normalize_provider_name(provider):
         if normalized.lower() == canonical.lower():
             return canonical
     return normalized
+
+
+def provider_requires_credentials(provider):
+    return normalize_provider_name(provider) not in LOCAL_AI_PROVIDERS
+
+
+def missing_provider_credentials_message(provider):
+    provider = normalize_provider_name(provider) or "provider selezionato"
+    if not provider_requires_credentials(provider):
+        return (
+            f"{provider} non richiede una API Key, ma richiede un servizio locale "
+            "raggiungibile. Verificare host e porta nelle impostazioni del provider."
+        )
+    return (
+        f"Nessuna credenziale disponibile per {provider}. "
+        "Inserire una chiave nel campo corrente oppure aprire la Cassaforte e "
+        "aggiungere almeno una credenziale per questo provider."
+    )
 
 
 class KeyManager:

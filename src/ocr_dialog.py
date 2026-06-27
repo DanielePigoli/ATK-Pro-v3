@@ -18,9 +18,17 @@ from PySide6.QtGui import QIcon, QFont, QPixmap
 
 from asset_cache import get_pixmap_cached
 try:
-    from key_manager import normalize_provider_name
+    from key_manager import (
+        missing_provider_credentials_message,
+        normalize_provider_name,
+        provider_requires_credentials,
+    )
 except ImportError:
-    from src.key_manager import normalize_provider_name
+    from src.key_manager import (
+        missing_provider_credentials_message,
+        normalize_provider_name,
+        provider_requires_credentials,
+    )
 
 from ocr_processor import AdvancedOCRWorker
 
@@ -703,13 +711,21 @@ class AdvancedOCRDialog(QDialog):
         prov_str_check = self._current_provider_key()
         from key_manager import KeyManager
         from config_utils import _config_file_path
-        # Ollama non richiede API key (usa host locale)
-        if prov_str_check != "Ollama":
+        # I provider locali non richiedono chiavi remote.
+        if provider_requires_credentials(prov_str_check):
             if not os.path.exists(_config_file_path()) and not KeyManager().has_keys(prov_str_check):
-                QMessageBox.warning(self, self.gm("Attenzione"), self.gm("Inserisci la API Key valida."))
+                QMessageBox.warning(
+                    self,
+                    self.gm("Attenzione"),
+                    self.gm(missing_provider_credentials_message(prov_str_check)),
+                )
                 return
             if not self.txt_api.text().strip() and not KeyManager().has_keys(prov_str_check):
-                QMessageBox.warning(self, self.gm("Attenzione"), self.gm("Inserisci la API Key valida."))
+                QMessageBox.warning(
+                    self,
+                    self.gm("Attenzione"),
+                    self.gm(missing_provider_credentials_message(prov_str_check)),
+                )
                 return
 
         fmt = []
