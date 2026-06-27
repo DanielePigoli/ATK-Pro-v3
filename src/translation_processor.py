@@ -19,7 +19,7 @@ class TranslationWorker(QThread):
         self.custom_model = custom_model
 
         # --- Gestione chiavi: Cassaforte > campo manuale ---
-        from key_manager import KeyManager
+        from key_manager import KeyManager, missing_provider_credentials_message
         km = KeyManager()
         km_keys = km.get_all_keys(provider)
         if km_keys:
@@ -35,7 +35,7 @@ class TranslationWorker(QThread):
 
     def run(self):
         if not self.api_keys:
-            self.finished.emit(False, "Nessuna API Key disponibile. Aprire la Cassaforte e inserire almeno una chiave.")
+            self.finished.emit(False, missing_provider_credentials_message(self.provider))
             return
         try:
             if not self.source_text.strip():
