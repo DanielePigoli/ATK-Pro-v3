@@ -25,6 +25,24 @@ Motivo: breve spiegazione del tipo di lavoro e del rischio.
 Se il lavoro e' minimo, per esempio una risposta discorsiva o un comando
 semplice, la segnalazione puo' essere omessa.
 
+## Livello Di Ragionamento
+
+Anche il livello di ragionamento va trattato come suggerimento operativo, non
+come vincolo assoluto. Il modello consigliato e il livello di ragionamento
+vanno letti insieme: il primo orienta la capacita' generale, il secondo misura
+quanta profondita' serve nel passetto corrente.
+
+| Tipo di lavoro | Livello consigliato | Motivo |
+| --- | --- | --- |
+| Ricognizione, lettura file, conteggi, classificazione, modifiche meccaniche | `basso` | Serve rapidita' e un uso contenuto delle risorse. |
+| Fix circoscritti, test mirati, documentazione operativa, aggiornamenti di tabelle | `medio` | E' il livello piu' equilibrato per il lavoro quotidiano. |
+| Bug delicati, nuovo portale, packaging, regressioni con alcuni moduli coinvolti | `elevato` | Richiede piu' contesto e piu' attenzione alle conseguenze. |
+| Refactoring trasversale, concorrenza, bug intermittenti, review finale ampia | `extra-elevato` | Serve il massimo della profondita' per evitare soluzioni locali che rompono altro. |
+
+Regola di buon senso: se il modello e' gia' alto ma il compito e' piccolo,
+meglio abbassare il livello di ragionamento. Se il problema cresce o diventa
+ambiguo, il livello va alzato prima di toccare piu' file.
+
 ## Criteri di scelta
 
 | Tipo di lavoro | Modello consigliato | Motivo |
@@ -36,6 +54,20 @@ semplice, la segnalazione puo' essere omessa.
 | GUI + worker + rete, concorrenza, crash non riproducibile, regressione multi-portale | GPT-5.5 | Alto rischio di effetti trasversali e diagnosi ambigua. |
 | Refactoring architetturale, policy provider, pipeline manifest/canvas/download/PDF | GPT-5.5 | La decisione puo' propagarsi in molti moduli e test. |
 | Revisione finale di diff ampio o release candidate delicata | GPT-5.5 | Meglio massimizzare la qualita' della revisione prima del merge/tag. |
+
+## Combinazione Pratica
+
+La scelta finale va letta come coppia:
+
+- `modello` per la capacita' generale;
+- `livello di ragionamento` per la profondita' del passetto.
+
+Esempi pratici:
+
+- `GPT-5.4 mini` + `basso` per scansione file e piccoli aggiornamenti.
+- `GPT-5.4` + `medio` per fix normali con test mirati.
+- `GPT-5.4` + `elevato` per un portale nuovo o un flusso con due o tre moduli.
+- `GPT-5.5` + `extra-elevato` per diagnostica ampia o refactoring delicato.
 
 ## Fast mode
 
