@@ -4,7 +4,8 @@ import pytest
 from pypdf import PdfReader
 from pdf_utils import (
     create_pdf_from_images,
-    enrich_pdf_metadata
+    enrich_pdf_metadata,
+    _pdf_open_max_workers,
 )
 
 # -----------------------
@@ -55,6 +56,13 @@ def test_create_pdf_with_corrupted_image(monkeypatch, tmp_path):
     monkeypatch.setattr("pdf_utils.Image.open", fake_open)
     result = create_pdf_from_images(["fake.png"], str(tmp_path / "out.pdf"))
     assert result is None
+
+
+def test_pdf_open_max_workers_is_capped_for_memory():
+    assert _pdf_open_max_workers(1, cpu_count=16) == 1
+    assert _pdf_open_max_workers(2, cpu_count=16) == 2
+    assert _pdf_open_max_workers(20, cpu_count=16) == 4
+    assert _pdf_open_max_workers(20, cpu_count=2) == 2
 
 # -----------------------
 # TEST enrich_pdf_metadata
