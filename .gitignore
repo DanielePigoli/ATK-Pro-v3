@@ -43,6 +43,7 @@ run_gui_harness_*.ps1
 
 # 🧪 Output e dati generati
 output/
+outputs/
 out/
 temp/
 cache/
