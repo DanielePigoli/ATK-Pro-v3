@@ -52,6 +52,14 @@ def normalize_image_mode(im):
     return im
 
 
+def _pdf_open_max_workers(total_images: int, cpu_count: int | None = None) -> int:
+    """Limita l'apertura parallela delle immagini per contenere i picchi RAM."""
+    if total_images <= 1:
+        return 1
+    cpu_count = cpu_count or os.cpu_count() or 4
+    return min(4, max(2, cpu_count // 2), total_images)
+
+
 def create_pdf_from_images(image_paths, output_pdf_path, resolution_dpi=400,
                            update_status=None, update_progress=None, on_error=None):
     """
@@ -81,13 +89,11 @@ def create_pdf_from_images(image_paths, output_pdf_path, resolution_dpi=400,
                 pass
         return im
 
-    # Parallelizzazione automatica: usa metà dei core disponibili, minimo 2, massimo 8
-    import os
+    # L'apertura immagini può generare picchi RAM; resta parallela ma con cap prudente.
     try:
-        cpu_count = os.cpu_count() or 4
-        max_workers = min(8, max(2, cpu_count // 2))
+        max_workers = _pdf_open_max_workers(total)
     except Exception:
-        max_workers = 4
+        max_workers = min(4, total)
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         results = list(executor.map(_open_and_progress, image_paths))
     images = [im for im in results if im]
