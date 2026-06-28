@@ -6,7 +6,7 @@ ATK-Pro v3.0 PyInstaller Specification File
 Builds exe from modular source with proper path handling for:
 - Program Files installation (read-only code)
 - %USERPROFILE%\Documents\ATK-Pro\output (user-writable output)
-- Bundled assets (en, it, ar, de, es, fr, he, nl, pt, ru)
+- Bundled assets (20 multilingual asset directories)
 - Glossario multilingue (i18n JSON)
 - Manifest + tile caching
 
@@ -80,27 +80,6 @@ a = Analysis(
         
         # Configuration + documentation
         # ('README.md', '.'),
-        # CHANGELOG.md localizzati (20 lingue)
-        ('assets/en/testuali/CHANGELOG.md', 'assets/en/testuali'),
-        ('assets/it/testuali/CHANGELOG.md', 'assets/it/testuali'),
-        ('assets/es/testuali/CHANGELOG.md', 'assets/es/testuali'),
-        ('assets/fr/testuali/CHANGELOG.md', 'assets/fr/testuali'),
-        ('assets/de/testuali/CHANGELOG.md', 'assets/de/testuali'),
-        ('assets/pt/testuali/CHANGELOG.md', 'assets/pt/testuali'),
-        ('assets/ru/testuali/CHANGELOG.md', 'assets/ru/testuali'),
-        ('assets/ar/testuali/CHANGELOG.md', 'assets/ar/testuali'),
-        ('assets/nl/testuali/CHANGELOG.md', 'assets/nl/testuali'),
-        ('assets/he/testuali/CHANGELOG.md', 'assets/he/testuali'),
-        ('assets/ja/testuali/CHANGELOG.md', 'assets/ja/testuali'),
-        ('assets/zh/testuali/CHANGELOG.md', 'assets/zh/testuali'),
-        ('assets/pl/testuali/CHANGELOG.md', 'assets/pl/testuali'),
-        ('assets/tr/testuali/CHANGELOG.md', 'assets/tr/testuali'),
-        ('assets/da/testuali/CHANGELOG.md', 'assets/da/testuali'),
-        ('assets/no/testuali/CHANGELOG.md', 'assets/no/testuali'),
-        ('assets/vi/testuali/CHANGELOG.md', 'assets/vi/testuali'),
-        ('assets/el/testuali/CHANGELOG.md', 'assets/el/testuali'),
-        ('assets/ro/testuali/CHANGELOG.md', 'assets/ro/testuali'),
-        ('assets/sv/testuali/CHANGELOG.md', 'assets/sv/testuali'),
     ],
     hiddenimports=[
         'playwright',

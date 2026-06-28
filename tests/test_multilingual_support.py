@@ -307,7 +307,7 @@ class TestConfigurationFiles(unittest.TestCase):
         )
 
     def test_03_spec_file_has_all_languages(self):
-        """Verifica che il file spec contenga tutte le lingue"""
+        """Verifica che il file spec includa le directory di tutte le lingue."""
         with open(self.spec_file, 'r', encoding='utf-8') as f:
             spec_content = f.read()
 
@@ -316,10 +316,21 @@ class TestConfigurationFiles(unittest.TestCase):
 
         for lang in languages:
             self.assertIn(
-                lang,
+                f"('assets/{lang}', 'assets/{lang}')",
                 spec_content,
-                f"Lingua '{lang}' non trovata in ATK-Pro.spec"
+                f"Directory asset '{lang}' non trovata in ATK-Pro.spec"
             )
+
+    def test_04_spec_file_has_no_redundant_changelog_datas(self):
+        """Evita doppioni: i CHANGELOG localizzati sono gia inclusi dalle directory asset."""
+        with open(self.spec_file, 'r', encoding='utf-8') as f:
+            spec_content = f.read()
+
+        self.assertNotIn(
+            "testuali/CHANGELOG.md",
+            spec_content,
+            "ATK-Pro.spec non deve includere CHANGELOG localizzati singolarmente"
+        )
 
 
 def run_tests():
