@@ -391,6 +391,36 @@ def save_image_variants(image: Image.Image, output_folder: str, base_filename: s
             logger.error(f"[Error] Errore salvataggio TIFF {path}: {e}")
 
 
+def _save_direct_image_outputs(
+    image: Image.Image,
+    output_folder: str,
+    base_filename: str,
+    formats,
+    meta: dict = None,
+):
+    """Salva una immagine diretta nei formati richiesti, incluso PDF se selezionato."""
+    if not formats:
+        formats = ['PNG', 'JPEG', 'TIFF']
+
+    normalized_formats = [_normalize_format(fmt) for fmt in formats]
+    image_formats = [fmt for fmt in formats if _normalize_format(fmt) != 'PDF']
+    pdf_requested = 'PDF' in normalized_formats
+
+    if image_formats:
+        save_image_variants(image, output_folder, base_filename, image_formats, meta=meta)
+
+    if pdf_requested:
+        tmp_dir = os.path.join(output_folder, "_tmp_pdf_images")
+        os.makedirs(tmp_dir, exist_ok=True)
+        tmp_png = os.path.join(tmp_dir, f"{base_filename}_pdftmp.png")
+        try:
+            image.save(tmp_png, format='PNG')
+            pdf_out = os.path.join(output_folder, f"{base_filename}.pdf")
+            create_pdf_from_images(tmp_dir, pdf_out)
+        finally:
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+
+
 def _make_placeholder_image(service_id: str, width: int = 800, height: int = 1200,
                              glossario_data=None, lingua: str = "IT",
                              canvas_url: str = None) -> Image.Image:
@@ -1271,21 +1301,7 @@ class Elaborazione:
                     page_label = canvas.get('label', None)
                     meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                     formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
-                    if not formats:
-                        formats = ['PNG', 'JPEG', 'TIFF']
-                    _norm_fmts = [_normalize_format(f) for f in formats]
-                    _img_fmts = [f for f in formats if _normalize_format(f) != 'PDF']
-                    _pdf_in_fmts = 'PDF' in _norm_fmts
-                    if _img_fmts:
-                        save_image_variants(final_img, self.output_dir, self.nome_file, _img_fmts, meta=meta)
-                    if _pdf_in_fmts:
-                        _tmp_dir = os.path.join(self.output_dir, "_tmp_pdf_images")
-                        os.makedirs(_tmp_dir, exist_ok=True)
-                        _tmp_png = os.path.join(_tmp_dir, f"{self.nome_file}_pdftmp.png")
-                        final_img.save(_tmp_png, format='PNG')
-                        _pdf_out = os.path.join(self.output_dir, f"{self.nome_file}.pdf")
-                        create_pdf_from_images(_tmp_dir, _pdf_out)
-                        shutil.rmtree(_tmp_dir, ignore_errors=True)
+                    _save_direct_image_outputs(final_img, self.output_dir, self.nome_file, formats, meta=meta)
                     return True
             # --- Rovereto Digital Library: download diretto PNG pubblico da DSpace bitstream ---
             if isinstance(svc, dict) and svc.get('@context') == 'rovereto_direct':
