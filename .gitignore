@@ -249,6 +249,7 @@ DIAGNOSTICA_tabella_unita.md
 DIAGNOSTICA_trascrizione_IA_BOTTOM.md
 DIAGNOSTICA_trascrizione_IA_TOP.md
 _release_notes.md
+_tmp*.py
 
 # Artefatti di build locali Windows
 _win_artifacts/
@@ -290,3 +291,5 @@ src/debug_ia.txt
 src/gemini_report.txt
 src/gemini_final_report.txt
 src/quota_unlock_report.txt
+src/risultato_ai_*.html
+src/risultato_ai_*.md
