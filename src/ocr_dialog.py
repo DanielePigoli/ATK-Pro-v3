@@ -672,7 +672,7 @@ class AdvancedOCRDialog(QDialog):
                 from key_manager import KeyManager
                 km = KeyManager()
                 keys = km.get_all_keys(prov_str)
-                if keys:
+                if keys and not self.txt_api.text().strip():
                     self.txt_api.setText(keys[0])
                     import logging
                     logging.debug("[OCR] Chiave pre-caricata da Cassaforte (%s).", prov_str)

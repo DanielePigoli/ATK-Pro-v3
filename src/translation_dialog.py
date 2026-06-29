@@ -409,7 +409,7 @@ class TranslationDialog(QDialog):
                 from key_manager import KeyManager
                 prov_str = normalize_provider_name(self.combo_prov.currentText())
                 keys = KeyManager().get_all_keys(prov_str)
-                if keys and provider_requires_credentials(prov_str):
+                if keys and provider_requires_credentials(prov_str) and not self.txt_api.text().strip():
                     self.txt_api.setText(keys[0])
                     logging.debug("[TranslationDialog] Chiave pre-caricata da Cassaforte (%s).", prov_str)
             except Exception as km_e:
