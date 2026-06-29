@@ -310,6 +310,10 @@ class TranslationDialog(QDialog):
             self.lbl_custom_model.setVisible(True)
             self.inp_custom_model.setVisible(True)
             self.inp_custom_model.setPlaceholderText(self.gm("Es. llava, llama3.2-vision, qwen2.5vl"))
+            current_api = self.txt_api.text().strip()
+            if current_api and not current_api.lower().startswith(("http://", "https://")):
+                self.txt_api.clear()
+            self.txt_api.setPlaceholderText("http://localhost:11434")
         elif "Hugging Face" in prov:
             self.lbl_api.setText(self.gm("Hugging Face Token (hf_...):"))
             self.lbl_custom_model.setVisible(True)
