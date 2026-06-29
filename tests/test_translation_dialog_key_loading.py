@@ -53,3 +53,42 @@ def test_translation_dialog_preloads_cassaforte_key(monkeypatch, tmp_path, qtbot
     qtbot.addWidget(dlg)
 
     assert dlg.txt_api.text() == "vault-key-123"
+
+
+def test_translation_dialog_clears_remote_key_when_ollama_is_selected(monkeypatch, tmp_path, qtbot):
+    fake_key_manager_module = types.SimpleNamespace(
+        KeyManager=lambda: types.SimpleNamespace(
+            get_all_keys=lambda provider: ["vault-key-123"] if provider == "Gemini" else []
+        ),
+        missing_provider_credentials_message=lambda provider: f"missing credentials for {provider}",
+    )
+    monkeypatch.setitem(sys.modules, "key_manager", fake_key_manager_module)
+
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "ocr_provider": 2,
+                "ocr_api_key": "old-remote-key",
+                "translation_context": "",
+                "translation_custom_model": "",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    import src.translation_dialog as translation_dialog
+
+    monkeypatch.setattr(
+        translation_dialog,
+        "get_msg",
+        lambda glossario, chiave, lingua: chiave,
+    )
+    monkeypatch.setattr("config_utils._config_file_path", lambda: str(config_path))
+
+    dlg = translation_dialog.TranslationDialog(None, glossario_data={}, lingua_corrente="it")
+    qtbot.addWidget(dlg)
+
+    dlg.combo_prov.setCurrentIndex(dlg.combo_prov.findText("Ollama (Locale/Privato)"))
+    assert dlg.txt_api.text() == ""
+    assert "localhost" in dlg.txt_api.placeholderText()
