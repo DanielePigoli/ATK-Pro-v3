@@ -11,6 +11,9 @@ def test_translation_dialog_preloads_cassaforte_key(monkeypatch, tmp_path, qtbot
             get_all_keys=lambda provider: ["vault-key-123"] if provider == "Gemini" else []
         ),
         missing_provider_credentials_message=lambda provider: f"missing credentials for {provider}",
+        preload_vault_key=lambda provider, current_value="", key_manager=None: current_value or (
+            "vault-key-123" if provider == "Gemini" else ""
+        ),
     )
     monkeypatch.setitem(sys.modules, "key_manager", fake_key_manager_module)
 
@@ -61,6 +64,9 @@ def test_translation_dialog_clears_remote_key_when_ollama_is_selected(monkeypatc
             get_all_keys=lambda provider: ["vault-key-123"] if provider == "Gemini" else []
         ),
         missing_provider_credentials_message=lambda provider: f"missing credentials for {provider}",
+        preload_vault_key=lambda provider, current_value="", key_manager=None: current_value or (
+            "vault-key-123" if provider == "Gemini" else ""
+        ),
     )
     monkeypatch.setitem(sys.modules, "key_manager", fake_key_manager_module)
 

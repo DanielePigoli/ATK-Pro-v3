@@ -9,6 +9,9 @@ def test_ocr_dialog_clears_remote_key_when_ollama_is_selected(monkeypatch, tmp_p
             get_all_keys=lambda provider: ["vault-key-123"] if provider == "Gemini" else []
         ),
         missing_provider_credentials_message=lambda provider: f"missing credentials for {provider}",
+        preload_vault_key=lambda provider, current_value="", key_manager=None: current_value or (
+            "vault-key-123" if provider == "Gemini" else ""
+        ),
     )
     monkeypatch.setitem(sys.modules, "key_manager", fake_key_manager_module)
 
@@ -51,6 +54,9 @@ def test_ocr_dialog_preserves_manual_key_when_loading_from_vault(monkeypatch, tm
             get_all_keys=lambda provider: ["vault-key-123"] if provider == "Gemini" else []
         ),
         missing_provider_credentials_message=lambda provider: f"missing credentials for {provider}",
+        preload_vault_key=lambda provider, current_value="", key_manager=None: current_value or (
+            "vault-key-123" if provider == "Gemini" else ""
+        ),
     )
     monkeypatch.setitem(sys.modules, "key_manager", fake_key_manager_module)
 

@@ -669,11 +669,11 @@ class AdvancedOCRDialog(QDialog):
             # Pre-carica la prima chiave disponibile dalla Cassaforte (KeyManager)
             prov_str = self._current_provider_key()
             try:
-                from key_manager import KeyManager
+                from key_manager import KeyManager, preload_vault_key
                 km = KeyManager()
-                keys = km.get_all_keys(prov_str)
-                if keys and not self.txt_api.text().strip():
-                    self.txt_api.setText(keys[0])
+                preloaded = preload_vault_key(prov_str, self.txt_api.text(), km)
+                if preloaded != self.txt_api.text().strip():
+                    self.txt_api.setText(preloaded)
                     import logging
                     logging.debug("[OCR] Chiave pre-caricata da Cassaforte (%s).", prov_str)
                 elif os.path.exists(_config_file_path()):

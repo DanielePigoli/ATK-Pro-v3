@@ -406,11 +406,11 @@ class TranslationDialog(QDialog):
 
             # Pre-carica la prima chiave disponibile dalla Cassaforte, come avviene in OCR.
             try:
-                from key_manager import KeyManager
+                from key_manager import KeyManager, preload_vault_key
                 prov_str = normalize_provider_name(self.combo_prov.currentText())
-                keys = KeyManager().get_all_keys(prov_str)
-                if keys and provider_requires_credentials(prov_str) and not self.txt_api.text().strip():
-                    self.txt_api.setText(keys[0])
+                preloaded = preload_vault_key(prov_str, self.txt_api.text(), KeyManager())
+                if preloaded != self.txt_api.text().strip():
+                    self.txt_api.setText(preloaded)
                     logging.debug("[TranslationDialog] Chiave pre-caricata da Cassaforte (%s).", prov_str)
             except Exception as km_e:
                 logging.warning("[TranslationDialog] Impossibile caricare chiave da Cassaforte: %s", km_e)

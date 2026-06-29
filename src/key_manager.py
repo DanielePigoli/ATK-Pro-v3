@@ -89,6 +89,18 @@ def missing_provider_credentials_message(provider):
     )
 
 
+def preload_vault_key(provider, current_value="", key_manager=None):
+    """Ritorna la prima chiave del caveau solo se serve davvero e il campo è vuoto."""
+    provider = normalize_provider_name(provider)
+    if not provider_requires_credentials(provider):
+        return ""
+    if str(current_value or "").strip():
+        return str(current_value).strip()
+    km = key_manager or KeyManager()
+    keys = km.get_all_keys(provider)
+    return keys[0] if keys else ""
+
+
 class KeyManager:
     def __init__(self, app_name="ATK-Pro", file_path=None):
         self.app_name = app_name

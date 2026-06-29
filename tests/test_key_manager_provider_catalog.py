@@ -5,6 +5,7 @@ from src.key_manager import (
     KeyManager,
     missing_provider_credentials_message,
     normalize_provider_name,
+    preload_vault_key,
     provider_requires_credentials,
 )
 
@@ -93,3 +94,13 @@ def test_provider_credential_policy_distinguishes_local_provider():
     assert "Cassaforte" in remote_message
     assert "Ollama non richiede una API Key" in local_message
     assert "servizio locale" in local_message
+
+
+def test_preload_vault_key_respects_manual_value_and_local_providers():
+    class FakeKM:
+        def get_all_keys(self, provider):
+            return ["vault-key-123"] if provider == "Gemini" else []
+
+    assert preload_vault_key("Gemini", "", FakeKM()) == "vault-key-123"
+    assert preload_vault_key("Gemini", "manual-key-999", FakeKM()) == "manual-key-999"
+    assert preload_vault_key("Ollama", "", FakeKM()) == ""
