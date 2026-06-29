@@ -6,6 +6,7 @@ except ImportError:
     genai = None
 import openai
 import os
+from key_manager import missing_provider_credentials_message
 
 class TranslationWorker(QThread):
     finished = Signal(bool, str)
@@ -19,12 +20,15 @@ class TranslationWorker(QThread):
         self.custom_model = custom_model
 
         # --- Gestione chiavi: Cassaforte > campo manuale ---
-        from key_manager import KeyManager, missing_provider_credentials_message
+        from key_manager import KeyManager
         km = KeyManager()
         km_keys = km.get_all_keys(provider)
         if km_keys:
             self.api_keys = km_keys
             logging.info(f"[TRANS] Cassaforte: {len(km_keys)} chiave/i per {provider}.")
+        elif self.provider == "Ollama":
+            self.api_keys = ["http://localhost:11434"]
+            logging.info("[TRANS] Ollama locale: host predefinito in uso.")
         elif api_key:
             self.api_keys = [api_key]
         else:
