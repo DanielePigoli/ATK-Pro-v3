@@ -399,6 +399,17 @@ class TranslationDialog(QDialog):
                 # Translation specific
                 self.txt_ctx.setText(prefs.get('translation_context', ''))
                 self.inp_custom_model.setText(prefs.get('translation_custom_model', ''))
+
+            # Pre-carica la prima chiave disponibile dalla Cassaforte, come avviene in OCR.
+            try:
+                from key_manager import KeyManager
+                prov_str = normalize_provider_name(self.combo_prov.currentText())
+                keys = KeyManager().get_all_keys(prov_str)
+                if keys and provider_requires_credentials(prov_str):
+                    self.txt_api.setText(keys[0])
+                    logging.debug("[TranslationDialog] Chiave pre-caricata da Cassaforte (%s).", prov_str)
+            except Exception as km_e:
+                logging.warning("[TranslationDialog] Impossibile caricare chiave da Cassaforte: %s", km_e)
             
             # Default target language follows the current interface language when supported.
             default_autonym = TARGET_LANGUAGE_BY_INTERFACE.get(str(self.lingua).lower(), "English")
