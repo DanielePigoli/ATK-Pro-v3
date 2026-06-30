@@ -15,6 +15,7 @@ from key_manager import (
     provider_requires_credentials,
     service_supports_provider,
 )
+from ai_error_utils import classify_ai_runtime_error
 
 
 class AdvancedOCRWorker:
@@ -100,7 +101,7 @@ class AdvancedOCRWorker:
                 else:
                     raise e  # Errore non recuperabile, rilancia
 
-        raise Exception(f"[OCR] Tutte le chiavi esaurite. Ultimo errore: {last_error}")
+        raise Exception(classify_ai_runtime_error(self.provider, f"Tutte le chiavi esaurite. Ultimo errore: {last_error}"))
 
     def _process_pdf(self, pdf_path, review_callback=None, page_progress=None):
         """Converte ogni pagina del PDF in immagine e le trascrive una per una."""
@@ -146,7 +147,11 @@ class AdvancedOCRWorker:
                             raise e
 
                 if page_text is None:
-                    raise Exception(f"[OCR] Pagina {page_num + 1}: tutte le chiavi esaurite. {last_error}")
+                    page_error = classify_ai_runtime_error(
+                        self.provider,
+                        f"Tutte le chiavi esaurite. Ultimo errore: {last_error}",
+                    )
+                    raise Exception(f"[OCR] Pagina {page_num + 1}: {page_error}")
 
                 # Revisione interattiva per pagina (immagine temp ancora disponibile)
                 final_page_text = page_text

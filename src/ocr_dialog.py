@@ -37,6 +37,7 @@ except ImportError:
     )
 
 from ocr_processor import AdvancedOCRWorker
+from ai_error_utils import classify_ai_runtime_error
 
 def get_msg(glossario, chiave, lingua):
     try:
@@ -236,9 +237,9 @@ class CalibrationThread(QThread):
                             break
                     else:
                         raise e
-            self.error.emit(str(last_error))
+            self.error.emit(classify_ai_runtime_error(self.provider, last_error))
         except Exception as e:
-            self.error.emit(str(e))
+            self.error.emit(classify_ai_runtime_error(self.provider, e))
 
 
 class AdvancedOCRDialog(QDialog):

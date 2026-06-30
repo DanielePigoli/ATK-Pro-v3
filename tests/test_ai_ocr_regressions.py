@@ -98,6 +98,37 @@ def test_ai_worker_formats_last_provider_error_for_user(monkeypatch):
     assert "Quota o limite richieste esaurito" in captured["error"]
 
 
+def test_ocr_preview_worker_formats_provider_error_for_user(monkeypatch):
+    import src.ocr_dialog as ocr_dialog
+
+    class FakeWorker:
+        api_keys = ["fake-key"]
+
+        def __init__(self, provider, api_key, formats, output_dir):
+            self.provider = provider
+            self.api_key = api_key
+            self.current_key_idx = 0
+
+        def _current_key(self):
+            return self.api_keys[self.current_key_idx]
+
+        def _rotate_key(self):
+            return False
+
+        def transcribe_top_preview(self, file_path, api_key, base_prompt):
+            raise RuntimeError("429 quota exceeded")
+
+    monkeypatch.setattr(ocr_dialog, "AdvancedOCRWorker", FakeWorker)
+
+    worker = ocr_dialog.CalibrationThread("registro.jpg", "Gemini", "fake-key", "prompt")
+    captured = {}
+    worker.error.connect(lambda value: captured.setdefault("error", value))
+
+    worker.run()
+
+    assert "Quota o limite richieste esaurito" in captured["error"]
+
+
 def test_ai_search_result_log_summary_avoids_payload_dump():
     from src.RicercaAssistitaAI import _summarize_ai_result_payload
 
@@ -146,6 +177,28 @@ def test_ocr_worker_uses_default_ollama_host_when_api_key_missing():
     )
 
     assert worker.api_keys == ["http://localhost:11434"]
+
+
+def test_ocr_process_file_formats_last_provider_error_for_user(monkeypatch, tmp_path):
+    from src.ocr_processor import AdvancedOCRWorker
+
+    worker = AdvancedOCRWorker(
+        provider="Gemini",
+        api_key="fake-key",
+        formats=["txt"],
+        output_dir=str(tmp_path),
+    )
+
+    monkeypatch.setattr(worker, "_transcribe_image", lambda f_path, key: (_ for _ in ()).throw(RuntimeError("429 quota exceeded")))
+
+    try:
+        worker.process_file(str(tmp_path / "registro.jpg"))
+    except Exception as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("Expected OCR process_file to fail")
+
+    assert "Quota o limite richieste esaurito" in message
 
 
 def test_gemini_split_merge_deduplicates_fuzzy_rows_without_progressive():
