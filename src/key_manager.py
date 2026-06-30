@@ -15,6 +15,43 @@ SUPPORTED_AI_PROVIDERS = (
     "Transkribus",
 )
 
+SERVICE_PROVIDER_CATALOG = {
+    "ai_search": (
+        "Gemini",
+        "OpenAI",
+        "Claude",
+        "Mistral",
+        "xAI",
+        "DeepSeek",
+        "Groq",
+        "HuggingFace",
+        "Ollama",
+    ),
+    "translation": (
+        "Claude",
+        "OpenAI",
+        "Gemini",
+        "DeepSeek",
+        "Mistral",
+        "xAI",
+        "Groq",
+        "HuggingFace",
+        "Ollama",
+    ),
+    "ocr": (
+        "Claude",
+        "OpenAI",
+        "Gemini",
+        "DeepSeek",
+        "Mistral",
+        "xAI",
+        "Groq",
+        "HuggingFace",
+        "Ollama",
+        "Transkribus",
+    ),
+}
+
 PROVIDER_NOTES = {
     "Gemini": "Inserisci qui la tua chiave Gemini (Censimento/Genealogia)",
     "OpenAI": "Inserisci qui la tua chiave OpenAI",
@@ -73,6 +110,14 @@ def normalize_provider_name(provider):
 
 def provider_requires_credentials(provider):
     return normalize_provider_name(provider) not in LOCAL_AI_PROVIDERS
+
+
+def get_service_providers(service_name):
+    service_key = str(service_name or "").strip().lower().replace("-", "_")
+    providers = SERVICE_PROVIDER_CATALOG.get(service_key)
+    if providers:
+        return providers
+    return SUPPORTED_AI_PROVIDERS
 
 
 def missing_provider_credentials_message(provider):

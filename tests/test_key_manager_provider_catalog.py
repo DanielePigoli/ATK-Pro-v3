@@ -3,6 +3,7 @@ import csv
 from src.key_manager import (
     SUPPORTED_AI_PROVIDERS,
     KeyManager,
+    get_service_providers,
     missing_provider_credentials_message,
     normalize_provider_name,
     preload_vault_key,
@@ -104,3 +105,15 @@ def test_preload_vault_key_respects_manual_value_and_local_providers():
     assert preload_vault_key("Gemini", "", FakeKM()) == "vault-key-123"
     assert preload_vault_key("Gemini", "manual-key-999", FakeKM()) == "manual-key-999"
     assert preload_vault_key("Ollama", "", FakeKM()) == ""
+
+
+def test_service_provider_catalog_keeps_transkribus_only_in_ocr():
+    ai_search = get_service_providers("ai_search")
+    translation = get_service_providers("translation")
+    ocr = get_service_providers("ocr")
+
+    assert "Transkribus" not in ai_search
+    assert "Transkribus" not in translation
+    assert "Transkribus" in ocr
+    assert "Ollama" in ai_search
+    assert "Ollama" in translation

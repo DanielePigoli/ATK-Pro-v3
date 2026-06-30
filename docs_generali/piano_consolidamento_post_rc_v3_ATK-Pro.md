@@ -20,6 +20,15 @@ con PR separati e verificabili.
 
 Interventi da completare prima di considerare una release pubblica finale.
 
+Stato operativo 2026-06-30:
+
+- punto 1: chiuso;
+- punto 2: chiuso;
+- punto 3: chiuso sul perimetro caveau/provider visibili;
+- punto 4: presidio continuo, non chiuso in senso definitivo;
+- punto 5: chiuso sul perimetro tecnico interno; gli ex casi Gemini restano
+  come verifica esterna opzionale tardiva, non come prerequisito di chiusura.
+
 | Ordine | Intervento | Esito atteso |
 | ---: | --- | --- |
 | 1 | Applicare la policy D/R al portale effettivo rilevato dall'URL di ciascun record, non solo al portale selezionato nel menu. | I record `R` di portali `R_LIMITED` richiedono range esplicito anche se il menu e' rimasto su un altro portale. |
@@ -32,6 +41,14 @@ Interventi da completare prima di considerare una release pubblica finale.
 
 Interventi per rendere il comportamento piu' prevedibile e leggibile.
 
+Stato operativo 2026-06-30:
+
+- punto 6: chiuso come nota di log;
+- punto 7: avanzato ma non chiuso del tutto;
+- punto 8: aperto;
+- punto 9: aperto;
+- punto 10: parziale.
+
 | Ordine | Intervento | Esito atteso |
 | ---: | --- | --- |
 | 6 | Mostrare un messaggio o una nota di log chiara quando ATK-Pro corregge automaticamente il portale in base all'URL. | L'utente capisce perche' un input BUB/BDL/FICLIT funziona anche se il menu indicava un altro portale. |
@@ -39,6 +56,14 @@ Interventi per rendere il comportamento piu' prevedibile e leggibile.
 | 8 | Centralizzare modelli predefiniti, base URL e alias provider. | I default AI non sono duplicati in piu' file. |
 | 9 | Rendere opzionali i file diagnostici OCR o spostarli in una sottocartella dedicata. | Gli output finali restano puliti; la diagnostica resta disponibile quando serve. |
 | 10 | Migliorare i messaggi di errore AI per chiave non valida, quota, modello non disponibile e risposta non conforme. | Il tester o l'utente capisce cosa correggere senza leggere traceback tecnici. |
+
+Ordine di lavoro consigliato da qui:
+
+1. chiudere il punto 7, senza allargare ancora il perimetro funzionale;
+2. affrontare il punto 8, che e' il primo vero nodo strutturale ancora aperto;
+3. completare i punti 10 e 9, in quest'ordine, prima di entrare nella fase 3;
+4. mantenere in parallelo solo eventuali riscontri esterni tardivi sui casi
+   Gemini gia' registrati, senza riaprire la fase 1 salvo nuove regressioni.
 
 ## Fase 3 - Prestazioni e risorse
 

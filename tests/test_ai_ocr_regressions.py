@@ -2,6 +2,16 @@ import json
 from pathlib import Path
 
 
+def test_ai_search_dialog_excludes_transkribus_from_provider_combo(qtbot):
+    import src.RicercaAssistitaAI as rai
+
+    dlg = rai.RicercaAssistitaAIDialog(None, glossario={}, lingua="it")
+    qtbot.addWidget(dlg)
+
+    providers = [dlg.combo_provider.itemText(i) for i in range(dlg.combo_provider.count())]
+    assert "Transkribus" not in providers
+
+
 def test_ai_worker_show_all_keeps_json_available_after_provider_error(monkeypatch):
     import src.RicercaAssistitaAI as rai
 

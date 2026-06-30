@@ -17,7 +17,13 @@ if not logging.getLogger('atkpro').hasHandlers():
     logging.getLogger('atkpro').setLevel(logging.DEBUG)
 logger = logging.getLogger('atkpro')
 import os
-from key_manager import KeyManager, SUPPORTED_AI_PROVIDERS
+from key_manager import (
+    KeyManager,
+    get_service_providers,
+    missing_provider_credentials_message,
+    normalize_provider_name,
+    provider_requires_credentials,
+)
 from ai_utils import get_best_gemini_model
 from multi_provider_handlers import get_handler
 
@@ -62,7 +68,7 @@ class RicercaAssistitaAIWorker(QThread):
             )
             providers = [self.provider]
             # Fallback automatico: aggiungi altri provider con chiavi configurate
-            all_providers = list(SUPPORTED_AI_PROVIDERS)
+            all_providers = list(get_service_providers("ai_search"))
             for p in all_providers:
                 if p not in providers and self.km.get_all_keys(p):
                     providers.append(p)
@@ -213,7 +219,7 @@ class RicercaAssistitaAIDialog(QDialog):
         self.combo_provider = QComboBox()
         self.combo_provider.setStyleSheet(inp_css)
         self.combo_provider.setMinimumHeight(24)
-        self.combo_provider.addItems(list(SUPPORTED_AI_PROVIDERS))
+        self.combo_provider.addItems(list(get_service_providers("ai_search")))
         lbl_prov = QLabel(self.gm("Provider AI:"))
         lbl_prov.setStyleSheet(lbl_style)
         lbl_prov.setMinimumHeight(24)
@@ -858,7 +864,7 @@ h1, h2, h3, h4 {{
     def start_ai_search(self):
         from ai_search_prompts import get_prompt_base
         query = self.inp_query.toPlainText().strip()
-        provider = self.combo_provider.currentText()
+        provider = normalize_provider_name(self.combo_provider.currentText())
         logger.info(
             "[RicercaAssistitaAIDialog] Avvio ricerca AI: provider=%s, query_len=%s",
             provider,
@@ -869,6 +875,15 @@ h1, h2, h3, h4 {{
         note_text = self.inp_note.toPlainText().strip() if self.combo_note.currentIndex() > 0 else ""
         if not query:
             QMessageBox.warning(self, self.gm("Attenzione"), self.gm("Inserisci una query di ricerca."))
+            return
+        show_all = self.chk_all_providers.isChecked()
+        km = KeyManager()
+        if not show_all and provider_requires_credentials(provider) and not km.has_keys(provider):
+            QMessageBox.warning(
+                self,
+                self.gm("Attenzione"),
+                self.gm(missing_provider_credentials_message(provider)),
+            )
             return
         # Estrai luogo, periodo, tipo se presenti nella query (regex semplice)
         import re
@@ -888,7 +903,6 @@ h1, h2, h3, h4 {{
         prompt_finale = prompt_base
         if note_text:
             prompt_finale += f"\n\nNOTA UTENTE:\n{note_text}"
-        show_all = self.chk_all_providers.isChecked()
         self.worker = RicercaAssistitaAIWorker(prompt_finale, provider, custom_model, show_all)
         logger.debug(f"[RicercaAssistitaAIDialog] Worker creato e avviato")
         self.progress_bar.setVisible(True)

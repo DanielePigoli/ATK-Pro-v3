@@ -28,7 +28,7 @@ release pubblica multilingue completa.
 | Policy runtime D/R portali | Go con re-check periodico | `src/portal_registry.py` applica `R_OK`, `R_LIMITED`, `D_ONLY` e `VARIABLE`; `verify_portal_policy.py` controlla scadenza delle policy e genera `portal_policy_overrides.json` per aggiornamenti locali senza nuova release. |
 | Portali esistenti | Go italiano; verifica globale aperta | Registry e policy comprendono 25 capability. Lo smoke live del 2026-06-22 passa su tutti i portali italiani e su 24/25 campioni complessivi; Gallica resta da riallineare per risposta HTTP 403 del manifest campione. |
 | Test tecnici | Go | Suite completa del 2026-06-23: 559 test passati e 38 skip attesi; verificatori guida italiana, asset documentali e policy portali superati. |
-| Packaging | Go RC2 dopo build | Build PyInstaller onedir Windows RC1 generata, avviata e provata manualmente; installer Windows RC1 generato con Inno Setup; workflow macOS e Linux superati e artefatti caricati nella pre-release RC1. Per RC2 servono nuova build e smoke mirato sui fix AI/OCR. |
+| Packaging | Go RC2 dopo build | Build PyInstaller onedir Windows RC1 generata, avviata e provata manualmente; installer Windows RC1 generato con Inno Setup; workflow macOS e Linux superati e artefatti caricati nella pre-release RC1. Per RC2 il perimetro tecnico dei fix AI/OCR e dei portali sensibili e' stato rieseguito; eventuali conferme manuali esterne sui casi Gemini restano utili ma non bloccanti. |
 | File temporanei | Go con controllo finale | Inventario root eseguito: artefatti locali, cache, build, log, screenshot e output test risultano ignorati o coperti da regole di esclusione; prima del tag resta da confermare `git status --short --ignored`. |
 
 ## Suite smoke pre-RC
@@ -127,6 +127,26 @@ RC2 aggiorna la RC1 con:
 - correzione dell'errore Ricerca Assistita AI `cannot access local variable 'json'`;
 - merge OCR Gemini TOP/BOTTOM piu' robusto contro doppioni nell'area
   sovrapposta e perdita di colonne finali.
+
+## Consolidamento tecnico eseguito dopo RC2
+
+Verifica interna rieseguita il 2026-06-30:
+
+- `python -m pytest tests\test_effective_record_portal_policy.py tests\test_translation_processor.py tests\test_ai_ocr_regressions.py tests\test_portal_live_smoke_matrix.py tests\test_bub_technical_probe.py tests\test_ficlit_technical_probe.py tests\test_bdt_technical_probe.py tests\test_bdl_technical_probe.py tests\test_rovereto_technical_probe.py -q`
+  -> `50 passed`
+- `python verify_portal_policy.py` -> esito OK
+- `python verify_portal_live_smoke.py --fetch-manifest --strict --only antenati --only bub_digitale --only dl_ficlit --only biblioteca_digitale_trentina --only biblioteca_digitale_lombarda --only rovereto_digital_library`
+  -> tutti PASS:
+  - Antenati: 34 canvas
+  - BUB: 32 canvas
+  - FICLIT: 239 canvas
+  - BDT: 508 canvas (manifest sintetico)
+  - BDL: 1 canvas/documento PDF sintetico
+  - Rovereto: 129 canvas (manifest sintetico)
+
+Questo chiude il perimetro tecnico interno della Fase 1 punto 5. Eventuali
+conferme manuali esterne sui casi Gemini gia' registrati restano utili ma non
+sono piu' considerate prerequisito di avanzamento.
 
 Documento collegato: `docs_generali/note_release_v3.0.0-rc2_ATK-Pro.md`.
 
