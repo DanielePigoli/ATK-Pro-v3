@@ -213,3 +213,33 @@ def test_translation_dialog_uses_runtime_default_hints(monkeypatch, qtbot):
 
     dlg.combo_prov.setCurrentIndex(dlg.combo_prov.findText("Hugging Face (Inference API)"))
     assert "Qwen/Qwen2.5-72B-Instruct" in dlg.inp_custom_model.placeholderText()
+
+
+def test_translation_dialog_save_settings_uses_translation_pref_keys(monkeypatch, qtbot):
+    import src.translation_dialog as translation_dialog
+
+    written = {}
+
+    monkeypatch.setattr(
+        translation_dialog,
+        "get_msg",
+        lambda glossario, chiave, lingua: chiave,
+    )
+    monkeypatch.setattr(
+        "config_utils._write_config_prefs",
+        lambda key, value: written.__setitem__(key, value),
+    )
+
+    dlg = translation_dialog.TranslationDialog(None, glossario_data={}, lingua_corrente="it")
+    qtbot.addWidget(dlg)
+
+    dlg.txt_api.setText("translation-key-123")
+    dlg.combo_prov.setCurrentIndex(1)
+    dlg.txt_ctx.setPlainText("contesto")
+    dlg.inp_custom_model.setText("custom-model")
+    dlg.save_settings()
+
+    assert written["translation_api_key"] == "translation-key-123"
+    assert written["translation_provider"] == 1
+    assert "ocr_api_key" not in written
+    assert "ocr_provider" not in written
