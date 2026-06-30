@@ -11,12 +11,14 @@ from translation_processor import TranslationWorker
 
 try:
     from key_manager import (
+        get_service_provider_labels,
         missing_provider_credentials_message,
         normalize_provider_name,
         provider_requires_credentials,
     )
 except ImportError:
     from src.key_manager import (
+        get_service_provider_labels,
         missing_provider_credentials_message,
         normalize_provider_name,
         provider_requires_credentials,
@@ -103,17 +105,7 @@ class TranslationDialog(QDialog):
         row1 = QHBoxLayout()
         lbl_prov = QLabel(self.gm("Provider IA:"))
         self.combo_prov = QComboBox()
-        self.combo_prov.addItems([
-            self.gm("Anthropic / Claude (Miglior Testo)"),
-            self.gm("OpenAI (GPT-4o)"),
-            self.gm("Google Gemini"),
-            self.gm("DeepSeek (Economico/Testo)"),
-            self.gm("Mistral"),
-            self.gm("xAI / Grok"),
-            self.gm("Groq (Veloce)"),
-            self.gm("Hugging Face (Inference API)"),
-            self.gm("Ollama (Locale/Privato)"),
-        ])
+        self.combo_prov.addItems([self.gm(label) for label in get_service_provider_labels("translation")])
         self.combo_prov.setMinimumWidth(180)
         self.combo_prov.setMaximumWidth(220)
         self.combo_prov.currentIndexChanged.connect(self._toggle_custom_model)

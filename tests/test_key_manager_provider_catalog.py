@@ -1,6 +1,7 @@
 import csv
 
 from src.key_manager import (
+    get_service_provider_labels,
     SUPPORTED_AI_PROVIDERS,
     KeyManager,
     get_service_providers,
@@ -117,3 +118,11 @@ def test_service_provider_catalog_keeps_transkribus_only_in_ocr():
     assert "Transkribus" in ocr
     assert "Ollama" in ai_search
     assert "Ollama" in translation
+
+
+def test_service_provider_labels_match_service_provider_catalog():
+    for service_name in ("translation", "ocr"):
+        labels = get_service_provider_labels(service_name)
+        normalized = {normalize_provider_name(label) for label in labels}
+        expected = set(get_service_providers(service_name))
+        assert normalized == expected
