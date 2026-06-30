@@ -18,12 +18,14 @@ def test_ai_error_utils_classifies_common_runtime_cases():
 
 def test_ai_search_dialog_excludes_transkribus_from_provider_combo(qtbot):
     import src.RicercaAssistitaAI as rai
+    from src.key_manager import get_service_provider_labels
 
     dlg = rai.RicercaAssistitaAIDialog(None, glossario={}, lingua="it")
     qtbot.addWidget(dlg)
 
     providers = [dlg.combo_provider.itemText(i) for i in range(dlg.combo_provider.count())]
     assert "Transkribus" not in providers
+    assert providers == list(get_service_provider_labels("ai_search"))
 
 
 def test_ai_search_dialog_uses_runtime_default_model_hint(qtbot):

@@ -21,6 +21,7 @@ from key_manager import (
     KeyManager,
     get_provider_default_model,
     get_service_providers,
+    get_service_provider_labels,
     missing_provider_credentials_message,
     normalize_provider_name,
     provider_requires_credentials,
@@ -225,7 +226,7 @@ class RicercaAssistitaAIDialog(QDialog):
         self.combo_provider = QComboBox()
         self.combo_provider.setStyleSheet(inp_css)
         self.combo_provider.setMinimumHeight(24)
-        self.combo_provider.addItems(list(get_service_providers("ai_search")))
+        self.combo_provider.addItems(list(get_service_provider_labels("ai_search")))
         self.combo_provider.currentIndexChanged.connect(self._update_custom_model_placeholder)
         lbl_prov = QLabel(self.gm("Provider AI:"))
         lbl_prov.setStyleSheet(lbl_style)
