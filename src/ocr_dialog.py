@@ -146,7 +146,7 @@ class OCRThread(QThread):
     finished = Signal(bool, str)
     review_requested = Signal(str, str)
 
-    def __init__(self, file_paths, provider, api_key, formats, output_dir, prefix_elab="Elaborazione: ", custom_prompt="", example_text="", interactive=False, custom_model=None):
+    def __init__(self, file_paths, provider, api_key, formats, output_dir, prefix_elab="Elaborazione: ", custom_prompt="", example_text="", interactive=False, custom_model=None, save_diagnostics=False):
         super().__init__()
         self.custom_model = custom_model
         self.file_paths = file_paths
@@ -158,12 +158,22 @@ class OCRThread(QThread):
         self.custom_prompt = custom_prompt
         self.example_text = example_text
         self.interactive = interactive
+        self.save_diagnostics = bool(save_diagnostics)
         self.review_event = threading.Event()
         self.reviewed_text = None
 
     def run(self):
         try:
-            worker = AdvancedOCRWorker(self.provider, self.api_key, self.formats, self.output_dir, self.custom_prompt, self.example_text, custom_model=self.custom_model)
+            worker = AdvancedOCRWorker(
+                self.provider,
+                self.api_key,
+                self.formats,
+                self.output_dir,
+                self.custom_prompt,
+                self.example_text,
+                custom_model=self.custom_model,
+                save_diagnostics=self.save_diagnostics,
+            )
             
             def interceptor(img_path, raw_text):
                 if not self.interactive:
@@ -388,6 +398,11 @@ class AdvancedOCRDialog(QDialog):
             )
         )
         layout.addWidget(self.chk_calibration)
+
+        self.chk_save_diagnostics = QCheckBox(self.gm("Salva file diagnostici OCR (solo se necessari)"))
+        self.chk_save_diagnostics.setStyleSheet("color: #d6d6d6; margin-bottom: 5px;")
+        self.chk_save_diagnostics.setChecked(False)
+        layout.addWidget(self.chk_save_diagnostics)
 
         # Istruzioni extra con Archiviazione
         istr_header_ly = QHBoxLayout()
@@ -650,6 +665,7 @@ class AdvancedOCRDialog(QDialog):
                 self.txt_istruzioni.setText(prefs.get('ocr_custom_prompt', ''))
                 self.txt_esempio.setText(prefs.get('ocr_example_text', ''))
                 self.inp_custom_model.setText(prefs.get('ocr_custom_model', ''))
+                self.chk_save_diagnostics.setChecked(bool(prefs.get('ocr_save_diagnostics', False)))
 
                 # Restore saved prompts history
                 # Restore saved instructions (new dict format via ocr_instructions.json)
@@ -699,6 +715,7 @@ class AdvancedOCRDialog(QDialog):
             _write_config_prefs('ocr_custom_prompt', self.txt_istruzioni.toPlainText().strip())
             _write_config_prefs('ocr_example_text', self.txt_esempio.toPlainText().strip())
             _write_config_prefs('ocr_custom_model', self.inp_custom_model.text().strip())
+            _write_config_prefs('ocr_save_diagnostics', self.chk_save_diagnostics.isChecked())
             
             import logging
             logging.debug("[OCR] Impostazioni salvate.")
@@ -810,7 +827,8 @@ class AdvancedOCRDialog(QDialog):
             self.file_paths, prov_str, self.txt_api.text(),
             fmt, out_dir, self.gm("Elaborazione: "),
             final_prompt, "", interact,
-            custom_model=self.inp_custom_model.text().strip()
+            custom_model=self.inp_custom_model.text().strip(),
+            save_diagnostics=self.chk_save_diagnostics.isChecked(),
         )
         self.thread.review_requested.connect(self.show_review_dialog)
         self.thread.progress.connect(self.update_progress)

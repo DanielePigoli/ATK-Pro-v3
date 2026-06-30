@@ -152,3 +152,18 @@ def test_ocr_dialog_uses_runtime_default_hints(monkeypatch, qtbot):
 
     dlg.combo_prov.setCurrentIndex(dlg.combo_prov.findText("Hugging Face (Modelli Specializzati OCR)"))
     assert "Qwen/Qwen2.5-VL-7B-Instruct" in dlg.inp_custom_model.placeholderText()
+
+
+def test_ocr_dialog_diagnostics_checkbox_defaults_to_disabled(monkeypatch, qtbot):
+    import src.ocr_dialog as ocr_dialog
+
+    monkeypatch.setattr(
+        ocr_dialog,
+        "get_msg",
+        lambda glossario, chiave, lingua: chiave,
+    )
+
+    dlg = ocr_dialog.AdvancedOCRDialog(None, glossario_data={}, lingua="it")
+    qtbot.addWidget(dlg)
+
+    assert dlg.chk_save_diagnostics.isChecked() is False
