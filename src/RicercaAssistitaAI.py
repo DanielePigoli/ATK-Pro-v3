@@ -23,6 +23,7 @@ from key_manager import (
     missing_provider_credentials_message,
     normalize_provider_name,
     provider_requires_credentials,
+    service_supports_provider,
 )
 from ai_utils import get_best_gemini_model
 from multi_provider_handlers import get_handler
@@ -51,7 +52,7 @@ class RicercaAssistitaAIWorker(QThread):
     def __init__(self, query, provider, custom_model=None, show_all=False):
         super().__init__()
         self.query = query
-        self.provider = provider
+        self.provider = normalize_provider_name(provider)
         self.custom_model = custom_model
         self.show_all = show_all
         self.km = KeyManager()
@@ -61,6 +62,9 @@ class RicercaAssistitaAIWorker(QThread):
 
     def run(self):
         try:
+            if not service_supports_provider("ai_search", self.provider):
+                self.error.emit(f"Provider non supportato per Ricerca Assistita AI: {self.provider}")
+                return
             logger.debug(
                 "[AIWorker] Avvio ricerca: provider=%s, prompt_len=%s",
                 self.provider,

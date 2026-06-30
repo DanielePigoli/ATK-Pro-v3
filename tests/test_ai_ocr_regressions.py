@@ -12,6 +12,18 @@ def test_ai_search_dialog_excludes_transkribus_from_provider_combo(qtbot):
     assert "Transkribus" not in providers
 
 
+def test_ai_worker_rejects_provider_outside_ai_search_service(monkeypatch):
+    import src.RicercaAssistitaAI as rai
+
+    worker = rai.RicercaAssistitaAIWorker("davini", "Transkribus", show_all=False)
+    captured = {}
+    worker.error.connect(lambda value: captured.setdefault("error", value))
+
+    worker.run()
+
+    assert "Provider non supportato per Ricerca Assistita AI" in captured["error"]
+
+
 def test_ai_worker_show_all_keeps_json_available_after_provider_error(monkeypatch):
     import src.RicercaAssistitaAI as rai
 
@@ -79,6 +91,19 @@ def test_gemini_split_merge_deduplicates_overlap_and_fills_blank_columns():
     assert merged.count("Bianchi | Carla") == 1
     assert "2 | 1 | 3 | Bianchi | Carla | maritata | nota-top" in merged
     assert "2 | 1 | 4 | Bianchi | Dario | celibe | nota-bottom" in merged
+
+
+def test_ocr_worker_uses_default_ollama_host_when_api_key_missing():
+    from src.ocr_processor import AdvancedOCRWorker
+
+    worker = AdvancedOCRWorker(
+        provider="Ollama",
+        api_key="",
+        formats=["txt"],
+        output_dir=".",
+    )
+
+    assert worker.api_keys == ["http://localhost:11434"]
 
 
 def test_gemini_split_merge_deduplicates_fuzzy_rows_without_progressive():
