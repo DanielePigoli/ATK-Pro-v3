@@ -45,7 +45,7 @@ Stato operativo 2026-06-30:
 
 - punto 6: chiuso come nota di log;
 - punto 7: avanzato ma non chiuso del tutto;
-- punto 8: aperto;
+- punto 8: chiuso;
 - punto 9: aperto;
 - punto 10: parziale.
 
@@ -59,9 +59,9 @@ Stato operativo 2026-06-30:
 
 Ordine di lavoro consigliato da qui:
 
-1. chiudere il punto 7, senza allargare ancora il perimetro funzionale;
-2. affrontare il punto 8, che e' il primo vero nodo strutturale ancora aperto;
-3. completare i punti 10 e 9, in quest'ordine, prima di entrare nella fase 3;
+1. completare gli ultimi allineamenti residui del punto 7, senza allargare ancora il perimetro funzionale;
+2. affrontare il punto 9 come prossimo passo operativo della fase 2;
+3. completare poi il punto 10, prima di entrare nella fase 3;
 4. mantenere in parallelo solo eventuali riscontri esterni tardivi sui casi
    Gemini gia' registrati, senza riaprire la fase 1 salvo nuove regressioni.
 

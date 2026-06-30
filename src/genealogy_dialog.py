@@ -18,11 +18,23 @@ except ImportError:
     pass
 from genealogy_prompts import compose_extraction_prompt
 from gedcom_factory import GedcomGenerator
-from key_manager import KeyManager
+from key_manager import KeyManager, get_provider_default_model, get_service_providers
 from multi_provider_handlers import get_handler
 
 from config_utils import _EXE_DIR
 PRESETS_FILE = os.path.join(_EXE_DIR, "genealogy_presets.json")
+
+
+def get_genealogy_service_providers():
+    return list(get_service_providers("ai_search"))
+
+
+def get_genealogy_fallback_providers(key_manager, current_provider):
+    return [
+        provider
+        for provider in get_genealogy_service_providers()
+        if key_manager.get_all_keys(provider) and provider != current_provider
+    ]
 
 def extract_text_from_docx(docx_path):
     """Estrae il testo da un file .docx senza librerie esterne usando zipfile."""
@@ -197,7 +209,7 @@ class GenealogyWorker(QThread):
                         
                         if wrapped:
                             # Esaurite tutte le chiavi per questo provider (giro completo)
-                            other_provs = [p for p in ["Gemini", "OpenAI", "Claude", "Mistral", "Groq", "DeepSeek", "xAI", "Ollama", "HuggingFace"] if km.get_all_keys(p) and p != current_prov]
+                            other_provs = get_genealogy_fallback_providers(km, current_prov)
                             if other_provs:
                                 # SINCRO v5: Richiesta interattiva di cambio provider
                                 self.mutex.lock()
@@ -343,11 +355,10 @@ class GenealogyDialog(QDialog):
         # 5. MOTORE IA & CAVEAU
         fl.addWidget(QLabel(f"5. {self.gm('MOTORE IA & CAVEAU CHIAVI')}", styleSheet=t_css))
         fm = QFormLayout()
-        self.combo_provider = QComboBox(); self.combo_provider.addItems(["Claude", "OpenAI", "Gemini", "Mistral", "xAI", "DeepSeek", "Groq", "HuggingFace", "Ollama"]); self.combo_provider.setStyleSheet(inp_css)
+        self.combo_provider = QComboBox(); self.combo_provider.addItems(get_genealogy_service_providers()); self.combo_provider.setStyleSheet(inp_css)
         fm.addRow(QLabel(f"{self.gm('Provider')}:", styleSheet=lbl_css), self.combo_provider)
         
         self.inp_custom_model = QLineEdit()
-        self.inp_custom_model.setPlaceholderText(self.gm("Es. claude-4-sonnet (lascia vuoto per default)"))
         self.inp_custom_model.setStyleSheet(inp_css)
         self.lbl_custom_model = QLabel(f"{self.gm('Override Modello')}:", styleSheet=lbl_css)
         fm.addRow(self.lbl_custom_model, self.inp_custom_model)
@@ -384,6 +395,16 @@ class GenealogyDialog(QDialog):
         else:
             self.lbl_custom_model.setVisible(True)
             self.inp_custom_model.setVisible(True)
+            self._update_custom_model_placeholder(prov)
+
+    def _update_custom_model_placeholder(self, provider):
+        default_model = get_provider_default_model(provider, "ai_search")
+        if default_model:
+            self.inp_custom_model.setPlaceholderText(
+                self.gm("Es. {model} (lascia vuoto per default)").format(model=default_model)
+            )
+        else:
+            self.inp_custom_model.setPlaceholderText(self.gm("Modello custom (opzionale)"))
 
     def _on_type_changed_geo(self):
         label = self.combo_type.currentText()
