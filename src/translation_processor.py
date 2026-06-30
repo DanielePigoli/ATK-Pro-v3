@@ -6,6 +6,7 @@ except ImportError:
     genai = None
 import openai
 import os
+from ai_error_utils import classify_ai_runtime_error
 from key_manager import (
     get_provider_base_url,
     require_provider_default_host,
@@ -148,16 +149,10 @@ class TranslationWorker(QThread):
                     else:
                         raise e
 
-            raise Exception(f"Tutte le chiavi esaurite. Ultimo errore: {last_error}")
+            raise Exception(classify_ai_runtime_error(self.provider, f"Tutte le chiavi esaurite. Ultimo errore: {last_error}"))
 
         except Exception as e:
-            err_str = str(e)
-            if "API_KEY" in err_str or "unauthorized" in err_str.lower() or "invalid" in err_str.lower():
-                err_str = "API Key non valida, mancante o disabilitata per la fatturazione."
-            elif "quota" in err_str.lower() or "429" in err_str:
-                err_str = "Tutte le chiavi hanno superato il limite. Attendi e riprova."
-            elif "504" in err_str or "timeout" in err_str.lower():
-                err_str = "Connessione scaduta (Timeout). Il server era troppo occupato."
+            err_str = classify_ai_runtime_error(self.provider, e)
             self.finished.emit(False, f"Errore durante la traduzione ({self.provider}): {err_str}")
 
     def _build_prompt(self):

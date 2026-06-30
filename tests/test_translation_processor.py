@@ -74,3 +74,62 @@ def test_translation_worker_rejects_provider_outside_translation_service():
 
     assert captured["success"] is False
     assert "Provider non supportato per Traduzione" in captured["message"]
+
+
+def test_translation_worker_formats_quota_error_for_user(monkeypatch):
+    worker = translation_processor.TranslationWorker(
+        provider="Gemini",
+        api_key="fake-key",
+        source_text="testo",
+        target_lang_autonym="Italiano",
+    )
+
+    monkeypatch.setattr(
+        worker,
+        "_call_gemini_model",
+        lambda model, prompt: (_ for _ in ()).throw(RuntimeError("429 quota exceeded")),
+    )
+
+    class FakeModel:
+        pass
+
+    fake_genai = types.SimpleNamespace(
+        configure=lambda api_key: None,
+        GenerativeModel=lambda model_name: FakeModel(),
+    )
+    monkeypatch.setattr(translation_processor, "genai", fake_genai)
+
+    fake_ai_utils = types.SimpleNamespace(get_best_gemini_model=lambda key, preferred="flash": "gemini-test")
+    monkeypatch.setitem(sys.modules, "ai_utils", fake_ai_utils)
+
+    captured = {}
+    worker.finished.connect(lambda success, message: captured.update({"success": success, "message": message}))
+
+    worker.run()
+
+    assert captured["success"] is False
+    assert "Quota o limite richieste esaurito" in captured["message"]
+
+
+def test_translation_worker_formats_model_error_for_user(monkeypatch):
+    worker = translation_processor.TranslationWorker(
+        provider="OpenAI",
+        api_key="fake-key",
+        source_text="testo",
+        target_lang_autonym="Italiano",
+    )
+
+    monkeypatch.setattr(
+        worker,
+        "_call_openai",
+        lambda prompt, model=None: (_ for _ in ()).throw(RuntimeError("404 model not found")),
+    )
+    monkeypatch.setattr(translation_processor.openai, "OpenAI", lambda api_key: object())
+
+    captured = {}
+    worker.finished.connect(lambda success, message: captured.update({"success": success, "message": message}))
+
+    worker.run()
+
+    assert captured["success"] is False
+    assert "Modello AI non disponibile" in captured["message"]
