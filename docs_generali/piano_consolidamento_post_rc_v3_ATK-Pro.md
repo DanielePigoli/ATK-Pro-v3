@@ -44,7 +44,7 @@ Interventi per rendere il comportamento piu' prevedibile e leggibile.
 Stato operativo 2026-06-30:
 
 - punto 6: chiuso come nota di log;
-- punto 7: avanzato ma non chiuso del tutto; separato il salvataggio preferenze Traduzione da OCR con fallback legacy ai vecchi campi condivisi, riallineato il controllo credenziali Traduzione al comportamento caveau gia' usato in OCR e allineati anche gli hint del modello runtime nella Ricerca Assistita AI;
+- punto 7: chiuso; allineati catalogo provider, preferenze dedicate, controllo credenziali caveau e hint modello runtime tra Ricerca Assistita AI, OCR e Traduzione.
 - punto 8: chiuso;
 - punto 9: quasi chiuso; diagnostica split OCR resa opzionale e gia' spostata in sottocartella dedicata;
 - punto 10: chiuso; classificazione errori AI riallineata su Ricerca Assistita AI, OCR e Traduzione.
@@ -59,9 +59,9 @@ Stato operativo 2026-06-30:
 
 Ordine di lavoro consigliato da qui:
 
-1. completare gli ultimi allineamenti residui del punto 7, senza allargare ancora il perimetro funzionale;
-2. completare il punto 10 come prossimo passo operativo della fase 2;
-3. tenere il punto 9 solo come verifica finale residuale, salvo nuovi artefatti OCR emersi dai tester;
+1. tenere il punto 9 solo come verifica finale residuale, salvo nuovi artefatti OCR emersi dai tester;
+2. considerare chiusi i punti 7, 8 e 10 salvo nuove regressioni emerse dai test o dai riscontri esterni;
+3. spostare il prossimo focus sui punti della fase 3 dedicati a peso, memoria e modularizzazione dell'applicazione.
 4. mantenere in parallelo solo eventuali riscontri esterni tardivi sui casi
    Gemini gia' registrati, senza riaprire la fase 1 salvo nuove regressioni.
 
