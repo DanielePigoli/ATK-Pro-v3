@@ -25,6 +25,7 @@ from key_manager import (
     provider_requires_credentials,
     service_supports_provider,
 )
+from ai_error_utils import classify_ai_runtime_error
 from ai_utils import get_best_gemini_model
 from multi_provider_handlers import get_handler
 
@@ -126,7 +127,7 @@ class RicercaAssistitaAIWorker(QThread):
                         if attempt == len(keys) - 1:
                             logger.error(f"[AIWorker] Tutte le chiavi per {prov} sono esaurite o non valide! Errore: {e}")
                             if prov == providers[-1] and not self.show_all:
-                                self.error.emit(f"Tutte le chiavi per {prov} sono esaurite o non valide! Errore: {e}")
+                                self.error.emit(classify_ai_runtime_error(prov, f"Tutte le chiavi esaurite. Ultimo errore: {e}"))
                                 return
                 if self.show_all and not provider_handled:
                     all_results.append({
@@ -141,7 +142,7 @@ class RicercaAssistitaAIWorker(QThread):
                 self.finished.emit(json.dumps([], ensure_ascii=False))
         except Exception as e:
             logger.error(f"[AIWorker] Errore fatale: {e}")
-            self.error.emit(str(e))
+            self.error.emit(classify_ai_runtime_error(self.provider, e))
 
 class RicercaAssistitaAIDialog(QDialog):
     def gm(self, chiave):
