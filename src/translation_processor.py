@@ -6,14 +6,19 @@ except ImportError:
     genai = None
 import openai
 import os
-from key_manager import missing_provider_credentials_message
+from key_manager import (
+    missing_provider_credentials_message,
+    normalize_provider_name,
+    provider_requires_credentials,
+    service_supports_provider,
+)
 
 class TranslationWorker(QThread):
     finished = Signal(bool, str)
 
     def __init__(self, provider, api_key, source_text, target_lang_autonym, context_info="", custom_model=None):
         super().__init__()
-        self.provider = provider
+        self.provider = normalize_provider_name(provider)
         self.source_text = source_text
         self.target_lang = target_lang_autonym
         self.context_info = context_info
@@ -22,11 +27,13 @@ class TranslationWorker(QThread):
         # --- Gestione chiavi: Cassaforte > campo manuale ---
         from key_manager import KeyManager
         km = KeyManager()
-        km_keys = km.get_all_keys(provider)
+        km_keys = km.get_all_keys(self.provider)
         if km_keys:
             self.api_keys = km_keys
-            logging.info(f"[TRANS] Cassaforte: {len(km_keys)} chiave/i per {provider}.")
-        elif self.provider == "Ollama":
+            logging.info(f"[TRANS] Cassaforte: {len(km_keys)} chiave/i per {self.provider}.")
+        elif not service_supports_provider("translation", self.provider):
+            self.api_keys = []
+        elif not provider_requires_credentials(self.provider):
             self.api_keys = ["http://localhost:11434"]
             logging.info("[TRANS] Ollama locale: host predefinito in uso.")
         elif api_key:
@@ -38,6 +45,9 @@ class TranslationWorker(QThread):
         self.anthropic_client = None
 
     def run(self):
+        if not service_supports_provider("translation", self.provider):
+            self.finished.emit(False, f"Provider non supportato per Traduzione: {self.provider}")
+            return
         if not self.api_keys:
             self.finished.emit(False, missing_provider_credentials_message(self.provider))
             return

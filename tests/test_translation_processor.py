@@ -57,3 +57,20 @@ def test_translation_worker_uses_default_ollama_host_when_api_key_missing(monkey
     )
 
     assert worker.api_keys == ["http://localhost:11434"]
+
+
+def test_translation_worker_rejects_provider_outside_translation_service():
+    worker = translation_processor.TranslationWorker(
+        provider="Transkribus",
+        api_key="token",
+        source_text="testo",
+        target_lang_autonym="Italiano",
+    )
+
+    captured = {}
+    worker.finished.connect(lambda success, message: captured.update({"success": success, "message": message}))
+
+    worker.run()
+
+    assert captured["success"] is False
+    assert "Provider non supportato per Traduzione" in captured["message"]

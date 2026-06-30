@@ -4,12 +4,18 @@ import base64
 import logging
 import requests
 from PIL import Image
-from key_manager import KeyManager, missing_provider_credentials_message
+from key_manager import (
+    KeyManager,
+    missing_provider_credentials_message,
+    normalize_provider_name,
+    provider_requires_credentials,
+    service_supports_provider,
+)
 
 
 class AdvancedOCRWorker:
     def __init__(self, provider, api_key, formats, output_dir, custom_prompt="", example_text="", custom_model=None):
-        self.provider = provider
+        self.provider = normalize_provider_name(provider)
         self.formats = formats
         self.output_dir = output_dir
         self.custom_prompt = custom_prompt
@@ -18,15 +24,20 @@ class AdvancedOCRWorker:
 
         # --- Gestione chiavi: Cassaforte > campo manuale ---
         km = KeyManager()
-        km_keys = km.get_all_keys(provider)
+        km_keys = km.get_all_keys(self.provider)
         if km_keys:
             self.api_keys = km_keys
-            logging.info(f"[OCR] Cassaforte: {len(km_keys)} chiave/i disponibili per {provider}.")
+            logging.info(f"[OCR] Cassaforte: {len(km_keys)} chiave/i disponibili per {self.provider}.")
+        elif not service_supports_provider("ocr", self.provider):
+            self.api_keys = []
+        elif not provider_requires_credentials(self.provider):
+            self.api_keys = ["http://localhost:11434"]
+            logging.info("[OCR] Provider locale: host predefinito in uso.")
         elif api_key:
             self.api_keys = [api_key]
-            logging.info(f"[OCR] Chiave manuale in uso per {provider}.")
+            logging.info(f"[OCR] Chiave manuale in uso per {self.provider}.")
         else:
-            raise ValueError(missing_provider_credentials_message(provider))
+            raise ValueError(missing_provider_credentials_message(self.provider))
 
         self.current_key_idx = 0
 
@@ -44,6 +55,8 @@ class AdvancedOCRWorker:
 
     def process_file(self, f_path, review_callback=None, page_progress=None):
         """Elabora un singolo file (immagine o PDF) con retry automatico sulle chiavi."""
+        if not service_supports_provider("ocr", self.provider):
+            raise ValueError(f"Provider non supportato per OCR: {self.provider}")
         logging.info(f"[OCR] Elaborazione: {os.path.basename(f_path)}")
 
         ext = os.path.splitext(f_path)[1].lower()

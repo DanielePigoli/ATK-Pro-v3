@@ -165,6 +165,11 @@ def get_service_provider_labels(service_name):
     return SUPPORTED_AI_PROVIDERS
 
 
+def service_supports_provider(service_name, provider):
+    provider_name = normalize_provider_name(provider)
+    return provider_name in set(get_service_providers(service_name))
+
+
 def missing_provider_credentials_message(provider):
     provider = normalize_provider_name(provider) or "provider selezionato"
     if not provider_requires_credentials(provider):

@@ -9,6 +9,7 @@ from src.key_manager import (
     normalize_provider_name,
     preload_vault_key,
     provider_requires_credentials,
+    service_supports_provider,
 )
 
 
@@ -126,3 +127,9 @@ def test_service_provider_labels_match_service_provider_catalog():
         normalized = {normalize_provider_name(label) for label in labels}
         expected = set(get_service_providers(service_name))
         assert normalized == expected
+
+
+def test_service_supports_provider_uses_normalized_names():
+    assert service_supports_provider("translation", "Google Gemini")
+    assert service_supports_provider("ocr", "Transkribus (Italian Handwriting HTR)")
+    assert not service_supports_provider("translation", "Transkribus")
