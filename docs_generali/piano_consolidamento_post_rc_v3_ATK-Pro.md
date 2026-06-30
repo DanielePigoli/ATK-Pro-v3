@@ -44,7 +44,7 @@ Interventi per rendere il comportamento piu' prevedibile e leggibile.
 Stato operativo 2026-06-30:
 
 - punto 6: chiuso come nota di log;
-- punto 7: avanzato ma non chiuso del tutto; separato il salvataggio preferenze Traduzione da OCR con fallback legacy ai vecchi campi condivisi e riallineato il controllo credenziali Traduzione al comportamento caveau gia' usato in OCR;
+- punto 7: avanzato ma non chiuso del tutto; separato il salvataggio preferenze Traduzione da OCR con fallback legacy ai vecchi campi condivisi, riallineato il controllo credenziali Traduzione al comportamento caveau gia' usato in OCR e allineati anche gli hint del modello runtime nella Ricerca Assistita AI;
 - punto 8: chiuso;
 - punto 9: quasi chiuso; diagnostica split OCR resa opzionale e gia' spostata in sottocartella dedicata;
 - punto 10: chiuso; classificazione errori AI riallineata su Ricerca Assistita AI, OCR e Traduzione.

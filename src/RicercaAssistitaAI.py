@@ -19,6 +19,7 @@ logger = logging.getLogger('atkpro')
 import os
 from key_manager import (
     KeyManager,
+    get_provider_default_model,
     get_service_providers,
     missing_provider_credentials_message,
     normalize_provider_name,
@@ -225,6 +226,7 @@ class RicercaAssistitaAIDialog(QDialog):
         self.combo_provider.setStyleSheet(inp_css)
         self.combo_provider.setMinimumHeight(24)
         self.combo_provider.addItems(list(get_service_providers("ai_search")))
+        self.combo_provider.currentIndexChanged.connect(self._update_custom_model_placeholder)
         lbl_prov = QLabel(self.gm("Provider AI:"))
         lbl_prov.setStyleSheet(lbl_style)
         lbl_prov.setMinimumHeight(24)
@@ -239,6 +241,7 @@ class RicercaAssistitaAIDialog(QDialog):
         lbl_model.setStyleSheet(lbl_style)
         lbl_model.setMinimumHeight(24)
         form_top.addRow(lbl_model, self.inp_custom_model)
+        self._update_custom_model_placeholder()
         
         # Prompt standard (solo i 4 reali)
         self.combo_prompt = QComboBox()
@@ -865,6 +868,16 @@ h1, h2, h3, h4 {{
             self._save_notes()
         else:
             self.combo_note.setCurrentIndex(0)
+
+    def _update_custom_model_placeholder(self):
+        provider = normalize_provider_name(self.combo_provider.currentText())
+        default_model = get_provider_default_model(provider, "ai_search")
+        if default_model:
+            self.inp_custom_model.setPlaceholderText(
+                self.gm("Lascia vuoto per il modello predefinito") + f" ({default_model})"
+            )
+        else:
+            self.inp_custom_model.setPlaceholderText(self.gm("Modello custom (opzionale)"))
 
     def start_ai_search(self):
         from ai_search_prompts import get_prompt_base
