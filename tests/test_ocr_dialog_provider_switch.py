@@ -8,6 +8,12 @@ def test_ocr_dialog_clears_remote_key_when_ollama_is_selected(monkeypatch, tmp_p
         KeyManager=lambda: types.SimpleNamespace(
             get_all_keys=lambda provider: ["vault-key-123"] if provider == "Gemini" else []
         ),
+        get_provider_base_url=lambda provider: "",
+        get_provider_default_host=lambda provider: "http://localhost:11434" if provider == "Ollama" else "",
+        get_provider_default_model=lambda provider, service: {
+            ("Ollama", "ocr"): "llava",
+            ("HuggingFace", "ocr"): "Qwen/Qwen2.5-VL-7B-Instruct",
+        }.get((provider, service), ""),
         missing_provider_credentials_message=lambda provider: f"missing credentials for {provider}",
         normalize_provider_name=lambda provider: "Gemini" if "Gemini" in str(provider) else provider,
         provider_requires_credentials=lambda provider: provider != "Ollama",
@@ -56,6 +62,12 @@ def test_ocr_dialog_preserves_manual_key_when_loading_from_vault(monkeypatch, tm
         KeyManager=lambda: types.SimpleNamespace(
             get_all_keys=lambda provider: ["vault-key-123"] if provider == "Gemini" else []
         ),
+        get_provider_base_url=lambda provider: "",
+        get_provider_default_host=lambda provider: "http://localhost:11434" if provider == "Ollama" else "",
+        get_provider_default_model=lambda provider, service: {
+            ("Ollama", "ocr"): "llava",
+            ("HuggingFace", "ocr"): "Qwen/Qwen2.5-VL-7B-Instruct",
+        }.get((provider, service), ""),
         missing_provider_credentials_message=lambda provider: f"missing credentials for {provider}",
         normalize_provider_name=lambda provider: "Gemini" if "Gemini" in str(provider) else provider,
         provider_requires_credentials=lambda provider: provider != "Ollama",
@@ -110,3 +122,23 @@ def test_ocr_dialog_provider_combo_includes_transkribus(monkeypatch, qtbot):
 
     providers = [dlg.combo_prov.itemText(i) for i in range(dlg.combo_prov.count())]
     assert "Transkribus (Italian Handwriting HTR)" in providers
+
+
+def test_ocr_dialog_uses_runtime_default_hints(monkeypatch, qtbot):
+    import src.ocr_dialog as ocr_dialog
+
+    monkeypatch.setattr(
+        ocr_dialog,
+        "get_msg",
+        lambda glossario, chiave, lingua: chiave,
+    )
+
+    dlg = ocr_dialog.AdvancedOCRDialog(None, glossario_data={}, lingua="it")
+    qtbot.addWidget(dlg)
+
+    dlg.combo_prov.setCurrentIndex(dlg.combo_prov.findText("Ollama (Locale/Privato)"))
+    assert dlg.txt_api.placeholderText() == "http://localhost:11434"
+    assert "llava" in dlg.inp_custom_model.placeholderText()
+
+    dlg.combo_prov.setCurrentIndex(dlg.combo_prov.findText("Hugging Face (Modelli Specializzati OCR)"))
+    assert "Qwen/Qwen2.5-VL-7B-Instruct" in dlg.inp_custom_model.placeholderText()

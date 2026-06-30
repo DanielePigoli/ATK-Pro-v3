@@ -11,6 +11,8 @@ from translation_processor import TranslationWorker
 
 try:
     from key_manager import (
+        get_provider_default_host,
+        get_provider_default_model,
         get_service_provider_labels,
         missing_provider_credentials_message,
         normalize_provider_name,
@@ -18,6 +20,8 @@ try:
     )
 except ImportError:
     from src.key_manager import (
+        get_provider_default_host,
+        get_provider_default_model,
         get_service_provider_labels,
         missing_provider_credentials_message,
         normalize_provider_name,
@@ -271,7 +275,13 @@ class TranslationDialog(QDialog):
 
     def _toggle_custom_model(self):
         prov = self.combo_prov.currentText()
-        self.inp_custom_model.setPlaceholderText(self.gm("Es. gpt-5-preview (lascia vuoto per default)"))
+        current_provider = normalize_provider_name(prov)
+        default_model = get_provider_default_model(current_provider, "translation")
+        default_host = get_provider_default_host(current_provider)
+        self.inp_custom_model.setPlaceholderText(
+            self.gm("Lascia vuoto per il modello predefinito")
+            + (f" ({default_model})" if default_model else "")
+        )
         if "Gemini" in prov:
             self.lbl_api.setText(self.gm("Google Gemini API Key:"))
             self.lbl_custom_model.setVisible(False)
@@ -298,19 +308,23 @@ class TranslationDialog(QDialog):
             self.lbl_custom_model.setVisible(True)
             self.inp_custom_model.setVisible(True)
         elif "Ollama" in prov:
-            self.lbl_api.setText(self.gm("Host Ollama (es. http://localhost:11434):"))
+            self.lbl_api.setText(
+                self.gm("Host Ollama (es. {host}):").format(host=default_host or "http://localhost:11434")
+            )
             self.lbl_custom_model.setVisible(True)
             self.inp_custom_model.setVisible(True)
-            self.inp_custom_model.setPlaceholderText(self.gm("Es. llava, llama3.2-vision, qwen2.5vl"))
+            self.inp_custom_model.setPlaceholderText(
+                self.gm("Lascia vuoto per il modello predefinito")
+                + (f" ({default_model})" if default_model else "")
+            )
             current_api = self.txt_api.text().strip()
             if current_api and not current_api.lower().startswith(("http://", "https://")):
                 self.txt_api.clear()
-            self.txt_api.setPlaceholderText("http://localhost:11434")
+            self.txt_api.setPlaceholderText(default_host or "http://localhost:11434")
         elif "Hugging Face" in prov:
             self.lbl_api.setText(self.gm("Hugging Face Token (hf_...):"))
             self.lbl_custom_model.setVisible(True)
             self.inp_custom_model.setVisible(True)
-            self.inp_custom_model.setPlaceholderText(self.gm("Es. Qwen/Qwen2.5-VL-7B-Instruct"))
         else:
             self.lbl_api.setText(self.gm("Anthropic API Key:"))
             self.lbl_custom_model.setVisible(True)

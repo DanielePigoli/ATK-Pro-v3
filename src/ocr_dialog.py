@@ -19,6 +19,8 @@ from PySide6.QtGui import QIcon, QFont, QPixmap
 from asset_cache import get_pixmap_cached
 try:
     from key_manager import (
+        get_provider_default_host,
+        get_provider_default_model,
         get_service_provider_labels,
         missing_provider_credentials_message,
         normalize_provider_name,
@@ -26,6 +28,8 @@ try:
     )
 except ImportError:
     from src.key_manager import (
+        get_provider_default_host,
+        get_provider_default_model,
         get_service_provider_labels,
         missing_provider_credentials_message,
         normalize_provider_name,
@@ -570,7 +574,13 @@ class AdvancedOCRDialog(QDialog):
 
     def provider_changed(self):
         prov = self.combo_prov.currentText()
-        self.inp_custom_model.setPlaceholderText(self.gm("Es. gpt-5-preview (lascia vuoto per default)"))
+        current_provider = normalize_provider_name(prov)
+        default_model = get_provider_default_model(current_provider, "ocr")
+        default_host = get_provider_default_host(current_provider)
+        self.inp_custom_model.setPlaceholderText(
+            self.gm("Lascia vuoto per il modello predefinito")
+            + (f" ({default_model})" if default_model else "")
+        )
         if "Gemini" in prov:
             self.lbl_api.setText(self.gm("Google Gemini API Key:"))
             self.lbl_custom_model.setVisible(False)
@@ -597,18 +607,18 @@ class AdvancedOCRDialog(QDialog):
             self.lbl_custom_model.setVisible(True)
             self.inp_custom_model.setVisible(True)
         elif "Ollama" in prov:
-            self.lbl_api.setText(self.gm("Host Ollama (es. http://localhost:11434):"))
+            self.lbl_api.setText(
+                self.gm("Host Ollama (es. {host}):").format(host=default_host or "http://localhost:11434")
+            )
             self.lbl_custom_model.setVisible(True)
-            self.inp_custom_model.setPlaceholderText(self.gm("Es. llava, llama3.2-vision, qwen2.5vl"))
             self.inp_custom_model.setVisible(True)
             current_api = self.txt_api.text().strip()
             if current_api and not current_api.lower().startswith(("http://", "https://")):
                 self.txt_api.clear()
-            self.txt_api.setPlaceholderText("http://localhost:11434")
+            self.txt_api.setPlaceholderText(default_host or "http://localhost:11434")
         elif "Hugging Face" in prov:
             self.lbl_api.setText(self.gm("Hugging Face Token (hf_...):"))
             self.lbl_custom_model.setVisible(True)
-            self.inp_custom_model.setPlaceholderText(self.gm("Es. microsoft/trocr-large-handwritten, stepfun-ai/GOT-OCR2_0"))
             self.inp_custom_model.setVisible(True)
         elif "Transkribus" in prov:
             self.lbl_api.setText(self.gm("Transkribus — email:password oppure Bearer token:"))
