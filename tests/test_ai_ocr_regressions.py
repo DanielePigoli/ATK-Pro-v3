@@ -143,3 +143,32 @@ def test_ai_search_logs_do_not_dump_query_or_result_payload():
     assert "query={self.query}" not in source
     assert "Ricerca completata: {r}" not in source
     assert "query='" not in source
+
+
+def test_provider_runtime_defaults_are_not_duplicated_in_runtime_modules():
+    translation_source = Path("src/translation_processor.py").read_text(encoding="utf-8")
+    ocr_source = Path("src/ocr_processor.py").read_text(encoding="utf-8")
+    ai_source = Path("src/multi_provider_handlers.py").read_text(encoding="utf-8")
+
+    duplicated_literals = [
+        "https://api.mistral.ai/v1",
+        "https://api.groq.com/openai/v1",
+        "https://api.deepseek.com",
+        "https://api.x.ai/v1",
+        "https://api-inference.huggingface.co/v1/",
+        "mistral-large-latest",
+        "pixtral-large-latest",
+        "llama-3.3-70b-versatile",
+        "llama-3.2-90b-vision-preview",
+        "deepseek-chat",
+        "grok-3-mini",
+        "grok-2-vision-1212",
+        "Qwen/Qwen2.5-72B-Instruct",
+        "Qwen/Qwen2.5-VL-7B-Instruct",
+        "claude-opus-4-5",
+    ]
+
+    for literal in duplicated_literals:
+        assert literal not in translation_source
+        assert literal not in ocr_source
+        assert literal not in ai_source

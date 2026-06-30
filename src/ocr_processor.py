@@ -6,6 +6,9 @@ import requests
 from PIL import Image
 from key_manager import (
     KeyManager,
+    get_provider_base_url,
+    get_provider_default_host,
+    get_provider_default_model,
     missing_provider_credentials_message,
     normalize_provider_name,
     provider_requires_credentials,
@@ -31,7 +34,7 @@ class AdvancedOCRWorker:
         elif not service_supports_provider("ocr", self.provider):
             self.api_keys = []
         elif not provider_requires_credentials(self.provider):
-            self.api_keys = ["http://localhost:11434"]
+            self.api_keys = [get_provider_default_host(self.provider) or "http://localhost:11434"]
             logging.info("[OCR] Provider locale: host predefinito in uso.")
         elif api_key:
             self.api_keys = [api_key]
@@ -271,24 +274,55 @@ class AdvancedOCRWorker:
         if "Anthropic" in provider or "Claude" in provider:
             return self._transcribe_claude(api_key, self._prepare_image_b64(img_path), prompt, model=self.custom_model)
         if "Mistral" in provider:
-            return self._transcribe_openai_compat(api_key, img_path, prompt, "https://api.mistral.ai/v1", self.custom_model or "pixtral-large-latest")
+            return self._transcribe_openai_compat(
+                api_key,
+                img_path,
+                prompt,
+                get_provider_base_url("Mistral"),
+                self.custom_model or get_provider_default_model("Mistral", "ocr"),
+            )
         if "Groq" in provider:
-            return self._transcribe_openai_compat(api_key, img_path, prompt, "https://api.groq.com/openai/v1", self.custom_model or "llama-3.2-90b-vision-preview")
+            return self._transcribe_openai_compat(
+                api_key,
+                img_path,
+                prompt,
+                get_provider_base_url("Groq"),
+                self.custom_model or get_provider_default_model("Groq", "ocr"),
+            )
         if "DeepSeek" in provider:
             # Solo testo — ignora immagine
-            return self._transcribe_openai_compat(api_key, None, prompt, "https://api.deepseek.com", self.custom_model or "deepseek-chat")
+            return self._transcribe_openai_compat(
+                api_key,
+                None,
+                prompt,
+                get_provider_base_url("DeepSeek"),
+                self.custom_model or get_provider_default_model("DeepSeek", "ocr"),
+            )
         if "xAI" in provider:
-            return self._transcribe_openai_compat(api_key, img_path, prompt, "https://api.x.ai/v1", self.custom_model or "grok-2-vision-1212")
+            return self._transcribe_openai_compat(
+                api_key,
+                img_path,
+                prompt,
+                get_provider_base_url("xAI"),
+                self.custom_model or get_provider_default_model("xAI", "ocr"),
+            )
         if "Ollama" in provider:
-            host = api_key.strip() if api_key and api_key.strip().startswith("http") else "http://localhost:11434"
-            return self._transcribe_openai_compat("ollama", img_path, prompt, host.rstrip("/") + "/v1", self.custom_model or "llava")
+            default_host = get_provider_default_host("Ollama") or "http://localhost:11434"
+            host = api_key.strip() if api_key and api_key.strip().startswith("http") else default_host
+            return self._transcribe_openai_compat(
+                "ollama",
+                img_path,
+                prompt,
+                host.rstrip("/") + "/v1",
+                self.custom_model or get_provider_default_model("Ollama", "ocr"),
+            )
         if "Hugging" in provider or "HuggingFace" in provider:
-            model = self.custom_model or "Qwen/Qwen2.5-VL-7B-Instruct"
+            model = self.custom_model or get_provider_default_model("HuggingFace", "ocr")
             # TrOCR e modelli image-to-text puri: path diretto REST (testo grezzo)
             if any(m in model.lower() for m in ("trocr", "got-ocr", "olmocr", "pero-ocr")):
                 return self._transcribe_hf_image_to_text(api_key, img_path, model)
             # Vision-language chat: endpoint OpenAI-compatibile
-            return self._transcribe_openai_compat(api_key, img_path, prompt, "https://api-inference.huggingface.co/v1/", model)
+            return self._transcribe_openai_compat(api_key, img_path, prompt, get_provider_base_url("HuggingFace"), model)
         if "Transkribus" in provider:
             return self._transcribe_transkribus(api_key, img_path)
 
@@ -545,7 +579,8 @@ class AdvancedOCRWorker:
 
     def _transcribe_openai(self, api_key, b64_img, prompt, model=None):
         """Trascrizione via OpenAI Vision (gpt-4o)."""
-        if not model: model = 'gpt-4o'
+        if not model:
+            model = get_provider_default_model("OpenAI", "ocr") or "gpt-4o"
         logging.info(f"[OCR] OpenAI — modello: {model}")
         url = "https://api.openai.com/v1/chat/completions"
         payload = {
@@ -572,7 +607,8 @@ class AdvancedOCRWorker:
 
     def _transcribe_claude(self, api_key, b64_img, prompt, model=None):
         """Trascrizione via Anthropic Messages API."""
-        if not model: model = "claude-3-5-sonnet-latest"
+        if not model:
+            model = get_provider_default_model("Claude", "ocr") or "claude-3-5-sonnet-latest"
         logging.info(f"[OCR] Anthropic — modello: {model}")
         url = "https://api.anthropic.com/v1/messages"
         payload = {
