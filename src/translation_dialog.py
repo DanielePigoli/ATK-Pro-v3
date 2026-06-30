@@ -397,9 +397,9 @@ class TranslationDialog(QDialog):
                 with open(cfg, 'r', encoding='utf-8') as f:
                     prefs = json.load(f)
                 
-                # API and Provider (Same as OCR)
-                self.txt_api.setText(prefs.get('ocr_api_key', ''))
-                prov = prefs.get('ocr_provider', 0)
+                # Preferenze dedicate alla Traduzione, con fallback legacy ai vecchi campi OCR.
+                self.txt_api.setText(prefs.get('translation_api_key', prefs.get('ocr_api_key', '')))
+                prov = prefs.get('translation_provider', prefs.get('ocr_provider', 0))
                 self.combo_prov.setCurrentIndex(prov)
                 # Ripristina tipologia documentale
                 saved_type = prefs.get('translation_doc_type', '')
@@ -433,8 +433,8 @@ class TranslationDialog(QDialog):
     def save_settings(self):
         try:
             from config_utils import _write_config_prefs
-            _write_config_prefs('ocr_api_key', self.txt_api.text().strip())
-            _write_config_prefs('ocr_provider', self.combo_prov.currentIndex())
+            _write_config_prefs('translation_api_key', self.txt_api.text().strip())
+            _write_config_prefs('translation_provider', self.combo_prov.currentIndex())
             _write_config_prefs('translation_doc_type', self.combo_type.currentText())
             _write_config_prefs('translation_context', self.txt_ctx.toPlainText().strip())
             _write_config_prefs('translation_custom_model', self.inp_custom_model.text().strip())
