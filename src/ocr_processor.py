@@ -2,6 +2,7 @@ import os
 import io
 import base64
 import logging
+from pathlib import Path
 import requests
 from PIL import Image
 from key_manager import (
@@ -178,6 +179,22 @@ class AdvancedOCRWorker:
             buf = io.BytesIO()
             img.save(buf, format="JPEG", quality=90)
             return base64.b64encode(buf.getvalue()).decode("utf-8")
+
+    def _get_diagnostics_dir(self):
+        base_dir = self.output_dir if (self.output_dir and os.path.isdir(self.output_dir)) else os.getcwd()
+        diag_dir = os.path.join(base_dir, "_ocr_diagnostics")
+        os.makedirs(diag_dir, exist_ok=True)
+        return diag_dir
+
+    def _save_split_diagnostics(self, img_path, text_top, text_bot):
+        stem = Path(img_path).stem
+        diag_dir = self._get_diagnostics_dir()
+        for label, raw in (("TOP", text_top), ("BOTTOM", text_bot)):
+            diag_path = os.path.join(diag_dir, f"DIAG_{stem}_{label}.txt")
+            with open(diag_path, "w", encoding="utf-8") as diag_file:
+                diag_file.write(raw)
+        logging.debug(f"[OCR] Diagnostica split salvata in: {diag_dir}")
+        return diag_dir
 
     def _build_prompt(self):
         """Costruisce il prompt da usare per la trascrizione."""
@@ -420,16 +437,9 @@ class AdvancedOCRWorker:
         )
         text_bot = self._transcribe_gemini(api_key, b64_bot, prompt_bot, model=self.custom_model)
 
-        # Salva diagnostica raw per debugging
+        # Salva diagnostica raw in sottocartella dedicata, senza sporcare l'output principale
         try:
-            import pathlib
-            stem = pathlib.Path(img_path).stem
-            diag_dir = self.output_dir if (self.output_dir and os.path.isdir(self.output_dir)) else os.getcwd()
-            for label, raw in (("TOP", text_top), ("BOTTOM", text_bot)):
-                diag_path = os.path.join(diag_dir, f"DIAG_{stem}_{label}.txt")
-                with open(diag_path, "w", encoding="utf-8") as _df:
-                    _df.write(raw)
-            logging.debug(f"[OCR] Diagnostica split salvata in: {diag_dir}")
+            self._save_split_diagnostics(img_path, text_top, text_bot)
         except Exception as _de:
             logging.warning(f"[OCR] Impossibile salvare diagnostica split: {_de}")
 

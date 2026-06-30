@@ -137,6 +137,23 @@ def test_ocr_logs_do_not_include_key_prefixes():
     assert "_current_key()[:6]" not in source
 
 
+def test_ocr_split_diagnostics_are_saved_in_dedicated_subfolder(tmp_path):
+    from src.ocr_processor import AdvancedOCRWorker
+
+    worker = object.__new__(AdvancedOCRWorker)
+    worker.output_dir = str(tmp_path)
+
+    diag_dir = worker._save_split_diagnostics(
+        str(tmp_path / "registro.jpg"),
+        "top text",
+        "bottom text",
+    )
+
+    assert Path(diag_dir) == tmp_path / "_ocr_diagnostics"
+    assert (tmp_path / "_ocr_diagnostics" / "DIAG_registro_TOP.txt").read_text(encoding="utf-8") == "top text"
+    assert (tmp_path / "_ocr_diagnostics" / "DIAG_registro_BOTTOM.txt").read_text(encoding="utf-8") == "bottom text"
+
+
 def test_ai_search_logs_do_not_dump_query_or_result_payload():
     source = Path("src/RicercaAssistitaAI.py").read_text(encoding="utf-8")
 

@@ -46,7 +46,7 @@ Stato operativo 2026-06-30:
 - punto 6: chiuso come nota di log;
 - punto 7: avanzato ma non chiuso del tutto;
 - punto 8: chiuso;
-- punto 9: aperto;
+- punto 9: parziale; diagnostica split OCR gia' spostata in sottocartella dedicata;
 - punto 10: parziale.
 
 | Ordine | Intervento | Esito atteso |
