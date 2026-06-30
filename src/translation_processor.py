@@ -8,8 +8,8 @@ import openai
 import os
 from key_manager import (
     get_provider_base_url,
-    get_provider_default_host,
-    get_provider_default_model,
+    require_provider_default_host,
+    require_provider_default_model,
     missing_provider_credentials_message,
     normalize_provider_name,
     provider_requires_credentials,
@@ -37,7 +37,7 @@ class TranslationWorker(QThread):
         elif not service_supports_provider("translation", self.provider):
             self.api_keys = []
         elif not provider_requires_credentials(self.provider):
-            self.api_keys = [get_provider_default_host(self.provider) or "http://localhost:11434"]
+            self.api_keys = [require_provider_default_host(self.provider)]
             logging.info("[TRANS] Ollama locale: host predefinito in uso.")
         elif api_key:
             self.api_keys = [api_key]
@@ -91,44 +91,44 @@ class TranslationWorker(QThread):
                             key,
                             prompt,
                             get_provider_base_url(self.provider),
-                            self.custom_model or get_provider_default_model(self.provider, "translation"),
+                            self.custom_model or require_provider_default_model(self.provider, "translation"),
                         )
                     elif self.provider == "Groq":
                         translated_text = self._call_openai_compat(
                             key,
                             prompt,
                             get_provider_base_url(self.provider),
-                            self.custom_model or get_provider_default_model(self.provider, "translation"),
+                            self.custom_model or require_provider_default_model(self.provider, "translation"),
                         )
                     elif self.provider == "DeepSeek":
                         translated_text = self._call_openai_compat(
                             key,
                             prompt,
                             get_provider_base_url(self.provider),
-                            self.custom_model or get_provider_default_model(self.provider, "translation"),
+                            self.custom_model or require_provider_default_model(self.provider, "translation"),
                         )
                     elif self.provider == "xAI":
                         translated_text = self._call_openai_compat(
                             key,
                             prompt,
                             get_provider_base_url(self.provider),
-                            self.custom_model or get_provider_default_model(self.provider, "translation"),
+                            self.custom_model or require_provider_default_model(self.provider, "translation"),
                         )
                     elif self.provider == "Ollama":
-                        default_host = get_provider_default_host(self.provider) or "http://localhost:11434"
+                        default_host = require_provider_default_host(self.provider)
                         host = key.strip() if key.strip().startswith("http") else default_host
                         translated_text = self._call_openai_compat(
                             "ollama",
                             prompt,
                             host.rstrip("/") + "/v1",
-                            self.custom_model or get_provider_default_model(self.provider, "translation"),
+                            self.custom_model or require_provider_default_model(self.provider, "translation"),
                         )
                     elif self.provider == "HuggingFace":
                         translated_text = self._call_openai_compat(
                             key,
                             prompt,
                             get_provider_base_url(self.provider),
-                            self.custom_model or get_provider_default_model(self.provider, "translation"),
+                            self.custom_model or require_provider_default_model(self.provider, "translation"),
                         )
                     else:
                         raise ValueError(f"Provider non supportato: {self.provider}")
@@ -189,7 +189,7 @@ class TranslationWorker(QThread):
 
     def _call_openai(self, prompt, model=None):
         if not model:
-            model = get_provider_default_model("OpenAI", "translation") or "gpt-4o"
+            model = require_provider_default_model("OpenAI", "translation")
         response = self.openai_client.chat.completions.create(
             model=model,
             messages=[{"role": "user", "content": prompt}],
@@ -199,7 +199,7 @@ class TranslationWorker(QThread):
 
     def _call_claude(self, prompt, model=None):
         if not model:
-            model = get_provider_default_model("Claude", "translation") or "claude-3-5-sonnet-latest"
+            model = require_provider_default_model("Claude", "translation")
         with self.anthropic_client.messages.stream(
             model=model,
             max_tokens=8192,

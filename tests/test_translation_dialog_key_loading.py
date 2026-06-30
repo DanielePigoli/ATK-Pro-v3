@@ -16,6 +16,11 @@ def test_translation_dialog_preloads_cassaforte_key(monkeypatch, tmp_path, qtbot
             ("Ollama", "translation"): "llama3.2",
             ("HuggingFace", "translation"): "Qwen/Qwen2.5-72B-Instruct",
         }.get((provider, service), ""),
+        require_provider_default_host=lambda provider: "http://localhost:11434" if provider == "Ollama" else "",
+        require_provider_default_model=lambda provider, service: {
+            ("Ollama", "translation"): "llama3.2",
+            ("HuggingFace", "translation"): "Qwen/Qwen2.5-72B-Instruct",
+        }.get((provider, service), ""),
         missing_provider_credentials_message=lambda provider: f"missing credentials for {provider}",
         normalize_provider_name=lambda provider: "Gemini" if "Gemini" in str(provider) else provider,
         provider_requires_credentials=lambda provider: provider != "Ollama",
@@ -78,6 +83,11 @@ def test_translation_dialog_clears_remote_key_when_ollama_is_selected(monkeypatc
             ("Ollama", "translation"): "llama3.2",
             ("HuggingFace", "translation"): "Qwen/Qwen2.5-72B-Instruct",
         }.get((provider, service), ""),
+        require_provider_default_host=lambda provider: "http://localhost:11434" if provider == "Ollama" else "",
+        require_provider_default_model=lambda provider, service: {
+            ("Ollama", "translation"): "llama3.2",
+            ("HuggingFace", "translation"): "Qwen/Qwen2.5-72B-Instruct",
+        }.get((provider, service), ""),
         missing_provider_credentials_message=lambda provider: f"missing credentials for {provider}",
         normalize_provider_name=lambda provider: "Gemini" if "Gemini" in str(provider) else provider,
         provider_requires_credentials=lambda provider: provider != "Ollama",
@@ -126,6 +136,11 @@ def test_translation_dialog_preserves_manual_key_when_loading_from_vault(monkeyp
         get_provider_base_url=lambda provider: "",
         get_provider_default_host=lambda provider: "http://localhost:11434" if provider == "Ollama" else "",
         get_provider_default_model=lambda provider, service: {
+            ("Ollama", "translation"): "llama3.2",
+            ("HuggingFace", "translation"): "Qwen/Qwen2.5-72B-Instruct",
+        }.get((provider, service), ""),
+        require_provider_default_host=lambda provider: "http://localhost:11434" if provider == "Ollama" else "",
+        require_provider_default_model=lambda provider, service: {
             ("Ollama", "translation"): "llama3.2",
             ("HuggingFace", "translation"): "Qwen/Qwen2.5-72B-Instruct",
         }.get((provider, service), ""),

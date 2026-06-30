@@ -7,8 +7,8 @@ from PIL import Image
 from key_manager import (
     KeyManager,
     get_provider_base_url,
-    get_provider_default_host,
-    get_provider_default_model,
+    require_provider_default_host,
+    require_provider_default_model,
     missing_provider_credentials_message,
     normalize_provider_name,
     provider_requires_credentials,
@@ -34,7 +34,7 @@ class AdvancedOCRWorker:
         elif not service_supports_provider("ocr", self.provider):
             self.api_keys = []
         elif not provider_requires_credentials(self.provider):
-            self.api_keys = [get_provider_default_host(self.provider) or "http://localhost:11434"]
+            self.api_keys = [require_provider_default_host(self.provider)]
             logging.info("[OCR] Provider locale: host predefinito in uso.")
         elif api_key:
             self.api_keys = [api_key]
@@ -279,7 +279,7 @@ class AdvancedOCRWorker:
                 img_path,
                 prompt,
                 get_provider_base_url("Mistral"),
-                self.custom_model or get_provider_default_model("Mistral", "ocr"),
+                self.custom_model or require_provider_default_model("Mistral", "ocr"),
             )
         if "Groq" in provider:
             return self._transcribe_openai_compat(
@@ -287,7 +287,7 @@ class AdvancedOCRWorker:
                 img_path,
                 prompt,
                 get_provider_base_url("Groq"),
-                self.custom_model or get_provider_default_model("Groq", "ocr"),
+                self.custom_model or require_provider_default_model("Groq", "ocr"),
             )
         if "DeepSeek" in provider:
             # Solo testo — ignora immagine
@@ -296,7 +296,7 @@ class AdvancedOCRWorker:
                 None,
                 prompt,
                 get_provider_base_url("DeepSeek"),
-                self.custom_model or get_provider_default_model("DeepSeek", "ocr"),
+                self.custom_model or require_provider_default_model("DeepSeek", "ocr"),
             )
         if "xAI" in provider:
             return self._transcribe_openai_compat(
@@ -304,20 +304,20 @@ class AdvancedOCRWorker:
                 img_path,
                 prompt,
                 get_provider_base_url("xAI"),
-                self.custom_model or get_provider_default_model("xAI", "ocr"),
+                self.custom_model or require_provider_default_model("xAI", "ocr"),
             )
         if "Ollama" in provider:
-            default_host = get_provider_default_host("Ollama") or "http://localhost:11434"
+            default_host = require_provider_default_host("Ollama")
             host = api_key.strip() if api_key and api_key.strip().startswith("http") else default_host
             return self._transcribe_openai_compat(
                 "ollama",
                 img_path,
                 prompt,
                 host.rstrip("/") + "/v1",
-                self.custom_model or get_provider_default_model("Ollama", "ocr"),
+                self.custom_model or require_provider_default_model("Ollama", "ocr"),
             )
         if "Hugging" in provider or "HuggingFace" in provider:
-            model = self.custom_model or get_provider_default_model("HuggingFace", "ocr")
+            model = self.custom_model or require_provider_default_model("HuggingFace", "ocr")
             # TrOCR e modelli image-to-text puri: path diretto REST (testo grezzo)
             if any(m in model.lower() for m in ("trocr", "got-ocr", "olmocr", "pero-ocr")):
                 return self._transcribe_hf_image_to_text(api_key, img_path, model)
@@ -580,7 +580,7 @@ class AdvancedOCRWorker:
     def _transcribe_openai(self, api_key, b64_img, prompt, model=None):
         """Trascrizione via OpenAI Vision (gpt-4o)."""
         if not model:
-            model = get_provider_default_model("OpenAI", "ocr") or "gpt-4o"
+            model = require_provider_default_model("OpenAI", "ocr")
         logging.info(f"[OCR] OpenAI — modello: {model}")
         url = "https://api.openai.com/v1/chat/completions"
         payload = {
@@ -608,7 +608,7 @@ class AdvancedOCRWorker:
     def _transcribe_claude(self, api_key, b64_img, prompt, model=None):
         """Trascrizione via Anthropic Messages API."""
         if not model:
-            model = get_provider_default_model("Claude", "ocr") or "claude-3-5-sonnet-latest"
+            model = require_provider_default_model("Claude", "ocr")
         logging.info(f"[OCR] Anthropic — modello: {model}")
         url = "https://api.anthropic.com/v1/messages"
         payload = {

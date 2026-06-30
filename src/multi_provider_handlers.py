@@ -4,7 +4,11 @@ import json
 import base64
 import logging
 import time
-from key_manager import get_provider_base_url, get_provider_default_host, get_provider_default_model
+from key_manager import (
+    get_provider_base_url,
+    require_provider_default_host,
+    require_provider_default_model,
+)
 
 try:
     import google.generativeai as genai
@@ -384,7 +388,7 @@ class OpenAIHandler(AIProviderHandler):
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI
         if not model:
-            model = get_provider_default_model("OpenAI", "ai_search") or 'gpt-4o'
+            model = require_provider_default_model("OpenAI", "ai_search")
         client = OpenAI(api_key=self.api_key)
         content = [{"type": "text", "text": prompt}]
         if image_path and os.path.exists(image_path):
@@ -428,9 +432,7 @@ class ClaudeHandler(AIProviderHandler):
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from anthropic import Anthropic
         if not model:
-            model = get_provider_default_model("Claude", "ai_search")
-        if not model:
-            raise ValueError("Nessun modello predefinito configurato per Claude.")
+            model = require_provider_default_model("Claude", "ai_search")
         client = Anthropic(api_key=self.api_key)
         content = []
         if image_path and os.path.exists(image_path):
@@ -494,7 +496,7 @@ class OpenAICompatibleHandler(AIProviderHandler):
         from openai import OpenAI
         base_url = get_provider_base_url(self.provider)
         if not model:
-            model = get_provider_default_model(self.provider, "ai_search") or "gpt-4o"
+            model = require_provider_default_model(self.provider, "ai_search")
         client = OpenAI(api_key=self.api_key, base_url=base_url)
         content = [{"type": "text", "text": prompt}]
         if image_path and os.path.exists(image_path) and self.provider not in self._NO_VISION:
@@ -542,11 +544,11 @@ class OllamaHandler(AIProviderHandler):
 
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI
-        default_host = get_provider_default_host("Ollama") or "http://localhost:11434"
+        default_host = require_provider_default_host("Ollama")
         host = self.api_key.strip() if self.api_key and self.api_key.strip().startswith("http") else default_host
         base_url = host.rstrip("/") + "/v1"
         if not model:
-            model = get_provider_default_model("Ollama", "ai_search") or "llava"
+            model = require_provider_default_model("Ollama", "ai_search")
         # Ollama accetta qualsiasi stringa come api_key
         client = OpenAI(api_key="ollama", base_url=base_url)
         content = [{"type": "text", "text": prompt}]
@@ -602,9 +604,7 @@ class HuggingFaceHandler(AIProviderHandler):
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI
         if not model:
-            model = get_provider_default_model("HuggingFace", "ai_search")
-        if not model:
-            raise ValueError("Nessun modello predefinito configurato per HuggingFace.")
+            model = require_provider_default_model("HuggingFace", "ai_search")
         client = OpenAI(api_key=self.api_key, base_url=get_provider_base_url("HuggingFace"))
         content = [{"type": "text", "text": prompt}]
         if image_path and os.path.exists(image_path) and self._is_vision_model(model):
