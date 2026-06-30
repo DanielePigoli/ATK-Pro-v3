@@ -14,6 +14,11 @@ def test_ocr_dialog_clears_remote_key_when_ollama_is_selected(monkeypatch, tmp_p
             ("Ollama", "ocr"): "llava",
             ("HuggingFace", "ocr"): "Qwen/Qwen2.5-VL-7B-Instruct",
         }.get((provider, service), ""),
+        require_provider_default_host=lambda provider: "http://localhost:11434" if provider == "Ollama" else "",
+        require_provider_default_model=lambda provider, service: {
+            ("Ollama", "ocr"): "llava",
+            ("HuggingFace", "ocr"): "Qwen/Qwen2.5-VL-7B-Instruct",
+        }.get((provider, service), ""),
         missing_provider_credentials_message=lambda provider: f"missing credentials for {provider}",
         normalize_provider_name=lambda provider: "Gemini" if "Gemini" in str(provider) else provider,
         provider_requires_credentials=lambda provider: provider != "Ollama",
@@ -65,6 +70,11 @@ def test_ocr_dialog_preserves_manual_key_when_loading_from_vault(monkeypatch, tm
         get_provider_base_url=lambda provider: "",
         get_provider_default_host=lambda provider: "http://localhost:11434" if provider == "Ollama" else "",
         get_provider_default_model=lambda provider, service: {
+            ("Ollama", "ocr"): "llava",
+            ("HuggingFace", "ocr"): "Qwen/Qwen2.5-VL-7B-Instruct",
+        }.get((provider, service), ""),
+        require_provider_default_host=lambda provider: "http://localhost:11434" if provider == "Ollama" else "",
+        require_provider_default_model=lambda provider, service: {
             ("Ollama", "ocr"): "llava",
             ("HuggingFace", "ocr"): "Qwen/Qwen2.5-VL-7B-Instruct",
         }.get((provider, service), ""),

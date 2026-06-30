@@ -260,6 +260,23 @@ def get_provider_default_model(provider, service_name):
     return default_models.get(service_key, "")
 
 
+def require_provider_default_host(provider):
+    host = get_provider_default_host(provider)
+    if host:
+        return host
+    provider_name = normalize_provider_name(provider) or str(provider or "provider")
+    raise ValueError(f"Nessun host predefinito configurato per {provider_name}.")
+
+
+def require_provider_default_model(provider, service_name):
+    model = get_provider_default_model(provider, service_name)
+    if model:
+        return model
+    provider_name = normalize_provider_name(provider) or str(provider or "provider")
+    service_key = str(service_name or "").strip().lower().replace("-", "_") or "service"
+    raise ValueError(f"Nessun modello predefinito configurato per {provider_name} ({service_key}).")
+
+
 def missing_provider_credentials_message(provider):
     provider = normalize_provider_name(provider) or "provider selezionato"
     if not provider_requires_credentials(provider):
