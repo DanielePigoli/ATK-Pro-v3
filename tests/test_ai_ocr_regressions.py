@@ -26,6 +26,19 @@ def test_ai_search_dialog_excludes_transkribus_from_provider_combo(qtbot):
     assert "Transkribus" not in providers
 
 
+def test_ai_search_dialog_uses_runtime_default_model_hint(qtbot):
+    import src.RicercaAssistitaAI as rai
+
+    dlg = rai.RicercaAssistitaAIDialog(None, glossario={}, lingua="it")
+    qtbot.addWidget(dlg)
+
+    dlg.combo_provider.setCurrentText("Claude")
+    assert "claude-opus-4-5" in dlg.inp_custom_model.placeholderText()
+
+    dlg.combo_provider.setCurrentText("Gemini")
+    assert dlg.inp_custom_model.placeholderText() == "Modello custom (opzionale)"
+
+
 def test_ai_worker_rejects_provider_outside_ai_search_service(monkeypatch):
     import src.RicercaAssistitaAI as rai
 
