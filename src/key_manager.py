@@ -52,6 +52,43 @@ SERVICE_PROVIDER_CATALOG = {
     ),
 }
 
+SERVICE_PROVIDER_UI_LABELS = {
+    "ai_search": (
+        "Gemini",
+        "OpenAI",
+        "Claude",
+        "Mistral",
+        "xAI",
+        "DeepSeek",
+        "Groq",
+        "HuggingFace",
+        "Ollama",
+    ),
+    "translation": (
+        "Anthropic / Claude (Miglior Testo)",
+        "OpenAI (GPT-4o)",
+        "Google Gemini",
+        "DeepSeek (Economico/Testo)",
+        "Mistral",
+        "xAI / Grok",
+        "Groq (Veloce)",
+        "Hugging Face (Inference API)",
+        "Ollama (Locale/Privato)",
+    ),
+    "ocr": (
+        "Anthropic / Claude (Miglior Vision)",
+        "OpenAI (GPT-4o Vision)",
+        "Google Gemini (Vision)",
+        "Transkribus (Italian Handwriting HTR)",
+        "Hugging Face (Modelli Specializzati OCR)",
+        "xAI / Grok (Vision)",
+        "Mistral (Pixtral Vision)",
+        "Groq (Llama Vision)",
+        "Ollama (Locale/Privato)",
+        "DeepSeek (Solo Testo)",
+    ),
+}
+
 PROVIDER_NOTES = {
     "Gemini": "Inserisci qui la tua chiave Gemini (Censimento/Genealogia)",
     "OpenAI": "Inserisci qui la tua chiave OpenAI",
@@ -117,6 +154,14 @@ def get_service_providers(service_name):
     providers = SERVICE_PROVIDER_CATALOG.get(service_key)
     if providers:
         return providers
+    return SUPPORTED_AI_PROVIDERS
+
+
+def get_service_provider_labels(service_name):
+    service_key = str(service_name or "").strip().lower().replace("-", "_")
+    labels = SERVICE_PROVIDER_UI_LABELS.get(service_key)
+    if labels:
+        return labels
     return SUPPORTED_AI_PROVIDERS
 
 

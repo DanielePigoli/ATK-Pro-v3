@@ -19,12 +19,14 @@ from PySide6.QtGui import QIcon, QFont, QPixmap
 from asset_cache import get_pixmap_cached
 try:
     from key_manager import (
+        get_service_provider_labels,
         missing_provider_credentials_message,
         normalize_provider_name,
         provider_requires_credentials,
     )
 except ImportError:
     from src.key_manager import (
+        get_service_provider_labels,
         missing_provider_credentials_message,
         normalize_provider_name,
         provider_requires_credentials,
@@ -326,18 +328,7 @@ class AdvancedOCRDialog(QDialog):
         # Provider Selection
         lbl_prov = QLabel(self.gm("Seleziona Provider IA:"))
         self.combo_prov = QComboBox()
-        self.combo_prov.addItems([
-            "Anthropic / Claude (Miglior Vision)",
-            "OpenAI (GPT-4o Vision)",
-            "Google Gemini (Vision)",
-            "Transkribus (Italian Handwriting HTR)",
-            "Hugging Face (Modelli Specializzati OCR)",
-            "xAI / Grok (Vision)",
-            "Mistral (Pixtral Vision)",
-            "Groq (Llama Vision)",
-            "Ollama (Locale/Privato)",
-            "DeepSeek (Solo Testo)"
-        ])
+        self.combo_prov.addItems([self.gm(label) for label in get_service_provider_labels("ocr")])
         self.combo_prov.currentIndexChanged.connect(self.provider_changed)
         layout.addWidget(lbl_prov)
         layout.addWidget(self.combo_prov)

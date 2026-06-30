@@ -88,3 +88,19 @@ def test_ocr_dialog_preserves_manual_key_when_loading_from_vault(monkeypatch, tm
     qtbot.addWidget(dlg)
 
     assert dlg.txt_api.text() == "manual-key-999"
+
+
+def test_ocr_dialog_provider_combo_includes_transkribus(monkeypatch, qtbot):
+    import src.ocr_dialog as ocr_dialog
+
+    monkeypatch.setattr(
+        ocr_dialog,
+        "get_msg",
+        lambda glossario, chiave, lingua: chiave,
+    )
+
+    dlg = ocr_dialog.AdvancedOCRDialog(None, glossario_data={}, lingua="it")
+    qtbot.addWidget(dlg)
+
+    providers = [dlg.combo_prov.itemText(i) for i in range(dlg.combo_prov.count())]
+    assert "Transkribus (Italian Handwriting HTR)" in providers
