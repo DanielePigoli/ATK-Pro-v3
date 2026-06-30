@@ -154,6 +154,46 @@ def test_ocr_split_diagnostics_are_saved_in_dedicated_subfolder(tmp_path):
     assert (tmp_path / "_ocr_diagnostics" / "DIAG_registro_BOTTOM.txt").read_text(encoding="utf-8") == "bottom text"
 
 
+def test_ocr_split_diagnostics_are_optional(tmp_path, monkeypatch):
+    from src.ocr_processor import AdvancedOCRWorker
+
+    worker = object.__new__(AdvancedOCRWorker)
+    worker.custom_model = None
+    worker.save_diagnostics = False
+
+    monkeypatch.setattr(worker, "_transcribe_gemini", lambda api_key, b64_img, prompt, model=None: "riga 1")
+    monkeypatch.setattr(worker, "_merge_gemini_split_text", lambda top, bottom: f"{top}\n{bottom}")
+
+    class FakeImage:
+        size = (2000, 1000)
+        mode = "RGB"
+
+        def crop(self, box):
+            return self
+
+        def resize(self, size, resample):
+            return self
+
+        def convert(self, mode):
+            return self
+
+        def save(self, fp, format=None, quality=None):
+            fp.write(b"fake-image")
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+    monkeypatch.setattr("src.ocr_processor.Image.open", lambda path: FakeImage())
+
+    result = worker._transcribe_gemini_split(str(tmp_path / "registro.jpg"), "fake-key", "prompt")
+
+    assert result == "riga 1\nriga 1"
+    assert not (tmp_path / "_ocr_diagnostics").exists()
+
+
 def test_ai_search_logs_do_not_dump_query_or_result_payload():
     source = Path("src/RicercaAssistitaAI.py").read_text(encoding="utf-8")
 

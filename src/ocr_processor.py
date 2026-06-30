@@ -18,13 +18,14 @@ from key_manager import (
 
 
 class AdvancedOCRWorker:
-    def __init__(self, provider, api_key, formats, output_dir, custom_prompt="", example_text="", custom_model=None):
+    def __init__(self, provider, api_key, formats, output_dir, custom_prompt="", example_text="", custom_model=None, save_diagnostics=False):
         self.provider = normalize_provider_name(provider)
         self.formats = formats
         self.output_dir = output_dir
         self.custom_prompt = custom_prompt
         self.example_text = example_text
         self.custom_model = custom_model
+        self.save_diagnostics = bool(save_diagnostics)
 
         # --- Gestione chiavi: Cassaforte > campo manuale ---
         km = KeyManager()
@@ -437,11 +438,12 @@ class AdvancedOCRWorker:
         )
         text_bot = self._transcribe_gemini(api_key, b64_bot, prompt_bot, model=self.custom_model)
 
-        # Salva diagnostica raw in sottocartella dedicata, senza sporcare l'output principale
-        try:
-            self._save_split_diagnostics(img_path, text_top, text_bot)
-        except Exception as _de:
-            logging.warning(f"[OCR] Impossibile salvare diagnostica split: {_de}")
+        # Salva diagnostica solo su richiesta, in sottocartella dedicata
+        if self.save_diagnostics:
+            try:
+                self._save_split_diagnostics(img_path, text_top, text_bot)
+            except Exception as _de:
+                logging.warning(f"[OCR] Impossibile salvare diagnostica split: {_de}")
 
         return self._merge_gemini_split_text(text_top, text_bot)
 
