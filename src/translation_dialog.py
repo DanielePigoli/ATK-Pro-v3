@@ -469,12 +469,16 @@ class TranslationDialog(QDialog):
         prov_str = normalize_provider_name(self.combo_prov.currentText())
         # I provider locali non richiedono chiavi remote.
         if not api_key and provider_requires_credentials(prov_str):
-            QMessageBox.warning(
-                self,
-                self.gm("Attenzione"),
-                self.gm(missing_provider_credentials_message(prov_str)),
-            )
-            return
+            from key_manager import KeyManager
+            if KeyManager().has_keys(prov_str):
+                api_key = ""
+            else:
+                QMessageBox.warning(
+                    self,
+                    self.gm("Attenzione"),
+                    self.gm(missing_provider_credentials_message(prov_str)),
+                )
+                return
 
         self.save_settings()
 
