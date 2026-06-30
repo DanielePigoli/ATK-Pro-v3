@@ -2,6 +2,20 @@ import json
 from pathlib import Path
 
 
+def test_ai_error_utils_classifies_common_runtime_cases():
+    from src.ai_error_utils import classify_ai_runtime_error
+
+    invalid_key = classify_ai_runtime_error("OpenAI", "unauthorized: invalid api key")
+    quota = classify_ai_runtime_error("Gemini", "429 Resource exhausted")
+    model = classify_ai_runtime_error("Claude", "404 model not found")
+    response = classify_ai_runtime_error("OpenAI", "Risposta non valida: content missing")
+
+    assert "Credenziali non valide" in invalid_key
+    assert "Quota o limite richieste esaurito" in quota
+    assert "Modello AI non disponibile" in model
+    assert "risposta non valida o vuota" in response
+
+
 def test_ai_search_dialog_excludes_transkribus_from_provider_combo(qtbot):
     import src.RicercaAssistitaAI as rai
 
@@ -54,6 +68,34 @@ def test_ai_worker_show_all_keeps_json_available_after_provider_error(monkeypatc
     payload = json.loads(captured["value"])
     assert payload[0]["provider"] == "Gemini"
     assert "provider failure" in payload[0]["raw"]
+
+
+def test_ai_worker_formats_last_provider_error_for_user(monkeypatch):
+    import src.RicercaAssistitaAI as rai
+
+    class FakeKeyManager:
+        current_indices = {"Gemini": 0}
+
+        def get_all_keys(self, provider):
+            return ["fake-key"] if provider == "Gemini" else []
+
+        def get_next_key(self, provider, current_key):
+            return None
+
+    class FailingHandler:
+        def extract_genealogy(self, *args, **kwargs):
+            raise RuntimeError("429 quota exceeded")
+
+    monkeypatch.setattr(rai, "KeyManager", lambda: FakeKeyManager())
+    monkeypatch.setattr(rai, "get_handler", lambda provider, key: FailingHandler())
+
+    worker = rai.RicercaAssistitaAIWorker("davini", "Gemini", show_all=False)
+    captured = {}
+    worker.error.connect(lambda value: captured.setdefault("error", value))
+
+    worker.run()
+
+    assert "Quota o limite richieste esaurito" in captured["error"]
 
 
 def test_ai_search_result_log_summary_avoids_payload_dump():
