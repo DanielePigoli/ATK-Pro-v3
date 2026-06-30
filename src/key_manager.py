@@ -89,6 +89,74 @@ SERVICE_PROVIDER_UI_LABELS = {
     ),
 }
 
+PROVIDER_RUNTIME_DEFAULTS = {
+    "OpenAI": {
+        "base_url": "https://api.openai.com/v1",
+        "default_models": {
+            "translation": "gpt-4o",
+            "ocr": "gpt-4o",
+            "ai_search": "gpt-4o",
+        },
+    },
+    "Claude": {
+        "base_url": "https://api.anthropic.com/v1",
+        "default_models": {
+            "translation": "claude-3-5-sonnet-latest",
+            "ocr": "claude-3-5-sonnet-latest",
+            "ai_search": "claude-opus-4-5",
+        },
+    },
+    "Mistral": {
+        "base_url": "https://api.mistral.ai/v1",
+        "default_models": {
+            "translation": "mistral-large-latest",
+            "ocr": "pixtral-large-latest",
+            "ai_search": "pixtral-large-latest",
+        },
+    },
+    "Groq": {
+        "base_url": "https://api.groq.com/openai/v1",
+        "default_models": {
+            "translation": "llama-3.3-70b-versatile",
+            "ocr": "llama-3.2-90b-vision-preview",
+            "ai_search": "llama-3.2-90b-vision-preview",
+        },
+    },
+    "DeepSeek": {
+        "base_url": "https://api.deepseek.com",
+        "default_models": {
+            "translation": "deepseek-chat",
+            "ocr": "deepseek-chat",
+            "ai_search": "deepseek-chat",
+        },
+    },
+    "xAI": {
+        "base_url": "https://api.x.ai/v1",
+        "default_models": {
+            "translation": "grok-3-mini",
+            "ocr": "grok-2-vision-1212",
+            "ai_search": "grok-2-vision-1212",
+        },
+    },
+    "HuggingFace": {
+        "base_url": "https://api-inference.huggingface.co/v1/",
+        "default_models": {
+            "translation": "Qwen/Qwen2.5-72B-Instruct",
+            "ocr": "Qwen/Qwen2.5-VL-7B-Instruct",
+            "ai_search": "Qwen/Qwen2.5-VL-7B-Instruct",
+        },
+    },
+    "Ollama": {
+        "host": "http://localhost:11434",
+        "base_url": "http://localhost:11434/v1",
+        "default_models": {
+            "translation": "llama3.2",
+            "ocr": "llava",
+            "ai_search": "llava",
+        },
+    },
+}
+
 PROVIDER_NOTES = {
     "Gemini": "Inserisci qui la tua chiave Gemini (Censimento/Genealogia)",
     "OpenAI": "Inserisci qui la tua chiave OpenAI",
@@ -168,6 +236,28 @@ def get_service_provider_labels(service_name):
 def service_supports_provider(service_name, provider):
     provider_name = normalize_provider_name(provider)
     return provider_name in set(get_service_providers(service_name))
+
+
+def get_provider_runtime_defaults(provider):
+    provider_name = normalize_provider_name(provider)
+    return dict(PROVIDER_RUNTIME_DEFAULTS.get(provider_name, {}))
+
+
+def get_provider_base_url(provider):
+    provider_defaults = get_provider_runtime_defaults(provider)
+    return provider_defaults.get("base_url", "")
+
+
+def get_provider_default_host(provider):
+    provider_defaults = get_provider_runtime_defaults(provider)
+    return provider_defaults.get("host", "")
+
+
+def get_provider_default_model(provider, service_name):
+    provider_defaults = get_provider_runtime_defaults(provider)
+    default_models = provider_defaults.get("default_models", {})
+    service_key = str(service_name or "").strip().lower().replace("-", "_")
+    return default_models.get(service_key, "")
 
 
 def missing_provider_credentials_message(provider):

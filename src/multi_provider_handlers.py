@@ -4,6 +4,7 @@ import json
 import base64
 import logging
 import time
+from key_manager import get_provider_base_url, get_provider_default_host, get_provider_default_model
 
 try:
     import google.generativeai as genai
@@ -382,7 +383,8 @@ class GeminiHandler(AIProviderHandler):
 class OpenAIHandler(AIProviderHandler):
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI
-        if not model: model = 'gpt-4o'
+        if not model:
+            model = get_provider_default_model("OpenAI", "ai_search") or 'gpt-4o'
         client = OpenAI(api_key=self.api_key)
         content = [{"type": "text", "text": prompt}]
         if image_path and os.path.exists(image_path):
@@ -425,7 +427,10 @@ class OpenAIHandler(AIProviderHandler):
 class ClaudeHandler(AIProviderHandler):
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from anthropic import Anthropic
-        if not model: model = 'claude-opus-4-5'
+        if not model:
+            model = get_provider_default_model("Claude", "ai_search")
+        if not model:
+            raise ValueError("Nessun modello predefinito configurato per Claude.")
         client = Anthropic(api_key=self.api_key)
         content = []
         if image_path and os.path.exists(image_path):
@@ -483,26 +488,13 @@ class ClaudeHandler(AIProviderHandler):
 
 class OpenAICompatibleHandler(AIProviderHandler):
     """Handler generico per provider con API compatibile OpenAI (Mistral, Groq, DeepSeek, xAI)."""
-
-    _BASE_URLS = {
-        "Mistral":  "https://api.mistral.ai/v1",
-        "Groq":     "https://api.groq.com/openai/v1",
-        "DeepSeek": "https://api.deepseek.com",
-        "xAI":      "https://api.x.ai/v1",
-    }
-    _DEFAULT_MODELS = {
-        "Mistral":  "pixtral-large-latest",           # vision
-        "Groq":     "llama-3.2-90b-vision-preview",   # vision
-        "DeepSeek": "deepseek-chat",                  # testo (no vision)
-        "xAI":      "grok-2-vision-1212",             # vision
-    }
     _NO_VISION = {"DeepSeek"}
 
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI
-        base_url = self._BASE_URLS.get(self.provider)
+        base_url = get_provider_base_url(self.provider)
         if not model:
-            model = self._DEFAULT_MODELS.get(self.provider, "gpt-4o")
+            model = get_provider_default_model(self.provider, "ai_search") or "gpt-4o"
         client = OpenAI(api_key=self.api_key, base_url=base_url)
         content = [{"type": "text", "text": prompt}]
         if image_path and os.path.exists(image_path) and self.provider not in self._NO_VISION:
@@ -547,15 +539,14 @@ class OllamaHandler(AIProviderHandler):
     """Handler per Ollama — modelli locali, nessuna API key.
     api_key viene riutilizzato per l'host (es. http://localhost:11434).
     """
-    _DEFAULT_HOST = "http://localhost:11434"
-    _DEFAULT_MODEL = "llava"  # più diffuso, supporta vision
 
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI
-        host = self.api_key.strip() if self.api_key and self.api_key.strip().startswith("http") else self._DEFAULT_HOST
+        default_host = get_provider_default_host("Ollama") or "http://localhost:11434"
+        host = self.api_key.strip() if self.api_key and self.api_key.strip().startswith("http") else default_host
         base_url = host.rstrip("/") + "/v1"
         if not model:
-            model = self._DEFAULT_MODEL
+            model = get_provider_default_model("Ollama", "ai_search") or "llava"
         # Ollama accetta qualsiasi stringa come api_key
         client = OpenAI(api_key="ollama", base_url=base_url)
         content = [{"type": "text", "text": prompt}]
@@ -601,8 +592,6 @@ class HuggingFaceHandler(AIProviderHandler):
     Supporta modelli vision come Qwen2.5-VL, LLaVA, TrOCR (solo testo).
     api_key = HF token (hf_...).
     """
-    _BASE_URL = "https://api-inference.huggingface.co/v1/"
-    _DEFAULT_MODEL = "Qwen/Qwen2.5-VL-7B-Instruct"   # ottimo per OCR documenti storici
     # Modelli che non supportano vision — fallback a testo
     _NO_VISION_PREFIXES = ("microsoft/trocr", "facebook/bart", "t5-")
 
@@ -613,8 +602,10 @@ class HuggingFaceHandler(AIProviderHandler):
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI
         if not model:
-            model = self._DEFAULT_MODEL
-        client = OpenAI(api_key=self.api_key, base_url=self._BASE_URL)
+            model = get_provider_default_model("HuggingFace", "ai_search")
+        if not model:
+            raise ValueError("Nessun modello predefinito configurato per HuggingFace.")
+        client = OpenAI(api_key=self.api_key, base_url=get_provider_base_url("HuggingFace"))
         content = [{"type": "text", "text": prompt}]
         if image_path and os.path.exists(image_path) and self._is_vision_model(model):
             ext = os.path.splitext(image_path)[1].lower()
