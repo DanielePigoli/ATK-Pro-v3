@@ -547,9 +547,6 @@ if SRC_PATH not in sys.path:
 import logging
 import logging
 
-from input_loader import load_input_file
-from input_parser import parse_input_text
-
 
 def _get_elaborazione_module():
     try:
@@ -557,6 +554,16 @@ def _get_elaborazione_module():
     except ImportError:
         from src import elaborazione as elaborazione_mod
     return elaborazione_mod
+
+
+def _get_input_helpers():
+    try:
+        from input_loader import load_input_file
+        from input_parser import parse_input_text
+    except ImportError:
+        from src.input_loader import load_input_file
+        from src.input_parser import parse_input_text
+    return load_input_file, parse_input_text
 
 # Inizializzazione BASE_DIR subito dopo gli import
 _is_frozen = getattr(sys, 'frozen', False)
@@ -2356,6 +2363,7 @@ def _get_effective_record_policy_context(portale_attivo, record):
 def action_show_example_input(glossario_data, lingua, parent=None):
     example_path = os.path.join(ASSET_LANG, lingua.lower(), "testuali", "input_link_base.txt")
     try:
+        load_input_file, parse_input_text = _get_input_helpers()
         raw_text = load_input_file(example_path)
         records = parse_input_text(raw_text)
         state["records"] = records
@@ -2427,6 +2435,7 @@ def action_modify_input(glossario_data, lingua, parent=None):
                 get_msg(glossario_data, "Seleziona file input da modificare", lingua.upper())
             )
 
+        load_input_file, parse_input_text = _get_input_helpers()
         raw_text = load_input_file(modified_path)
         records = parse_input_text(raw_text)
         state["records"] = records
@@ -2486,6 +2495,7 @@ def action_modify_input(glossario_data, lingua, parent=None):
                 with open(modified_path, "w", encoding="utf-8") as f:
                     f.write(new_text)
                 # Aggiorna lo stato con i record modificati
+                _, parse_input_text = _get_input_helpers()
                 state["records"] = parse_input_text(new_text)
                 logging.info(f"{len(state['records'])} record modificati caricati (post-save)")
                 dialog.accept()
@@ -2753,6 +2763,7 @@ def action_open_input(glossario_data, lingua, parent=None):
     if not path:
         return
     try:
+        load_input_file, parse_input_text = _get_input_helpers()
         raw_text = load_input_file(path)
         records = parse_input_text(raw_text)
         state["records"] = records
