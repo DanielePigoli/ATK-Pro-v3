@@ -17,6 +17,10 @@ from manifest_utils import (
     robust_find_manifest,
 )
 try:
+    from resource_profile import get_canvas_max_workers
+except ImportError:
+    from src.resource_profile import get_canvas_max_workers
+try:
     from portal_registry import get_portal_referer, get_portal_tile_download_policy, normalize_portal_key
 except ImportError:
     from src.portal_registry import get_portal_referer, get_portal_tile_download_policy, normalize_portal_key
@@ -91,18 +95,24 @@ def _parse_ua_from_url(url: str):
     return None
 
 
-def _canvas_max_workers_for_portal(portale: str | None, cpu_count: int | None = None) -> int:
+def _canvas_max_workers_for_portal(
+    portale: str | None,
+    cpu_count: int | None = None,
+    resource_profile: str | None = None,
+) -> int:
     """Restituisce il parallelismo canvas rispettando la policy prudenziale del portale."""
+    portal_max_workers = None
     try:
         portal_max_workers, _ = get_portal_tile_download_policy(portale)
-        if portal_max_workers == 1:
-            return 1
     except Exception:
-        pass
+        portal_max_workers = None
 
     try:
-        available_cpus = cpu_count or os.cpu_count() or 4
-        return min(8, max(2, available_cpus // 2))
+        return get_canvas_max_workers(
+            resource_profile,
+            cpu_count=cpu_count,
+            portal_max_workers=portal_max_workers,
+        )
     except Exception:
         return 4
 
