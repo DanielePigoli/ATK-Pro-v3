@@ -1,4 +1,4 @@
-from src.portal_adapters import resolve_direct_image_download
+from src.portal_adapters import resolve_direct_image_download, resolve_direct_pdf_download
 
 
 def test_resolve_direct_image_download_for_bdt_context():
@@ -62,3 +62,52 @@ def test_resolve_direct_image_download_for_ficlit_portal():
     assert adapter is not None
     assert adapter.portal_label == "FICLIT"
     assert image_url == "https://dl.ficlit.unibo.it/iiif/2/45498/full/699,800/0/default.jpg"
+
+
+def test_resolve_direct_pdf_download_for_bdt_manifest():
+    manifest = {
+        "seeAlso": [
+            {
+                "@id": "https://bdt.bibcom.trento.it/content/download/78214/1625910/file/BDT-113-TIf37.pdf",
+                "format": "application/pdf",
+            }
+        ]
+    }
+
+    adapter, pdf_url = resolve_direct_pdf_download(
+        "biblioteca_digitale_trentina",
+        tiles_info=[],
+        manifest=manifest,
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "BDT"
+    assert pdf_url == "https://bdt.bibcom.trento.it/content/download/78214/1625910/file/BDT-113-TIf37.pdf"
+
+
+def test_resolve_direct_pdf_download_for_bdl_context():
+    tiles_info = [
+        {
+            "images": [
+                {
+                    "resource": {
+                        "service": {
+                            "@context": "bdl_direct_pdf",
+                            "@id": "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf",
+                            "pdf_url": "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf",
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+
+    adapter, pdf_url = resolve_direct_pdf_download(
+        "biblioteca_digitale_lombarda",
+        tiles_info=tiles_info,
+        manifest=None,
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "BDL"
+    assert pdf_url == "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf"
