@@ -9,12 +9,13 @@ import logging
 import json
 import os
 import html
+from logging_utils import get_default_log_level
 LOG_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'atkpro_debug.log'))
 if not logging.getLogger('atkpro').hasHandlers():
     handler = logging.FileHandler(LOG_PATH, encoding='utf-8')
     handler.setFormatter(logging.Formatter('[%(asctime)s][%(levelname)s][%(name)s] %(message)s'))
     logging.getLogger('atkpro').addHandler(handler)
-    logging.getLogger('atkpro').setLevel(logging.DEBUG)
+    logging.getLogger('atkpro').setLevel(get_default_log_level())
 logger = logging.getLogger('atkpro')
 import os
 from key_manager import (
