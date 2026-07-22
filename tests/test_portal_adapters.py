@@ -68,6 +68,34 @@ def test_resolve_direct_image_download_for_internetculturale_context():
     assert image_url == "https://www.internetculturale.it/jpg.jpg"
 
 
+def test_resolve_direct_image_download_for_archive_org_host():
+    canvas = {"images": [{"resource": {"service": {}}}]}
+
+    adapter, image_url = resolve_direct_image_download(
+        None,
+        canvas,
+        "https://archive.org/download/example/BookReaderImages.php?zip=/foo.zip&file=page_0001.jp2",
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "IA"
+    assert image_url.startswith("https://archive.org/download/example/BookReaderImages.php")
+
+
+def test_resolve_direct_image_download_for_matricula_host():
+    canvas = {"images": [{"resource": {"service": {}}}]}
+
+    adapter, image_url = resolve_direct_image_download(
+        None,
+        canvas,
+        "https://hosted-images.matricula-online.eu/foo/bar.jpg",
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "Matricula"
+    assert image_url == "https://hosted-images.matricula-online.eu/foo/bar.jpg"
+
+
 def test_resolve_direct_image_download_for_rovereto_context():
     canvas = {
         "images": [

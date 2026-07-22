@@ -80,6 +80,17 @@ DIRECT_IMAGE_ADAPTERS_BY_PORTAL = {
     ),
 }
 
+DIRECT_IMAGE_ADAPTERS_BY_HOST_FRAGMENT = {
+    "BookReaderImages.php": DirectImagePortalAdapter(
+        portal_label="IA",
+        referer="https://archive.org/",
+    ),
+    "hosted-images.matricula-online.eu": DirectImagePortalAdapter(
+        portal_label="Matricula",
+        referer="https://data.matricula-online.eu/",
+    ),
+}
+
 DIRECT_PDF_ADAPTERS_BY_CONTEXT = {
     "bdl_direct_pdf": DirectPdfPortalAdapter(
         portal_label="BDL",
@@ -129,6 +140,11 @@ def resolve_direct_image_download(portal_key: str | None, canvas: dict, service_
         if adapter and image_url:
             return adapter, image_url
         return None, None
+
+    if service_id:
+        for host_fragment, adapter in DIRECT_IMAGE_ADAPTERS_BY_HOST_FRAGMENT.items():
+            if host_fragment in service_id:
+                return adapter, service_id
 
     if isinstance(service, dict):
         adapter = DIRECT_IMAGE_ADAPTERS_BY_CONTEXT.get(service.get("@context"))
