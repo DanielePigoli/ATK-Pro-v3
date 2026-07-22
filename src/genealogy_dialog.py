@@ -19,10 +19,20 @@ except ImportError:
 from genealogy_prompts import compose_extraction_prompt
 from gedcom_factory import GedcomGenerator
 from key_manager import KeyManager, get_provider_default_model, get_service_providers
-from multi_provider_handlers import get_handler
 
 from config_utils import _EXE_DIR
 PRESETS_FILE = os.path.join(_EXE_DIR, "genealogy_presets.json")
+
+get_handler = None
+
+
+def _get_handler_factory():
+    global get_handler
+    if get_handler is None:
+        from multi_provider_handlers import get_handler as _get_handler
+
+        get_handler = _get_handler
+    return get_handler
 
 
 def get_genealogy_service_providers():
@@ -103,7 +113,8 @@ class GenealogyWorker(QThread):
             if not current_key:
                 self.error.emit(self.msg("no_key", provider=current_prov)); return
 
-            handler = get_handler(current_prov, current_key)
+            handler_factory = _get_handler_factory()
+            handler = handler_factory(current_prov, current_key)
             generator = GedcomGenerator(source_system="ATK-Pro_Genealogy_Engine")
             
             effective_base = self.base_path
@@ -221,7 +232,7 @@ class GenealogyWorker(QThread):
                                 if self.provider_result:
                                     current_prov = self.provider_result
                                     current_key, _ = km.get_next_key(current_prov)
-                                    handler = get_handler(current_prov, current_key)
+                                    handler = handler_factory(current_prov, current_key)
                                     self.progress.emit(percent, self.msg("provider_switch_confirmed", provider=current_prov))
                                     continue
                                 else:
