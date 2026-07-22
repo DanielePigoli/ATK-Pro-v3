@@ -423,12 +423,31 @@ def _save_direct_image_outputs(
         tmp_dir = os.path.join(output_folder, "_tmp_pdf_images")
         os.makedirs(tmp_dir, exist_ok=True)
         tmp_png = os.path.join(tmp_dir, f"{base_filename}_pdftmp.png")
+        pdf_created = False
         try:
             image.save(tmp_png, format='PNG')
             pdf_out = os.path.join(output_folder, f"{base_filename}.pdf")
-            create_pdf_from_images(tmp_dir, pdf_out)
+            pdf_created = bool(create_pdf_from_images(tmp_dir, pdf_out))
         finally:
-            shutil.rmtree(tmp_dir, ignore_errors=True)
+            _finalize_temp_pdf_workspace(tmp_dir, output_folder, base_filename, pdf_created)
+
+
+def _finalize_temp_pdf_workspace(temp_pdf_dir: str, output_dir: str, base_name: str, pdf_created: bool):
+    """Pulisce la cartella temp PDF su successo, altrimenti la conserva come recovery."""
+    if not temp_pdf_dir or not os.path.exists(temp_pdf_dir):
+        return
+
+    if pdf_created:
+        shutil.rmtree(temp_pdf_dir, ignore_errors=True)
+        logger.info(f"[Cleanup] Cartella temp PDF eliminata: {temp_pdf_dir}")
+        return
+
+    safe_base = re.sub(r'[\\/*?:"<>|]', "_", str(base_name or "output")).strip() or "output"
+    recovery_dir = os.path.join(output_dir, f"_{safe_base}_pdf_recovery_images")
+    if os.path.exists(recovery_dir):
+        shutil.rmtree(recovery_dir, ignore_errors=True)
+    os.replace(temp_pdf_dir, recovery_dir)
+    logger.warning(f"[PDF] Generazione non completata: immagini temporanee conservate in {recovery_dir}")
 
 
 def _make_placeholder_image(service_id: str, width: int = 800, height: int = 1200,
@@ -1538,6 +1557,7 @@ class Elaborazione:
                         logger.error(f"[Elaborazione] Errore callback richiesta PDF: {e}")
                         gen_pdf = False
             if gen_pdf:
+                pdf_path = None
                 if only_pdf:
                     pdf_path = self._generate_register_pdf(
                         [f"{self.nome_file}_pdftmp.png"], image_dir=temp_pdf_dir)
@@ -1555,9 +1575,8 @@ class Elaborazione:
                          if os.path.exists(os.path.join(self.output_dir, p))])
                 if pdf_path:
                     logger.info(f"[OK] PDF generato per documento singolo: {pdf_path}")
-            if only_pdf and temp_pdf_dir and os.path.exists(temp_pdf_dir):
-                shutil.rmtree(temp_pdf_dir, ignore_errors=True)
-                logger.info(f"[Cleanup] Cartella temp PDF eliminata: {temp_pdf_dir}")
+            if only_pdf and temp_pdf_dir:
+                _finalize_temp_pdf_workspace(temp_pdf_dir, self.output_dir, self.nome_file, bool(pdf_path))
             logger.info(f"[OK] Documento elaborato: {self.nome_file}")
             return True
         except Exception as e:
@@ -2082,6 +2101,7 @@ class Elaborazione:
 
             # Genera PDF
             if gen_pdf:
+                pdf_path = None
                 if pdf_in_formats:
                     if only_pdf:
                         # Usa immagini temporanee da temp_pdf_dir (ordinate per idx)
@@ -2126,9 +2146,8 @@ class Elaborazione:
                         pdf_path = self._generate_register_pdf(immagini_attese)
                         if pdf_path:
                             immagini_generate.append(os.path.basename(pdf_path))
-            if temp_pdf_dir and os.path.exists(temp_pdf_dir):
-                shutil.rmtree(temp_pdf_dir, ignore_errors=True)
-                logger.info(f"[Cleanup] Cartella temp PDF eliminata: {temp_pdf_dir}")
+            if temp_pdf_dir:
+                _finalize_temp_pdf_workspace(temp_pdf_dir, self.output_dir, self.nome_file, bool(pdf_path))
 
             # Aggiorna metadati finali
             if self.manifest_path and os.path.exists(self.manifest_path):
