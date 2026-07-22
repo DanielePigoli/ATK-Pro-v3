@@ -404,6 +404,68 @@ def test_ocr_pdf_keeps_partial_progress_when_later_page_fails(monkeypatch, tmp_p
     assert "Quota o limite richieste esaurito" in message
 
 
+def test_ocr_pdf_closes_document_when_later_page_fails(monkeypatch, tmp_path):
+    from src.ocr_processor import AdvancedOCRWorker
+
+    worker = AdvancedOCRWorker(
+        provider="Ollama",
+        api_key="",
+        formats=["txt"],
+        output_dir=str(tmp_path),
+    )
+
+    class FakePix:
+        def save(self, path):
+            Path(path).write_bytes(b"fake-jpg")
+
+    class FakePage:
+        def get_pixmap(self, matrix=None, colorspace=None):
+            return FakePix()
+
+    closed = {"value": False}
+
+    class FakeDoc:
+        def __len__(self):
+            return 2
+
+        def __getitem__(self, index):
+            return FakePage()
+
+        def close(self):
+            closed["value"] = True
+
+    class FakeFitz:
+        csRGB = object()
+
+        @staticmethod
+        def open(path):
+            return FakeDoc()
+
+        @staticmethod
+        def Matrix(x, y):
+            return (x, y)
+
+    calls = {"count": 0}
+
+    def fake_transcribe(path, key):
+        calls["count"] += 1
+        if calls["count"] == 1:
+            return "prima pagina"
+        raise RuntimeError("429 quota exceeded")
+
+    monkeypatch.setitem(__import__("sys").modules, "fitz", FakeFitz)
+    monkeypatch.setattr(worker, "_transcribe_image", fake_transcribe)
+
+    try:
+        worker.process_file(str(tmp_path / "registro.pdf"))
+    except Exception:
+        pass
+    else:
+        raise AssertionError("Expected OCR PDF processing to fail")
+
+    assert closed["value"] is True
+
+
 def test_ocr_pdf_clears_partial_progress_after_success(monkeypatch, tmp_path):
     from src.ocr_processor import AdvancedOCRWorker
 

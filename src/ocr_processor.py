@@ -112,69 +112,73 @@ class AdvancedOCRWorker:
 
         import tempfile
         doc = fitz.open(pdf_path)
-        n_pages = len(doc)
-        logging.info(f"[OCR] PDF: {n_pages} pagine trovate — {os.path.basename(pdf_path)}")
+        try:
+            n_pages = len(doc)
+            logging.info(f"[OCR] PDF: {n_pages} pagine trovate — {os.path.basename(pdf_path)}")
 
-        all_texts = []
-        partial_path = self._get_partial_results_path(pdf_path)
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            for page_num in range(n_pages):
-                if page_progress:
-                    page_progress(page_num + 1, n_pages)
+            all_texts = []
+            partial_path = self._get_partial_results_path(pdf_path)
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                for page_num in range(n_pages):
+                    if page_progress:
+                        page_progress(page_num + 1, n_pages)
 
-                page = doc[page_num]
-                # Render a 200 DPI per leggibilità ottimale
-                mat = fitz.Matrix(200 / 72, 200 / 72)
-                pix = page.get_pixmap(matrix=mat, colorspace=fitz.csRGB)
-                img_path = os.path.join(tmp_dir, f"page_{page_num + 1:04d}.jpg")
-                pix.save(img_path)
-                logging.debug("[OCR] PDF pagina %s/%s convertita in immagine temporanea.", page_num + 1, n_pages)
+                    page = doc[page_num]
+                    # Render a 200 DPI per leggibilità ottimale
+                    mat = fitz.Matrix(200 / 72, 200 / 72)
+                    pix = page.get_pixmap(matrix=mat, colorspace=fitz.csRGB)
+                    img_path = os.path.join(tmp_dir, f"page_{page_num + 1:04d}.jpg")
+                    pix.save(img_path)
+                    logging.debug("[OCR] PDF pagina %s/%s convertita in immagine temporanea.", page_num + 1, n_pages)
 
-                # Trascrivi con retry chiavi
-                last_error = None
-                page_text = None
-                for attempt in range(len(self.api_keys)):
-                    try:
-                        page_text = self._transcribe_image(img_path, self._current_key())
-                        break
-                    except Exception as e:
-                        err_str = str(e).lower()
-                        last_error = e
-                        is_quota = any(k in err_str for k in ["429", "quota", "resource_exhausted", "rate"])
-                        if is_quota:
-                            if not self._rotate_key():
-                                break
-                        else:
-                            raise e
+                    # Trascrivi con retry chiavi
+                    last_error = None
+                    page_text = None
+                    for attempt in range(len(self.api_keys)):
+                        try:
+                            page_text = self._transcribe_image(img_path, self._current_key())
+                            break
+                        except Exception as e:
+                            err_str = str(e).lower()
+                            last_error = e
+                            is_quota = any(k in err_str for k in ["429", "quota", "resource_exhausted", "rate"])
+                            if is_quota:
+                                if not self._rotate_key():
+                                    break
+                            else:
+                                raise e
 
-                if page_text is None:
-                    page_error = classify_ai_runtime_error(
-                        self.provider,
-                        f"Tutte le chiavi esaurite. Ultimo errore: {last_error}",
-                    )
-                    raise Exception(f"[OCR] Pagina {page_num + 1}: {page_error}")
+                    if page_text is None:
+                        page_error = classify_ai_runtime_error(
+                            self.provider,
+                            f"Tutte le chiavi esaurite. Ultimo errore: {last_error}",
+                        )
+                        raise Exception(f"[OCR] Pagina {page_num + 1}: {page_error}")
 
-                # Revisione interattiva per pagina (immagine temp ancora disponibile)
-                final_page_text = page_text
-                if review_callback:
-                    result = review_callback(img_path, page_text)
-                    if result is None:
-                        logging.info(f"[OCR] Pagina {page_num + 1} saltata dall'utente.")
-                        continue
-                    final_page_text = result
+                    # Revisione interattiva per pagina (immagine temp ancora disponibile)
+                    final_page_text = page_text
+                    if review_callback:
+                        result = review_callback(img_path, page_text)
+                        if result is None:
+                            logging.info(f"[OCR] Pagina {page_num + 1} saltata dall'utente.")
+                            continue
+                        final_page_text = result
 
-                all_texts.append(f"--- Pagina {page_num + 1} ---\n{final_page_text}")
-                self._save_partial_results(partial_path, all_texts)
+                    all_texts.append(f"--- Pagina {page_num + 1} ---\n{final_page_text}")
+                    self._save_partial_results(partial_path, all_texts)
 
-        doc.close()
+            if not all_texts:
+                logging.info("[OCR] Nessuna pagina approvata. File non salvato.")
+                return
 
-        if not all_texts:
-            logging.info("[OCR] Nessuna pagina approvata. File non salvato.")
-            return
-
-        full_text = "\n\n".join(all_texts)
-        self._save_results(pdf_path, full_text)
-        self._clear_partial_results(partial_path)
+            full_text = "\n\n".join(all_texts)
+            self._save_results(pdf_path, full_text)
+            self._clear_partial_results(partial_path)
+        finally:
+            try:
+                doc.close()
+            except Exception:
+                pass
 
     def _prepare_image_b64(self, img_path):
         """Carica, ridimensiona e converte l'immagine in JPEG base64."""
