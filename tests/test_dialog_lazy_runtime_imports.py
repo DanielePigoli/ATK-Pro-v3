@@ -33,3 +33,11 @@ def test_ai_search_dialog_defers_provider_handler_import_to_runtime():
 
     assert "multi_provider_handlers" not in modules
     assert "def _get_handler_factory()" in source
+
+
+def test_genealogy_dialog_defers_provider_handler_import_to_runtime():
+    source = Path("src/genealogy_dialog.py").read_text(encoding="utf-8")
+    modules = _top_level_import_from_modules("src/genealogy_dialog.py")
+
+    assert "multi_provider_handlers" not in modules
+    assert "def _get_handler_factory()" in source
