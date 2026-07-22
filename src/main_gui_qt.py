@@ -546,10 +546,17 @@ if SRC_PATH not in sys.path:
 
 import logging
 import logging
-import elaborazione as elaborazione_mod
 
 from input_loader import load_input_file
 from input_parser import parse_input_text
+
+
+def _get_elaborazione_module():
+    try:
+        import elaborazione as elaborazione_mod
+    except ImportError:
+        from src import elaborazione as elaborazione_mod
+    return elaborazione_mod
 
 # Inizializzazione BASE_DIR subito dopo gli import
 _is_frozen = getattr(sys, 'frozen', False)
@@ -3299,7 +3306,7 @@ def action_process(glossario_data, lingua, parent=None):
                     except Exception as e:
                         msg = get_msg(self.glossario_data, "Worker Qt non disponibile", self.lingua)
                         logging.debug(msg or f"Worker Qt non disponibile o inizializzazione fallita: {e}")
-                    risultati = elaborazione_mod.esegui_elaborazione(
+                    risultati = _get_elaborazione_module().esegui_elaborazione(
                         state,
                         glossario_data=glossario_data,
                         lingua=lingua,
