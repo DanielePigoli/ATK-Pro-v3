@@ -21,6 +21,7 @@ builtins.mock_driver.quit = builtins.mock.Mock()
 import os
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"))
+from logging_utils import get_atkpro_env, get_default_log_level
 
 def setup_logging():
     # Percorso del file di log nella root effettiva del progetto (parent di src/)
@@ -28,7 +29,7 @@ def setup_logging():
     log_path = os.path.join(project_root, "atkpro.log")
 
     # Configurazione logging: console sempre attivo, file solo se non in produzione
-    ATKPRO_ENV = os.environ.get("ATKPRO_ENV", "development").lower()
+    ATKPRO_ENV = get_atkpro_env()
     handlers = [logging.StreamHandler(sys.stdout)]
     if ATKPRO_ENV != "production":
         from logging.handlers import RotatingFileHandler
@@ -42,7 +43,7 @@ def setup_logging():
 
         handlers.append(SafeRotatingFileHandler(log_path, maxBytes=5*1024*1024, backupCount=3, encoding="utf-8", delay=True))
     logging.basicConfig(
-        level=logging.DEBUG if ATKPRO_ENV != "production" else logging.WARNING,
+        level=get_default_log_level(),
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
         handlers=handlers
     )

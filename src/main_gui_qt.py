@@ -727,6 +727,7 @@ import os
 import json
 import logging
 from logging.handlers import RotatingFileHandler
+from logging_utils import get_default_log_level, is_debug_logging_enabled
 
 class SafeRotatingFileHandler(RotatingFileHandler):
     """RotatingFileHandler che ignora PermissionError su Windows durante il rollover."""
@@ -736,11 +737,16 @@ class SafeRotatingFileHandler(RotatingFileHandler):
         except PermissionError:
             pass
 
-# Configurazione logging IMMEDIATA: SEMPRE su file e su console
+# Configurazione logging immediata: sobria di default, DEBUG solo se richiesto.
 _is_frozen = getattr(sys, 'frozen', False)
-_log_level = logging.DEBUG  # Sempre DEBUG per diagnosi
-_log_format = "DEBUG: %(message)s"
-log_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'atkpro_debug.log')
+_log_level = get_default_log_level()
+_debug_logs = is_debug_logging_enabled()
+_log_format = "DEBUG: %(message)s" if _debug_logs else "%(levelname)s: %(message)s"
+log_file = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    '..',
+    'atkpro_debug.log' if _debug_logs else 'atkpro.log',
+)
 try:
     if os.path.exists(log_file):
         with open(log_file, 'w', encoding='utf-8') as f:
@@ -750,7 +756,10 @@ except Exception:
 handlers = [logging.StreamHandler(sys.stdout)]
 handlers.append(SafeRotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=3, encoding='utf-8', delay=True))
 logging.basicConfig(level=_log_level, format=_log_format, handlers=handlers)
-logging.info('LOGGING AVVIATO (sempre su file e console, livello DEBUG - azzerato ad ogni avvio)')
+logging.info(
+    "LOGGING AVVIATO (%s su file e console, azzerato ad ogni avvio)",
+    "livello DEBUG" if _debug_logs else logging.getLevelName(_log_level),
+)
 
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
