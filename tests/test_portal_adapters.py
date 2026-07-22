@@ -26,6 +26,48 @@ def test_resolve_direct_image_download_for_bdt_context():
     assert image_url == "https://bdt.example.test/page-1.jpg"
 
 
+def test_resolve_direct_image_download_for_bnc_context():
+    canvas = {
+        "images": [
+            {
+                "resource": {
+                    "service": {
+                        "@context": "bnc_direct",
+                        "@id": "https://digitale.bnc.roma.sbn.it/image.jpg",
+                    }
+                }
+            }
+        ]
+    }
+
+    adapter, image_url = resolve_direct_image_download(None, canvas, None)
+
+    assert adapter is not None
+    assert adapter.portal_label == "BNC"
+    assert image_url == "https://digitale.bnc.roma.sbn.it/image.jpg"
+
+
+def test_resolve_direct_image_download_for_internetculturale_context():
+    canvas = {
+        "images": [
+            {
+                "resource": {
+                    "service": {
+                        "@context": "internetculturale_cacheman_direct",
+                        "@id": "https://www.internetculturale.it/jpg.jpg",
+                    }
+                }
+            }
+        ]
+    }
+
+    adapter, image_url = resolve_direct_image_download(None, canvas, None)
+
+    assert adapter is not None
+    assert adapter.portal_label == "InternetCulturale"
+    assert image_url == "https://www.internetculturale.it/jpg.jpg"
+
+
 def test_resolve_direct_image_download_for_rovereto_context():
     canvas = {
         "images": [

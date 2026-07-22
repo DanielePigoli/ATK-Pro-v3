@@ -55,9 +55,17 @@ class PortalRequestAdapter:
 
 
 DIRECT_IMAGE_ADAPTERS_BY_CONTEXT = {
+    "bnc_direct": DirectImagePortalAdapter(
+        portal_label="BNC",
+        referer="http://digitale.bnc.roma.sbn.it/",
+    ),
     "bdt_direct": DirectImagePortalAdapter(
         portal_label="BDT",
         referer="https://bdt.bibcom.trento.it/",
+    ),
+    "internetculturale_cacheman_direct": DirectImagePortalAdapter(
+        portal_label="InternetCulturale",
+        referer="https://www.internetculturale.it/",
     ),
     "rovereto_direct": DirectImagePortalAdapter(
         portal_label="Rovereto",
