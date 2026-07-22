@@ -962,6 +962,38 @@ class Elaborazione:
             logger.error(f"[{portal_label}] Errore download PDF diretto: {exc}", exc_info=True)
             return False
 
+    def _build_direct_canvas_metadata(self, canvas, canvas_id: str):
+        ua = _parse_ua_from_url(self.ark_url)
+        ark = _parse_ark_from_url(self.ark_url)
+        page_label = canvas.get('label', None)
+        return build_image_metadata(
+            ua=ua,
+            ark=ark,
+            canvas_id=canvas_id,
+            page_label=page_label,
+            description=self.nome_file,
+            source_url=self.ark_url,
+            atk_version=VERSION,
+        )
+
+    def _save_direct_canvas_outputs(self, image, canvas, image_url, canvas_id: str, base_filename: str, formats, image_formats, pdf_in_formats, temp_pdf_dir=None):
+        meta = self._build_direct_canvas_metadata(canvas, canvas_id)
+        output_image = image if image is not None else _make_placeholder_image(
+            image_url,
+            glossario_data=self.glossario_data,
+            lingua=self.lingua,
+            canvas_url=canvas.get('@id') or canvas.get('id'),
+        )
+        if image_formats:
+            save_image_variants(output_image, self.output_dir, base_filename, image_formats, meta=meta)
+        if pdf_in_formats and temp_pdf_dir:
+            pdf_png_path = os.path.join(temp_pdf_dir, f"{base_filename}_pdftmp.png")
+            try:
+                output_image.save(pdf_png_path, format='PNG')
+            except Exception as error:
+                logger.error(f"[PDF] Errore PNG {canvas_id}: {error}")
+        return output_image
+
     def _process_document(self, tiles_info, metadata):
         """Elabora documento singolo (D/d) con verifica immagini finali e richiesta PDF opzionale."""
         try:
@@ -1098,72 +1130,6 @@ class Elaborazione:
                     shutil.rmtree(_tmp_dir, ignore_errors=True)
                 return True
             svc = canvas.get('images', [{}])[0].get('resource', {}).get('service', {})
-            # --- BNC Roma: download diretto JPEG ---
-            if isinstance(svc, dict) and svc.get('@context') == 'bnc_direct':
-                from io import BytesIO as _BytesIO
-                import requests as _req
-                _img_url = svc.get('@id') or service_id
-                _h_bnc = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-                _r_bnc = _req.get(_img_url, headers=_h_bnc, timeout=45)
-                if not _r_bnc.ok:
-                    logger.error(f"[BNC] HTTP {_r_bnc.status_code} per documento: {_img_url[:80]}")
-                    return False
-                final_img = Image.open(_BytesIO(_r_bnc.content)).copy()
-                logger.info(f"[BNC] Documento scaricato: {_r_bnc.headers.get('content-length','?')} byte")
-                ua = _parse_ua_from_url(self.ark_url)
-                ark = _parse_ark_from_url(self.ark_url)
-                page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
-                formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
-                if not formats:
-                    formats = ['PNG', 'JPEG', 'TIFF']
-                _norm_fmts = [_normalize_format(f) for f in formats]
-                _img_fmts = [f for f in formats if _normalize_format(f) != 'PDF']
-                _pdf_in_fmts = 'PDF' in _norm_fmts
-                if _img_fmts:
-                    save_image_variants(final_img, self.output_dir, self.nome_file, _img_fmts, meta=meta)
-                if _pdf_in_fmts:
-                    _tmp_dir = os.path.join(self.output_dir, "_tmp_pdf_images")
-                    os.makedirs(_tmp_dir, exist_ok=True)
-                    _tmp_png = os.path.join(_tmp_dir, f"{self.nome_file}_pdftmp.png")
-                    final_img.save(_tmp_png, format='PNG')
-                    _pdf_out = os.path.join(self.output_dir, f"{self.nome_file}.pdf")
-                    create_pdf_from_images(_tmp_dir, _pdf_out)
-                    shutil.rmtree(_tmp_dir, ignore_errors=True)
-                return True
-            # --- Internet Culturale: download diretto JPEG cacheman ---
-            if isinstance(svc, dict) and svc.get('@context') == 'internetculturale_cacheman_direct':
-                from io import BytesIO as _BytesIO
-                import requests as _req
-                _img_url = svc.get('@id') or service_id
-                _h_ic = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-                _r_ic = _req.get(_img_url, headers=_h_ic, timeout=45)
-                if not _r_ic.ok:
-                    logger.error(f"[InternetCulturale] HTTP {_r_ic.status_code} per documento: {_img_url[:80]}")
-                    return False
-                final_img = Image.open(_BytesIO(_r_ic.content)).copy()
-                logger.info(f"[InternetCulturale] Documento scaricato: {_r_ic.headers.get('content-length','?')} byte")
-                ua = _parse_ua_from_url(self.ark_url)
-                ark = _parse_ark_from_url(self.ark_url)
-                page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
-                formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
-                if not formats:
-                    formats = ['PNG', 'JPEG', 'TIFF']
-                _norm_fmts = [_normalize_format(f) for f in formats]
-                _img_fmts = [f for f in formats if _normalize_format(f) != 'PDF']
-                _pdf_in_fmts = 'PDF' in _norm_fmts
-                if _img_fmts:
-                    save_image_variants(final_img, self.output_dir, self.nome_file, _img_fmts, meta=meta)
-                if _pdf_in_fmts:
-                    _tmp_dir = os.path.join(self.output_dir, "_tmp_pdf_images")
-                    os.makedirs(_tmp_dir, exist_ok=True)
-                    _tmp_png = os.path.join(_tmp_dir, f"{self.nome_file}_pdftmp.png")
-                    final_img.save(_tmp_png, format='PNG')
-                    _pdf_out = os.path.join(self.output_dir, f"{self.nome_file}.pdf")
-                    create_pdf_from_images(_tmp_dir, _pdf_out)
-                    shutil.rmtree(_tmp_dir, ignore_errors=True)
-                return True
             # --- Biblioteca Digitale Lombarda: solo PDF REST diretto, niente immagini ---
             direct_pdf_adapter, direct_pdf_url = resolve_direct_pdf_download(
                 self._portal_key(),
@@ -1194,12 +1160,14 @@ class Elaborazione:
                     logger.error(f"[{direct_adapter.portal_label}] HTTP {_status} per documento: {_img_url[:100]}")
                     return False
                 logger.info(f"[{direct_adapter.portal_label}] Documento scaricato da adapter immagine diretta: {_size} byte")
-                ua = _parse_ua_from_url(self.ark_url)
-                ark = _parse_ark_from_url(self.ark_url)
-                page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
-                _save_direct_image_outputs(final_img, self.output_dir, self.nome_file, formats, meta=meta)
+                _save_direct_image_outputs(
+                    final_img,
+                    self.output_dir,
+                    self.nome_file,
+                    formats,
+                    meta=self._build_direct_canvas_metadata(canvas, "page_1"),
+                )
                 return True
             # --- Museogalileo: download diretto JPEG da TecaService ---
             if isinstance(svc, dict) and svc.get('@context') == 'museogalileo_teca_direct':
@@ -1583,64 +1551,6 @@ class Elaborazione:
                                 logger.error(f"[PDF] Errore PNG Matricula canvas {idx}: {_e}")
                         return  # nessuna cartella tile da pulire
                     _svc = canvas.get('images', [{}])[0].get('resource', {}).get('service', {})
-                    # --- BNC Roma: download diretto JPEG ---
-                    if isinstance(_svc, dict) and _svc.get('@context') == 'bnc_direct':
-                        from io import BytesIO as _BytesIO
-                        import requests as _req
-                        _img_url = _svc.get('@id') or service_id
-                        _h_bnc = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-                        _r_bnc = _req.get(_img_url, headers=_h_bnc, timeout=45)
-                        if _r_bnc.ok and len(_r_bnc.content) > 0:
-                            final_img = Image.open(_BytesIO(_r_bnc.content)).copy()
-                            logger.info(f"[BNC] Pagina {idx} scaricata: {len(_r_bnc.content)} byte")
-                        else:
-                            logger.error(f"[BNC] Errore download pagina {idx}: HTTP {_r_bnc.status_code} size={len(_r_bnc.content)}")
-                            final_img = None
-                        ua = _parse_ua_from_url(self.ark_url)
-                        ark = _parse_ark_from_url(self.ark_url)
-                        page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
-                        _use_img = final_img if final_img is not None else _make_placeholder_image(
-                            str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
-                            canvas_url=canvas.get('@id') or canvas.get('id'))
-                        if image_formats:
-                            save_image_variants(_use_img, self.output_dir, nome_base, image_formats, meta=meta)
-                        if pdf_in_formats:
-                            _pdf_png_path = os.path.join(temp_pdf_dir, f"{nome_base}_pdftmp.png")
-                            try:
-                                _use_img.save(_pdf_png_path, format='PNG')
-                            except Exception as _e:
-                                logger.error(f"[PDF] Errore PNG BNC canvas {idx}: {_e}")
-                        return  # nessuna cartella tile da pulire
-                    # --- Internet Culturale: download diretto JPEG cacheman ---
-                    if isinstance(_svc, dict) and _svc.get('@context') == 'internetculturale_cacheman_direct':
-                        from io import BytesIO as _BytesIO
-                        import requests as _req
-                        _img_url = _svc.get('@id') or service_id
-                        _h_ic = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-                        _r_ic = _req.get(_img_url, headers=_h_ic, timeout=45)
-                        if _r_ic.ok and len(_r_ic.content) > 0:
-                            final_img = Image.open(_BytesIO(_r_ic.content)).copy()
-                            logger.info(f"[InternetCulturale] Pagina {idx} scaricata: {len(_r_ic.content)} byte")
-                        else:
-                            logger.error(f"[InternetCulturale] Errore download pagina {idx}: HTTP {_r_ic.status_code} size={len(_r_ic.content)}")
-                            final_img = None
-                        ua = _parse_ua_from_url(self.ark_url)
-                        ark = _parse_ark_from_url(self.ark_url)
-                        page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
-                        _use_img = final_img if final_img is not None else _make_placeholder_image(
-                            str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
-                            canvas_url=canvas.get('@id') or canvas.get('id'))
-                        if image_formats:
-                            save_image_variants(_use_img, self.output_dir, nome_base, image_formats, meta=meta)
-                        if pdf_in_formats:
-                            _pdf_png_path = os.path.join(temp_pdf_dir, f"{nome_base}_pdftmp.png")
-                            try:
-                                _use_img.save(_pdf_png_path, format='PNG')
-                            except Exception as _e:
-                                logger.error(f"[PDF] Errore PNG InternetCulturale canvas {idx}: {_e}")
-                        return  # nessuna cartella tile da pulire
                     direct_adapter, _img_url = resolve_direct_image_download(self._portal_key(), canvas, service_id)
                     if direct_adapter and _img_url:
                         final_img, _status, _size = direct_adapter.download_image(_img_url)
@@ -1648,21 +1558,17 @@ class Elaborazione:
                             logger.info(f"[{direct_adapter.portal_label}] Pagina {idx} scaricata da adapter diretto: {_size} byte")
                         else:
                             logger.error(f"[{direct_adapter.portal_label}] Errore download pagina {idx}: HTTP {_status} url={_img_url[:100]}")
-                        ua = _parse_ua_from_url(self.ark_url)
-                        ark = _parse_ark_from_url(self.ark_url)
-                        page_label = canvas.get('label', None)
-                        meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
-                        _use_img = final_img if final_img is not None else _make_placeholder_image(
-                            _img_url, glossario_data=self.glossario_data, lingua=self.lingua,
-                            canvas_url=canvas.get('@id') or canvas.get('id'))
-                        if image_formats:
-                            save_image_variants(_use_img, self.output_dir, nome_base, image_formats, meta=meta)
-                        if pdf_in_formats:
-                            _pdf_png_path = os.path.join(temp_pdf_dir, f"{nome_base}_pdftmp.png")
-                            try:
-                                _use_img.save(_pdf_png_path, format='PNG')
-                            except Exception as _e:
-                                logger.error(f"[PDF] Errore PNG {direct_adapter.portal_label} canvas {idx}: {_e}")
+                        self._save_direct_canvas_outputs(
+                            final_img,
+                            canvas,
+                            _img_url,
+                            f"page_{idx}",
+                            nome_base,
+                            formats,
+                            image_formats,
+                            pdf_in_formats,
+                            temp_pdf_dir=temp_pdf_dir,
+                        )
                         return  # nessuna cartella tile da pulire
                     # --- Museogalileo: download diretto JPEG da TecaService ---
                     if isinstance(_svc, dict) and _svc.get('@context') == 'museogalileo_teca_direct':
