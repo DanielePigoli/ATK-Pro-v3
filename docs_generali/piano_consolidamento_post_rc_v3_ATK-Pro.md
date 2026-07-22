@@ -81,6 +81,20 @@ Interventi per ridurre peso percepito, consumo di memoria, CPU e I/O.
 
 Interventi strutturali da fare con prudenza, dopo la stabilizzazione.
 
+Stato operativo 2026-07-22:
+
+- punto 16: avanzato in modo sostanziale sul perimetro a basso rischio;
+- introdotti adapter condivisi per:
+  - immagini dirette contestuali e host-based;
+  - PDF diretti;
+  - profilo richiesta prudente (referer + ritmo tile);
+- consolidati i percorsi diretti gia' stabili per BDT, BDL, BUB, FICLIT,
+  Rovereto, BNC Roma, Internet Culturale, IA e Matricula;
+- normalizzati anche i helper interni per documenti diretti residui;
+- non e' consigliato proseguire subito oltre, sullo stesso punto, nei rami
+  BNCF, Museogalileo e Findbuch senza un'esigenza concreta o un test dedicato,
+  perche' li' il rischio tecnico cresce piu' del beneficio strutturale.
+
 | Ordine | Intervento | Esito atteso |
 | ---: | --- | --- |
 | 16 | Introdurre adapter per portale. | `elaborazione.py` delega le peculiarita' dei portali a componenti dedicati. |
@@ -111,3 +125,10 @@ Procedere con PR piccoli e ordinati. Ogni PR deve includere:
 - test o verifica manuale mirata;
 - aggiornamento documentale solo se cambia il comportamento utente;
 - nessuna estensione funzionale non necessaria al punto trattato.
+
+Nota operativa aggiornata:
+
+- sul punto 16 il prossimo passo consigliato non e' un nuovo refactor
+  generalizzato, ma il passaggio graduale al punto 17 oppure, se emerge un bug
+  reale, un intervento chirurgico sui soli rami speciali rimasti fuori dal
+  consolidamento.
