@@ -9,6 +9,13 @@ from PySide6.QtWidgets import (
     QProgressDialog
 )
 from atk_version import DISPLAY_VERSION, VERSION, is_newer_version
+from resource_profile import (
+    RESOURCE_PROFILE_BALANCED,
+    RESOURCE_PROFILE_FAST,
+    RESOURCE_PROFILE_LIGHT,
+    get_resource_profile_description_key,
+    normalize_resource_profile,
+)
 
 GITHUB_REPO = "DanielePigoli/ATK-Pro-v3"
 DISCLAIMER_REVISION = "v3.0.0-legal-disclaimer-2026-05-27"
@@ -214,13 +221,13 @@ def _read_config_prefs() -> dict:
                 "output_folder_doc":    data.get("output_folder_doc", None),
                 "output_folder_reg":    data.get("output_folder_reg", None),
                 "portale_attivo":       data.get("portale_attivo", "antenati"),
-                "resource_profile":     data.get("resource_profile", "bilanciato"),
+                "resource_profile":     normalize_resource_profile(data.get("resource_profile")),
             }
     except Exception as e:
         logging.debug(f"Errore lettura prefs config: {e}")
     return {"formats": [], "last_input_file": None, "output_folders_doc": [], "output_folders_reg": [],
             "output_folder_single": None, "output_folder_doc": None, "output_folder_reg": None,
-            "portale_attivo": "antenati", "resource_profile": "bilanciato"}
+            "portale_attivo": "antenati", "resource_profile": RESOURCE_PROFILE_BALANCED}
 
 
 def _write_config_prefs(key: str, value) -> None:
@@ -991,6 +998,60 @@ class MainWindow(QMainWindow):
                 _write_config_prefs("portale_attivo", nuovo_portale)
                 show_operation_completed_dialog(self, self.glossario_data, self.lingua)
 
+    def cambia_profilo_risorse(self):
+        """Dialog per scegliere il profilo risorse persistente."""
+        gm = lambda k: get_msg(self.glossario_data, k, self.lingua) or k
+
+        dlg = QDialog(self)
+        dlg.setWindowTitle(gm("Profilo risorse"))
+        _setup_dialog_pergamena(dlg, 620, 260)
+        layout = QVBoxLayout(dlg)
+
+        lbl = QLabel(gm("Seleziona come usare le risorse del computer:"))
+        lbl.setStyleSheet("color: #fff; font-size: 15px;")
+        layout.addWidget(lbl)
+
+        combo = QComboBox()
+        combo.setStyleSheet("color: #222; background: #f5e6c3; font-size: 14px; padding: 4px;")
+        combo.addItem(gm("Leggero"), RESOURCE_PROFILE_LIGHT)
+        combo.addItem(gm("Bilanciato"), RESOURCE_PROFILE_BALANCED)
+        combo.addItem(gm("Veloce"), RESOURCE_PROFILE_FAST)
+
+        current_profile = normalize_resource_profile(state.get("resource_profile"))
+        current_index = combo.findData(current_profile)
+        if current_index >= 0:
+            combo.setCurrentIndex(current_index)
+        layout.addWidget(combo)
+
+        description_label = QLabel()
+        description_label.setWordWrap(True)
+        description_label.setStyleSheet("color: #f5e6c3; font-size: 13px; padding-top: 6px;")
+
+        def _update_description():
+            description_key = get_resource_profile_description_key(combo.currentData())
+            description_label.setText(gm(description_key))
+
+        combo.currentIndexChanged.connect(_update_description)
+        _update_description()
+        layout.addWidget(description_label)
+
+        btn_row = QHBoxLayout()
+        ok_btn = QPushButton(gm("Conferma") or "Conferma")
+        cancel_btn = QPushButton(gm("Annulla") or "Annulla")
+        ok_btn.clicked.connect(dlg.accept)
+        cancel_btn.clicked.connect(dlg.reject)
+        btn_row.addWidget(ok_btn)
+        btn_row.addWidget(cancel_btn)
+        layout.addLayout(btn_row)
+        dlg.setLayout(layout)
+
+        if dlg.exec() == QDialog.Accepted:
+            nuovo_profilo = normalize_resource_profile(combo.currentData())
+            if nuovo_profilo != normalize_resource_profile(state.get("resource_profile")):
+                state["resource_profile"] = nuovo_profilo
+                _write_config_prefs("resource_profile", nuovo_profilo)
+                show_operation_completed_dialog(self, self.glossario_data, self.lingua)
+
     def verifica_aggiornamenti(self):
         """Controlla se è disponibile una nuova versione su GitHub"""
         import urllib.request, json
@@ -1199,7 +1260,7 @@ class MainWindow(QMainWindow):
         prefs = _read_config_prefs()
         self.portale_attivo = prefs.get("portale_attivo", "antenati")
         state["portale_attivo"] = self.portale_attivo
-        state["resource_profile"] = prefs.get("resource_profile", "bilanciato")
+        state["resource_profile"] = normalize_resource_profile(prefs.get("resource_profile"))
 
         # Ripristina titlebar nativa
         self.setWindowTitle("ATK-Pro")
@@ -1286,6 +1347,7 @@ class MainWindow(QMainWindow):
         # --- Impostazioni ---
         impostazioni_menu = QMenu(gm("Impostazioni"), self)
         impostazioni_menu.addAction(gm("Portale attivo"), self.cambia_portale)
+        impostazioni_menu.addAction(gm("Profilo risorse"), self.cambia_profilo_risorse)
         impostazioni_menu.addAction(gm("Cambia lingua"), self.cambia_lingua)
         impostazioni_menu.addAction(gm("Seleziona formati immagine"), self.seleziona_formati_immagine)
         impostazioni_menu.addAction(gm("Seleziona cartella output"), self.seleziona_cartella_output)
