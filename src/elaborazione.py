@@ -37,7 +37,11 @@ from tile_rebuilder import rebuild_image, build_image_metadata
 from manifest_parser import estrai_metadati_da_manifest, build_manifest_url
 from pdf_generator import create_pdf_from_images, enrich_pdf_metadata
 from metadata_utils import embed_metadata_and_save, _save_sidecar_json_once
-from portal_adapters import resolve_direct_image_download, resolve_direct_pdf_download
+from portal_adapters import (
+    PortalRequestAdapter,
+    resolve_direct_image_download,
+    resolve_direct_pdf_download,
+)
 try:
     from atk_version import PACKAGE_VERSION as VERSION
 except ImportError:
@@ -102,9 +106,9 @@ def _canvas_max_workers_for_portal(
     resource_profile: str | None = None,
 ) -> int:
     """Restituisce il parallelismo canvas rispettando la policy prudenziale del portale."""
-    portal_max_workers = None
     try:
-        portal_max_workers, _ = get_portal_tile_download_policy(portale)
+        request_adapter = PortalRequestAdapter.for_portal(portale)
+        portal_max_workers = request_adapter.tile_max_workers
     except Exception:
         portal_max_workers = None
 
@@ -519,7 +523,8 @@ class Elaborazione:
                 logger.info(f"[DEBUG] _fetch_manifest: MATCH BNCF URL trovato in ark_url_lower={ark_url_lower}")
                 portale_key = "bncf_teca"
 
-            referer = get_portal_referer(portale_key, ark_url_lower)
+            request_adapter = PortalRequestAdapter.for_portal(portale_key, ark_url_lower)
+            referer = request_adapter.referer
 
             # --- BNCF Teca (Firenze): manifest sintetico prioritario ---
             if portale_key == "bncf_teca":
