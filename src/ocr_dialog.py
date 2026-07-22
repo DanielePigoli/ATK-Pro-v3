@@ -37,8 +37,18 @@ except ImportError:
         provider_requires_credentials,
     )
 
-from ocr_processor import AdvancedOCRWorker
 from ai_error_utils import classify_ai_runtime_error
+
+AdvancedOCRWorker = None
+
+
+def _get_advanced_ocr_worker_class():
+    global AdvancedOCRWorker
+    if AdvancedOCRWorker is None:
+        from ocr_processor import AdvancedOCRWorker as _AdvancedOCRWorker
+
+        AdvancedOCRWorker = _AdvancedOCRWorker
+    return AdvancedOCRWorker
 
 def get_msg(glossario, chiave, lingua):
     try:
@@ -166,7 +176,8 @@ class OCRThread(QThread):
 
     def run(self):
         try:
-            worker = AdvancedOCRWorker(
+            worker_class = _get_advanced_ocr_worker_class()
+            worker = worker_class(
                 self.provider,
                 self.api_key,
                 self.formats,
@@ -220,7 +231,8 @@ class CalibrationThread(QThread):
 
     def run(self):
         try:
-            worker = AdvancedOCRWorker(self.provider, self.api_key, [], None)
+            worker_class = _get_advanced_ocr_worker_class()
+            worker = worker_class(self.provider, self.api_key, [], None)
             last_error = None
             for attempt in range(len(worker.api_keys)):
                 try:

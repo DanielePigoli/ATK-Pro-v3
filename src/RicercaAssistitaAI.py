@@ -30,7 +30,17 @@ from key_manager import (
 )
 from ai_error_utils import classify_ai_runtime_error
 from ai_utils import get_best_gemini_model
-from multi_provider_handlers import get_handler
+
+get_handler = None
+
+
+def _get_handler_factory():
+    global get_handler
+    if get_handler is None:
+        from multi_provider_handlers import get_handler as _get_handler
+
+        get_handler = _get_handler
+    return get_handler
 
 
 def _summarize_ai_result_payload(payload):
@@ -96,7 +106,8 @@ class RicercaAssistitaAIWorker(QThread):
                     self.provider_changed.emit(self.key_slot, prov, current_attempt)
                     try:
                         logger.debug(f"[AIWorker] Tentativo {current_attempt}/{max_attempts} con chiave slot {self.key_slot} (provider={prov})")
-                        handler = get_handler(prov, self.current_key)
+                        handler_factory = _get_handler_factory()
+                        handler = handler_factory(prov, self.current_key)
                         model = self.custom_model if self.custom_model else None
                         result_rows = handler.extract_genealogy(self.query, model=model)
                         result = json.dumps(result_rows, ensure_ascii=False, indent=2)
