@@ -945,24 +945,7 @@ class Elaborazione:
         except Exception as e:
             logger.debug(f"[Manifest HTTP] Errore: {e}")
 
-        # Tentativo 2: Prova browser automation
-        try:
-            driver = setup_selenium()
-            if driver:
-                driver.get(self.ark_url)
-                import time
-                time.sleep(3)
-                html = driver.page_source
-                driver.quit()
-                self._scraped_html = html  # conserva per Matricula e altri portali
-                manifest_url = robust_find_manifest(self.ark_url, html)
-                if manifest_url:
-                    logger.info(f"Manifest trovato (Selenium): {manifest_url}")
-                    return manifest_url
-        except Exception as e:
-            logger.debug(f"[Selenium] Errore: {e}")
-
-        # Tentativo 2: Fallback Playwright
+        # Tentativo 2: Fallback browser unico via Playwright
         try:
             html = setup_playwright(self.ark_url)
             if html:

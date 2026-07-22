@@ -85,3 +85,32 @@ def test_public_portal_html_manifest_is_resolved_before_browser(monkeypatch):
     elab.portale = "bub_digitale"
 
     assert elab._get_manifest_url() == manifest_url
+
+
+def test_manifest_browser_fallback_uses_playwright_without_selenium(monkeypatch):
+    page_url = "https://example.org/record/123"
+    manifest_url = "https://example.org/iiif/manifest/123.json"
+    captured = {}
+
+    monkeypatch.setattr(elaborazione, "robust_find_manifest", lambda url, html=None: manifest_url if html == "<html>manifest</html>" else None)
+    monkeypatch.setattr(
+        elaborazione,
+        "setup_selenium",
+        lambda: (_ for _ in ()).throw(
+            AssertionError("Selenium should no longer run in manifest browser fallback")
+        ),
+    )
+
+    def fake_playwright(url):
+        captured["url"] = url
+        return "<html>manifest</html>"
+
+    monkeypatch.setattr(elaborazione, "setup_playwright", fake_playwright)
+
+    elab = object.__new__(elaborazione.Elaborazione)
+    elab.ark_url = page_url
+    elab.portale = "generic_portal"
+
+    assert elab._get_manifest_url() == manifest_url
+    assert captured["url"] == page_url
+    assert elab._scraped_html == "<html>manifest</html>"
