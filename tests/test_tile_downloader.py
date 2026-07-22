@@ -179,3 +179,58 @@ def test_download_tiles_applies_registry_delay_for_heidelberg(tmp_path, monkeypa
     assert delays == [0.3]
     assert len(tiles_ok) == 1
     assert tiles_missing == []
+
+
+def test_download_tiles_uses_resource_profile_for_parallelism(tmp_path, monkeypatch):
+    info = {
+        "@id": "http://fake",
+        "width": 512,
+        "height": 512,
+        "tiles": [{"width": 256}],
+    }
+
+    captured = {}
+
+    class DummyExecutor:
+        def __init__(self, max_workers):
+            captured["max_workers"] = max_workers
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+        def submit(self, fn, *args, **kwargs):
+            class DummyFuture:
+                def result(self_inner):
+                    return fn(*args, **kwargs)
+
+            return DummyFuture()
+
+    def fake_as_completed(futures):
+        return list(futures)
+
+    def fake_get_tile_download_max_workers(profile, *, portal_max_workers=None, cpu_count=None):
+        captured["profile"] = profile
+        captured["portal_max_workers"] = portal_max_workers
+        return 3
+
+    def fake_download_tile(base_url, x, y, tile_size, output_dir, *args):
+        filename = os.path.join(output_dir, f"tile_{x}_{y}.jpg")
+        with open(filename, "wb") as fh:
+            fh.write(b"x" * 2048)
+        return filename
+
+    monkeypatch.setattr(td, "download_tile", fake_download_tile)
+    monkeypatch.setattr(td, "get_tile_download_max_workers", fake_get_tile_download_max_workers)
+    monkeypatch.setattr(td.concurrent.futures, "ThreadPoolExecutor", DummyExecutor)
+    monkeypatch.setattr(td.concurrent.futures, "as_completed", fake_as_completed)
+
+    tiles_ok, tiles_missing = td.download_tiles(info, tmp_path, resource_profile="leggero")
+
+    assert captured["profile"] == "leggero"
+    assert captured["portal_max_workers"] is None
+    assert captured["max_workers"] == 3
+    assert len(tiles_ok) == 4
+    assert tiles_missing == []
