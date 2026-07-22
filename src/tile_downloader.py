@@ -7,6 +7,7 @@ Scarica tutti i tiles IIIF di un canvas e restituisce la lista completa.
 import os
 import time
 import logging
+import concurrent.futures
 import requests
 from urllib.parse import urlparse
 
@@ -14,6 +15,11 @@ try:
     from portal_registry import get_portal_tile_download_policy
 except ImportError:  # pragma: no cover - package import path
     from src.portal_registry import get_portal_tile_download_policy
+
+try:
+    from resource_profile import get_tile_download_max_workers
+except ImportError:  # pragma: no cover - package import path
+    from src.resource_profile import get_tile_download_max_workers
 
 logger = logging.getLogger(__name__)
 
@@ -167,9 +173,15 @@ def download_tile(url, x, y, tile_size, output_dir, quality="default", img_width
     logger.error("[Error] Tutti i tentativi di download falliti per %s", url_tile)
     return None
 
-def download_tiles(infojson, output_dir, update_progress=None, portale=None, referer=None):
+def download_tiles(
+    infojson,
+    output_dir,
+    update_progress=None,
+    portale=None,
+    referer=None,
+    resource_profile=None,
+):
     """Scarica tutti i tile definiti in un info.json IIIF e restituisce la lista completa."""
-    import concurrent.futures
     base_url = infojson.get("@id") or infojson.get("id") or infojson.get("@context", "")
     width = infojson["width"]
     height = infojson["height"]
@@ -208,15 +220,11 @@ def download_tiles(infojson, output_dir, update_progress=None, portale=None, ref
     expected_files = [expected_tile_filename(x, y) for y in range(rows) for x in range(cols)]
 
     max_global_retries = 3
-    # Parallelizzazione automatica: usa metà dei core disponibili, minimo 2, massimo 8.
-    # Eventuali limiti per portale arrivano dalla registry centrale.
-    try:
-        cpu_count = os.cpu_count() or 4
-        default_max_workers = min(8, max(2, cpu_count // 2))
-    except Exception:
-        default_max_workers = 4
     portal_max_workers, inter_delay = get_portal_tile_download_policy(portale)
-    max_workers = portal_max_workers or default_max_workers
+    max_workers = get_tile_download_max_workers(
+        resource_profile,
+        portal_max_workers=portal_max_workers,
+    )
     def _tile_call_args(x, y):
         base_args = (base_url, x, y, tile_size, output_dir, quality, width, height, inter_delay)
         if referer is not None or size_keyword != "full":

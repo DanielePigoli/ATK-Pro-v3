@@ -7,6 +7,7 @@ from src.resource_profile import (
     get_canvas_max_workers,
     get_pdf_open_max_workers,
     get_resource_profile_description_key,
+    get_tile_download_max_workers,
     normalize_resource_profile,
 )
 
@@ -55,3 +56,17 @@ def test_pdf_workers_respect_profile_progression():
 def test_pdf_workers_stay_bounded_by_total_images():
     assert get_pdf_open_max_workers(1, RESOURCE_PROFILE_FAST, cpu_count=16) == 1
     assert get_pdf_open_max_workers(2, RESOURCE_PROFILE_FAST, cpu_count=16) == 2
+
+
+def test_tile_workers_respect_profile_progression():
+    light = get_tile_download_max_workers(RESOURCE_PROFILE_LIGHT, cpu_count=16)
+    balanced = get_tile_download_max_workers(RESOURCE_PROFILE_BALANCED, cpu_count=16)
+    fast = get_tile_download_max_workers(RESOURCE_PROFILE_FAST, cpu_count=16)
+    assert light == 4
+    assert balanced == 8
+    assert fast == 10
+
+
+def test_tile_workers_keep_prudent_portals_sequential():
+    assert get_tile_download_max_workers(RESOURCE_PROFILE_FAST, cpu_count=16, portal_max_workers=1) == 1
+    assert get_tile_download_max_workers(RESOURCE_PROFILE_LIGHT, cpu_count=16, portal_max_workers=1) == 1

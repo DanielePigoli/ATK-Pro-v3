@@ -81,3 +81,23 @@ def get_pdf_open_max_workers(
     if selected == RESOURCE_PROFILE_FAST:
         return min(6, max(2, (available_cpus * 3) // 4), total_images)
     return min(4, max(2, available_cpus // 2), total_images)
+
+
+def get_tile_download_max_workers(
+    profile: str | None = None,
+    *,
+    cpu_count: int | None = None,
+    portal_max_workers: int | None = None,
+) -> int:
+    """Restituisce il parallelismo tile rispettando portale e profilo risorse."""
+    if portal_max_workers == 1:
+        return 1
+
+    available_cpus = cpu_count or os.cpu_count() or 4
+    selected = normalize_resource_profile(profile)
+
+    if selected == RESOURCE_PROFILE_LIGHT:
+        return min(4, max(1, available_cpus // 4))
+    if selected == RESOURCE_PROFILE_FAST:
+        return min(10, max(2, (available_cpus * 3) // 4))
+    return min(8, max(2, available_cpus // 2))
