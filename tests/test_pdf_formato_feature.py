@@ -128,7 +128,7 @@ class TestGenerateRegisterPdfImageDir:
         img.save(str(png))
 
         captured = {}
-        def fake_create(paths, outpath, resolution_dpi=400):
+        def fake_create(paths, outpath, resolution_dpi=400, **kwargs):
             captured['paths'] = paths
             open(outpath, 'wb').write(b'%PDF-1.4 %%EOF')
             return outpath
@@ -149,7 +149,7 @@ class TestGenerateRegisterPdfImageDir:
         img.save(str(png))
 
         captured = {}
-        def fake_create(paths, outpath, resolution_dpi=400):
+        def fake_create(paths, outpath, resolution_dpi=400, **kwargs):
             captured['paths'] = paths
             open(outpath, 'wb').write(b'%PDF-1.4 %%EOF')
             return outpath
@@ -248,6 +248,22 @@ class TestProcessDocumentPDF:
         temp_dir = str(tmp_path / '_tmp_pdf_images')
         assert any(temp_dir in c for c in cleaned), f"temp_pdf_dir non ripulita; chiamate: {cleaned}"
         # E non deve esistere dopo il cleanup reale
+        assert not (tmp_path / '_tmp_pdf_images').exists()
+
+    def test_only_pdf_preserves_temp_images_when_pdf_generation_fails(self, tmp_path, monkeypatch):
+        self._patch_common(monkeypatch, tmp_path)
+        elab = _make_document_elab(tmp_path, ['PDF'])
+
+        monkeypatch.setattr('src.elaborazione.create_pdf_from_images', lambda *a, **k: None)
+        monkeypatch.setattr('src.elaborazione.enrich_pdf_metadata', lambda *a, **k: None)
+
+        tiles_info = FAKE_MANIFEST['sequences'][0]['canvases']
+        result = elab._process_document(tiles_info, {})
+
+        recovery_dir = tmp_path / '_doctest_pdf_recovery_images'
+        assert result is True
+        assert recovery_dir.exists()
+        assert any(p.name.endswith('_pdftmp.png') for p in recovery_dir.iterdir())
         assert not (tmp_path / '_tmp_pdf_images').exists()
 
     def test_pdf_plus_image_formats_no_temp_dir(self, tmp_path, monkeypatch):
@@ -415,6 +431,22 @@ class TestProcessRegisterPDF:
 
         temp_dir = str(tmp_path / '_tmp_pdf_images')
         assert any(temp_dir in c for c in cleaned), f"temp_pdf_dir non ripulita; chiamate: {cleaned}"
+        assert not (tmp_path / '_tmp_pdf_images').exists()
+
+    def test_register_only_pdf_preserves_temp_images_when_pdf_generation_fails(self, tmp_path, monkeypatch):
+        self._patch_common(monkeypatch, tmp_path)
+        elab = _make_register_elab(tmp_path, ['PDF'])
+
+        monkeypatch.setattr('src.elaborazione.create_pdf_from_images', lambda *a, **k: None)
+        monkeypatch.setattr('src.elaborazione.enrich_pdf_metadata', lambda *a, **k: None)
+
+        tiles_info = FAKE_REGISTER_MANIFEST['sequences'][0]['canvases']
+        result = elab._process_register(tiles_info, {})
+
+        recovery_dir = tmp_path / '_regtest_pdf_recovery_images'
+        assert result is True
+        assert recovery_dir.exists()
+        assert any(p.name.endswith('_pdftmp.png') for p in recovery_dir.iterdir())
         assert not (tmp_path / '_tmp_pdf_images').exists()
 
     def test_pdf_plus_image_save_not_called_with_pdf(self, tmp_path, monkeypatch):
