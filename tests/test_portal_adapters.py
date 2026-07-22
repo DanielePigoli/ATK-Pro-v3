@@ -1,4 +1,8 @@
-from src.portal_adapters import resolve_direct_image_download, resolve_direct_pdf_download
+from src.portal_adapters import (
+    PortalRequestAdapter,
+    resolve_direct_image_download,
+    resolve_direct_pdf_download,
+)
 
 
 def test_resolve_direct_image_download_for_bdt_context():
@@ -111,3 +115,20 @@ def test_resolve_direct_pdf_download_for_bdl_context():
     assert adapter is not None
     assert adapter.portal_label == "BDL"
     assert pdf_url == "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf"
+
+
+def test_portal_request_adapter_uses_registry_referer_and_policy():
+    adapter = PortalRequestAdapter.for_portal("bub_digitale")
+
+    assert adapter.portal_key == "bub_digitale"
+    assert adapter.referer == "https://bub.unibo.it"
+    assert adapter.tile_max_workers == 1
+    assert adapter.tile_inter_delay == 0.3
+
+
+def test_portal_request_adapter_handles_unknown_portal():
+    adapter = PortalRequestAdapter.for_portal("non_esiste")
+
+    assert adapter.referer is None
+    assert adapter.tile_max_workers is None
+    assert adapter.tile_inter_delay == 0.0

@@ -5,6 +5,10 @@ from io import BytesIO
 
 import requests
 from PIL import Image
+try:
+    from portal_registry import get_portal_referer, get_portal_tile_download_policy
+except ImportError:  # pragma: no cover - package import path
+    from src.portal_registry import get_portal_referer, get_portal_tile_download_policy
 
 
 @dataclass(frozen=True)
@@ -30,6 +34,24 @@ class DirectPdfPortalAdapter:
     portal_label: str
     referer: str
     default_name: str
+
+
+@dataclass(frozen=True)
+class PortalRequestAdapter:
+    portal_key: str | None
+    referer: str | None
+    tile_max_workers: int | None
+    tile_inter_delay: float
+
+    @classmethod
+    def for_portal(cls, portal_key: str | None, source_url: str | None = None):
+        tile_max_workers, tile_inter_delay = get_portal_tile_download_policy(portal_key)
+        return cls(
+            portal_key=portal_key,
+            referer=get_portal_referer(portal_key, source_url),
+            tile_max_workers=tile_max_workers,
+            tile_inter_delay=tile_inter_delay,
+        )
 
 
 DIRECT_IMAGE_ADAPTERS_BY_CONTEXT = {

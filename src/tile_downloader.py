@@ -12,9 +12,9 @@ import requests
 from urllib.parse import urlparse
 
 try:
-    from portal_registry import get_portal_tile_download_policy
+    from portal_adapters import PortalRequestAdapter
 except ImportError:  # pragma: no cover - package import path
-    from src.portal_registry import get_portal_tile_download_policy
+    from src.portal_adapters import PortalRequestAdapter
 
 try:
     from resource_profile import get_tile_download_max_workers
@@ -220,7 +220,9 @@ def download_tiles(
     expected_files = [expected_tile_filename(x, y) for y in range(rows) for x in range(cols)]
 
     max_global_retries = 3
-    portal_max_workers, inter_delay = get_portal_tile_download_policy(portale)
+    request_adapter = PortalRequestAdapter.for_portal(portale)
+    portal_max_workers = request_adapter.tile_max_workers
+    inter_delay = request_adapter.tile_inter_delay
     max_workers = get_tile_download_max_workers(
         resource_profile,
         portal_max_workers=portal_max_workers,
