@@ -934,17 +934,16 @@ class Elaborazione:
             logger.info(f"[Manifest] resolve_manifest_url ({self.portale}): {manifest_direct}")
             return manifest_direct
 
-        # Antenati espone il manifest DAM nell'HTML pubblico della pagina.
-        # Proviamo prima il percorso HTTP leggero, lasciando i browser automatici
-        # come fallback per i casi in cui il markup non sia direttamente leggibile.
-        if portale_key == "antenati":
-            try:
-                manifest_http = robust_find_manifest(self.ark_url)
-                if manifest_http:
-                    logger.info(f"Manifest trovato (HTTP): {manifest_http}")
-                    return manifest_http
-            except Exception as e:
-                logger.debug(f"[Manifest HTTP] Errore: {e}")
+        # Prima dei browser headless tentiamo sempre il percorso HTTP leggero.
+        # In questo modo Selenium/Playwright restano un fallback reale per i casi
+        # in cui la pagina pubblica non esponga direttamente il manifest.
+        try:
+            manifest_http = robust_find_manifest(self.ark_url)
+            if manifest_http:
+                logger.info(f"Manifest trovato (HTTP): {manifest_http}")
+                return manifest_http
+        except Exception as e:
+            logger.debug(f"[Manifest HTTP] Errore: {e}")
 
         # Tentativo 2: Prova browser automation
         try:
