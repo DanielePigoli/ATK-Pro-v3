@@ -7,8 +7,6 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 
-from translation_processor import TranslationWorker
-
 try:
     from key_manager import (
         get_provider_default_model,
@@ -57,6 +55,17 @@ TARGET_LANGUAGE_BY_INTERFACE = {
     "ro": "Română",
     "sv": "Svenska",
 }
+
+TranslationWorker = None
+
+
+def _get_translation_worker_class():
+    global TranslationWorker
+    if TranslationWorker is None:
+        from translation_processor import TranslationWorker as _TranslationWorker
+
+        TranslationWorker = _TranslationWorker
+    return TranslationWorker
 
 def get_msg(glossario, chiave, lingua):
     try:
@@ -506,7 +515,8 @@ class TranslationDialog(QDialog):
         self.progress_bar.setVisible(True)
         self.txt_dest.setPlainText(self.gm("Elaborazione della traduzione in corso. Potrebbe richiedere alcune decine di secondi..."))
 
-        self.worker = TranslationWorker(
+        worker_class = _get_translation_worker_class()
+        self.worker = worker_class(
             provider=prov_str,
             api_key=api_key,
             source_text=final_prompt_text,  # il prompt già include il testo sorgente
