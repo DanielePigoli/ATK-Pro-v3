@@ -2,10 +2,8 @@ from pathlib import Path
 
 from PIL import Image
 
-from src.elaborazione import (
-    _ficlit_direct_image_url_from_canvas,
-    _save_direct_image_outputs,
-)
+from src.elaborazione import _save_direct_image_outputs
+from src.portal_adapters import ficlit_direct_image_url_from_canvas
 
 
 def test_ficlit_direct_image_url_is_extracted_from_canvas():
@@ -23,7 +21,7 @@ def test_ficlit_direct_image_url_is_extracted_from_canvas():
     }
 
     assert (
-        _ficlit_direct_image_url_from_canvas(canvas)
+        ficlit_direct_image_url_from_canvas(canvas)
         == "https://dl.ficlit.unibo.it/iiif/2/45498/full/699,800/0/default.jpg"
     )
 
@@ -42,7 +40,7 @@ def test_ficlit_direct_image_url_rejects_external_canvas():
         ]
     }
 
-    assert _ficlit_direct_image_url_from_canvas(canvas) is None
+    assert ficlit_direct_image_url_from_canvas(canvas) is None
 
 
 def test_save_direct_image_outputs_creates_pdf_and_cleans_temp(tmp_path, monkeypatch):
