@@ -70,7 +70,8 @@ def _pdf_open_max_workers(
 
 
 def create_pdf_from_images(image_paths, output_pdf_path, resolution_dpi=400,
-                           update_status=None, update_progress=None, on_error=None):
+                            update_status=None, update_progress=None, on_error=None,
+                            resource_profile: str | None = None):
     """
     Crea un PDF a partire da una lista di immagini.
     Restituisce il percorso del PDF creato, oppure None in caso di errore.
@@ -100,7 +101,7 @@ def create_pdf_from_images(image_paths, output_pdf_path, resolution_dpi=400,
 
     # L'apertura immagini può generare picchi RAM; resta parallela ma con cap prudente.
     try:
-        max_workers = _pdf_open_max_workers(total)
+        max_workers = _pdf_open_max_workers(total, resource_profile=resource_profile)
     except Exception:
         max_workers = min(4, total)
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:

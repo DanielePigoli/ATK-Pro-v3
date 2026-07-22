@@ -463,7 +463,16 @@ def _make_placeholder_image(service_id: str, width: int = 800, height: int = 120
 
 
 class Elaborazione:
-    def __init__(self, record_type: str, ark_url: str, output_dir: str, glossario_data=None, lingua="IT", portale: str = "antenati"):
+    def __init__(
+        self,
+        record_type: str,
+        ark_url: str,
+        output_dir: str,
+        glossario_data=None,
+        lingua="IT",
+        portale: str = "antenati",
+        resource_profile: str | None = None,
+    ):
         self.record_type = record_type.upper()
         self.ark_url = ark_url
         self.output_dir = output_dir
@@ -473,6 +482,7 @@ class Elaborazione:
         self.glossario_data = glossario_data
         self.lingua = lingua
         self.portale = portale
+        self.resource_profile = resource_profile
 
     def set_nome_file(self, nome: str):
         """Imposta il nome file per il record."""
@@ -1996,7 +2006,10 @@ class Elaborazione:
                         logger.info(f"[Cleanup] Cartella tiles eliminata (dopo errore): {tile_dir}")
 
             # Parallelizzazione automatica: rispetta i portali che richiedono accesso sequenziale.
-            max_workers = _canvas_max_workers_for_portal(self._portal_key())
+            max_workers = _canvas_max_workers_for_portal(
+                self._portal_key(),
+                resource_profile=self.resource_profile,
+            )
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
                 futures = [executor.submit(process_canvas, idx, canvas) for idx, canvas in enumerate(tiles_info, 1)]
                 for f in concurrent.futures.as_completed(futures):
@@ -2212,7 +2225,12 @@ class Elaborazione:
                     return None
 
                 logger.info(f"[PDF] Immagini selezionate per PDF: {len(selected_paths)} pagine (priorità TIFF>PNG>JPEG)")
-                pdf_path = create_pdf_from_images(selected_paths, pdf_full_path, resolution_dpi=400)
+                pdf_path = create_pdf_from_images(
+                    selected_paths,
+                    pdf_full_path,
+                    resolution_dpi=400,
+                    resource_profile=self.resource_profile,
+                )
             except Exception as e:
                 logger.error(f"[Error] Errore nel filtrare le immagini per PDF: {e}", exc_info=True)
                 return None
@@ -2251,6 +2269,7 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
     output_folder = state["output_folder"]
     output_folders_doc = state.get("output_folders_doc", [])
     output_folders_reg = state.get("output_folders_reg", [])
+    resource_profile = state.get("resource_profile", "bilanciato")
     logger.info(f"[STATO] output_folder: {output_folder}")
     logger.info(f"[STATO] output_folders_doc: {output_folders_doc}")
     logger.info(f"[STATO] output_folders_reg: {output_folders_reg}")
@@ -2334,7 +2353,14 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
             logger.info(f"[Output] Record {idx+1}/{len(records)} tipo={modalita} nome={nome_file} -> cartella: {out_dir}")
             # ...existing code...
             # Esegui elaborazione con classe Elaborazione
-            elab = Elaborazione(modalita.lower(), url, out_dir, glossario_data, lingua)
+            elab = Elaborazione(
+                modalita.lower(),
+                url,
+                out_dir,
+                glossario_data,
+                lingua,
+                resource_profile=resource_profile,
+            )
             elab.set_nome_file(nome_file)
             success = elab.run(formats=formats)
 

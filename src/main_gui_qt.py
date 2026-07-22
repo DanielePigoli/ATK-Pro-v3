@@ -21,7 +21,8 @@ state = {
     "formats": [],
     "output_folder": None,
     "registri_output": [],
-    "current_input_file": None  # Memorizza il percorso del file attualmente caricato
+    "current_input_file": None,  # Memorizza il percorso del file attualmente caricato
+    "resource_profile": "bilanciato",
 }
 # Import standard all'inizio
 import sys
@@ -196,7 +197,7 @@ def _write_config_language(lang: str) -> None:
 
 
 def _read_config_prefs() -> dict:
-    """Legge le preferenze persistenti (formati, cartelle, ultimo input) dal config JSON."""
+    """Legge le preferenze persistenti dal config JSON."""
     import os as _os
     import json as _json
     try:
@@ -213,11 +214,13 @@ def _read_config_prefs() -> dict:
                 "output_folder_doc":    data.get("output_folder_doc", None),
                 "output_folder_reg":    data.get("output_folder_reg", None),
                 "portale_attivo":       data.get("portale_attivo", "antenati"),
+                "resource_profile":     data.get("resource_profile", "bilanciato"),
             }
     except Exception as e:
         logging.debug(f"Errore lettura prefs config: {e}")
     return {"formats": [], "last_input_file": None, "output_folders_doc": [], "output_folders_reg": [],
-            "output_folder_single": None, "output_folder_doc": None, "output_folder_reg": None}
+            "output_folder_single": None, "output_folder_doc": None, "output_folder_reg": None,
+            "portale_attivo": "antenati", "resource_profile": "bilanciato"}
 
 
 def _write_config_prefs(key: str, value) -> None:
@@ -1193,8 +1196,10 @@ class MainWindow(QMainWindow):
         self.glossario_data = glossario_data
         self.lingua = lingua
         # Ripristina portale attivo dal config (default: antenati)
-        self.portale_attivo = _read_config_prefs().get("portale_attivo", "antenati")
+        prefs = _read_config_prefs()
+        self.portale_attivo = prefs.get("portale_attivo", "antenati")
         state["portale_attivo"] = self.portale_attivo
+        state["resource_profile"] = prefs.get("resource_profile", "bilanciato")
 
         # Ripristina titlebar nativa
         self.setWindowTitle("ATK-Pro")
@@ -1615,7 +1620,14 @@ class MainWindow(QMainWindow):
             lingua = self.lingua
 
             progress_dialog = ProgressDialog(glossario, lingua, total=len(records), parent=self)
-            worker = ElaborazioneWorker(records, formats, glossario, lingua, portale=state.get("portale_attivo", "antenati"))
+            worker = ElaborazioneWorker(
+                records,
+                formats,
+                glossario,
+                lingua,
+                portale=state.get("portale_attivo", "antenati"),
+                resource_profile=state.get("resource_profile", "bilanciato"),
+            )
 
             def on_progress(cur, tot, name, page, page_total):
                 import re
@@ -3016,7 +3028,14 @@ def action_process(glossario_data, lingua, parent=None):
                 pass
 
             # Worker: useremo i record già arricchiti (output, gen_pdf)
-            worker = ElaborazioneWorker(records, formats=selected_formats, glossario_data=glossario_data, lingua=lingua, portale=state.get("portale_attivo", "antenati"))
+            worker = ElaborazioneWorker(
+                records,
+                formats=selected_formats,
+                glossario_data=glossario_data,
+                lingua=lingua,
+                portale=state.get("portale_attivo", "antenati"),
+                resource_profile=state.get("resource_profile", "bilanciato"),
+            )
 
             def on_progress(current, total, name, page=None, page_total=None):
                 try:
@@ -3142,7 +3161,14 @@ def action_process(glossario_data, lingua, parent=None):
                     except Exception:
                         pass
                         pd.show()
-                        worker = ElaborazioneWorker(records, formats=selected_formats, glossario_data=glossario_data, lingua=lingua, portale=state.get("portale_attivo", "antenati"))
+                        worker = ElaborazioneWorker(
+                            records,
+                            formats=selected_formats,
+                            glossario_data=glossario_data,
+                            lingua=lingua,
+                            portale=state.get("portale_attivo", "antenati"),
+                            resource_profile=state.get("resource_profile", "bilanciato"),
+                        )
                         def on_progress(current, total, name):
                             try:
                                 pd.update(current=current, name=name)

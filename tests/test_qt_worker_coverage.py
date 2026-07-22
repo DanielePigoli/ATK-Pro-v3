@@ -56,6 +56,10 @@ class TestElaborazioneWorkerInit:
                                "DA", "EL", "JA", "NO", "PL", "RO", "SV", "TR", "VI", "ZH"]
         assert worker.lingua in lingue_supportate
 
+    def test_init_resource_profile_default(self):
+        worker = ElaborazioneWorker([])
+        assert worker.resource_profile is None
+
 
 class TestWorkerSignals:
     """Test Qt signals dal WorkerSignals."""
@@ -219,6 +223,35 @@ class TestElaborazioneWorkerFormatHandling:
         for fmt in ["PNG", "JPEG", "TIFF", "JPG"]:
             worker = ElaborazioneWorker([], formats=[fmt])
             assert worker is not None
+
+    def test_worker_passes_resource_profile_to_elaborazione(self, monkeypatch, tmp_path):
+        import src.qt_worker as qw
+
+        captured = {}
+
+        class FakeElab:
+            def __init__(self, *args, **kwargs):
+                captured["resource_profile"] = kwargs.get("resource_profile")
+            def set_nome_file(self, name):
+                self.name = name
+            def run(self, formats=None):
+                return True
+
+        monkeypatch.setattr(qw, "Elaborazione", FakeElab)
+        worker = ElaborazioneWorker(
+            [{
+                "modalita": "D",
+                "url": "https://example.test/doc",
+                "nome_file": "doc",
+                "output": str(tmp_path),
+            }],
+            formats=["PDF"],
+            resource_profile="leggero",
+        )
+
+        worker.run()
+
+        assert captured["resource_profile"] == "leggero"
 
 
 class TestElaborazioneWorkerThreading:

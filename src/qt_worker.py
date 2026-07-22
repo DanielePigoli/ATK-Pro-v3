@@ -35,13 +35,22 @@ class WorkerSignals(QObject):
 
 
 class ElaborazioneWorker(QThread):
-    def __init__(self, records, formats=None, glossario_data=None, lingua='IT', portale='antenati'):
+    def __init__(
+        self,
+        records,
+        formats=None,
+        glossario_data=None,
+        lingua='IT',
+        portale='antenati',
+        resource_profile: str | None = None,
+    ):
         super().__init__()
         self.records = records or []
         self.formats = formats
         self.glossario = glossario_data
         self.lingua = lingua
         self.portale = portale
+        self.resource_profile = resource_profile
         self._is_cancelled = False
         self.results = []
         self.signals = WorkerSignals()
@@ -117,6 +126,7 @@ class ElaborazioneWorker(QThread):
                     self.glossario,
                     self.lingua,
                     portale=record_portal,
+                    resource_profile=self.resource_profile,
                 )
                 elab.set_nome_file(nome_file)
                 # Range canvas opzionale (es. canvas 1-5)
