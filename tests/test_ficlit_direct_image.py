@@ -2,7 +2,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from src.elaborazione import _save_direct_image_outputs
+from src.elaborazione import Elaborazione, _save_direct_image_outputs
 from src.portal_adapters import ficlit_direct_image_url_from_canvas
 
 
@@ -86,3 +86,37 @@ def test_save_direct_image_outputs_defaults_to_image_formats(tmp_path, monkeypat
 
     assert saved_formats == ["PNG", "JPEG", "TIFF"]
     assert not (tmp_path / "_tmp_pdf_images").exists()
+
+
+def test_save_direct_document_outputs_reuses_shared_helper(tmp_path, monkeypatch):
+    elab = Elaborazione(
+        "D",
+        "https://example.test/record/1",
+        str(tmp_path),
+        portale="manifest_diretto",
+    )
+    elab.nome_file = "Documento Test"
+
+    calls = []
+
+    def fake_save_direct(img, out_dir, base_name, formats, meta=None):
+        calls.append((img, out_dir, base_name, formats, meta))
+        return True
+
+    monkeypatch.setattr("src.elaborazione._save_direct_image_outputs", fake_save_direct)
+
+    image = Image.new("RGB", (12, 12), "white")
+    canvas = {"label": "Pagina 1", "@id": "synthetic://canvas/1"}
+
+    elab._save_direct_document_outputs(
+        image,
+        canvas,
+        "https://example.test/image.jpg",
+        ["PNG", "PDF"],
+    )
+
+    assert len(calls) == 1
+    assert calls[0][1] == str(tmp_path)
+    assert calls[0][2] == "Documento Test"
+    assert calls[0][3] == ["PNG", "PDF"]
+    assert calls[0][4]["Page"] == "Pagina 1"
