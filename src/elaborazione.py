@@ -37,7 +37,7 @@ from tile_rebuilder import rebuild_image, build_image_metadata
 from manifest_parser import estrai_metadati_da_manifest, build_manifest_url
 from pdf_generator import create_pdf_from_images, enrich_pdf_metadata
 from metadata_utils import embed_metadata_and_save, _save_sidecar_json_once
-from portal_adapters import resolve_direct_image_download
+from portal_adapters import resolve_direct_image_download, resolve_direct_pdf_download
 try:
     from atk_version import PACKAGE_VERSION as VERSION
 except ImportError:
@@ -232,56 +232,6 @@ def _normalize_format(fmt):
     elif fmt_upper == 'PDF':
         return 'PDF'
     return fmt_upper
-
-
-def _extract_pdf_url_from_entry(entry):
-    """Estrae un URL PDF da voci IIIF seeAlso o da servizi sintetici."""
-    if isinstance(entry, str):
-        return entry if entry.lower().split("?", 1)[0].endswith(".pdf") else None
-    if not isinstance(entry, dict):
-        return None
-
-    url = entry.get("@id") or entry.get("id") or entry.get("url")
-    if not url:
-        return None
-    url_text = str(url)
-    fmt = str(entry.get("format") or entry.get("type") or entry.get("profile") or "").lower()
-    if url_text.lower().split("?", 1)[0].endswith(".pdf") or "pdf" in fmt:
-        return url_text
-    return None
-
-
-def _find_bdt_direct_pdf_url(tiles_info=None, manifest=None):
-    """Trova il PDF diretto ufficiale nei manifest sintetici BDT, se presente."""
-    return _find_direct_pdf_url(tiles_info, manifest, allowed_contexts={"bdt_direct"})
-
-
-def _find_direct_pdf_url(tiles_info=None, manifest=None, allowed_contexts=None):
-    """Trova un PDF diretto da seeAlso o da servizi sintetici espliciti."""
-    if isinstance(manifest, dict):
-        see_also_entries = manifest.get("seeAlso") or manifest.get("see_also") or []
-        if isinstance(see_also_entries, dict):
-            see_also_entries = [see_also_entries]
-        for entry in see_also_entries:
-            pdf_url = _extract_pdf_url_from_entry(entry)
-            if pdf_url:
-                return pdf_url
-
-    for canvas in tiles_info or []:
-        try:
-            service = canvas.get("images", [{}])[0].get("resource", {}).get("service")
-        except Exception:
-            continue
-        services = service if isinstance(service, list) else [service]
-        for svc in services:
-            if not isinstance(svc, dict):
-                continue
-            if allowed_contexts and svc.get("@context") not in allowed_contexts:
-                continue
-            pdf_url = svc.get("pdf_url") or _extract_pdf_url_from_entry(svc)
-            if pdf_url:
-                return str(pdf_url)
-    return None
 
 
 def save_image_variants(image: Image.Image, output_folder: str, base_filename: str, 
@@ -959,15 +909,6 @@ class Elaborazione:
     def _portal_key(self):
         return str(getattr(self, "portale", "") or "").strip().lower().replace("-", "_").replace(" ", "_")
 
-    def _download_bdt_direct_pdf(self, pdf_url: str):
-        """Scarica il PDF diretto ufficiale BDT quando l'utente richiede solo PDF."""
-        return self._download_direct_pdf(
-            pdf_url,
-            portal_label="BDT",
-            referer="https://bdt.bibcom.trento.it/",
-            default_name="documento_bdt",
-        )
-
     def _download_direct_pdf(self, pdf_url: str, portal_label: str, referer: str, default_name: str):
         """Scarica un PDF diretto ufficiale quando l'utente richiede solo PDF."""
         if not pdf_url:
@@ -1029,23 +970,18 @@ class Elaborazione:
             image_formats = [f for f in formats if _normalize_format(f) != 'PDF']
             only_pdf = pdf_in_formats and not image_formats
             if only_pdf and not self._has_canvas_range_filter():
-                if self._portal_key() == "biblioteca_digitale_trentina":
-                    bdt_pdf_url = _find_bdt_direct_pdf_url(tiles_info, manifest=self.manifest)
-                    if bdt_pdf_url:
-                        return self._download_bdt_direct_pdf(bdt_pdf_url)
-                if self._portal_key() == "biblioteca_digitale_lombarda":
-                    bdl_pdf_url = _find_direct_pdf_url(
-                        tiles_info,
-                        manifest=self.manifest,
-                        allowed_contexts={"bdl_direct_pdf"},
+                direct_pdf_adapter, direct_pdf_url = resolve_direct_pdf_download(
+                    self._portal_key(),
+                    tiles_info=tiles_info,
+                    manifest=self.manifest,
+                )
+                if direct_pdf_adapter and direct_pdf_url:
+                    return self._download_direct_pdf(
+                        direct_pdf_url,
+                        portal_label=direct_pdf_adapter.portal_label,
+                        referer=direct_pdf_adapter.referer,
+                        default_name=direct_pdf_adapter.default_name,
                     )
-                    if bdl_pdf_url:
-                        return self._download_direct_pdf(
-                            bdl_pdf_url,
-                            portal_label="BDL",
-                            referer="https://www.bdl.servizirl.it/",
-                            default_name="documento_bdl",
-                        )
             temp_pdf_dir = os.path.join(self.output_dir, "_tmp_pdf_images") if only_pdf else None
             if temp_pdf_dir:
                 os.makedirs(temp_pdf_dir, exist_ok=True)
@@ -1224,7 +1160,12 @@ class Elaborazione:
                     shutil.rmtree(_tmp_dir, ignore_errors=True)
                 return True
             # --- Biblioteca Digitale Lombarda: solo PDF REST diretto, niente immagini ---
-            if isinstance(svc, dict) and svc.get('@context') == 'bdl_direct_pdf':
+            direct_pdf_adapter, direct_pdf_url = resolve_direct_pdf_download(
+                self._portal_key(),
+                tiles_info=[canvas],
+                manifest=self.manifest,
+            )
+            if direct_pdf_adapter and direct_pdf_url:
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
                 if not formats:
                     formats = ['PNG', 'JPEG', 'TIFF']
@@ -1232,12 +1173,14 @@ class Elaborazione:
                 _img_fmts = [f for f in formats if _normalize_format(f) != 'PDF']
                 if 'PDF' in _norm_fmts and not _img_fmts:
                     return self._download_direct_pdf(
-                        svc.get("pdf_url") or svc.get("@id"),
-                        portal_label="BDL",
-                        referer="https://www.bdl.servizirl.it/",
-                        default_name="documento_bdl",
+                        direct_pdf_url,
+                        portal_label=direct_pdf_adapter.portal_label,
+                        referer=direct_pdf_adapter.referer,
+                        default_name=direct_pdf_adapter.default_name,
                     )
-                logger.error("[BDL] Il supporto attuale consente solo PDF diretto, non immagini o PDF ricostruiti.")
+                logger.error(
+                    f"[{direct_pdf_adapter.portal_label}] Il supporto attuale consente solo PDF diretto, non immagini o PDF ricostruiti."
+                )
                 return False
             direct_adapter, _img_url = resolve_direct_image_download(self._portal_key(), canvas, service_id)
             if direct_adapter and _img_url:
@@ -1493,10 +1436,18 @@ class Elaborazione:
             image_formats = [f for f in formats if _normalize_format(f) != 'PDF']
             only_pdf = pdf_in_formats and not image_formats
             if only_pdf and not self._has_canvas_range_filter():
-                if self._portal_key() == "biblioteca_digitale_trentina":
-                    bdt_pdf_url = _find_bdt_direct_pdf_url(tiles_info, manifest=self.manifest)
-                    if bdt_pdf_url:
-                        return self._download_bdt_direct_pdf(bdt_pdf_url)
+                direct_pdf_adapter, direct_pdf_url = resolve_direct_pdf_download(
+                    self._portal_key(),
+                    tiles_info=tiles_info,
+                    manifest=self.manifest,
+                )
+                if direct_pdf_adapter and direct_pdf_url:
+                    return self._download_direct_pdf(
+                        direct_pdf_url,
+                        portal_label=direct_pdf_adapter.portal_label,
+                        referer=direct_pdf_adapter.referer,
+                        default_name=direct_pdf_adapter.default_name,
+                    )
             temp_pdf_dir = os.path.join(self.output_dir, "_tmp_pdf_images") if pdf_in_formats else None
             if temp_pdf_dir:
                 os.makedirs(temp_pdf_dir, exist_ok=True)

@@ -25,6 +25,13 @@ class DirectImagePortalAdapter:
         return image, response.status_code, len(response.content)
 
 
+@dataclass(frozen=True)
+class DirectPdfPortalAdapter:
+    portal_label: str
+    referer: str
+    default_name: str
+
+
 DIRECT_IMAGE_ADAPTERS_BY_CONTEXT = {
     "bdt_direct": DirectImagePortalAdapter(
         portal_label="BDT",
@@ -40,6 +47,22 @@ DIRECT_IMAGE_ADAPTERS_BY_PORTAL = {
     "dl_ficlit": DirectImagePortalAdapter(
         portal_label="FICLIT",
         referer="https://dl.ficlit.unibo.it/",
+    ),
+}
+
+DIRECT_PDF_ADAPTERS_BY_CONTEXT = {
+    "bdl_direct_pdf": DirectPdfPortalAdapter(
+        portal_label="BDL",
+        referer="https://www.bdl.servizirl.it/",
+        default_name="documento_bdl",
+    ),
+}
+
+DIRECT_PDF_ADAPTERS_BY_PORTAL = {
+    "biblioteca_digitale_trentina": DirectPdfPortalAdapter(
+        portal_label="BDT",
+        referer="https://bdt.bibcom.trento.it/",
+        default_name="documento_bdt",
     ),
 }
 
@@ -82,5 +105,56 @@ def resolve_direct_image_download(portal_key: str | None, canvas: dict, service_
         image_url = service.get("@id") or service_id
         if adapter and image_url:
             return adapter, image_url
+
+    return None, None
+
+
+def _extract_pdf_url_from_entry(entry):
+    if isinstance(entry, str):
+        return entry if entry.lower().split("?", 1)[0].endswith(".pdf") else None
+    if not isinstance(entry, dict):
+        return None
+
+    url = entry.get("@id") or entry.get("id") or entry.get("url")
+    if not url:
+        return None
+    url_text = str(url)
+    fmt = str(entry.get("format") or entry.get("type") or entry.get("profile") or "").lower()
+    if url_text.lower().split("?", 1)[0].endswith(".pdf") or "pdf" in fmt:
+        return url_text
+    return None
+
+
+def resolve_direct_pdf_download(portal_key: str | None, tiles_info=None, manifest=None):
+    """Restituisce (adapter, pdf_url) per i portali a PDF diretto supportati."""
+    if portal_key == "biblioteca_digitale_trentina":
+        adapter = DIRECT_PDF_ADAPTERS_BY_PORTAL.get(portal_key)
+        if isinstance(manifest, dict):
+            see_also_entries = manifest.get("seeAlso") or manifest.get("see_also") or []
+            if isinstance(see_also_entries, dict):
+                see_also_entries = [see_also_entries]
+            for entry in see_also_entries:
+                pdf_url = _extract_pdf_url_from_entry(entry)
+                if adapter and pdf_url:
+                    return adapter, pdf_url
+
+    for canvas in tiles_info or []:
+        try:
+            service = canvas.get("images", [{}])[0].get("resource", {}).get("service")
+        except Exception:
+            continue
+        services = service if isinstance(service, list) else [service]
+        for svc in services:
+            if not isinstance(svc, dict):
+                continue
+            context = svc.get("@context")
+            adapter = DIRECT_PDF_ADAPTERS_BY_CONTEXT.get(context)
+            if portal_key == "biblioteca_digitale_trentina":
+                adapter = DIRECT_PDF_ADAPTERS_BY_PORTAL.get(portal_key) or adapter
+            if not adapter:
+                continue
+            pdf_url = svc.get("pdf_url") or _extract_pdf_url_from_entry(svc)
+            if pdf_url:
+                return adapter, str(pdf_url)
 
     return None, None
