@@ -30,6 +30,10 @@ logger.setLevel(logging.DEBUG if ATKPRO_ENV != "production" else logging.WARNING
 
 from PIL import Image
 from pypdf import PdfReader, PdfWriter
+try:
+    from resource_profile import get_pdf_open_max_workers
+except ImportError:
+    from src.resource_profile import get_pdf_open_max_workers
 
 def open_image_safe(path):
     """Apre un'immagine in modo sicuro, normalizzando la modalità."""
@@ -52,12 +56,17 @@ def normalize_image_mode(im):
     return im
 
 
-def _pdf_open_max_workers(total_images: int, cpu_count: int | None = None) -> int:
+def _pdf_open_max_workers(
+    total_images: int,
+    cpu_count: int | None = None,
+    resource_profile: str | None = None,
+) -> int:
     """Limita l'apertura parallela delle immagini per contenere i picchi RAM."""
-    if total_images <= 1:
-        return 1
-    cpu_count = cpu_count or os.cpu_count() or 4
-    return min(4, max(2, cpu_count // 2), total_images)
+    return get_pdf_open_max_workers(
+        total_images,
+        resource_profile,
+        cpu_count=cpu_count,
+    )
 
 
 def create_pdf_from_images(image_paths, output_pdf_path, resolution_dpi=400,
