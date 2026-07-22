@@ -994,6 +994,15 @@ class Elaborazione:
                 logger.error(f"[PDF] Errore PNG {canvas_id}: {error}")
         return output_image
 
+    def _save_direct_document_outputs(self, image, canvas, image_url, formats):
+        return _save_direct_image_outputs(
+            image,
+            self.output_dir,
+            self.nome_file,
+            formats,
+            meta=self._build_direct_canvas_metadata(canvas, "page_1"),
+        )
+
     def _process_document(self, tiles_info, metadata):
         """Elabora documento singolo (D/d) con verifica immagini finali e richiesta PDF opzionale."""
         try:
@@ -1097,13 +1106,7 @@ class Elaborazione:
                     return False
                 logger.info(f"[{direct_adapter.portal_label}] Documento scaricato da adapter immagine diretta: {_size} byte")
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
-                _save_direct_image_outputs(
-                    final_img,
-                    self.output_dir,
-                    self.nome_file,
-                    formats,
-                    meta=self._build_direct_canvas_metadata(canvas, "page_1"),
-                )
+                self._save_direct_document_outputs(final_img, canvas, _img_url, formats)
                 return True
             # --- Museogalileo: download diretto JPEG da TecaService ---
             if isinstance(svc, dict) and svc.get('@context') == 'museogalileo_teca_direct':
@@ -1118,26 +1121,8 @@ class Elaborazione:
                     return False
                 final_img = Image.open(_BytesIO(_content)).copy()
                 logger.info(f"[Museogalileo] Documento scaricato: {len(_content)} byte")
-                ua = _parse_ua_from_url(self.ark_url)
-                ark = _parse_ark_from_url(self.ark_url)
-                page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
-                if not formats:
-                    formats = ['PNG', 'JPEG', 'TIFF']
-                _norm_fmts = [_normalize_format(f) for f in formats]
-                _img_fmts = [f for f in formats if _normalize_format(f) != 'PDF']
-                _pdf_in_fmts = 'PDF' in _norm_fmts
-                if _img_fmts:
-                    save_image_variants(final_img, self.output_dir, self.nome_file, _img_fmts, meta=meta)
-                if _pdf_in_fmts:
-                    _tmp_dir = os.path.join(self.output_dir, "_tmp_pdf_images")
-                    os.makedirs(_tmp_dir, exist_ok=True)
-                    _tmp_png = os.path.join(_tmp_dir, f"{self.nome_file}_pdftmp.png")
-                    final_img.save(_tmp_png, format='PNG')
-                    _pdf_out = os.path.join(self.output_dir, f"{self.nome_file}.pdf")
-                    create_pdf_from_images(_tmp_dir, _pdf_out)
-                    shutil.rmtree(_tmp_dir, ignore_errors=True)
+                self._save_direct_document_outputs(final_img, canvas, _resolved_url or _img_url, formats)
                 return True
             # --- Findbuch: download via gtpc.php con sessione PHP ---
             if isinstance(svc, dict) and svc.get('@context') == 'findbuch_gtpc':
@@ -1160,26 +1145,13 @@ class Elaborazione:
                     return False
                 final_img = Image.open(_BytesIO(_r_fb.content)).copy()
                 logger.info(f"[Findbuch] Documento scaricato: {len(_r_fb.content)} byte")
-                ua = _parse_ua_from_url(self.ark_url)
-                ark = _parse_ark_from_url(self.ark_url)
-                page_label = canvas.get('label', None)
-                meta = build_image_metadata(ua=ua, ark=ark, canvas_id="page_1", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
                 formats = self.formats if hasattr(self, 'formats') and self.formats else state.get('formats', [])
-                if not formats:
-                    formats = ['PNG', 'JPEG', 'TIFF']
-                _norm_fmts = [_normalize_format(f) for f in formats]
-                _img_fmts = [f for f in formats if _normalize_format(f) != 'PDF']
-                _pdf_in_fmts = 'PDF' in _norm_fmts
-                if _img_fmts:
-                    save_image_variants(final_img, self.output_dir, self.nome_file, _img_fmts, meta=meta)
-                if _pdf_in_fmts:
-                    _tmp_dir = os.path.join(self.output_dir, "_tmp_pdf_images")
-                    os.makedirs(_tmp_dir, exist_ok=True)
-                    _tmp_png = os.path.join(_tmp_dir, f"{self.nome_file}_pdftmp.png")
-                    final_img.save(_tmp_png, format='PNG')
-                    _pdf_out = os.path.join(self.output_dir, f"{self.nome_file}.pdf")
-                    create_pdf_from_images(_tmp_dir, _pdf_out)
-                    shutil.rmtree(_tmp_dir, ignore_errors=True)
+                self._save_direct_document_outputs(
+                    final_img,
+                    canvas,
+                    f"{_base}gtpc.php?be_id={_be}&ve_id={_ve}&count={_cnt}",
+                    formats,
+                )
                 return True
             # --- IIIF normale ---
             info = download_info_json(image_info_url)
