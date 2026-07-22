@@ -1,10 +1,12 @@
 from src.resource_profile import (
     DEFAULT_RESOURCE_PROFILE,
     RESOURCE_PROFILE_BALANCED,
+    RESOURCE_PROFILE_DESCRIPTION_KEYS,
     RESOURCE_PROFILE_FAST,
     RESOURCE_PROFILE_LIGHT,
     get_canvas_max_workers,
     get_pdf_open_max_workers,
+    get_resource_profile_description_key,
     normalize_resource_profile,
 )
 
@@ -19,6 +21,12 @@ def test_normalize_resource_profile_accepts_known_values():
     assert normalize_resource_profile("leggero") == RESOURCE_PROFILE_LIGHT
     assert normalize_resource_profile("BILANCIATO") == RESOURCE_PROFILE_BALANCED
     assert normalize_resource_profile(" veloce ") == RESOURCE_PROFILE_FAST
+
+
+def test_description_key_follows_normalized_profile():
+    assert get_resource_profile_description_key("leggero") == RESOURCE_PROFILE_DESCRIPTION_KEYS[RESOURCE_PROFILE_LIGHT]
+    assert get_resource_profile_description_key("BILANCIATO") == RESOURCE_PROFILE_DESCRIPTION_KEYS[RESOURCE_PROFILE_BALANCED]
+    assert get_resource_profile_description_key("sconosciuto") == RESOURCE_PROFILE_DESCRIPTION_KEYS[RESOURCE_PROFILE_BALANCED]
 
 
 def test_canvas_workers_respect_profile_progression():
