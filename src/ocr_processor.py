@@ -116,6 +116,7 @@ class AdvancedOCRWorker:
         logging.info(f"[OCR] PDF: {n_pages} pagine trovate — {os.path.basename(pdf_path)}")
 
         all_texts = []
+        partial_path = self._get_partial_results_path(pdf_path)
         with tempfile.TemporaryDirectory() as tmp_dir:
             for page_num in range(n_pages):
                 if page_progress:
@@ -163,6 +164,7 @@ class AdvancedOCRWorker:
                     final_page_text = result
 
                 all_texts.append(f"--- Pagina {page_num + 1} ---\n{final_page_text}")
+                self._save_partial_results(partial_path, all_texts)
 
         doc.close()
 
@@ -172,6 +174,7 @@ class AdvancedOCRWorker:
 
         full_text = "\n\n".join(all_texts)
         self._save_results(pdf_path, full_text)
+        self._clear_partial_results(partial_path)
 
     def _prepare_image_b64(self, img_path):
         """Carica, ridimensiona e converte l'immagine in JPEG base64."""
@@ -191,6 +194,31 @@ class AdvancedOCRWorker:
         diag_dir = os.path.join(base_dir, "_ocr_diagnostics")
         os.makedirs(diag_dir, exist_ok=True)
         return diag_dir
+
+    def _get_partial_results_path(self, orig_path):
+        base_dir = self.output_dir if (self.output_dir and os.path.isdir(self.output_dir)) else os.getcwd()
+        progress_dir = os.path.join(base_dir, "_ocr_progress")
+        os.makedirs(progress_dir, exist_ok=True)
+        base_name = os.path.splitext(os.path.basename(orig_path))[0]
+        return os.path.join(progress_dir, f"{base_name}_trascrizione_parziale.txt")
+
+    def _save_partial_results(self, partial_path, text_blocks):
+        tmp_path = partial_path + ".tmp"
+        with open(tmp_path, "w", encoding="utf-8") as f:
+            f.write("\n\n".join(text_blocks))
+        os.replace(tmp_path, partial_path)
+        logging.debug("[OCR] Salvataggio progressivo aggiornato: %s", partial_path)
+
+    def _clear_partial_results(self, partial_path):
+        try:
+            if os.path.exists(partial_path):
+                os.remove(partial_path)
+                logging.debug("[OCR] Salvataggio progressivo rimosso dopo completamento: %s", partial_path)
+            progress_dir = os.path.dirname(partial_path)
+            if progress_dir and os.path.isdir(progress_dir) and not os.listdir(progress_dir):
+                os.rmdir(progress_dir)
+        except Exception as e:
+            logging.warning("[OCR] Impossibile pulire il salvataggio progressivo: %s", e)
 
     def _save_split_diagnostics(self, img_path, text_top, text_bot):
         stem = Path(img_path).stem

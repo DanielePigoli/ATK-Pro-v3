@@ -338,4 +338,121 @@ def test_provider_runtime_defaults_are_not_duplicated_in_runtime_modules():
     for literal in duplicated_literals:
         assert literal not in translation_source
         assert literal not in ocr_source
-        assert literal not in ai_source
+
+
+def test_ocr_pdf_keeps_partial_progress_when_later_page_fails(monkeypatch, tmp_path):
+    from src.ocr_processor import AdvancedOCRWorker
+
+    worker = AdvancedOCRWorker(
+        provider="Ollama",
+        api_key="",
+        formats=["txt"],
+        output_dir=str(tmp_path),
+    )
+
+    class FakePix:
+        def save(self, path):
+            Path(path).write_bytes(b"fake-jpg")
+
+    class FakePage:
+        def get_pixmap(self, matrix=None, colorspace=None):
+            return FakePix()
+
+    class FakeDoc:
+        def __len__(self):
+            return 2
+
+        def __getitem__(self, index):
+            return FakePage()
+
+        def close(self):
+            return None
+
+    class FakeFitz:
+        csRGB = object()
+
+        @staticmethod
+        def open(path):
+            return FakeDoc()
+
+        @staticmethod
+        def Matrix(x, y):
+            return (x, y)
+
+    calls = {"count": 0}
+
+    def fake_transcribe(path, key):
+        calls["count"] += 1
+        if calls["count"] == 1:
+            return "prima pagina"
+        raise RuntimeError("429 quota exceeded")
+
+    monkeypatch.setitem(__import__("sys").modules, "fitz", FakeFitz)
+    monkeypatch.setattr(worker, "_transcribe_image", fake_transcribe)
+
+    try:
+        worker.process_file(str(tmp_path / "registro.pdf"))
+    except Exception as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("Expected OCR PDF processing to fail")
+
+    partial_path = tmp_path / "_ocr_progress" / "registro_trascrizione_parziale.txt"
+    assert partial_path.exists()
+    assert "--- Pagina 1 ---" in partial_path.read_text(encoding="utf-8")
+    assert "prima pagina" in partial_path.read_text(encoding="utf-8")
+    assert "Quota o limite richieste esaurito" in message
+
+
+def test_ocr_pdf_clears_partial_progress_after_success(monkeypatch, tmp_path):
+    from src.ocr_processor import AdvancedOCRWorker
+
+    worker = AdvancedOCRWorker(
+        provider="Ollama",
+        api_key="",
+        formats=["txt"],
+        output_dir=str(tmp_path),
+    )
+
+    class FakePix:
+        def save(self, path):
+            Path(path).write_bytes(b"fake-jpg")
+
+    class FakePage:
+        def get_pixmap(self, matrix=None, colorspace=None):
+            return FakePix()
+
+    class FakeDoc:
+        def __len__(self):
+            return 2
+
+        def __getitem__(self, index):
+            return FakePage()
+
+        def close(self):
+            return None
+
+    class FakeFitz:
+        csRGB = object()
+
+        @staticmethod
+        def open(path):
+            return FakeDoc()
+
+        @staticmethod
+        def Matrix(x, y):
+            return (x, y)
+
+    monkeypatch.setitem(__import__("sys").modules, "fitz", FakeFitz)
+    monkeypatch.setattr(worker, "_transcribe_image", lambda path, key: f"testo:{Path(path).name}")
+
+    worker.process_file(str(tmp_path / "registro.pdf"))
+
+    partial_path = tmp_path / "_ocr_progress" / "registro_trascrizione_parziale.txt"
+    final_txt = tmp_path / "registro_trascrizione.txt"
+
+    assert not partial_path.exists()
+    assert final_txt.exists()
+    content = final_txt.read_text(encoding="utf-8")
+    assert "--- Pagina 1 ---" in content
+    assert "--- Pagina 2 ---" in content
