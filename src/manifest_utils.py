@@ -1955,12 +1955,17 @@ def _normalize_manifest_portal_key(portale: str) -> str:
     return portale.lower().replace("-", "_").replace(" ", "_")
 
 
+def _get_manifest_builder(portale: str):
+    portale_key = _normalize_manifest_portal_key(portale)
+    return portale_key, _PORTAL_BUILDERS.get(portale_key)
+
+
 def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
     """
     Costruisce l'URL del manifest IIIF o restituisce un dict (manifest sintetico)
     partendo dall'URL di pagina.
     """
-    portale_key = _normalize_manifest_portal_key(portale)
+    portale_key, builder = _get_manifest_builder(portale)
     if portale_key == "manifest_diretto":
         return page_url
 
@@ -1977,7 +1982,6 @@ def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
         # Fallback sintetico
         return build_bncf_teca_synthetic_manifest(page_url, "")
 
-    builder = _PORTAL_BUILDERS.get(portale_key)
     if builder:
         return builder(page_url)
     return None
