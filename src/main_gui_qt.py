@@ -417,6 +417,8 @@ def ask_output_mode(glossario_data, lingua) -> str:
     return "per_record"
 def asset_path(rel_path):
     return os.path.join(BASE_DIR, rel_path)
+
+
 # Stato globale
 state = {
     "records": [],
@@ -425,8 +427,6 @@ state = {
     "registri_output": [],
     "current_input_file": None  # Memorizza il percorso del file attualmente caricato
 }
-# Import standard all'inizio
-import sys
 
 def scegli_lingua(glossario_data=None, lingua="it"):
     dlg = QDialog()
@@ -744,16 +744,19 @@ class SafeRotatingFileHandler(RotatingFileHandler):
         except PermissionError:
             pass
 
+
+def _log_file_path(debug_logs: bool) -> str:
+    return os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        '..',
+        'atkpro_debug.log' if debug_logs else 'atkpro.log',
+    )
+
 # Configurazione logging immediata: sobria di default, DEBUG solo se richiesto.
-_is_frozen = getattr(sys, 'frozen', False)
 _log_level = get_default_log_level()
 _debug_logs = is_debug_logging_enabled()
 _log_format = "DEBUG: %(message)s" if _debug_logs else "%(levelname)s: %(message)s"
-log_file = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    '..',
-    'atkpro_debug.log' if _debug_logs else 'atkpro.log',
-)
+log_file = _log_file_path(_debug_logs)
 try:
     if os.path.exists(log_file):
         with open(log_file, 'w', encoding='utf-8') as f:
