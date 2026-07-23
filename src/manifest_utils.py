@@ -1960,6 +1960,22 @@ def _get_manifest_builder(portale: str):
     return portale_key, _PORTAL_BUILDERS.get(portale_key)
 
 
+def _resolve_bncf_teca_manifest(page_url: str) -> str | dict | None:
+    # Prima proviamo IIIF standard (tentativi multipli)
+    urls = _build_bncf_teca_manifest(page_url)
+    if urls:
+        import requests
+        for std_url in (urls if isinstance(urls, list) else [urls]):
+            try:
+                r = requests.head(std_url, timeout=5, headers={"User-Agent": "Mozilla/5.0"})
+                if r.ok:
+                    return std_url
+            except:
+                pass
+    # Fallback sintetico
+    return build_bncf_teca_synthetic_manifest(page_url, "")
+
+
 def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
     """
     Costruisce l'URL del manifest IIIF o restituisce un dict (manifest sintetico)
@@ -1970,17 +1986,7 @@ def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
         return page_url
 
     if portale_key == "bncf_teca":
-        # Prima proviamo IIIF standard (tentativi multipli)
-        urls = _build_bncf_teca_manifest(page_url)
-        if urls:
-            import requests
-            for std_url in (urls if isinstance(urls, list) else [urls]):
-                try:
-                    r = requests.head(std_url, timeout=5, headers={"User-Agent": "Mozilla/5.0"})
-                    if r.ok: return std_url
-                except: pass
-        # Fallback sintetico
-        return build_bncf_teca_synthetic_manifest(page_url, "")
+        return _resolve_bncf_teca_manifest(page_url)
 
     if builder:
         return builder(page_url)
