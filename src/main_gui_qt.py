@@ -1,7 +1,17 @@
+import json
+import logging
+import os
+import subprocess as _subprocess_mod
+import sys
+import tempfile as _tempfile_mod
+import urllib.request as _urllib_req
+from logging.handlers import RotatingFileHandler
+
 from PySide6.QtGui import QBrush, QPalette, QPixmap, QIcon
 from asset_cache import get_pixmap_cached, get_text_cached
-from PySide6.QtCore import Qt, QFile, QUrl
+from PySide6.QtCore import Qt, QFile, QThread, QUrl, Signal as _Signal
 from PySide6.QtGui import QDesktopServices
+from PySide6.QtGui import QFontDatabase
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QTextEdit, QFileDialog, QMessageBox,
@@ -9,6 +19,7 @@ from PySide6.QtWidgets import (
     QProgressDialog
 )
 from atk_version import DISPLAY_VERSION, VERSION, is_newer_version
+from logging_utils import get_default_log_level, is_debug_logging_enabled
 from resource_profile import (
     RESOURCE_PROFILE_BALANCED,
     RESOURCE_PROFILE_FAST,
@@ -16,6 +27,8 @@ from resource_profile import (
     get_resource_profile_description_key,
     normalize_resource_profile,
 )
+import json as _json_mod
+import re as _re_mod
 
 GITHUB_REPO = "DanielePigoli/ATK-Pro-v3"
 DISCLAIMER_REVISION = "v3.0.0-legal-disclaimer-2026-05-27"
@@ -31,9 +44,6 @@ state = {
     "current_input_file": None,  # Memorizza il percorso del file attualmente caricato
     "resource_profile": "bilanciato",
 }
-# Import standard all'inizio
-import sys
-
 def carica_testo_asset(percorso):
     try:
         return get_text_cached(percorso)
@@ -407,15 +417,6 @@ def ask_output_mode(glossario_data, lingua) -> str:
     return "per_record"
 def asset_path(rel_path):
     return os.path.join(BASE_DIR, rel_path)
-from PySide6.QtGui import QBrush, QPalette, QPixmap, QIcon
-from asset_cache import get_pixmap_cached, get_text_cached
-from PySide6.QtCore import Qt, QFile, QUrl
-from PySide6.QtGui import QDesktopServices
-from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QLabel, QPushButton, QTextEdit, QFileDialog, QMessageBox,
-    QMenuBar, QMenu, QDialog, QComboBox, QCheckBox, QSizePolicy, QInputDialog
-)
 # Stato globale
 state = {
     "records": [],
@@ -735,14 +736,6 @@ def show_msgbox_localized(parent, glossario_data, lingua, title, text, icon=QMes
     dlg.exec()
     return result
 
-# Import standard all'inizio
-import sys
-import os
-import json
-import logging
-from logging.handlers import RotatingFileHandler
-from logging_utils import get_default_log_level, is_debug_logging_enabled
-
 class SafeRotatingFileHandler(RotatingFileHandler):
     """RotatingFileHandler che ignora PermissionError su Windows durante il rollover."""
     def doRollover(self):
@@ -774,20 +767,6 @@ logging.info(
     "LOGGING AVVIATO (%s su file e console, azzerato ad ogni avvio)",
     "livello DEBUG" if _debug_logs else logging.getLevelName(_log_level),
 )
-
-from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QLabel, QPushButton, QTextEdit, QFileDialog, QMessageBox,
-    QMenuBar, QMenu, QDialog, QComboBox, QCheckBox, QSizePolicy
-)
-from PySide6.QtGui import QFontDatabase
-import urllib.request as _urllib_req
-import json as _json_mod
-import re as _re_mod
-import tempfile as _tempfile_mod
-import subprocess as _subprocess_mod
-from PySide6.QtCore import QThread, Signal as _Signal
-
 
 class _UpdateCheckerThread(QThread):
     """Controlla la versione disponibile su GitHub senza bloccare la UI."""
