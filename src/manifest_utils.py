@@ -1912,31 +1912,47 @@ def build_matricula_synthetic_manifest(page_url: str, html: str | None = None) -
 
 
 # Mappa portale → funzione builder
-_PORTAL_BUILDERS = {
-    "gallica":          _build_gallica_manifest,
-    "vatlib":           _build_vatlib_manifest,
-    "bodleian":         _build_bodleian_manifest,
-    "europeana":        _build_europeana_manifest,
+_STANDARD_IIIF_BUILDERS = {
+    "gallica": _build_gallica_manifest,
+    "vatlib": _build_vatlib_manifest,
+    "bodleian": _build_bodleian_manifest,
+    "europeana": _build_europeana_manifest,
     "internet_archive": _build_ia_manifest,
-    "e_rara":           _build_e_rara_manifest,
-    "e_codices":        _build_ecodices_manifest,
-    "e_manuscripta":    _build_e_manuscripta_manifest,
+    "e_rara": _build_e_rara_manifest,
+    "e_codices": _build_ecodices_manifest,
+    "e_manuscripta": _build_e_manuscripta_manifest,
+    "heidelberg": _build_heidelberg_manifest,
+}
+
+_ITALIAN_LIBRARY_BUILDERS = {
     "biblioteca_digitale_siena": _build_biblioteca_digitale_siena_manifest,
     "bub_digitale": _build_bub_digitale_manifest,
     "dl_ficlit": _build_dl_ficlit_manifest,
     "biblioteca_digitale_trentina": _build_biblioteca_digitale_trentina_manifest,
     "biblioteca_digitale_lombarda": _build_biblioteca_digitale_lombarda_manifest,
     "rovereto_digital_library": _build_rovereto_manifest,
-    "museogalileo":     _build_museogalileo_manifest,
+    "museogalileo": _build_museogalileo_manifest,
     "internetculturale_estense": _build_internetculturale_estense_manifest,
-    "heidelberg":       _build_heidelberg_manifest,
-    "brixiana":         _build_memooria_manifest,
-    "memooria":         _build_memooria_manifest,
-    "findbuch":         _build_findbuch_manifest,
-    "matricula":        _build_matricula_manifest,
-    "bnc_roma":         _build_bnc_roma_manifest,
-    "bncf_teca":        _build_bncf_teca_manifest,
+    "bnc_roma": _build_bnc_roma_manifest,
+    "bncf_teca": _build_bncf_teca_manifest,
 }
+
+_SPECIAL_COLLECTION_BUILDERS = {
+    "brixiana": _build_memooria_manifest,
+    "memooria": _build_memooria_manifest,
+    "findbuch": _build_findbuch_manifest,
+    "matricula": _build_matricula_manifest,
+}
+
+_PORTAL_BUILDERS = {
+    **_STANDARD_IIIF_BUILDERS,
+    **_ITALIAN_LIBRARY_BUILDERS,
+    **_SPECIAL_COLLECTION_BUILDERS,
+}
+
+
+def _normalize_manifest_portal_key(portale: str) -> str:
+    return portale.lower().replace("-", "_").replace(" ", "_")
 
 
 def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
@@ -1944,7 +1960,7 @@ def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
     Costruisce l'URL del manifest IIIF o restituisce un dict (manifest sintetico)
     partendo dall'URL di pagina.
     """
-    portale_key = portale.lower().replace("-", "_").replace(" ", "_")
+    portale_key = _normalize_manifest_portal_key(portale)
     if portale_key == "manifest_diretto":
         return page_url
 
