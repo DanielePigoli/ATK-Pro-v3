@@ -18,28 +18,11 @@ from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtGui import QIcon, QFont, QPixmap
 
 from asset_cache import get_pixmap_cached
-try:
-    from key_manager import (
-        get_provider_default_model,
-        require_provider_default_host,
-        get_service_provider_labels,
-        missing_provider_credentials_message,
-        normalize_provider_name,
-        provider_requires_credentials,
-    )
-except ImportError:
-    from src.key_manager import (
-        get_provider_default_model,
-        require_provider_default_host,
-        get_service_provider_labels,
-        missing_provider_credentials_message,
-        normalize_provider_name,
-        provider_requires_credentials,
-    )
-
-from ai_error_utils import classify_ai_runtime_error
 
 AdvancedOCRWorker = None
+_key_manager_module = None
+_key_manager_fallback_module = None
+_ai_error_utils_module = None
 
 
 def _get_advanced_ocr_worker_class():
@@ -49,6 +32,74 @@ def _get_advanced_ocr_worker_class():
 
         AdvancedOCRWorker = _AdvancedOCRWorker
     return AdvancedOCRWorker
+
+
+def _get_key_manager_module():
+    global _key_manager_module
+    if _key_manager_module is None:
+        try:
+            import key_manager as _key_manager
+        except ImportError:
+            from src import key_manager as _key_manager
+
+        _key_manager_module = _key_manager
+    return _key_manager_module
+
+
+def _get_key_manager_fallback_module():
+    global _key_manager_fallback_module
+    if _key_manager_fallback_module is None:
+        from src import key_manager as _key_manager
+
+        _key_manager_fallback_module = _key_manager
+    return _key_manager_fallback_module
+
+
+def _get_key_manager_attr(name):
+    module = _get_key_manager_module()
+    if hasattr(module, name):
+        return getattr(module, name)
+    return getattr(_get_key_manager_fallback_module(), name)
+
+
+def _get_ai_error_utils_module():
+    global _ai_error_utils_module
+    if _ai_error_utils_module is None:
+        try:
+            import ai_error_utils as _ai_error_utils
+        except ImportError:
+            from src import ai_error_utils as _ai_error_utils
+
+        _ai_error_utils_module = _ai_error_utils
+    return _ai_error_utils_module
+
+
+def get_provider_default_model(provider, service):
+    return _get_key_manager_attr("get_provider_default_model")(provider, service)
+
+
+def require_provider_default_host(provider):
+    return _get_key_manager_attr("require_provider_default_host")(provider)
+
+
+def get_service_provider_labels(service):
+    return _get_key_manager_fallback_module().get_service_provider_labels(service)
+
+
+def missing_provider_credentials_message(provider):
+    return _get_key_manager_attr("missing_provider_credentials_message")(provider)
+
+
+def normalize_provider_name(provider):
+    return _get_key_manager_fallback_module().normalize_provider_name(provider)
+
+
+def provider_requires_credentials(provider):
+    return _get_key_manager_attr("provider_requires_credentials")(provider)
+
+
+def classify_ai_runtime_error(provider_name, error):
+    return _get_ai_error_utils_module().classify_ai_runtime_error(provider_name, error)
 
 def get_msg(glossario, chiave, lingua):
     try:
