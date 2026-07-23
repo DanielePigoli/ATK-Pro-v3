@@ -177,6 +177,32 @@ def test_resolve_biblioteca_digitale_lombarda_pdf_url():
     assert mu.resolve_manifest_url(url, "biblioteca_digitale_lombarda") == url
 
 
+@patch("src.manifest_utils.requests.head")
+def test_resolve_bncf_teca_manifest_uses_first_working_standard_url(mock_head, monkeypatch):
+    class MockHeadResponse:
+        ok = True
+
+    mock_head.return_value = MockHeadResponse()
+    monkeypatch.setattr(
+        mu,
+        "_build_bncf_teca_manifest",
+        lambda _page_url: [
+            "https://teca.bncf.firenze.sbn.it/iiif/manifest/one",
+            "https://teca.bncf.firenze.sbn.it/iiif/manifest/two",
+        ],
+    )
+    monkeypatch.setattr(
+        mu,
+        "build_bncf_teca_synthetic_manifest",
+        lambda *_args, **_kwargs: {"@id": "synthetic://bncf/unused"},
+    )
+
+    assert (
+        mu._resolve_bncf_teca_manifest("https://teca.bncf.firenze.sbn.it/viewer")
+        == "https://teca.bncf.firenze.sbn.it/iiif/manifest/one"
+    )
+
+
 def test_build_biblioteca_digitale_lombarda_pdf_manifest():
     url = "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf"
 
