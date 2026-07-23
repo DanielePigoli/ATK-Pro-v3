@@ -1980,6 +1980,12 @@ def _resolve_bncf_teca_manifest(page_url: str) -> str | dict | None:
     return build_bncf_teca_synthetic_manifest(page_url, "")
 
 
+def _resolve_standard_manifest_url(page_url: str, builder) -> str | dict | None:
+    if builder:
+        return builder(page_url)
+    return None
+
+
 def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
     """
     Costruisce l'URL del manifest IIIF o restituisce un dict (manifest sintetico)
@@ -1992,9 +1998,7 @@ def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
     if portale_key == "bncf_teca":
         return _resolve_bncf_teca_manifest(page_url)
 
-    if builder:
-        return builder(page_url)
-    return None
+    return _resolve_standard_manifest_url(page_url, builder)
 
 def find_manifest_url(driver) -> str | None:
     """
