@@ -46,6 +46,13 @@ def test_extract_manifest_url_from_mirador_query():
     )
 
 
+def test_get_manifest_builder_normalizes_portal_key():
+    portale_key, builder = mu._get_manifest_builder("BUB-Digitale")
+
+    assert portale_key == "bub_digitale"
+    assert builder is mu._build_bub_digitale_manifest
+
+
 def test_robust_find_manifest_uses_viewer_query_without_fetch(monkeypatch):
     def fail_fetch(*_args, **_kwargs):
         raise AssertionError("robust_find_manifest should not fetch viewer URLs with manifestId")
