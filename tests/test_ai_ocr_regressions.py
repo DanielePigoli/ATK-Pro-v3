@@ -28,6 +28,21 @@ def test_ai_search_dialog_excludes_transkribus_from_provider_combo(qtbot):
     assert providers == list(get_service_provider_labels("ai_search"))
 
 
+def test_ai_search_lazy_key_manager_wrappers_use_runtime_module(monkeypatch):
+    import types
+    import src.RicercaAssistitaAI as rai
+
+    fake_module = types.SimpleNamespace(
+        get_service_provider_labels=lambda service: ["Gemini", "Claude"] if service == "ai_search" else [],
+        normalize_provider_name=lambda provider: f"norm::{provider}",
+    )
+
+    monkeypatch.setattr(rai, "_get_key_manager_module", lambda: fake_module)
+
+    assert list(rai.get_service_provider_labels("ai_search")) == ["Gemini", "Claude"]
+    assert rai.normalize_provider_name("Gemini") == "norm::Gemini"
+
+
 def test_ai_search_dialog_uses_runtime_default_model_hint(qtbot):
     import src.RicercaAssistitaAI as rai
 
