@@ -3,6 +3,20 @@ import sys
 import types
 
 
+def test_ocr_dialog_lazy_key_manager_wrappers_use_runtime_module(monkeypatch):
+    import src.ocr_dialog as ocr_dialog
+
+    fake_module = types.SimpleNamespace(
+        missing_provider_credentials_message=lambda provider: f"missing::{provider}",
+        provider_requires_credentials=lambda provider: provider != "Ollama",
+    )
+
+    monkeypatch.setattr(ocr_dialog, "_get_key_manager_module", lambda: fake_module)
+
+    assert ocr_dialog.missing_provider_credentials_message("Gemini") == "missing::Gemini"
+    assert ocr_dialog.provider_requires_credentials("Gemini")
+
+
 def test_ocr_dialog_clears_remote_key_when_ollama_is_selected(monkeypatch, tmp_path, qtbot):
     fake_key_manager_module = types.SimpleNamespace(
         KeyManager=lambda: types.SimpleNamespace(
