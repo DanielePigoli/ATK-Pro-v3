@@ -5,6 +5,20 @@ import types
 from PySide6.QtWidgets import QApplication
 
 
+def test_translation_dialog_lazy_key_manager_wrappers_use_runtime_module(monkeypatch):
+    import src.translation_dialog as translation_dialog
+
+    fake_module = types.SimpleNamespace(
+        missing_provider_credentials_message=lambda provider: f"missing::{provider}",
+        provider_requires_credentials=lambda provider: provider != "Ollama",
+    )
+
+    monkeypatch.setattr(translation_dialog, "_get_key_manager_module", lambda: fake_module)
+
+    assert translation_dialog.missing_provider_credentials_message("Gemini") == "missing::Gemini"
+    assert translation_dialog.provider_requires_credentials("Gemini")
+
+
 def test_translation_dialog_preloads_cassaforte_key(monkeypatch, tmp_path, qtbot):
     fake_key_manager_module = types.SimpleNamespace(
         KeyManager=lambda: types.SimpleNamespace(
