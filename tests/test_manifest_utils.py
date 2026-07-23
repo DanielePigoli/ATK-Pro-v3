@@ -53,6 +53,13 @@ def test_get_manifest_builder_normalizes_portal_key():
     assert builder is mu._build_bub_digitale_manifest
 
 
+def test_resolve_direct_manifest_url_returns_input_url():
+    url = "https://example.test/iiif/manifest.json"
+
+    assert mu._resolve_direct_manifest_url(url) == url
+    assert mu.resolve_manifest_url(url, "manifest_diretto") == url
+
+
 def test_robust_find_manifest_uses_viewer_query_without_fetch(monkeypatch):
     def fail_fetch(*_args, **_kwargs):
         raise AssertionError("robust_find_manifest should not fetch viewer URLs with manifestId")
