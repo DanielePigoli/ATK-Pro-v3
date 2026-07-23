@@ -18,20 +18,87 @@ if not logging.getLogger('atkpro').hasHandlers():
     logging.getLogger('atkpro').setLevel(get_default_log_level())
 logger = logging.getLogger('atkpro')
 import os
-from key_manager import (
-    KeyManager,
-    get_provider_default_model,
-    get_service_providers,
-    get_service_provider_labels,
-    missing_provider_credentials_message,
-    normalize_provider_name,
-    provider_requires_credentials,
-    service_supports_provider,
-)
-from ai_error_utils import classify_ai_runtime_error
-from ai_utils import get_best_gemini_model
 
 get_handler = None
+_key_manager_module = None
+_ai_error_utils_module = None
+_ai_utils_module = None
+
+
+def _get_key_manager_module():
+    global _key_manager_module
+    if _key_manager_module is None:
+        try:
+            import key_manager as _key_manager
+        except ImportError:
+            from src import key_manager as _key_manager
+
+        _key_manager_module = _key_manager
+    return _key_manager_module
+
+
+def _get_ai_error_utils_module():
+    global _ai_error_utils_module
+    if _ai_error_utils_module is None:
+        try:
+            import ai_error_utils as _ai_error_utils
+        except ImportError:
+            from src import ai_error_utils as _ai_error_utils
+
+        _ai_error_utils_module = _ai_error_utils
+    return _ai_error_utils_module
+
+
+def _get_ai_utils_module():
+    global _ai_utils_module
+    if _ai_utils_module is None:
+        try:
+            import ai_utils as _ai_utils
+        except ImportError:
+            from src import ai_utils as _ai_utils
+
+        _ai_utils_module = _ai_utils
+    return _ai_utils_module
+
+
+def KeyManager(*args, **kwargs):
+    return _get_key_manager_module().KeyManager(*args, **kwargs)
+
+
+def get_provider_default_model(provider, service):
+    return _get_key_manager_module().get_provider_default_model(provider, service)
+
+
+def get_service_providers(service):
+    return _get_key_manager_module().get_service_providers(service)
+
+
+def get_service_provider_labels(service):
+    return _get_key_manager_module().get_service_provider_labels(service)
+
+
+def missing_provider_credentials_message(provider):
+    return _get_key_manager_module().missing_provider_credentials_message(provider)
+
+
+def normalize_provider_name(provider):
+    return _get_key_manager_module().normalize_provider_name(provider)
+
+
+def provider_requires_credentials(provider):
+    return _get_key_manager_module().provider_requires_credentials(provider)
+
+
+def service_supports_provider(service, provider):
+    return _get_key_manager_module().service_supports_provider(service, provider)
+
+
+def classify_ai_runtime_error(provider_name, error):
+    return _get_ai_error_utils_module().classify_ai_runtime_error(provider_name, error)
+
+
+def get_best_gemini_model(api_key, preferred="flash"):
+    return _get_ai_utils_module().get_best_gemini_model(api_key, preferred=preferred)
 
 
 def _get_handler_factory():
