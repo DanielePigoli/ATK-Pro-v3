@@ -1960,6 +1960,10 @@ def _get_manifest_builder(portale: str):
     return portale_key, _PORTAL_BUILDERS.get(portale_key)
 
 
+def _resolve_direct_manifest_url(page_url: str) -> str:
+    return page_url
+
+
 def _resolve_bncf_teca_manifest(page_url: str) -> str | dict | None:
     # Prima proviamo IIIF standard (tentativi multipli)
     urls = _build_bncf_teca_manifest(page_url)
@@ -1983,7 +1987,7 @@ def resolve_manifest_url(page_url: str, portale: str) -> str | dict | None:
     """
     portale_key, builder = _get_manifest_builder(portale)
     if portale_key == "manifest_diretto":
-        return page_url
+        return _resolve_direct_manifest_url(page_url)
 
     if portale_key == "bncf_teca":
         return _resolve_bncf_teca_manifest(page_url)
