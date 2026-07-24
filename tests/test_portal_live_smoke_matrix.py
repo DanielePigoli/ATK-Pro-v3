@@ -52,6 +52,28 @@ def test_live_smoke_matrix_rows_are_offline_resolvable(tmp_path):
         assert "recognized" in result.detail.lower(), row["portal_key"]
 
 
+def test_live_smoke_matrix_offline_resolution_matches_technical_family(tmp_path):
+    direct_families = {"iiif_direct", "iiif_discovery", "user_supplied_manifest"}
+    synthetic_families = {"synthetic_manifest", "hybrid_manifest"}
+
+    for row in _rows():
+        portal_key = row["portal_key"]
+        technical_family = row["technical_family"]
+        result = smoke.run_case(row, fetch_manifest=False, output_dir=tmp_path)
+
+        assert result.status == "RESOLVED", portal_key
+
+        if technical_family in direct_families:
+            assert isinstance(result.manifest_url, str)
+            assert result.manifest_url
+            assert not result.manifest_url.startswith("synthetic://"), portal_key
+        elif technical_family in synthetic_families:
+            assert isinstance(result.manifest_url, str)
+            assert result.manifest_url
+        else:
+            raise AssertionError(f"Unexpected technical family for {portal_key}: {technical_family}")
+
+
 def test_live_smoke_fetch_uses_synthetic_builder_for_synthetic_portals(monkeypatch, tmp_path):
     def fake_builder(sample_url: str) -> dict:
         assert sample_url == "https://bibdig.museogalileo.it/Teca/Viewer?an=000000006600"
