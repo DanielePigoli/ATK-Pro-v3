@@ -35,6 +35,24 @@ class DirectPdfPortalAdapter:
     referer: str
     default_name: str
 
+    def extract_pdf_from_manifest(self, manifest):
+        if not isinstance(manifest, dict):
+            return None
+        see_also_entries = manifest.get("seeAlso") or manifest.get("see_also") or []
+        if isinstance(see_also_entries, dict):
+            see_also_entries = [see_also_entries]
+        for entry in see_also_entries:
+            pdf_url = _extract_pdf_url_from_entry(entry)
+            if pdf_url:
+                return str(pdf_url)
+        return None
+
+    def extract_pdf_from_service(self, service):
+        if not isinstance(service, dict):
+            return None
+        pdf_url = service.get("pdf_url") or _extract_pdf_url_from_entry(service)
+        return str(pdf_url) if pdf_url else None
+
 
 @dataclass(frozen=True)
 class PortalRequestAdapter:
@@ -173,16 +191,11 @@ def _extract_pdf_url_from_entry(entry):
 
 def resolve_direct_pdf_download(portal_key: str | None, tiles_info=None, manifest=None):
     """Restituisce (adapter, pdf_url) per i portali a PDF diretto supportati."""
-    if portal_key == "biblioteca_digitale_trentina":
-        adapter = DIRECT_PDF_ADAPTERS_BY_PORTAL.get(portal_key)
-        if isinstance(manifest, dict):
-            see_also_entries = manifest.get("seeAlso") or manifest.get("see_also") or []
-            if isinstance(see_also_entries, dict):
-                see_also_entries = [see_also_entries]
-            for entry in see_also_entries:
-                pdf_url = _extract_pdf_url_from_entry(entry)
-                if adapter and pdf_url:
-                    return adapter, pdf_url
+    portal_adapter = DIRECT_PDF_ADAPTERS_BY_PORTAL.get(portal_key)
+    if portal_adapter:
+        pdf_url = portal_adapter.extract_pdf_from_manifest(manifest)
+        if pdf_url:
+            return portal_adapter, pdf_url
 
     for canvas in tiles_info or []:
         try:
@@ -195,12 +208,12 @@ def resolve_direct_pdf_download(portal_key: str | None, tiles_info=None, manifes
                 continue
             context = svc.get("@context")
             adapter = DIRECT_PDF_ADAPTERS_BY_CONTEXT.get(context)
-            if portal_key == "biblioteca_digitale_trentina":
-                adapter = DIRECT_PDF_ADAPTERS_BY_PORTAL.get(portal_key) or adapter
+            if portal_adapter:
+                adapter = portal_adapter or adapter
             if not adapter:
                 continue
-            pdf_url = svc.get("pdf_url") or _extract_pdf_url_from_entry(svc)
+            pdf_url = adapter.extract_pdf_from_service(svc)
             if pdf_url:
-                return adapter, str(pdf_url)
+                return adapter, pdf_url
 
     return None, None
