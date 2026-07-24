@@ -413,6 +413,24 @@ def test_normalize_iiif_v3_manifest_for_processing():
     assert resource["service"][0]["@id"] == "https://example.org/iiif/image"
     assert resource["service"][0]["@type"] == "ImageService3"
 
+
+def test_normalize_iiif_v3_manifest_ignores_non_canvas_items():
+    manifest = _sample_v3_manifest()
+    manifest["items"].insert(
+        0,
+        {
+            "id": "https://example.org/range/1",
+            "type": "Range",
+            "label": {"en": ["Front matter"]},
+        },
+    )
+
+    normalized = mu.normalize_iiif_manifest_for_processing(manifest)
+
+    canvases = normalized["sequences"][0]["canvases"]
+    assert len(canvases) == 1
+    assert canvases[0]["@id"] == "https://example.org/canvas/1"
+
 def test_download_manifest_url_non_valido(tmp_path):
     result = download_manifest(
         "https://dam-antenati.cultura.gov.it/antenati/containers/INVALID/manifest",
