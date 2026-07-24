@@ -10,7 +10,9 @@ pdf_utils.py — ATK-Pro v2.0 (ripristino logica v1.4.1 con innesti Qt)
 """
 
 import os
+import json
 import logging
+import threading
 from logging.handlers import RotatingFileHandler
 try:
     from atk_version import PACKAGE_VERSION
@@ -69,6 +71,27 @@ def _pdf_open_max_workers(
     )
 
 
+def _pdf_progress_path(output_pdf_path: str) -> str:
+    return output_pdf_path + ".progress.json"
+
+
+def _save_pdf_progress(output_pdf_path: str, payload: dict) -> None:
+    progress_path = _pdf_progress_path(output_pdf_path)
+    tmp_path = progress_path + ".tmp"
+    with open(tmp_path, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, ensure_ascii=False, indent=2)
+    os.replace(tmp_path, progress_path)
+
+
+def _clear_pdf_progress(output_pdf_path: str) -> None:
+    progress_path = _pdf_progress_path(output_pdf_path)
+    try:
+        if os.path.exists(progress_path):
+            os.remove(progress_path)
+    except Exception as exc:
+        logger.warning("Impossibile pulire il checkpoint PDF: %s", exc)
+
+
 def create_pdf_from_images(image_paths, output_pdf_path, resolution_dpi=400,
                             update_status=None, update_progress=None, on_error=None,
                             resource_profile: str | None = None):
@@ -87,10 +110,29 @@ def create_pdf_from_images(image_paths, output_pdf_path, resolution_dpi=400,
     images = []
     total = len(image_paths)
     done = 0
-    def _open_and_progress(path):
+    valid_paths: list[str | None] = [None] * total
+    progress_lock = threading.Lock()
+    progress_state = {
+        "status": "preparing_images",
+        "output_pdf_path": output_pdf_path,
+        "total_requested": total,
+        "prepared_images": 0,
+        "valid_image_paths": [],
+    }
+    _save_pdf_progress(output_pdf_path, progress_state)
+
+    def _open_and_progress(item):
+        index, path = item
         im = open_image_safe(path)
         nonlocal done
-        done += 1
+        with progress_lock:
+            done += 1
+            if im:
+                valid_paths[index] = path
+            ordered_valid_paths = [p for p in valid_paths if p]
+            progress_state["prepared_images"] = len(ordered_valid_paths)
+            progress_state["valid_image_paths"] = ordered_valid_paths
+            _save_pdf_progress(output_pdf_path, progress_state)
         if update_progress:
             try:
                 progress = min(1.0, max(0.0, done / float(total)))
@@ -105,7 +147,7 @@ def create_pdf_from_images(image_paths, output_pdf_path, resolution_dpi=400,
     except Exception:
         max_workers = min(4, total)
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-        results = list(executor.map(_open_and_progress, image_paths))
+        results = list(executor.map(_open_and_progress, enumerate(image_paths)))
     images = [im for im in results if im]
 
     if not images:
@@ -117,9 +159,12 @@ def create_pdf_from_images(image_paths, output_pdf_path, resolution_dpi=400,
     try:
         first, rest = images[0], images[1:]
         logger.info(f"[PDF] Generazione PDF: {output_pdf_path}")
+        progress_state["status"] = "writing_pdf"
+        _save_pdf_progress(output_pdf_path, progress_state)
         first.save(output_pdf_path, "PDF", save_all=True, append_images=rest,
                    resolution=resolution_dpi)
         logger.info(f"[OK] PDF creato: {output_pdf_path}")
+        _clear_pdf_progress(output_pdf_path)
         if update_status:
             update_status(f"PDF creato: {output_pdf_path}")
         return output_pdf_path

@@ -1,11 +1,13 @@
 # test_pdf_utils.py – Creato il 2025-09-13
 import os
+import json
 import pytest
 from pypdf import PdfReader
 from pdf_utils import (
     create_pdf_from_images,
     enrich_pdf_metadata,
     _pdf_open_max_workers,
+    _pdf_progress_path,
 )
 
 # -----------------------
@@ -63,6 +65,31 @@ def test_pdf_open_max_workers_is_capped_for_memory():
     assert _pdf_open_max_workers(2, cpu_count=16) == 2
     assert _pdf_open_max_workers(20, cpu_count=16) == 4
     assert _pdf_open_max_workers(20, cpu_count=2) == 2
+
+
+def test_pdf_progress_checkpoint_removed_on_success(sample_images, tmp_path):
+    output_pdf = tmp_path / "output.pdf"
+    result = create_pdf_from_images(sample_images, str(output_pdf))
+    assert result == str(output_pdf)
+    assert not os.path.exists(_pdf_progress_path(str(output_pdf)))
+
+
+def test_pdf_progress_checkpoint_retained_on_save_failure(monkeypatch, sample_images, tmp_path):
+    output_pdf = tmp_path / "output.pdf"
+
+    def fake_save(*args, **kwargs):
+        raise IOError("Errore salvataggio")
+
+    monkeypatch.setattr("pdf_utils.Image.Image.save", fake_save)
+    result = create_pdf_from_images(sample_images, str(output_pdf))
+    assert result is None
+
+    progress_path = _pdf_progress_path(str(output_pdf))
+    assert os.path.exists(progress_path)
+    data = json.loads((tmp_path / "output.pdf.progress.json").read_text(encoding="utf-8"))
+    assert data["status"] == "writing_pdf"
+    assert data["prepared_images"] == len(sample_images)
+    assert data["valid_image_paths"] == sample_images
 
 # -----------------------
 # TEST enrich_pdf_metadata
