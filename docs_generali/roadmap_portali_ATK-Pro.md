@@ -367,6 +367,21 @@ Ordine pratico di ripresa:
    mini-blocco italiano/italofono oppure dopo una scelta esplicita di
    priorita.
 
+Esito primo micro-step `memooria_jarvis_istanze_italiane` (2026-07-24):
+
+- le fonti ufficiali Memooria/OpenJarvis confermano una famiglia tecnica
+  coerente con ATK-Pro: IIIF Image/Presentation API, WebAPI REST e
+  interoperabilita con visori esterni;
+- il case study Estense conferma almeno un'installazione italiana dedicata per
+  la Biblioteca Estense Universitaria, ma non basta da sola a promuovere una
+  nuova integrazione autonoma, anche perche il progetto Estense e gia coperto
+  in ATK-Pro tramite il ramo `internetculturale_estense`;
+- allo stato attuale non emerge ancora una rosa chiara di nuove istanze Jarvis
+  italiane pubbliche, istituzionali e no-login da trasformare subito in
+  candidati tecnici;
+- la famiglia resta quindi riapribile, ma non prioritaria prima che emerga un
+  host concreto con record pubblico stabile e pattern riusabile.
+
 Scheda minima prima di proporre un nuovo portale:
 
 - nome portale e area;
