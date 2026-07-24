@@ -1,4 +1,5 @@
 from src.portal_adapters import (
+    DIRECT_IMAGE_ADAPTERS_BY_HOST_FRAGMENT,
     PortalRequestAdapter,
     resolve_direct_image_download,
     resolve_direct_pdf_download,
@@ -96,6 +97,15 @@ def test_resolve_direct_image_download_for_matricula_host():
     assert image_url == "https://hosted-images.matricula-online.eu/foo/bar.jpg"
 
 
+def test_direct_image_host_adapter_matches_service_id():
+    adapter = DIRECT_IMAGE_ADAPTERS_BY_HOST_FRAGMENT["BookReaderImages.php"]
+
+    assert adapter.matches_service_id(
+        "https://archive.org/download/example/BookReaderImages.php?zip=/foo.zip&file=page_0001.jp2"
+    )
+    assert not adapter.matches_service_id("https://example.test/page.jpg")
+
+
 def test_resolve_direct_image_download_for_rovereto_context():
     canvas = {
         "images": [
@@ -115,6 +125,26 @@ def test_resolve_direct_image_download_for_rovereto_context():
     assert adapter is not None
     assert adapter.portal_label == "Rovereto"
     assert image_url == "https://rovereto.example.test/page-2.png"
+
+
+def test_direct_image_adapter_extracts_image_from_canvas_service():
+    canvas = {
+        "images": [
+            {
+                "resource": {
+                    "service": {
+                        "@context": "bdt_direct",
+                        "@id": "https://bdt.example.test/page-9.jpg",
+                    }
+                }
+            }
+        ]
+    }
+
+    adapter, image_url = resolve_direct_image_download(None, canvas, None)
+
+    assert adapter is not None
+    assert image_url == "https://bdt.example.test/page-9.jpg"
 
 
 def test_resolve_direct_image_download_for_ficlit_portal():
