@@ -394,11 +394,20 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   ATK-Pro: documenti IIIF ad alta risoluzione, viewer integrato, OCR
   compatibile con IIIF e piu' portali culturali italiani pubblicati sulla
   stessa piattaforma;
-- il ramo non va ancora promosso a integrazione: prima serve almeno un
-  campione pubblico stabile con pattern manifest/immagine riusabile,
-  termini/licenza leggibili a livello portale o item e una sonda tecnica
-  dedicata, per evitare di confondere la piattaforma-host con i diritti dei
-  singoli enti.
+- il campione pubblico ARBOR `A.23` si e' rivelato tecnicamente leggibile:
+  la pagina pubblica `https://arbor.medialibrary.it/item/185016bb-0d54-412f-9554-5eec348b09f0`
+  espone sia il percorso relativo `/iiif/{id}/manifest`, sia un manifest
+  pieno verso `https://archiginnasio.jarvis.memooria.org/meta/iiif/185016bb-0d54-412f-9554-5eec348b09f0/manifest`,
+  oltre al viewer Mirador;
+- la verifica diretta con `verify_manifest_url.py` ha scaricato il manifest
+  pubblico con codice 200 e 103 canvas, quindi la famiglia non e' piu' solo
+  teorica: esiste almeno un host italiano pubblico con pattern IIIF/Jarvis
+  reale e record-level stabile;
+- il ramo non va comunque promosso subito a integrazione: prima serve una
+  sonda tecnica dedicata per host MLOL DH/Jarvis, una verifica minima dei
+  termini/licenze leggibili a livello portale o item e un controllo su almeno
+  un secondo campione, per evitare di confondere la piattaforma-host con i
+  diritti dei singoli enti.
 
 Scheda minima prima di proporre un nuovo portale:
 
