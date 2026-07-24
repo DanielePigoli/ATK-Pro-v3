@@ -276,6 +276,26 @@ def _normalize_v3_canvas(canvas: dict, index: int) -> dict | None:
     }
 
 
+def _build_normalized_v2_manifest_from_v3(manifest: dict, canvases: list[dict]) -> dict:
+    normalized = {
+        "@context": "http://iiif.io/api/presentation/2/context.json",
+        "@id": manifest.get("id") or manifest.get("@id"),
+        "@type": "sc:Manifest",
+        "label": _first_text(manifest.get("label"), "Manifest IIIF v3"),
+        "metadata": _normalize_metadata_entries(manifest.get("metadata")),
+        "sequences": [
+            {
+                "@type": "sc:Sequence",
+                "canvases": canvases,
+            }
+        ],
+        "_atk_normalized_from_iiif_v3": True,
+    }
+    if manifest.get("rights"):
+        normalized["rights"] = manifest["rights"]
+    return {key: value for key, value in normalized.items() if value is not None}
+
+
 def normalize_iiif_manifest_for_processing(manifest: dict) -> dict:
     """Converte manifest IIIF Presentation v3 image-only in layout v2 interno.
 
@@ -299,23 +319,7 @@ def normalize_iiif_manifest_for_processing(manifest: dict) -> dict:
     if not canvases:
         return manifest
 
-    normalized = {
-        "@context": "http://iiif.io/api/presentation/2/context.json",
-        "@id": manifest.get("id") or manifest.get("@id"),
-        "@type": "sc:Manifest",
-        "label": _first_text(manifest.get("label"), "Manifest IIIF v3"),
-        "metadata": _normalize_metadata_entries(manifest.get("metadata")),
-        "sequences": [
-            {
-                "@type": "sc:Sequence",
-                "canvases": canvases,
-            }
-        ],
-        "_atk_normalized_from_iiif_v3": True,
-    }
-    if manifest.get("rights"):
-        normalized["rights"] = manifest["rights"]
-    return {key: value for key, value in normalized.items() if value is not None}
+    return _build_normalized_v2_manifest_from_v3(manifest, canvases)
 
 # Regex permissive v1.4.1 per intercettare il manifest nel DOM/HTML
 _RE_MANIFEST_ANY = re.compile(

@@ -431,6 +431,17 @@ def test_normalize_iiif_v3_manifest_ignores_non_canvas_items():
     assert len(canvases) == 1
     assert canvases[0]["@id"] == "https://example.org/canvas/1"
 
+
+def test_normalize_iiif_v3_manifest_without_rights_omits_rights_field():
+    manifest = _sample_v3_manifest()
+    manifest.pop("rights", None)
+
+    normalized = mu.normalize_iiif_manifest_for_processing(manifest)
+
+    assert normalized["@type"] == "sc:Manifest"
+    assert normalized["_atk_normalized_from_iiif_v3"] is True
+    assert "rights" not in normalized
+
 def test_download_manifest_url_non_valido(tmp_path):
     result = download_manifest(
         "https://dam-antenati.cultura.gov.it/antenati/containers/INVALID/manifest",
