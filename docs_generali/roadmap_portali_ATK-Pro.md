@@ -408,6 +408,14 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   termini/licenze leggibili a livello portale o item e un controllo su almeno
   un secondo campione, per evitare di confondere la piattaforma-host con i
   diritti dei singoli enti.
+- la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
+  strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
+  viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,
+  eventuali `/iiif/{guid}/manifest`, `info.json` e immagini di contenuto senza
+  promuovere automaticamente la famiglia a portale integrato.
+- prima esecuzione live della sonda sul campione ARBOR `A.23`:
+  4 candidati trovati, con manifest Jarvis valido, due link Mirador e
+  immagine contenuto S3; nessun login emerso nel flusso pubblico del campione.
 
 Scheda minima prima di proporre un nuovo portale:
 
