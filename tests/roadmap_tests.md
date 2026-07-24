@@ -32,6 +32,10 @@ Baseline portali italiani/italofoni del 2026-06-22:
 - policy registry: 25 capability valide, nessun re-check scaduto;
 - smoke live: tutti i portali italiani superati; matrice globale 24/25, con
   Gallica ancora aperta per risposta HTTP 403 del manifest campione.
+- baseline comune punto 18 gia' attiva su
+  `tests/test_portal_live_smoke_matrix.py`: copertura completa della matrice,
+  risoluzione offline minima per ogni portale, coerenza con
+  `technical_family`, stato release ammesso e note operative non vuote.
 
 Subset portali/manifest/tile/worker:
 
