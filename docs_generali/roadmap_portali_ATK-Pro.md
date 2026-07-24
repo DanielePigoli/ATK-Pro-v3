@@ -382,6 +382,24 @@ Esito primo micro-step `memooria_jarvis_istanze_italiane` (2026-07-24):
 - la famiglia resta quindi riapribile, ma non prioritaria prima che emerga un
   host concreto con record pubblico stabile e pattern riusabile.
 
+Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
+
+- il primo sottoramo riaperto con fonti ufficiali e' la famiglia
+  MLOL Digital Humanities, con campione istituzionale ARBOR del Comune di
+  Bologna / Biblioteca dell'Archiginnasio;
+- il Comune di Bologna documenta ARBOR come nuova piattaforma pubblica delle
+  raccolte digitali delle biblioteche di conservazione e specializzate del
+  Comune, basata sul protocollo IIIF e ospitata su server MLOL;
+- la pagina ufficiale MLOL DH conferma una famiglia tecnica coerente con
+  ATK-Pro: documenti IIIF ad alta risoluzione, viewer integrato, OCR
+  compatibile con IIIF e piu' portali culturali italiani pubblicati sulla
+  stessa piattaforma;
+- il ramo non va ancora promosso a integrazione: prima serve almeno un
+  campione pubblico stabile con pattern manifest/immagine riusabile,
+  termini/licenza leggibili a livello portale o item e una sonda tecnica
+  dedicata, per evitare di confondere la piattaforma-host con i diritti dei
+  singoli enti.
+
 Scheda minima prima di proporre un nuovo portale:
 
 - nome portale e area;
