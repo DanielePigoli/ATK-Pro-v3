@@ -43,6 +43,15 @@ def test_live_smoke_matrix_repeats_registry_metadata():
         assert row["policy_checked_at"] == (portal.policy_checked_at or "per-request")
 
 
+def test_live_smoke_matrix_rows_are_offline_resolvable(tmp_path):
+    for row in _rows():
+        result = smoke.run_case(row, fetch_manifest=False, output_dir=tmp_path)
+
+        assert result.status == "RESOLVED", row["portal_key"]
+        assert result.manifest_url, row["portal_key"]
+        assert "recognized" in result.detail.lower(), row["portal_key"]
+
+
 def test_live_smoke_fetch_uses_synthetic_builder_for_synthetic_portals(monkeypatch, tmp_path):
     def fake_builder(sample_url: str) -> dict:
         assert sample_url == "https://bibdig.museogalileo.it/Teca/Viewer?an=000000006600"
