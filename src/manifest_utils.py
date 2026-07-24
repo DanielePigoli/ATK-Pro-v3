@@ -296,6 +296,34 @@ def _build_normalized_v2_manifest_from_v3(manifest: dict, canvases: list[dict]) 
     return {key: value for key, value in normalized.items() if value is not None}
 
 
+def _build_synthetic_v2_manifest(
+    manifest_id: str,
+    label: str,
+    canvases: list[dict],
+    *,
+    metadata=None,
+    see_also=None,
+    sequence_id: str | None = None,
+) -> dict:
+    sequence = {
+        "@id": sequence_id or f"{manifest_id}/sequence/1",
+        "@type": "sc:Sequence",
+        "canvases": canvases,
+    }
+    manifest = {
+        "@context": "http://iiif.io/api/presentation/2/context.json",
+        "@id": manifest_id,
+        "@type": "sc:Manifest",
+        "label": label,
+        "sequences": [sequence],
+    }
+    if metadata:
+        manifest["metadata"] = metadata
+    if see_also:
+        manifest["seeAlso"] = see_also
+    return manifest
+
+
 def normalize_iiif_manifest_for_processing(manifest: dict) -> dict:
     """Converte manifest IIIF Presentation v3 image-only in layout v2 interno.
 
@@ -824,18 +852,12 @@ def build_biblioteca_digitale_trentina_synthetic_manifest(
         })
 
     logger.info(f"[BDT] Manifest sintetico: '{title}', {len(canvases)} immagini")
-    return {
-        '@context': 'http://iiif.io/api/presentation/2/context.json',
-        '@id': f"synthetic://biblioteca_digitale_trentina/{safe_id}",
-        '@type': 'sc:Manifest',
-        'label': title,
-        'seeAlso': [{'@id': pdf_url, 'format': 'application/pdf'}] if pdf_url else [],
-        'sequences': [{
-            '@id': f"synthetic://biblioteca_digitale_trentina/{safe_id}/sequence/1",
-            '@type': 'sc:Sequence',
-            'canvases': canvases,
-        }],
-    }
+    return _build_synthetic_v2_manifest(
+        f"synthetic://biblioteca_digitale_trentina/{safe_id}",
+        title,
+        canvases,
+        see_also=[{'@id': pdf_url, 'format': 'application/pdf'}] if pdf_url else None,
+    )
 
 
 def _bdl_is_supported_url(page_url: str) -> bool:
@@ -862,47 +884,41 @@ def build_biblioteca_digitale_lombarda_pdf_manifest(pdf_url: str) -> dict | None
     if not item_id:
         return None
 
-    return {
-        "@context": "http://iiif.io/api/presentation/2/context.json",
-        "@id": f"synthetic://biblioteca_digitale_lombarda/{item_id}",
-        "@type": "sc:Manifest",
-        "label": f"Biblioteca Digitale Lombarda - item {item_id}",
-        "metadata": [
+    manifest_id = f"synthetic://biblioteca_digitale_lombarda/{item_id}"
+    canvases = [
+        {
+            "@id": f"{manifest_id}/canvas/1",
+            "@type": "sc:Canvas",
+            "label": "PDF diretto",
+            "images": [
+                {
+                    "@type": "oa:Annotation",
+                    "motivation": "sc:painting",
+                    "resource": {
+                        "@type": "dctypes:Image",
+                        "@id": pdf_url,
+                        "format": "application/pdf",
+                        "service": {
+                            "@context": "bdl_direct_pdf",
+                            "@id": pdf_url,
+                            "profile": "bdl_direct_pdf",
+                            "pdf_url": pdf_url,
+                        },
+                    },
+                }
+            ],
+        }
+    ]
+    return _build_synthetic_v2_manifest(
+        manifest_id,
+        f"Biblioteca Digitale Lombarda - item {item_id}",
+        canvases,
+        metadata=[
             {"label": "Portale", "value": "Biblioteca Digitale Lombarda"},
             {"label": "PDF REST", "value": pdf_url},
         ],
-        "seeAlso": [{"@id": pdf_url, "format": "application/pdf"}],
-        "sequences": [
-            {
-                "@id": f"synthetic://biblioteca_digitale_lombarda/{item_id}/sequence/1",
-                "@type": "sc:Sequence",
-                "canvases": [
-                    {
-                        "@id": f"synthetic://biblioteca_digitale_lombarda/{item_id}/canvas/1",
-                        "@type": "sc:Canvas",
-                        "label": "PDF diretto",
-                        "images": [
-                            {
-                                "@type": "oa:Annotation",
-                                "motivation": "sc:painting",
-                                "resource": {
-                                    "@type": "dctypes:Image",
-                                    "@id": pdf_url,
-                                    "format": "application/pdf",
-                                    "service": {
-                                        "@context": "bdl_direct_pdf",
-                                        "@id": pdf_url,
-                                        "profile": "bdl_direct_pdf",
-                                        "pdf_url": pdf_url,
-                                    },
-                                },
-                            }
-                        ],
-                    }
-                ],
-            }
-        ],
-    }
+        see_also=[{"@id": pdf_url, "format": "application/pdf"}],
+    )
 
 
 def _rovereto_is_supported_url(page_url: str) -> bool:
@@ -1148,24 +1164,16 @@ def build_rovereto_synthetic_manifest(page_url: str) -> dict | None:
         )
 
     logger.info(f"[Rovereto] Manifest sintetico: '{title}', {len(canvases)} pagine")
-    return {
-        "@context": "http://iiif.io/api/presentation/2/context.json",
-        "@id": f"synthetic://rovereto_digital_library/{item_uuid}",
-        "@type": "sc:Manifest",
-        "label": title,
-        "metadata": [
+    return _build_synthetic_v2_manifest(
+        f"synthetic://rovereto_digital_library/{item_uuid}",
+        title,
+        canvases,
+        metadata=[
             {"label": "Portale", "value": "Rovereto Digital Library"},
             {"label": "Item API", "value": item_api_url},
         ],
-        "seeAlso": [{"@id": source_pdf_url, "format": "application/pdf"}] if source_pdf_url else [],
-        "sequences": [
-            {
-                "@id": f"synthetic://rovereto_digital_library/{item_uuid}/sequence/1",
-                "@type": "sc:Sequence",
-                "canvases": canvases,
-            }
-        ],
-    }
+        see_also=[{"@id": source_pdf_url, "format": "application/pdf"}] if source_pdf_url else None,
+    )
 
 
 def _build_memooria_manifest(page_url: str) -> str | None:
