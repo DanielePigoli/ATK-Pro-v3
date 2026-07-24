@@ -413,9 +413,17 @@ def test_ocr_pdf_keeps_partial_progress_when_later_page_fails(monkeypatch, tmp_p
         raise AssertionError("Expected OCR PDF processing to fail")
 
     partial_path = tmp_path / "_ocr_progress" / "registro_trascrizione_parziale.txt"
+    metadata_path = tmp_path / "_ocr_progress" / "registro_trascrizione_parziale.txt.json"
     assert partial_path.exists()
+    assert metadata_path.exists()
     assert "--- Pagina 1 ---" in partial_path.read_text(encoding="utf-8")
     assert "prima pagina" in partial_path.read_text(encoding="utf-8")
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    assert metadata["status"] == "in_progress"
+    assert metadata["source_path"].endswith("registro.pdf")
+    assert metadata["total_pages"] == 2
+    assert metadata["completed_pages"] == 1
+    assert metadata["last_completed_page"] == 1
     assert "Quota o limite richieste esaurito" in message
 
 
@@ -526,9 +534,11 @@ def test_ocr_pdf_clears_partial_progress_after_success(monkeypatch, tmp_path):
     worker.process_file(str(tmp_path / "registro.pdf"))
 
     partial_path = tmp_path / "_ocr_progress" / "registro_trascrizione_parziale.txt"
+    metadata_path = tmp_path / "_ocr_progress" / "registro_trascrizione_parziale.txt.json"
     final_txt = tmp_path / "registro_trascrizione.txt"
 
     assert not partial_path.exists()
+    assert not metadata_path.exists()
     assert final_txt.exists()
     content = final_txt.read_text(encoding="utf-8")
     assert "--- Pagina 1 ---" in content

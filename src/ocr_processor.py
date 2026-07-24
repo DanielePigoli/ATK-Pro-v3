@@ -1,5 +1,6 @@
 import os
 import io
+import json
 import base64
 import logging
 from pathlib import Path
@@ -165,7 +166,12 @@ class AdvancedOCRWorker:
                         final_page_text = result
 
                     all_texts.append(f"--- Pagina {page_num + 1} ---\n{final_page_text}")
-                    self._save_partial_results(partial_path, all_texts)
+                    self._save_partial_results(
+                        partial_path,
+                        all_texts,
+                        source_path=pdf_path,
+                        total_pages=n_pages,
+                    )
 
             if not all_texts:
                 logging.info("[OCR] Nessuna pagina approvata. File non salvato.")
@@ -206,11 +212,27 @@ class AdvancedOCRWorker:
         base_name = os.path.splitext(os.path.basename(orig_path))[0]
         return os.path.join(progress_dir, f"{base_name}_trascrizione_parziale.txt")
 
-    def _save_partial_results(self, partial_path, text_blocks):
+    def _get_partial_metadata_path(self, partial_path):
+        return partial_path + ".json"
+
+    def _save_partial_results(self, partial_path, text_blocks, *, source_path=None, total_pages=None):
         tmp_path = partial_path + ".tmp"
         with open(tmp_path, "w", encoding="utf-8") as f:
             f.write("\n\n".join(text_blocks))
         os.replace(tmp_path, partial_path)
+        metadata = {
+            "status": "in_progress",
+            "source_path": source_path or "",
+            "total_pages": total_pages if total_pages is not None else "",
+            "completed_pages": len(text_blocks),
+            "last_completed_page": len(text_blocks),
+            "partial_text_path": partial_path,
+        }
+        metadata_path = self._get_partial_metadata_path(partial_path)
+        metadata_tmp_path = metadata_path + ".tmp"
+        with open(metadata_tmp_path, "w", encoding="utf-8") as f:
+            json.dump(metadata, f, ensure_ascii=False, indent=2)
+        os.replace(metadata_tmp_path, metadata_path)
         logging.debug("[OCR] Salvataggio progressivo aggiornato: %s", partial_path)
 
     def _clear_partial_results(self, partial_path):
@@ -218,6 +240,10 @@ class AdvancedOCRWorker:
             if os.path.exists(partial_path):
                 os.remove(partial_path)
                 logging.debug("[OCR] Salvataggio progressivo rimosso dopo completamento: %s", partial_path)
+            metadata_path = self._get_partial_metadata_path(partial_path)
+            if os.path.exists(metadata_path):
+                os.remove(metadata_path)
+                logging.debug("[OCR] Metadata progressivi OCR rimossi dopo completamento: %s", metadata_path)
             progress_dir = os.path.dirname(partial_path)
             if progress_dir and os.path.isdir(progress_dir) and not os.listdir(progress_dir):
                 os.rmdir(progress_dir)
