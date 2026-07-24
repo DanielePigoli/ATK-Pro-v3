@@ -159,6 +159,25 @@ def test_resolve_direct_pdf_download_for_bdt_manifest():
     assert pdf_url == "https://bdt.bibcom.trento.it/content/download/78214/1625910/file/BDT-113-TIf37.pdf"
 
 
+def test_resolve_direct_pdf_download_for_bdt_manifest_see_also_alias():
+    manifest = {
+        "see_also": {
+            "@id": "https://bdt.bibcom.trento.it/content/download/78214/1625910/file/BDT-113-TIf37.pdf",
+            "format": "application/pdf",
+        }
+    }
+
+    adapter, pdf_url = resolve_direct_pdf_download(
+        "biblioteca_digitale_trentina",
+        tiles_info=[],
+        manifest=manifest,
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "BDT"
+    assert pdf_url == "https://bdt.bibcom.trento.it/content/download/78214/1625910/file/BDT-113-TIf37.pdf"
+
+
 def test_resolve_direct_pdf_download_for_bdl_context():
     tiles_info = [
         {
@@ -185,6 +204,34 @@ def test_resolve_direct_pdf_download_for_bdl_context():
     assert adapter is not None
     assert adapter.portal_label == "BDL"
     assert pdf_url == "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf"
+
+
+def test_resolve_direct_pdf_download_prefers_portal_adapter_for_service_entries():
+    tiles_info = [
+        {
+            "images": [
+                {
+                    "resource": {
+                        "service": {
+                            "@context": "bdl_direct_pdf",
+                            "@id": "https://bdt.bibcom.trento.it/content/download/78214/1625910/file/BDT-113-TIf37.pdf",
+                            "format": "application/pdf",
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+
+    adapter, pdf_url = resolve_direct_pdf_download(
+        "biblioteca_digitale_trentina",
+        tiles_info=tiles_info,
+        manifest=None,
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "BDT"
+    assert pdf_url == "https://bdt.bibcom.trento.it/content/download/78214/1625910/file/BDT-113-TIf37.pdf"
 
 
 def test_portal_request_adapter_uses_registry_referer_and_policy():
