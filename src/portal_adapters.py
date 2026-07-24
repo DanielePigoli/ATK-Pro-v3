@@ -16,6 +16,7 @@ class DirectImagePortalAdapter:
     portal_label: str
     referer: str
     timeout: int = 45
+    host_fragment: str | None = None
 
     def download_image(self, image_url: str):
         headers = {
@@ -27,6 +28,22 @@ class DirectImagePortalAdapter:
             return None, response.status_code if response is not None else None, 0
         image = Image.open(BytesIO(response.content)).copy()
         return image, response.status_code, len(response.content)
+
+    def matches_service_id(self, service_id: str | None) -> bool:
+        return bool(self.host_fragment and service_id and self.host_fragment in service_id)
+
+    def extract_image_from_canvas(self, canvas: dict, service_id: str | None = None) -> str | None:
+        try:
+            resource = canvas.get("images", [{}])[0].get("resource", {})
+            service = resource.get("service") or {}
+            if isinstance(service, list):
+                service = service[0] if service else {}
+            if isinstance(service, dict):
+                image_url = service.get("@id") or service.get("id") or service_id
+                return str(image_url).strip() if image_url else None
+        except Exception:
+            return None
+        return None
 
 
 @dataclass(frozen=True)
@@ -102,10 +119,12 @@ DIRECT_IMAGE_ADAPTERS_BY_HOST_FRAGMENT = {
     "BookReaderImages.php": DirectImagePortalAdapter(
         portal_label="IA",
         referer="https://archive.org/",
+        host_fragment="BookReaderImages.php",
     ),
     "hosted-images.matricula-online.eu": DirectImagePortalAdapter(
         portal_label="Matricula",
         referer="https://data.matricula-online.eu/",
+        host_fragment="hosted-images.matricula-online.eu",
     ),
 }
 
@@ -147,26 +166,27 @@ def ficlit_direct_image_url_from_canvas(canvas: dict) -> str | None:
 
 def resolve_direct_image_download(portal_key: str | None, canvas: dict, service_id: str | None):
     """Restituisce (adapter, image_url) per i portali a immagine diretta supportati."""
+    portal_adapter = DIRECT_IMAGE_ADAPTERS_BY_PORTAL.get(portal_key)
+
+    if portal_adapter and portal_key == "dl_ficlit":
+        image_url = ficlit_direct_image_url_from_canvas(canvas)
+        if image_url:
+            return portal_adapter, image_url
+        return None, None
+
+    if service_id:
+        for adapter in DIRECT_IMAGE_ADAPTERS_BY_HOST_FRAGMENT.values():
+            if adapter.matches_service_id(service_id):
+                return adapter, service_id
+
     resource = canvas.get("images", [{}])[0].get("resource", {})
     service = resource.get("service") or {}
     if isinstance(service, list):
         service = service[0] if service else {}
 
-    if portal_key == "dl_ficlit":
-        image_url = ficlit_direct_image_url_from_canvas(canvas)
-        adapter = DIRECT_IMAGE_ADAPTERS_BY_PORTAL.get(portal_key)
-        if adapter and image_url:
-            return adapter, image_url
-        return None, None
-
-    if service_id:
-        for host_fragment, adapter in DIRECT_IMAGE_ADAPTERS_BY_HOST_FRAGMENT.items():
-            if host_fragment in service_id:
-                return adapter, service_id
-
     if isinstance(service, dict):
         adapter = DIRECT_IMAGE_ADAPTERS_BY_CONTEXT.get(service.get("@context"))
-        image_url = service.get("@id") or service_id
+        image_url = adapter.extract_image_from_canvas(canvas, service_id) if adapter else None
         if adapter and image_url:
             return adapter, image_url
 
