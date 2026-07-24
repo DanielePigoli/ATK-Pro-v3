@@ -103,6 +103,18 @@ Stato operativo 2026-07-22:
 | 19 | Consolidare il re-check periodico delle policy tramite file locale. | Le policy possono essere aggiornate senza attendere una nuova release. |
 | 20 | Riprendere lo scouting di nuovi portali italiani/italofoni. | L'espansione riparte su una base piu' stabile. |
 
+Stato operativo 2026-07-24:
+
+- punto 17: chiuso sul sottoblocco `manifest_utils.py` dedicato a resolver,
+  normalizzatori IIIF e builder sintetici ripetitivi;
+- punto 18: avviato su una baseline comune minima gia' attiva in
+  `tests/test_portal_live_smoke_matrix.py`;
+- la baseline comune del punto 18 oggi copre:
+  - copertura completa dei portali registrati nella matrice smoke;
+  - risoluzione offline minima di ogni campione registrato;
+  - coerenza della risoluzione offline con la `technical_family`;
+  - presenza di `release_status` ammesso e `notes` non vuote per ogni riga.
+
 ## Fase 5 - Packaging e release
 
 Interventi finali prima della v3.0.0 definitiva.
