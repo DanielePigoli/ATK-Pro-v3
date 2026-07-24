@@ -1175,8 +1175,17 @@ def _build_memooria_manifest(page_url: str) -> str | None:
     """Memooria/Jarvis (qualsiasi biblioteca):
     - URL legacy:  .../schedadl.aspx?id={guid}
     - URL nuovo COOSMO: .../catalog/{collUuid}/cultural-item/{guid}
+    - URL manifest diretto: https://{subdomain}.jarvis.memooria.org/meta/iiif/{guid}/manifest
     → https://{subdomain}.jarvis.memooria.org/meta/iiif/{guid}/manifest (IIIF v2/v3)
     """
+    direct_manifest_m = re.search(
+        r"https?://[^/]+\.jarvis\.memooria\.org/meta/iiif/[0-9a-f-]{36}/manifest\b",
+        page_url,
+        re.IGNORECASE,
+    )
+    if direct_manifest_m:
+        return direct_manifest_m.group(0)
+
     # Estrae il hostname (es. brixiana.jarvis.memooria.org, parma.jarvis.memooria.org)
     host_m = re.search(r'https?://([^/]+\.jarvis\.memooria\.org)', page_url, re.IGNORECASE)
     _guid_pat = r'([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})'
