@@ -235,6 +235,47 @@ def _normalize_metadata_entries(metadata):
     return normalized
 
 
+def _normalize_v3_canvas(canvas: dict, index: int) -> dict | None:
+    if not isinstance(canvas, dict) or canvas.get("type") != "Canvas":
+        return None
+
+    body = _find_v3_image_body(canvas)
+    if not body:
+        return None
+
+    canvas_id = canvas.get("id") or f"canvas-{index}"
+    image_id = body.get("id") or body.get("@id")
+    service = _normalize_v3_service(body.get("service"))
+    width = body.get("width") or canvas.get("width")
+    height = body.get("height") or canvas.get("height")
+
+    resource = {
+        "@id": image_id,
+        "@type": "dctypes:Image",
+        "format": body.get("format"),
+        "width": width,
+        "height": height,
+        "service": service,
+    }
+    resource = {key: value for key, value in resource.items() if value is not None}
+
+    return {
+        "@id": canvas_id,
+        "@type": "sc:Canvas",
+        "label": _first_text(canvas.get("label"), f"Canvas {index}"),
+        "width": width,
+        "height": height,
+        "images": [
+            {
+                "@type": "oa:Annotation",
+                "motivation": "sc:painting",
+                "resource": resource,
+                "on": canvas_id,
+            }
+        ],
+    }
+
+
 def normalize_iiif_manifest_for_processing(manifest: dict) -> dict:
     """Converte manifest IIIF Presentation v3 image-only in layout v2 interno.
 
@@ -251,45 +292,9 @@ def normalize_iiif_manifest_for_processing(manifest: dict) -> dict:
 
     canvases = []
     for index, canvas in enumerate(manifest.get("items", []), 1):
-        if not isinstance(canvas, dict) or canvas.get("type") != "Canvas":
-            continue
-        body = _find_v3_image_body(canvas)
-        if not body:
-            continue
-
-        canvas_id = canvas.get("id") or f"canvas-{index}"
-        image_id = body.get("id") or body.get("@id")
-        service = _normalize_v3_service(body.get("service"))
-        width = body.get("width") or canvas.get("width")
-        height = body.get("height") or canvas.get("height")
-
-        resource = {
-            "@id": image_id,
-            "@type": "dctypes:Image",
-            "format": body.get("format"),
-            "width": width,
-            "height": height,
-            "service": service,
-        }
-        resource = {key: value for key, value in resource.items() if value is not None}
-
-        canvases.append(
-            {
-                "@id": canvas_id,
-                "@type": "sc:Canvas",
-                "label": _first_text(canvas.get("label"), f"Canvas {index}"),
-                "width": width,
-                "height": height,
-                "images": [
-                    {
-                        "@type": "oa:Annotation",
-                        "motivation": "sc:painting",
-                        "resource": resource,
-                        "on": canvas_id,
-                    }
-                ],
-            }
-        )
+        normalized_canvas = _normalize_v3_canvas(canvas, index)
+        if normalized_canvas:
+            canvases.append(normalized_canvas)
 
     if not canvases:
         return manifest
