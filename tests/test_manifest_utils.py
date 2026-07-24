@@ -240,6 +240,18 @@ def test_resolve_rovereto_item_url():
     assert mu.resolve_manifest_url(url, "rovereto_digital_library") == url
 
 
+def test_resolve_brixiana_accepts_direct_manifest_url():
+    url = "https://brixiana.jarvis.memooria.org/meta/iiif/a030f44e-9e0e-4d89-8e2f-c911df2ca1cc/manifest"
+
+    assert mu.resolve_manifest_url(url, "brixiana") == url
+
+
+def test_resolve_memooria_accepts_direct_manifest_url():
+    url = "https://archiginnasio.jarvis.memooria.org/meta/iiif/185016bb-0d54-412f-9554-5eec348b09f0/manifest"
+
+    assert mu.resolve_manifest_url(url, "memooria") == url
+
+
 def test_build_rovereto_synthetic_manifest_from_dspace_api(monkeypatch):
     item_uuid = "e4199e9b-c79b-4c3d-b157-be2dcfc0407f"
     bundle_uuid = "6c76babc-df6f-41a7-9084-40279e01b800"
