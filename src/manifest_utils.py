@@ -1279,17 +1279,8 @@ def build_bncf_teca_synthetic_manifest(page_url: str, working_folder: str) -> di
             logger.error("[BNCF Synthetic] Nessuna immagine trovata nell'XML con nessun metodo.")
             return None
 
-        # Costruisci manifest sintetico
-        manifest = {
-            "@context": "http://iiif.io/api/presentation/2/context.json",
-            "@id": f"synthetic-bncf-{work_idr}",
-            "@type": "sc:Manifest",
-            "label": f"BNCF Teca - {work_idr} (Synthetic)",
-            "sequences": [{
-                "@type": "sc:Sequence",
-                "canvases": []
-            }]
-        }
+        manifest_id = f"synthetic-bncf-{work_idr}"
+        canvases = []
 
         for img_id, seq in images:
             # URL immagine (alta risoluzione tramite servlet showImg)
@@ -1316,9 +1307,13 @@ def build_bncf_teca_synthetic_manifest(page_url: str, working_folder: str) -> di
                     "on": f"canvas-{img_id}"
                 }]
             }
-            manifest["sequences"][0]["canvases"].append(canvas)
+            canvases.append(canvas)
 
-        return manifest
+        return _build_synthetic_v2_manifest(
+            manifest_id,
+            f"BNCF Teca - {work_idr} (Synthetic)",
+            canvases,
+        )
     except Exception as e:
         import logging, traceback
         logging.error(f"[BNCF Synthetic] Errore: {e}\n{traceback.format_exc()}")
