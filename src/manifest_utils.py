@@ -563,16 +563,11 @@ def build_ia_synthetic_manifest(page_url: str) -> dict | None:
     canvases = [_make_ia_canvas(i) for i in range(1, num_pages + 1)]
     logger.info(f"[IA] Manifest sintetico costruito: {item_id}, {num_pages} pagine")
 
-    return {
-        '@context': 'http://iiif.io/api/presentation/2/context.json',
-        '@id': f'https://archive.org/details/{item_id}',
-        '@type': 'sc:Manifest',
-        'label': title,
-        'sequences': [{
-            '@type': 'sc:Sequence',
-            'canvases': canvases
-        }]
-    }
+    return _build_synthetic_v2_manifest(
+        f'https://archive.org/details/{item_id}',
+        title,
+        canvases,
+    )
 
 
 def _build_ecodices_manifest(page_url: str) -> str | None:
@@ -1422,17 +1417,11 @@ def build_findbuch_synthetic_manifest(page_url: str) -> dict | None:
     canvases = [_make_canvas(i) for i in range(n_imgs)]
     logger.info(f"[Findbuch] Manifest sintetico: '{title}', {n_imgs} immagini (be_id={be_id}, ve_id={ve_id})")
 
-    return {
-        '@context': 'http://iiif.io/api/presentation/2/context.json',
-        '@id': f"synthetic://findbuch/{link_id}",
-        '@type': 'sc:Manifest',
-        'label': title,
-        'sequences': [{
-            '@id': f"synthetic://findbuch/{link_id}/sequence/1",
-            '@type': 'sc:Sequence',
-            'canvases': canvases
-        }]
-    }
+    return _build_synthetic_v2_manifest(
+        f"synthetic://findbuch/{link_id}",
+        title,
+        canvases,
+    )
 
 
 def _build_matricula_manifest(page_url: str) -> str | None:
@@ -1619,17 +1608,11 @@ def build_internetculturale_estense_synthetic_manifest(page_url: str) -> dict | 
 
     safe_id = re.sub(r'[^A-Za-z0-9._-]+', '_', oai_id)
     logger.info(f"[InternetCulturale] Manifest sintetico: '{title}', {len(canvases)} immagini (teca={teca})")
-    return {
-        '@context': 'http://iiif.io/api/presentation/2/context.json',
-        '@id': f"synthetic://internetculturale_estense/{safe_id}",
-        '@type': 'sc:Manifest',
-        'label': title,
-        'sequences': [{
-            '@id': f"synthetic://internetculturale_estense/{safe_id}/sequence/1",
-            '@type': 'sc:Sequence',
-            'canvases': canvases,
-        }],
-    }
+    return _build_synthetic_v2_manifest(
+        f"synthetic://internetculturale_estense/{safe_id}",
+        title,
+        canvases,
+    )
 
 
 def build_museogalileo_synthetic_manifest(page_url: str) -> dict | None:
@@ -1716,17 +1699,11 @@ def build_museogalileo_synthetic_manifest(page_url: str) -> dict | None:
         return None
 
     logger.info(f"[Museogalileo] Manifest sintetico: '{title}', {len(canvases)} immagini")
-    return {
-        '@context': 'http://iiif.io/api/presentation/2/context.json',
-        '@id': f"synthetic://museogalileo/{bid_eff}",
-        '@type': 'sc:Manifest',
-        'label': title,
-        'sequences': [{
-            '@id': f"synthetic://museogalileo/{bid_eff}/sequence/1",
-            '@type': 'sc:Sequence',
-            'canvases': canvases,
-        }],
-    }
+    return _build_synthetic_v2_manifest(
+        f"synthetic://museogalileo/{bid_eff}",
+        title,
+        canvases,
+    )
 
 
 def build_bnc_roma_synthetic_manifest(page_url: str, html: str | None = None) -> dict | None:
@@ -1808,17 +1785,11 @@ def build_bnc_roma_synthetic_manifest(page_url: str, html: str | None = None) ->
     canvases = [_make_canvas(i, u) for i, u in enumerate(normalized)]
     logger.info(f"[BNC] Manifest sintetico: '{title}', {len(canvases)} immagini")
 
-    return {
-        '@context': 'http://iiif.io/api/presentation/2/context.json',
-        '@id': f"synthetic://bnc_roma/{bnc_id}",
-        '@type': 'sc:Manifest',
-        'label': title,
-        'sequences': [{
-            '@id': f"synthetic://bnc_roma/{bnc_id}/sequence/1",
-            '@type': 'sc:Sequence',
-            'canvases': canvases,
-        }],
-    }
+    return _build_synthetic_v2_manifest(
+        f"synthetic://bnc_roma/{bnc_id}",
+        title,
+        canvases,
+    )
 
 
 def build_matricula_synthetic_manifest(page_url: str, html: str | None = None) -> dict | None:
@@ -1910,17 +1881,11 @@ def build_matricula_synthetic_manifest(page_url: str, html: str | None = None) -
     ]
     logger.info(f"[Matricula] Manifest sintetico: '{title}', {len(img_urls)} immagini")
 
-    return {
-        '@context': 'http://iiif.io/api/presentation/2/context.json',
-        '@id': f"synthetic://matricula/{mat_id}",
-        '@type': 'sc:Manifest',
-        'label': title,
-        'sequences': [{
-            '@id': f"synthetic://matricula/{mat_id}/sequence/1",
-            '@type': 'sc:Sequence',
-            'canvases': canvases
-        }]
-    }
+    return _build_synthetic_v2_manifest(
+        f"synthetic://matricula/{mat_id}",
+        title,
+        canvases,
+    )
 
 
 # Mappa portale → funzione builder
