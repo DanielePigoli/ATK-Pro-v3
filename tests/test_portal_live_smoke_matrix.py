@@ -74,6 +74,14 @@ def test_live_smoke_matrix_offline_resolution_matches_technical_family(tmp_path)
             raise AssertionError(f"Unexpected technical family for {portal_key}: {technical_family}")
 
 
+def test_live_smoke_matrix_rows_keep_release_status_and_notes():
+    allowed_statuses = {"SAMPLE", "TODO", "BLOCKED"}
+
+    for row in _rows():
+        assert row["release_status"] in allowed_statuses, row["portal_key"]
+        assert row["notes"].strip(), row["portal_key"]
+
+
 def test_live_smoke_fetch_uses_synthetic_builder_for_synthetic_portals(monkeypatch, tmp_path):
     def fake_builder(sample_url: str) -> dict:
         assert sample_url == "https://bibdig.museogalileo.it/Teca/Viewer?an=000000006600"
