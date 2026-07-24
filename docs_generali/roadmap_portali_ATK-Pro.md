@@ -337,6 +337,36 @@ Ordine di valutazione consigliato:
 4. esclusione diretta per portali commerciali, chiusi, paywall, abbonamento,
    login obbligatorio, anti-bot o divieto di automazione.
 
+## Coda operativa italiana/italofona
+
+Aggiornamento operativo 2026-07-24:
+
+- i punti 16, 17, 18 e 19 del piano di consolidamento sono ora abbastanza
+  maturi da riaprire lo scouting senza riaprire subito l'architettura;
+- la ripresa non parte da nuovi portali "a sorpresa", ma dalla shortlist gia
+  documentata e da decisioni gia raccolte nei controlli precedenti;
+- la priorita immediata non e integrare, ma ordinare il prossimo blocco di
+  verifica con criterio stabile.
+
+Ordine pratico di ripresa:
+
+1. mantenere congelati i candidati gia sospesi per mancanza di endpoint
+   pubblico stabile o per accesso non ospite, come `beic_digitale`,
+   `ambrosiana_digitale` e `orientales_unior`;
+2. trattare come discovery/link assistito, senza downloader, i candidati
+   istituzionali gia letti in questa forma: `archivi_nazionali`,
+   `archivio_digitale_icar`, `san_risorse_digitali`, `sias`, `siusa`,
+   `beweb`, `archivi_diocesani_italiani`, `archivio_stato_ticino`,
+   `archivio_diocesano_lugano`, `archivio_stato_grigioni`,
+   `diocesi_chur_coira`;
+3. usare `biblioteche_digitali_locali_iiif` e
+   `memooria_jarvis_istanze_italiane` come prime piste riapribili per nuovi
+   candidati tecnici, perche sono le uniche famiglie che possono ancora
+   produrre portali pubblici no-login con pattern gia compatibili con ATK-Pro;
+4. riaprire eventuali piste diaspora o internazionali solo dopo questo nuovo
+   mini-blocco italiano/italofono oppure dopo una scelta esplicita di
+   priorita.
+
 Scheda minima prima di proporre un nuovo portale:
 
 - nome portale e area;
