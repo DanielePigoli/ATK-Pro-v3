@@ -463,6 +463,14 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   quindi piu' da un solo dominio forte: al 25 luglio 2026 dispone di almeno
   due ecosistemi distinti e pubblici con IIIF record-level verificato live
   (`archiviostorico.unibo.it` e `phaidra.unipd.it`).
+- micro-step tecnico 2026-07-25 sul ramo PHAIDRA/Padova: aggiunta la sonda
+  dedicata `verify_phaidra_technical_probe.py`, pensata per intercettare
+  pagina oggetto, link `IIIF-MANIFEST`, endpoint immagini IIIF, download e
+  export metadati. Verifica live sul record pubblico `o:369506`:
+  12 candidati trovati, con 1 manifest pubblico, 2 URL di download PDF, 6
+  export metadati, 1 thumbnail e 2 pagine oggetto/collezione correlate. Il
+  ramo PHAIDRA non e' ancora promosso a supporto tecnico, ma ora dispone di
+  una sonda prudente gia' riusabile per nuovi controlli.
 - la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
   strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
   viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,
