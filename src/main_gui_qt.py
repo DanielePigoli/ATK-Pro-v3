@@ -608,6 +608,12 @@ def _prompt_for_formats_after_input_load(glossario_data, lingua) -> list[str]:
     return selected_formats
 
 
+def _apply_runtime_preference(key: str, value) -> None:
+    """Aggiorna stato runtime e config persistente per una preferenza condivisa."""
+    state[key] = value
+    _write_config_prefs(key, value)
+
+
 def _get_default_output_dir(sub: str = "") -> str:
     """Ritorna il percorso della cartella output di default.
     In modalità portable: <cartella exe>/output/
@@ -1255,8 +1261,7 @@ class MainWindow(QMainWindow):
             nuovo_portale = combo.currentData()
             if nuovo_portale and nuovo_portale != self.portale_attivo:
                 self.portale_attivo = nuovo_portale
-                state["portale_attivo"] = nuovo_portale
-                _write_config_prefs("portale_attivo", nuovo_portale)
+                _apply_runtime_preference("portale_attivo", nuovo_portale)
                 show_operation_completed_dialog(self, self.glossario_data, self.lingua)
 
     def cambia_profilo_risorse(self):
@@ -1309,8 +1314,7 @@ class MainWindow(QMainWindow):
         if dlg.exec() == QDialog.Accepted:
             nuovo_profilo = normalize_resource_profile(combo.currentData())
             if nuovo_profilo != normalize_resource_profile(state.get("resource_profile")):
-                state["resource_profile"] = nuovo_profilo
-                _write_config_prefs("resource_profile", nuovo_profilo)
+                _apply_runtime_preference("resource_profile", nuovo_profilo)
                 show_operation_completed_dialog(self, self.glossario_data, self.lingua)
 
     def verifica_aggiornamenti(self):
