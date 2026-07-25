@@ -181,7 +181,15 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   `verify_ambrosiana_technical_probe.py` va usata prima di decidere qualunque
   supporto nel menu. Il primo test live su `ambro:catalog:24203` non ha trovato
   manifest, info.json, immagini Cantaloupe o viewer utili: per ora Ambrosiana
-  resta in scouting, senza integrazione downloader.
+  resta in scouting, senza integrazione downloader. Controllo aggiuntivo
+  2026-07-25: la piattaforma pubblica UniCatt/Veneranda espone almeno un
+  manifest IIIF valido e pubblico, per esempio
+  `https://digitallibrary.unicatt.it/veneranda/data/public/manifests/0b/02/da/82/80/0d/10/a0/0b02da82800d10a0.json`,
+  scaricato con codice 200 e 101 canvas. Questo conferma che la pista tecnica
+  esiste davvero, ma non cambia l'esito prudente: la schermata pubblica segnala
+  `No Downloadable`, quindi il ramo resta fuori dal downloader finche non
+  emergono termini item-level compatibili o una modalita pubblica che autorizzi
+  il download.
 - `rovereto_digital_library` e promosso a supporto tecnico prudente. Il
   controllo 2026-06-08 usa l'API pubblica DSpace-GLAM:
   ATK-Pro deriva l'endpoint REST item da URL entity/API, segue la paginazione
