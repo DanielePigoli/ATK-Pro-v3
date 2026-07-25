@@ -152,6 +152,37 @@ def test_resolve_dl_ficlit_rejects_non_ficlit_manifest_parameter():
     assert mu.resolve_manifest_url(url, "dl_ficlit") is None
 
 
+def test_resolve_archiviostorico_unibo_accepts_direct_manifest_url():
+    url = (
+        "https://archiviostorico.unibo.it/iiif/2/manifest/archiviostorico/"
+        "riviste/libro_e_moschetto_1927-1943/0131.016/0131.016.003.json"
+    )
+
+    assert mu.resolve_manifest_url(url, "archiviostorico_unibo") == url
+
+
+def test_resolve_archiviostorico_unibo_from_viewer_manifest_parameter():
+    url = (
+        "https://archiviostorico.unibo.it/viewer?"
+        "manifest=https%3A%2F%2Farchiviostorico.unibo.it%2Fiiif%2F2%2Fmanifest%2Farchiviostorico%2F"
+        "archivio_fotografico%2Fedilizia-universitaria%2Fsezione-moderna%2Flaboratori-delle-arti.json"
+    )
+
+    assert (
+        mu.resolve_manifest_url(url, "archiviostorico_unibo")
+        == "https://archiviostorico.unibo.it/iiif/2/manifest/archiviostorico/archivio_fotografico/edilizia-universitaria/sezione-moderna/laboratori-delle-arti.json"
+    )
+
+
+def test_resolve_archiviostorico_unibo_rejects_non_official_manifest():
+    url = (
+        "https://archiviostorico.unibo.it/viewer?"
+        "manifest=https%3A%2F%2Fexample.test%2Fiiif%2F2%2Fmanifest%2Farchiviostorico%2Fsample.json"
+    )
+
+    assert mu.resolve_manifest_url(url, "archiviostorico_unibo") is None
+
+
 def test_resolve_biblioteca_digitale_trentina_item_url():
     url = "https://bdt.bibcom.trento.it/Testi-a-stampa/113"
 

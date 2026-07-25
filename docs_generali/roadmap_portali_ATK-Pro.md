@@ -480,6 +480,11 @@ Valutazione comparativa operativa (2026-07-25):
   privilegiare `archiviostorico.unibo.it`, perche' nei manifest testati espone
   gia' `attribution` e un campo `license` stabile verso il portale pubblico,
   oltre a una gerarchia IIIF coerente su piu' famiglie documentarie;
+- passo completato il 2026-07-25: `archiviostorico_unibo` entra come supporto
+  tecnico prudente `iiif_direct` / `R_LIMITED`, ma solo per manifest pubblici
+  item-level gia' noti sul dominio ufficiale. Le collection di annata restano
+  volutamente fuori dal flusso operativo e servono solo come discovery
+  manuale verso i manifest figli del singolo fascicolo o oggetto;
 - `phaidra.unipd.it` resta molto promettente sul piano tecnico, ma il record
   pubblico provato `o:369506` espone nel markup `DC.rights = All rights reserved`;
   quindi il suo ramo va mantenuto in stato prudente finche' non verifichiamo
