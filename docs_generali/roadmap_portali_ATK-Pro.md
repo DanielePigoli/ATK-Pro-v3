@@ -389,6 +389,14 @@ Esito primo micro-step `memooria_jarvis_istanze_italiane` (2026-07-24):
   candidati tecnici;
 - la famiglia resta quindi riapribile, ma non prioritaria prima che emerga un
   host concreto con record pubblico stabile e pattern riusabile.
+- aggiornamento decisionale 2026-07-25: dopo i controlli aggiuntivi su
+  `archiviocanova.medialibrary.it`, `archiviogazzettadiparma.medialibrary.it`,
+  `istitutosvizzero.medialibrary.it` e `lodovico.medialibrary.it`, il ramo va
+  considerato temporaneamente congelato come famiglia promettente ma non ancora
+  abbastanza replicabile lato record pubblico. La riapertura ha senso solo se
+  emerge un terzo host realmente record-level con manifest IIIF pubblico
+  stabile, oppure se una di queste istanze espone in futuro pagine item
+  pubbliche oggi non visibili.
 
 Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
 
@@ -457,6 +465,17 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   galleria/copertina e non fa emergere item pubblici, viewer Mirador, manifest
   o `info.json`; anche questo dominio resta quindi promettente come portale
   culturale, ma non ancora sufficiente come terzo campione tecnico riusabile.
+
+Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
+
+- il sottoramo `mlol_digital_humanities_italia` / `memooria_jarvis_istanze_italiane`
+  resta aperto solo a livello documentale e di monitoraggio;
+- non si promuove per ora nessun nuovo supporto tecnico oltre al campione gia'
+  valido `ARBOR`;
+- il prossimo sottoblocco italiano/italofono da riaprire con priorita' torna a
+  essere `biblioteche_digitali_locali_iiif`, cioe' biblioteche civiche,
+  comunali, universitarie o regionali con IIIF pubblico gia' visibile a
+  livello record/item.
 
 Scheda minima prima di proporre un nuovo portale:
 
