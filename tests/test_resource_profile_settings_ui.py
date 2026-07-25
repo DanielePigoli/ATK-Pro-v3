@@ -3,11 +3,14 @@ import json
 from src.main_gui_qt import (
     DISCLAIMER_REVISION,
     _build_restored_output_state_from_prefs,
+    _get_saved_formats_from_state_or_prefs,
     _persist_output_selection_prefs,
     _read_config_prefs,
+    _restore_formats_from_prefs,
     _write_config_disclaimer_accepted,
     _write_config_prefs,
     _write_config_prefs_batch,
+    state,
 )
 from src.atk_version import VERSION
 from src.resource_profile import RESOURCE_PROFILE_BALANCED, RESOURCE_PROFILE_FAST
@@ -211,3 +214,51 @@ def test_build_restored_output_state_from_prefs_returns_none_when_incompatible(m
     )
 
     assert restored is None
+
+
+def test_get_saved_formats_from_state_or_prefs_prefers_state():
+    original_formats = state.get("formats")
+    state["formats"] = ["PNG", "PDF"]
+    try:
+        saved = _get_saved_formats_from_state_or_prefs({"formats": ["JPG"]})
+    finally:
+        state["formats"] = original_formats
+
+    assert saved == ["PNG", "PDF"]
+
+
+def test_get_saved_formats_from_state_or_prefs_falls_back_to_prefs():
+    original_formats = state.get("formats")
+    state["formats"] = []
+    try:
+        saved = _get_saved_formats_from_state_or_prefs({"formats": ["JPG", "TIF"]})
+    finally:
+        state["formats"] = original_formats
+
+    assert saved == ["JPG", "TIF"]
+
+
+def test_restore_formats_from_prefs_populates_empty_state():
+    original_formats = state.get("formats")
+    state["formats"] = []
+    try:
+        restored = _restore_formats_from_prefs({"formats": ["PNG", "PDF"]})
+        saved_state = list(state["formats"])
+    finally:
+        state["formats"] = original_formats
+
+    assert restored is True
+    assert saved_state == ["PNG", "PDF"]
+
+
+def test_restore_formats_from_prefs_keeps_existing_state():
+    original_formats = state.get("formats")
+    state["formats"] = ["TIF"]
+    try:
+        restored = _restore_formats_from_prefs({"formats": ["PNG", "PDF"]})
+        saved_state = list(state["formats"])
+    finally:
+        state["formats"] = original_formats
+
+    assert restored is False
+    assert saved_state == ["TIF"]

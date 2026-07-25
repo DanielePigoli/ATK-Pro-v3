@@ -574,6 +574,25 @@ def _build_restored_output_state_from_prefs(prefs: dict, records: list[dict]) ->
     return None
 
 
+def _get_saved_formats_from_state_or_prefs(prefs: dict | None = None) -> list[str]:
+    """Ritorna i formati salvati, dando priorita' allo stato runtime."""
+    saved_formats = state.get("formats")
+    if saved_formats:
+        return list(saved_formats)
+    source_prefs = prefs if prefs is not None else _read_config_prefs()
+    return list(source_prefs.get("formats", []))
+
+
+def _restore_formats_from_prefs(prefs: dict) -> bool:
+    """Ripristina i formati dal config solo se lo stato runtime e' ancora vuoto."""
+    restored_formats = _get_saved_formats_from_state_or_prefs(prefs)
+    if not restored_formats or state.get("formats"):
+        return False
+    state["formats"] = restored_formats
+    logging.debug(f"Formati ripristinati dal config: {restored_formats}")
+    return True
+
+
 def _get_default_output_dir(sub: str = "") -> str:
     """Ritorna il percorso della cartella output di default.
     In modalità portable: <cartella exe>/output/
@@ -2897,8 +2916,8 @@ def ask_image_formats(glossario_data, lingua):
     jpg = QCheckBox("JPG")
     tiff = QCheckBox("TIFF")
 
-    # Pre-seleziona i formati dall'ultimo uso (state ha priorità, poi config)
-    _saved_fmts = state.get("formats") or _read_config_prefs().get("formats", [])
+    # Pre-seleziona i formati dall'ultimo uso (state ha priorita', poi config)
+    _saved_fmts = _get_saved_formats_from_state_or_prefs()
     _saved_fmts_upper = [f.upper() for f in _saved_fmts]
     if "PNG" in _saved_fmts_upper:  png.setChecked(True)
     if "JPG" in _saved_fmts_upper:  jpg.setChecked(True)
@@ -2990,9 +3009,7 @@ def action_open_input(glossario_data, lingua, parent=None):
 
         # Ripristina formati dall'ultimo uso
         prefs = _read_config_prefs()
-        if prefs["formats"] and not state.get("formats"):
-            state["formats"] = prefs["formats"]
-            logging.debug(f"Formati ripristinati dal config: {prefs['formats']}")
+        _restore_formats_from_prefs(prefs)
 
         # Ripristina cartelle output solo se compatibili con il nuovo file
         restored_output_state = _build_restored_output_state_from_prefs(prefs, records)
