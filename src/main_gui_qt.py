@@ -56,6 +56,17 @@ def carica_testo_asset(percorso):
         return ""
 
 
+def _load_cached_pixmap_with_fallback(*candidates):
+    """Carica il primo pixmap non nullo dal cache, restituendo anche l'etichetta usata."""
+    last_pixmap = None
+    for path, label in candidates:
+        pixmap = get_pixmap_cached(path)
+        last_pixmap = pixmap
+        if not pixmap.isNull():
+            return pixmap, label
+    return last_pixmap, None
+
+
 def show_operation_completed_dialog(parent, glossario_data, lingua, risultati=None):
     from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton, QTextEdit
     from PySide6.QtGui import QIcon, QFont
@@ -1464,14 +1475,14 @@ class MainWindow(QMainWindow):
         bg_path_png = asset_path("assets/common/grafici/Sfondo.png")
         bg_path_webp = asset_path("assets/common/grafici/Sfondo.webp")
         logging.debug(f"[GUI] Provo a caricare sfondo: {bg_path_png}")
-        bg_pixmap = get_pixmap_cached(bg_path_png)
-        if bg_pixmap.isNull():
-            logging.debug(f"[GUI] Sfondo PNG nullo, provo WEBP: {bg_path_webp}")
-            bg_pixmap = get_pixmap_cached(bg_path_webp)
+        bg_pixmap, bg_format = _load_cached_pixmap_with_fallback(
+            (bg_path_png, "PNG"),
+            (bg_path_webp, "WEBP"),
+        )
         if bg_pixmap.isNull():
             logging.error(f"[GUI] ERRORE: Sfondo non caricato! Entrambi i file nulli: {bg_path_png}, {bg_path_webp}")
         else:
-            logging.info(f"[GUI] Sfondo caricato: {'WEBP' if bg_pixmap.cacheKey() == get_pixmap_cached(bg_path_webp).cacheKey() else 'PNG'}")
+            logging.info(f"[GUI] Sfondo caricato: {bg_format}")
         self.bg_pixmap = bg_pixmap
         self.bg_label.setPixmap(self.bg_pixmap)
         self.bg_label.setScaledContents(True)
@@ -1483,14 +1494,14 @@ class MainWindow(QMainWindow):
         logo_path_webp = asset_path("assets/common/grafici/Logo.webp")
         logo_path_png = asset_path("assets/common/grafici/ATK-Pro-logo.png")
         logging.debug(f"[GUI] Provo a caricare logo: {logo_path_webp}")
-        logo_pixmap = get_pixmap_cached(logo_path_webp)
-        if logo_pixmap.isNull():
-            logging.debug(f"[GUI] Logo WEBP nullo, provo PNG: {logo_path_png}")
-            logo_pixmap = get_pixmap_cached(logo_path_png)
+        logo_pixmap, logo_format = _load_cached_pixmap_with_fallback(
+            (logo_path_webp, "WEBP"),
+            (logo_path_png, "PNG"),
+        )
         if logo_pixmap.isNull():
             logging.error(f"[GUI] ERRORE: Logo non caricato! Entrambi i file nulli: {logo_path_webp}, {logo_path_png}")
         else:
-            logging.info(f"[GUI] Logo caricato: {'PNG' if logo_pixmap.cacheKey() == get_pixmap_cached(logo_path_png).cacheKey() else 'WEBP'}")
+            logging.info(f"[GUI] Logo caricato: {logo_format}")
         self.logo_pixmap = logo_pixmap
         self.logo_label.setAlignment(Qt.AlignCenter)
         self.logo_label.setScaledContents(False)
@@ -2293,7 +2304,10 @@ def _setup_dialog_pergamena(dlg, w=900, h=650, use_old_bg=False):
     dlg.setStyleSheet("QDialog { background: transparent; }")
     dlg.setAutoFillBackground(True)
 
-    bg_pixmap = QPixmap(asset_path("assets/common/grafici/Sfondo.webp"))
+    bg_pixmap, _ = _load_cached_pixmap_with_fallback(
+        (asset_path("assets/common/grafici/Sfondo.webp"), "WEBP"),
+        (asset_path("assets/common/grafici/Sfondo.png"), "PNG"),
+    )
     if not bg_pixmap.isNull():
         scaled_bg = bg_pixmap.scaled(dlg.size(), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
         palette = QPalette()
