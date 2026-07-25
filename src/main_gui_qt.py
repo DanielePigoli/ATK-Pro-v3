@@ -528,6 +528,52 @@ def _persist_output_selection_prefs(mode: str, folders_doc: list[str], folders_r
     )
 
 
+def _build_restored_output_state_from_prefs(prefs: dict, records: list[dict]) -> dict | None:
+    """Ricostruisce lo stato output persistito se compatibile con i record caricati."""
+    num_doc = sum(1 for record in records if record.get("modalita", "").strip().upper() == "D")
+    num_reg = sum(1 for record in records if record.get("modalita", "").strip().upper() == "R")
+    saved_mode = prefs.get("output_mode", "per_record")
+
+    if saved_mode == "single":
+        shared_folder = prefs.get("output_folder_single", "")
+        if shared_folder and os.path.isdir(shared_folder):
+            return {
+                "output_folders_doc": [shared_folder] * num_doc,
+                "output_folders_reg": [shared_folder] * num_reg,
+                "output_folder": shared_folder,
+                "output_mode": "single",
+            }
+        return None
+
+    if saved_mode == "split":
+        doc_folder = prefs.get("output_folder_doc", "")
+        reg_folder = prefs.get("output_folder_reg", "")
+        if doc_folder and reg_folder and os.path.isdir(doc_folder) and os.path.isdir(reg_folder):
+            return {
+                "output_folders_doc": [doc_folder] * num_doc,
+                "output_folders_reg": [reg_folder] * num_reg,
+                "output_folder": doc_folder,
+                "output_mode": "split",
+            }
+        return None
+
+    folders_doc = prefs.get("output_folders_doc", [])
+    folders_reg = prefs.get("output_folders_reg", [])
+    if (
+        len(folders_doc) == num_doc
+        and len(folders_reg) == num_reg
+        and all(os.path.isdir(folder) for folder in folders_doc + folders_reg)
+    ):
+        output_folder = folders_doc[0] if folders_doc else (folders_reg[0] if folders_reg else None)
+        return {
+            "output_folders_doc": folders_doc,
+            "output_folders_reg": folders_reg,
+            "output_folder": output_folder,
+            "output_mode": "per_record",
+        }
+    return None
+
+
 def _get_default_output_dir(sub: str = "") -> str:
     """Ritorna il percorso della cartella output di default.
     In modalità portable: <cartella exe>/output/
@@ -2949,53 +2995,18 @@ def action_open_input(glossario_data, lingua, parent=None):
             logging.debug(f"Formati ripristinati dal config: {prefs['formats']}")
 
         # Ripristina cartelle output solo se compatibili con il nuovo file
-        num_doc = sum(1 for r in records if r.get("modalita", "").strip().upper() == "D")
-        num_reg = sum(1 for r in records if r.get("modalita", "").strip().upper() == "R")
-        saved_mode = prefs.get("output_mode", "per_record")
-        folders_restored = False
-
-        if saved_mode == "single":
-            sf = prefs.get("output_folder_single", "")
-            if sf and os.path.isdir(sf):
-                state["output_folders_doc"] = [sf] * num_doc
-                state["output_folders_reg"] = [sf] * num_reg
-                state["output_folder"] = sf
-                state["output_mode"] = "single"
-                folders_restored = True
-                logging.debug(f"Cartella unica ripristinata: {sf}")
-
-        elif saved_mode == "split":
-            sd = prefs.get("output_folder_doc", "")
-            sr = prefs.get("output_folder_reg", "")
-            if sd and sr and os.path.isdir(sd) and os.path.isdir(sr):
-                state["output_folders_doc"] = [sd] * num_doc
-                state["output_folders_reg"] = [sr] * num_reg
-                state["output_folder"] = sd
-                state["output_mode"] = "split"
-                folders_restored = True
-                logging.debug(f"Cartelle split ripristinate: doc={sd}, reg={sr}")
-
-        else:  # per_record
-            pd = prefs.get("output_folders_doc", [])
-            pr = prefs.get("output_folders_reg", [])
-            if (len(pd) == num_doc and len(pr) == num_reg
-                    and all(os.path.isdir(f) for f in pd + pr)):
-                state["output_folders_doc"] = pd
-                state["output_folders_reg"] = pr
-                state["output_folder"] = pd[0] if pd else (pr[0] if pr else None)
-                state["output_mode"] = "per_record"
-                folders_restored = True
-                logging.debug(f"Cartelle per record ripristinate: {pd}, {pr}")
-
-        if not folders_restored:
+        restored_output_state = _build_restored_output_state_from_prefs(prefs, records)
+        if restored_output_state:
+            state.update(restored_output_state)
+            logging.debug(f"Stato output ripristinato dal config: {restored_output_state.get('output_mode')}")
+            _needs_folder_selection = False
+        else:
             state["output_folders_doc"] = []
             state["output_folders_reg"] = []
             state["output_folder"] = None
             state.pop("output_mode", None)
             logging.debug("Cartelle output azzerate: incompatibili o mancanti")
             _needs_folder_selection = True
-        else:
-            _needs_folder_selection = False
 
         # Conferma con solo il path, stile uniforme
         msg = QMessageBox(parent)

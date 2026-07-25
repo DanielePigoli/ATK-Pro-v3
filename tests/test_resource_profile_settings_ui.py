@@ -2,6 +2,7 @@ import json
 
 from src.main_gui_qt import (
     DISCLAIMER_REVISION,
+    _build_restored_output_state_from_prefs,
     _persist_output_selection_prefs,
     _read_config_prefs,
     _write_config_disclaimer_accepted,
@@ -133,3 +134,80 @@ def test_persist_output_selection_prefs_per_record(tmp_path, monkeypatch):
     assert saved["output_mode"] == "per_record"
     assert saved["output_folders_doc"] == ["C:/doc1", "C:/doc2"]
     assert saved["output_folders_reg"] == ["C:/reg1"]
+
+
+def test_build_restored_output_state_from_prefs_single(monkeypatch):
+    monkeypatch.setattr("src.main_gui_qt.os.path.isdir", lambda path: path == "C:/shared")
+
+    restored = _build_restored_output_state_from_prefs(
+        {
+            "output_mode": "single",
+            "output_folder_single": "C:/shared",
+        },
+        [{"modalita": "D"}, {"modalita": "R"}, {"modalita": "R"}],
+    )
+
+    assert restored == {
+        "output_folders_doc": ["C:/shared"],
+        "output_folders_reg": ["C:/shared", "C:/shared"],
+        "output_folder": "C:/shared",
+        "output_mode": "single",
+    }
+
+
+def test_build_restored_output_state_from_prefs_split(monkeypatch):
+    monkeypatch.setattr("src.main_gui_qt.os.path.isdir", lambda path: path in {"C:/doc", "C:/reg"})
+
+    restored = _build_restored_output_state_from_prefs(
+        {
+            "output_mode": "split",
+            "output_folder_doc": "C:/doc",
+            "output_folder_reg": "C:/reg",
+        },
+        [{"modalita": "D"}, {"modalita": "D"}, {"modalita": "R"}],
+    )
+
+    assert restored == {
+        "output_folders_doc": ["C:/doc", "C:/doc"],
+        "output_folders_reg": ["C:/reg"],
+        "output_folder": "C:/doc",
+        "output_mode": "split",
+    }
+
+
+def test_build_restored_output_state_from_prefs_per_record(monkeypatch):
+    monkeypatch.setattr(
+        "src.main_gui_qt.os.path.isdir",
+        lambda path: path in {"C:/doc1", "C:/doc2", "C:/reg1"},
+    )
+
+    restored = _build_restored_output_state_from_prefs(
+        {
+            "output_mode": "per_record",
+            "output_folders_doc": ["C:/doc1", "C:/doc2"],
+            "output_folders_reg": ["C:/reg1"],
+        },
+        [{"modalita": "D"}, {"modalita": "R"}, {"modalita": "D"}],
+    )
+
+    assert restored == {
+        "output_folders_doc": ["C:/doc1", "C:/doc2"],
+        "output_folders_reg": ["C:/reg1"],
+        "output_folder": "C:/doc1",
+        "output_mode": "per_record",
+    }
+
+
+def test_build_restored_output_state_from_prefs_returns_none_when_incompatible(monkeypatch):
+    monkeypatch.setattr("src.main_gui_qt.os.path.isdir", lambda path: True)
+
+    restored = _build_restored_output_state_from_prefs(
+        {
+            "output_mode": "per_record",
+            "output_folders_doc": ["C:/doc1"],
+            "output_folders_reg": [],
+        },
+        [{"modalita": "D"}, {"modalita": "D"}],
+    )
+
+    assert restored is None
