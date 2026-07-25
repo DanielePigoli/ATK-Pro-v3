@@ -416,6 +416,12 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
 - prima esecuzione live della sonda sul campione ARBOR `A.23`:
   4 candidati trovati, con manifest Jarvis valido, due link Mirador e
   immagine contenuto S3; nessun login emerso nel flusso pubblico del campione.
+- tentativo di terzo campione 2026-07-24 su `bnpz.medialibrary.it`
+  (Biblioteca Nazionale di Potenza): host pubblico raggiungibile, ma
+  riconducibile alla piattaforma MLOL standard di prestito digitale, non a una
+  digital library MLOL DH/Jarvis con item pubblici e manifest IIIF esposti;
+  il dominio va quindi escluso da questo sottoramo tecnico, almeno allo stato
+  attuale.
 
 Scheda minima prima di proporre un nuovo portale:
 
