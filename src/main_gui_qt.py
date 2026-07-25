@@ -496,6 +496,38 @@ def _write_config_disclaimer_accepted() -> None:
     )
 
 
+def _persist_output_selection_prefs(mode: str, folders_doc: list[str], folders_reg: list[str]) -> None:
+    """Persistenza compatta delle preferenze output senza scritture ripetute."""
+    normalized_mode = str(mode or "per_record").strip().lower()
+    if normalized_mode == "single":
+        shared = folders_doc[0] if folders_doc else (folders_reg[0] if folders_reg else None)
+        if shared:
+            _write_config_prefs_batch(
+                {
+                    "output_mode": "single",
+                    "output_folder_single": shared,
+                }
+            )
+        return
+
+    if normalized_mode == "split":
+        updates = {"output_mode": "split"}
+        if folders_doc:
+            updates["output_folder_doc"] = folders_doc[0]
+        if folders_reg:
+            updates["output_folder_reg"] = folders_reg[0]
+        _write_config_prefs_batch(updates)
+        return
+
+    _write_config_prefs_batch(
+        {
+            "output_mode": "per_record",
+            "output_folders_doc": folders_doc,
+            "output_folders_reg": folders_reg,
+        }
+    )
+
+
 def _get_default_output_dir(sub: str = "") -> str:
     """Ritorna il percorso della cartella output di default.
     In modalità portable: <cartella exe>/output/
@@ -3062,8 +3094,7 @@ def action_select_output(glossario_data, lingua):
                     QMessageBox.Warning, buttons=(lbl_conf,), default=lbl_conf)
         folders_doc = [folder] * num_doc
         folders_reg = [folder] * num_reg
-        _write_config_prefs("output_mode", "single")
-        _write_config_prefs("output_folder_single", folder)
+        _persist_output_selection_prefs("single", folders_doc, folders_reg)
 
     elif mode == "split":
         # --- Modalità: cartella separata per D e per R ---
@@ -3077,7 +3108,6 @@ def action_select_output(glossario_data, lingua):
                     show_msgbox_localized(None, glossario_data, lingua, lbl_att, lbl_obbl,
                         QMessageBox.Warning, buttons=(lbl_conf,), default=lbl_conf)
             folders_doc = [folder_doc] * num_doc
-            _write_config_prefs("output_folder_doc", folder_doc)
 
         if num_reg > 0:
             folder_reg = None
@@ -3089,9 +3119,8 @@ def action_select_output(glossario_data, lingua):
                     show_msgbox_localized(None, glossario_data, lingua, lbl_att, lbl_obbl,
                         QMessageBox.Warning, buttons=(lbl_conf,), default=lbl_conf)
             folders_reg = [folder_reg] * num_reg
-            _write_config_prefs("output_folder_reg", folder_reg)
 
-        _write_config_prefs("output_mode", "split")
+        _persist_output_selection_prefs("split", folders_doc, folders_reg)
 
     else:
         # --- Modalità: una cartella per ogni record (comportamento originale) ---
@@ -3121,9 +3150,7 @@ def action_select_output(glossario_data, lingua):
             folders_reg.append(folder)
             _last_reg = folder  # la prossima apertura parte dall'ultima scelta
 
-        _write_config_prefs("output_mode", "per_record")
-        _write_config_prefs("output_folders_doc", folders_doc)
-        _write_config_prefs("output_folders_reg", folders_reg)
+        _persist_output_selection_prefs("per_record", folders_doc, folders_reg)
 
     # Aggiorna stato globale
     state["output_folders_doc"] = folders_doc

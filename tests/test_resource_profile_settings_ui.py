@@ -2,6 +2,7 @@ import json
 
 from src.main_gui_qt import (
     DISCLAIMER_REVISION,
+    _persist_output_selection_prefs,
     _read_config_prefs,
     _write_config_disclaimer_accepted,
     _write_config_prefs,
@@ -91,3 +92,44 @@ def test_write_config_disclaimer_accepted_persists_all_keys(tmp_path, monkeypatc
     assert saved["disclaimer_accepted"] is True
     assert saved["disclaimer_revision"] == DISCLAIMER_REVISION
     assert saved["disclaimer_accepted_version"] == VERSION
+
+
+def test_persist_output_selection_prefs_single(tmp_path, monkeypatch):
+    config_path = tmp_path / "atk_config.json"
+    config_path.write_text(json.dumps({}), encoding="utf-8")
+
+    monkeypatch.setattr("src.main_gui_qt._config_file_path", lambda: str(config_path))
+
+    _persist_output_selection_prefs("single", ["C:/out"], ["C:/out"])
+
+    saved = json.loads(config_path.read_text(encoding="utf-8"))
+    assert saved["output_mode"] == "single"
+    assert saved["output_folder_single"] == "C:/out"
+
+
+def test_persist_output_selection_prefs_split(tmp_path, monkeypatch):
+    config_path = tmp_path / "atk_config.json"
+    config_path.write_text(json.dumps({}), encoding="utf-8")
+
+    monkeypatch.setattr("src.main_gui_qt._config_file_path", lambda: str(config_path))
+
+    _persist_output_selection_prefs("split", ["C:/doc"], ["C:/reg"])
+
+    saved = json.loads(config_path.read_text(encoding="utf-8"))
+    assert saved["output_mode"] == "split"
+    assert saved["output_folder_doc"] == "C:/doc"
+    assert saved["output_folder_reg"] == "C:/reg"
+
+
+def test_persist_output_selection_prefs_per_record(tmp_path, monkeypatch):
+    config_path = tmp_path / "atk_config.json"
+    config_path.write_text(json.dumps({}), encoding="utf-8")
+
+    monkeypatch.setattr("src.main_gui_qt._config_file_path", lambda: str(config_path))
+
+    _persist_output_selection_prefs("per_record", ["C:/doc1", "C:/doc2"], ["C:/reg1"])
+
+    saved = json.loads(config_path.read_text(encoding="utf-8"))
+    assert saved["output_mode"] == "per_record"
+    assert saved["output_folders_doc"] == ["C:/doc1", "C:/doc2"]
+    assert saved["output_folders_reg"] == ["C:/reg1"]
