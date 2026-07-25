@@ -454,6 +454,15 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   valido con 7 canvas. Il pattern IIIF pubblico di `archiviostorico.unibo.it`
   non copre quindi solo un caso di riviste seriali, ma si estende anche a una
   seconda famiglia documentaria del portale.
+- secondo dominio distinto emerso 2026-07-25: `phaidra.cab.unipd.it` /
+  `phaidra.unipd.it` (Universita' di Padova). La pagina pubblica dell'oggetto
+  `o:369506` espone apertamente il link `IIIF-MANIFEST` verso
+  `https://phaidra.unipd.it/api/object/o:369506/iiifmanifest`; la verifica
+  diretta con `verify_manifest_url.py` ha scaricato il manifest con codice 200
+  e 442 canvas. Il sottoramo `biblioteche_digitali_locali_iiif` non dipende
+  quindi piu' da un solo dominio forte: al 25 luglio 2026 dispone di almeno
+  due ecosistemi distinti e pubblici con IIIF record-level verificato live
+  (`archiviostorico.unibo.it` e `phaidra.unipd.it`).
 - la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
   strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
   viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,
