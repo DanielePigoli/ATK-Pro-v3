@@ -36,15 +36,22 @@ DISCLAIMER_REVISION = "v3.0.0-legal-disclaimer-2026-05-27"
 DISCLAIMER_ACCEPT_PARAM = f"/ATKACCEPTDISCLAIMER={DISCLAIMER_REVISION}"
 DISCLAIMER_SOURCE_LANGUAGE = "it"
 
-# Stato globale
-state = {
-    "records": [],
-    "formats": [],
-    "output_folder": None,
-    "registri_output": [],
-    "current_input_file": None,  # Memorizza il percorso del file attualmente caricato
-    "resource_profile": "bilanciato",
-}
+
+def _build_initial_state() -> dict:
+    """Crea lo stato runtime iniziale della GUI in un unico punto."""
+    return {
+        "records": [],
+        "formats": [],
+        "output_folder": None,
+        "registri_output": [],
+        "current_input_file": None,
+        "resource_profile": RESOURCE_PROFILE_BALANCED,
+    }
+
+
+state = _build_initial_state()
+
+
 def carica_testo_asset(percorso):
     try:
         return get_text_cached(percorso)
@@ -668,16 +675,6 @@ def ask_output_mode(glossario_data, lingua) -> str:
     return "per_record"
 def asset_path(rel_path):
     return os.path.join(BASE_DIR, rel_path)
-
-
-# Stato globale
-state = {
-    "records": [],
-    "formats": [],
-    "output_folder": None,
-    "registri_output": [],
-    "current_input_file": None  # Memorizza il percorso del file attualmente caricato
-}
 
 def scegli_lingua(glossario_data=None, lingua="it"):
     dlg = QDialog()
