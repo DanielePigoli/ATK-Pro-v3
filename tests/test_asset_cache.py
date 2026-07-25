@@ -29,6 +29,30 @@ def test_text_cache_keeps_recent_small_files(tmp_path):
     assert str(tmp_path / f"{MAX_TEXT_CACHE_ITEMS}.txt") in cache._text_cache
 
 
+def test_text_cache_reloads_when_file_changes(tmp_path):
+    path = tmp_path / "small.txt"
+    path.write_text("prima", encoding="utf-8")
+
+    cache = AssetCache()
+    assert cache.get_text(str(path)) == "prima"
+
+    path.write_text("seconda", encoding="utf-8")
+
+    assert cache.get_text(str(path)) == "seconda"
+
+
+def test_text_cache_stores_signature_and_value(tmp_path):
+    path = tmp_path / "small.txt"
+    path.write_text("contenuto", encoding="utf-8")
+
+    cache = AssetCache()
+    cache.get_text(str(path))
+
+    cached_signature, cached_text = cache._text_cache[str(path)]
+    assert isinstance(cached_signature, tuple)
+    assert cached_text == "contenuto"
+
+
 def test_pixmap_cache_keeps_recent_items(monkeypatch):
     created = []
 
