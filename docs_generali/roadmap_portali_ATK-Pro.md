@@ -435,6 +435,18 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   `verify_manifest_url.py` come manifest valido con 4 canvas. Questo non basta
   ancora da solo a promuovere un supporto tecnico, ma rende il portale una
   delle migliori piste correnti del ramo `biblioteche_digitali_locali_iiif`.
+- approfondimento tecnico 2026-07-25 sullo stesso campione Unibo: il pattern
+  non e' isolato. La collection radice
+  `.../libro_e_moschetto_1927-1943.json` e' stata verificata live come
+  `Collection IIIF` valida con 7 manifest figli; la collection annuale
+  `.../0131.016.json` e' stata riletta correttamente dal probe aggiornato come
+  `Collection IIIF` valida con 16 manifest figli; un secondo manifest figlio,
+  `.../0131.016/0131.016.022.json`, e' risultato valido con 8 canvas. Il ramo
+  `archiviostorico.unibo.it` appare quindi tecnicamente coerente su piu'
+  livelli gerarchici, e al momento non richiede ancora una sonda dedicata:
+  basta continuare con verifiche dirette e prudenti su collection/manifest
+  pubblici finche' non emerge la convenienza di un'integrazione o di una
+  sonda specifica.
 - la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
   strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
   viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,
