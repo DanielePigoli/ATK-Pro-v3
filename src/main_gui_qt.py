@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import copy
 import subprocess as _subprocess_mod
 import sys
 import tempfile as _tempfile_mod
@@ -174,6 +175,10 @@ def get_language_from_registry():
 _LINGUE_VALIDE = ["it", "en", "es", "de", "fr", "pt", "nl", "ar", "he", "ru",
                   "da", "el", "ja", "no", "pl", "ro", "sv", "tr", "vi", "zh"]
 
+_CONFIG_PREFS_CACHE_PATH = None
+_CONFIG_PREFS_CACHE_SIGNATURE = None
+_CONFIG_PREFS_CACHE_VALUE = None
+
 
 def _config_file_path():
     """Ritorna il percorso del file di configurazione utente.
@@ -184,6 +189,47 @@ def _config_file_path():
     if IS_PORTABLE:
         return _os.path.join(_EXE_DIR, "config.json")
     return _os.path.join(_os.path.expanduser("~"), ".config", "atk-pro", "config.json")
+
+
+def _default_config_prefs() -> dict:
+    return {
+        "formats": [],
+        "last_input_file": None,
+        "output_folders_doc": [],
+        "output_folders_reg": [],
+        "output_folder_single": None,
+        "output_folder_doc": None,
+        "output_folder_reg": None,
+        "portale_attivo": "antenati",
+        "resource_profile": RESOURCE_PROFILE_BALANCED,
+    }
+
+
+def _normalize_config_prefs(data: dict | None) -> dict:
+    data = data or {}
+    return {
+        "formats": list(data.get("formats", [])),
+        "last_input_file": data.get("last_input_file", None),
+        "output_folders_doc": list(data.get("output_folders_doc", [])),
+        "output_folders_reg": list(data.get("output_folders_reg", [])),
+        "output_folder_single": data.get("output_folder_single", None),
+        "output_folder_doc": data.get("output_folder_doc", None),
+        "output_folder_reg": data.get("output_folder_reg", None),
+        "portale_attivo": data.get("portale_attivo", "antenati"),
+        "resource_profile": normalize_resource_profile(data.get("resource_profile")),
+    }
+
+
+def _clone_config_prefs(data: dict) -> dict:
+    return copy.deepcopy(data)
+
+
+def _config_file_signature(path: str) -> tuple[int, int] | None:
+    try:
+        stat = os.stat(path)
+        return stat.st_mtime_ns, stat.st_size
+    except OSError:
+        return None
 
 
 def _read_config_language():
@@ -306,33 +352,38 @@ def _resolve_initial_language() -> tuple[str, bool]:
 
 def _read_config_prefs() -> dict:
     """Legge le preferenze persistenti dal config JSON."""
+    global _CONFIG_PREFS_CACHE_PATH, _CONFIG_PREFS_CACHE_SIGNATURE, _CONFIG_PREFS_CACHE_VALUE
     import os as _os
     import json as _json
     try:
         cfg = _config_file_path()
+        signature = _config_file_signature(cfg)
+        if (
+            _CONFIG_PREFS_CACHE_VALUE is not None
+            and _CONFIG_PREFS_CACHE_PATH == cfg
+            and _CONFIG_PREFS_CACHE_SIGNATURE == signature
+        ):
+            return _clone_config_prefs(_CONFIG_PREFS_CACHE_VALUE)
         if _os.path.exists(cfg):
             with open(cfg, encoding="utf-8") as fh:
                 data = _json.load(fh)
-            return {
-                "formats":            data.get("formats", []),
-                "last_input_file":    data.get("last_input_file", None),
-                "output_folders_doc": data.get("output_folders_doc", []),
-                "output_folders_reg": data.get("output_folders_reg", []),
-                "output_folder_single": data.get("output_folder_single", None),
-                "output_folder_doc":    data.get("output_folder_doc", None),
-                "output_folder_reg":    data.get("output_folder_reg", None),
-                "portale_attivo":       data.get("portale_attivo", "antenati"),
-                "resource_profile":     normalize_resource_profile(data.get("resource_profile")),
-            }
+            prefs = _normalize_config_prefs(data)
+            _CONFIG_PREFS_CACHE_PATH = cfg
+            _CONFIG_PREFS_CACHE_SIGNATURE = signature
+            _CONFIG_PREFS_CACHE_VALUE = _clone_config_prefs(prefs)
+            return _clone_config_prefs(prefs)
     except Exception as e:
         logging.debug(f"Errore lettura prefs config: {e}")
-    return {"formats": [], "last_input_file": None, "output_folders_doc": [], "output_folders_reg": [],
-            "output_folder_single": None, "output_folder_doc": None, "output_folder_reg": None,
-            "portale_attivo": "antenati", "resource_profile": RESOURCE_PROFILE_BALANCED}
+    prefs = _default_config_prefs()
+    _CONFIG_PREFS_CACHE_PATH = _config_file_path()
+    _CONFIG_PREFS_CACHE_SIGNATURE = _config_file_signature(_CONFIG_PREFS_CACHE_PATH)
+    _CONFIG_PREFS_CACHE_VALUE = _clone_config_prefs(prefs)
+    return _clone_config_prefs(prefs)
 
 
 def _write_config_prefs(key: str, value) -> None:
     """Aggiorna una singola chiave delle preferenze nel config JSON."""
+    global _CONFIG_PREFS_CACHE_PATH, _CONFIG_PREFS_CACHE_SIGNATURE, _CONFIG_PREFS_CACHE_VALUE
     import os as _os
     import json as _json
     try:
@@ -346,6 +397,9 @@ def _write_config_prefs(key: str, value) -> None:
         data[key] = value
         with open(cfg, "w", encoding="utf-8") as fh:
             _json.dump(data, fh, ensure_ascii=False, indent=2)
+        _CONFIG_PREFS_CACHE_PATH = cfg
+        _CONFIG_PREFS_CACHE_SIGNATURE = _config_file_signature(cfg)
+        _CONFIG_PREFS_CACHE_VALUE = _normalize_config_prefs(data)
         logging.debug(f"Prefs salvate: {key}={value}")
     except Exception as e:
         logging.debug(f"Errore scrittura prefs config: {e}")
