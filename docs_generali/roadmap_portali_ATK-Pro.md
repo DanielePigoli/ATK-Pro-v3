@@ -424,6 +424,17 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   termini/licenze leggibili a livello portale o item e un controllo su almeno
   un secondo campione, per evitare di confondere la piattaforma-host con i
   diritti dei singoli enti.
+- riapertura mirata 2026-07-25 su `archiviostorico.unibo.it` (Archivio
+  Storico dell'Universita' di Bologna): nuovo candidato forte nel sottoblocco
+  biblioteche/digital library locali con IIIF pubblico gia' visibile a livello
+  record. La collection pubblica
+  `https://archiviostorico.unibo.it/iiif/2/manifest/archiviostorico/riviste/libro_e_moschetto_1927-1943/0131.016.json`
+  risponde con codice 200 ed e' una `sc:Collection` IIIF v2 che elenca i
+  manifest dei singoli fascicoli; uno di questi,
+  `.../0131.016/0131.016.003.json`, e' stato verificato live con
+  `verify_manifest_url.py` come manifest valido con 4 canvas. Questo non basta
+  ancora da solo a promuovere un supporto tecnico, ma rende il portale una
+  delle migliori piste correnti del ramo `biblioteche_digitali_locali_iiif`.
 - la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
   strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
   viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,
