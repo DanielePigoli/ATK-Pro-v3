@@ -37,3 +37,19 @@ def test_prompt_for_formats_after_input_load_updates_state_once(monkeypatch):
     assert selected == ["PNG", "PDF"]
     assert state_formats == ["PNG", "PDF"]
     assert persisted_formats == []
+
+
+def test_apply_runtime_preference_updates_state_and_persists(monkeypatch):
+    original_value = gui.state.get("resource_profile")
+    persisted = []
+
+    monkeypatch.setattr(gui, "_write_config_prefs", lambda key, value: persisted.append((key, value)))
+
+    try:
+        gui._apply_runtime_preference("resource_profile", "veloce")
+        runtime_value = gui.state["resource_profile"]
+    finally:
+        gui.state["resource_profile"] = original_value
+
+    assert runtime_value == "veloce"
+    assert persisted == [("resource_profile", "veloce")]
