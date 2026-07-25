@@ -471,6 +471,20 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   export metadati, 1 thumbnail e 2 pagine oggetto/collezione correlate. Il
   ramo PHAIDRA non e' ancora promosso a supporto tecnico, ma ora dispone di
   una sonda prudente gia' riusabile per nuovi controlli.
+
+Valutazione comparativa operativa (2026-07-25):
+
+- `archiviostorico.unibo.it` e `phaidra.unipd.it` sono entrambi candidati
+  tecnicamente solidi nel sottoramo `biblioteche_digitali_locali_iiif`;
+- per una prima promozione a supporto tecnico prudente conviene pero'
+  privilegiare `archiviostorico.unibo.it`, perche' nei manifest testati espone
+  gia' `attribution` e un campo `license` stabile verso il portale pubblico,
+  oltre a una gerarchia IIIF coerente su piu' famiglie documentarie;
+- `phaidra.unipd.it` resta molto promettente sul piano tecnico, ma il record
+  pubblico provato `o:369506` espone nel markup `DC.rights = All rights reserved`;
+  quindi il suo ramo va mantenuto in stato prudente finche' non verifichiamo
+  meglio la varianza delle licenze item-level e il rapporto tra manifest
+  pubblico, PDF scaricabile e diritti dichiarati.
 - la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
   strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
   viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,
