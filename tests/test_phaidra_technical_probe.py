@@ -22,6 +22,20 @@ def test_extract_candidates_finds_object_manifest_and_metadata_exports():
     assert by_role["phaidra_metadata_export"].kind == "metadata_export"
 
 
+def test_extract_candidates_finds_rights_notice_from_markup():
+    html = """
+    <div class="rights">DC.rights = All rights reserved</div>
+    <a href="https://phaidra.cab.unipd.it/view/o:369506">scheda</a>
+    """
+
+    candidates = probe.extract_candidates(html, "https://phaidra.cab.unipd.it/view/o:369506")
+    by_role = {candidate.role: candidate for candidate in candidates}
+
+    assert by_role["phaidra_rights_notice"].kind == "rights_notice"
+    assert by_role["phaidra_rights_notice"].identifier == "o:369506"
+    assert by_role["phaidra_rights_notice"].source == "All rights reserved"
+
+
 def test_extract_candidates_finds_iiif_image_thumbnail_and_download():
     html = """
     <img src="https://phaidra.unipd.it/api/object/o:369506/thumbnail">
@@ -103,3 +117,20 @@ def test_write_report_creates_csv(tmp_path: Path):
     text = report.read_text(encoding="utf-8")
     assert "kind,role,identifier,url,source" in text
     assert "phaidra_iiif_manifest" in text
+
+
+def test_summarize_mentions_rights_notice():
+    summary = probe._summarize(
+        [
+            probe.ProbeCandidate(
+                kind="rights_notice",
+                role="phaidra_rights_notice",
+                identifier="o:369506",
+                url="https://phaidra.cab.unipd.it/view/o:369506",
+                source="All rights reserved",
+            )
+        ]
+    )
+
+    assert "rights_notice: 1" in summary
+    assert "phaidra_rights_notice: 1" in summary
