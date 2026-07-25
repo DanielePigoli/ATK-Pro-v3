@@ -47,13 +47,13 @@ state = {
 def carica_testo_asset(percorso):
     try:
         return get_text_cached(percorso)
-    except Exception:
-        return ""
     except UnicodeDecodeError:
         try:
             return get_text_cached(percorso)
         except Exception:
             return ""
+    except Exception:
+        return ""
 
 
 def show_operation_completed_dialog(parent, glossario_data, lingua, risultati=None):
@@ -211,6 +211,86 @@ def _write_config_language(lang: str) -> None:
         logging.debug(f"Lingua salvata in config file: {lang}")
     except Exception as e:
         logging.debug(f"Errore scrittura config file: {e}")
+
+
+def _choose_and_persist_language(default_language: str = "en") -> str:
+    """Mostra la scelta lingua con glossario minimale e salva il risultato."""
+    glossario_data_tmp = carica_glossario(default_language)
+    lingua = scegli_lingua(glossario_data_tmp, default_language)
+    _write_config_language(lingua)
+    return lingua
+
+
+def _read_system_default_language() -> str | None:
+    """Legge l'eventuale lingua di default di sistema per bundle Linux/macOS."""
+    try:
+        with open("/etc/atk-pro/defaults.json", encoding="utf-8") as _fh:
+            _dd = _json_mod.load(_fh)
+        _cl = (_dd.get("language", "") or "").strip().lower()
+        if _cl in _LINGUE_VALIDE:
+            logging.debug(f"Lingua da /etc/atk-pro/defaults.json: {_cl}")
+            return _cl
+    except Exception as _ex:
+        logging.debug(f"defaults.json non leggibile: {_ex}")
+    return None
+
+
+def _resolve_initial_language() -> tuple[str, bool]:
+    """Determina lingua iniziale e stato di primo avvio senza mostrare la UI principale."""
+    _is_frozen = getattr(sys, 'frozen', False)
+    primo_avvio = False
+
+    if _is_frozen and sys.platform == "win32":
+        if IS_PORTABLE:
+            saved = _read_config_language()
+            if saved:
+                logging.debug(f"Portable: lingua da config file: {saved}")
+                return saved, False
+            primo_avvio = True
+            lingua = _choose_and_persist_language("en")
+            logging.debug(f"Portable primo avvio: lingua scelta: {lingua}")
+            return lingua, primo_avvio
+
+        lingua = get_language_from_registry()
+        logging.debug(f"Windows EXE: lingua dal registro: {lingua}")
+        return lingua, primo_avvio
+
+    if _is_frozen and sys.platform in ("linux", "darwin"):
+        saved = _read_config_language()
+        if saved:
+            logging.debug(f"Linux/macOS EXE: lingua da config file: {saved}")
+            lingua = saved
+        else:
+            _sys_default = _read_system_default_language()
+            if _sys_default:
+                lingua = _sys_default
+                _write_config_language(lingua)
+                logging.debug(f"Linux/macOS: lingua da defaults di sistema: {lingua}")
+            else:
+                primo_avvio = True
+                lingua = _choose_and_persist_language("en")
+                logging.debug(f"Linux/macOS primo avvio: lingua scelta: {lingua}")
+
+        _PENDING_FLAG_EARLY = "/var/lib/atk-pro/pending-disclaimer"
+        if (not primo_avvio
+                and sys.platform == "linux"
+                and os.path.exists(_PENDING_FLAG_EARLY)):
+            logging.debug("Pending-disclaimer flag rilevato: forzo selezione lingua prima del disclaimer")
+            glossario_data_tmp = carica_glossario(lingua)
+            lingua = scegli_lingua(glossario_data_tmp, lingua)
+            _write_config_language(lingua)
+            logging.debug(f"Lingua scelta dopo installazione GUI: {lingua}")
+        return lingua, primo_avvio
+
+    saved = _read_config_language()
+    if saved:
+        logging.debug(f"Sviluppo: lingua da config file: {saved}")
+        return saved, False
+
+    primo_avvio = True
+    lingua = _choose_and_persist_language("en")
+    logging.debug(f"Sviluppo primo avvio: lingua scelta: {lingua}")
+    return lingua, primo_avvio
 
 
 def _read_config_prefs() -> dict:
@@ -3522,90 +3602,7 @@ def main():
         logging.debug("Errore: impossibile caricare atk_style.qss")
 
     # Selezione lingua e gestione primo avvio
-    _is_frozen = getattr(sys, 'frozen', False)
-    primo_avvio = False
-
-    if _is_frozen and sys.platform == "win32":
-        if IS_PORTABLE:
-            # Portable: nessun installer → usa config file, non il registro Windows
-            saved = _read_config_language()
-            if saved:
-                lingua = saved
-                primo_avvio = False
-                logging.debug(f"Portable: lingua da config file: {lingua}")
-            else:
-                # Primo avvio portable: scegli lingua; il disclaimer viene richiesto prima di mostrare la UI
-                primo_avvio = True
-                glossario_data_tmp = carica_glossario("en")
-                lingua = scegli_lingua(glossario_data_tmp, "en")
-                _write_config_language(lingua)
-                logging.debug(f"Portable primo avvio: lingua scelta: {lingua}")
-        else:
-            # Installer: leggi la lingua dal registro (settata dall'Inno Setup installer)
-            lingua = get_language_from_registry()
-            logging.debug(f"Windows EXE: lingua dal registro: {lingua}")
-
-    elif _is_frozen and sys.platform in ("linux", "darwin"):
-        # Linux/macOS bundle: usa file di configurazione utente
-        saved = _read_config_language()
-        if saved:
-            lingua = saved
-            primo_avvio = False
-            logging.debug(f"Linux/macOS EXE: lingua da config file: {lingua}")
-        else:
-            # Fallback: leggi /etc/atk-pro/defaults.json (scritto dal postinst)
-            # Questo copre i casi in cui il postinst non ha trovato SUDO_USER
-            # (es. installazione via polkit/GNOME Software)
-            _sys_default = None
-            try:
-                import json as _jj
-                with open("/etc/atk-pro/defaults.json", encoding="utf-8") as _fh:
-                    _dd = _jj.load(_fh)
-                _cl = _dd.get("language", "").strip().lower()
-                if _cl in _LINGUE_VALIDE:
-                    _sys_default = _cl
-                    logging.debug(f"Lingua da /etc/atk-pro/defaults.json: {_sys_default}")
-            except Exception as _ex:
-                logging.debug(f"defaults.json non leggibile: {_ex}")
-
-            if _sys_default:
-                lingua = _sys_default
-                primo_avvio = False
-                _write_config_language(lingua)  # propaga in ~/.config
-                logging.debug(f"Linux/macOS: lingua da defaults di sistema: {lingua}")
-            else:
-                # Solo se nessun default è disponibile → mostra dialog scelta lingua
-                primo_avvio = True
-                glossario_data_tmp = carica_glossario("en")
-                lingua = scegli_lingua(glossario_data_tmp, "en")
-                _write_config_language(lingua)
-                logging.debug(f"Linux/macOS primo avvio: lingua scelta: {lingua}")
-
-        # Compatibilita' con pacchetti Linux pre-v3 che potevano lasciare un
-        # flag pending-disclaimer: in tal caso l'app richiede comunque consenso.
-        _PENDING_FLAG_EARLY = "/var/lib/atk-pro/pending-disclaimer"
-        if (not primo_avvio
-                and sys.platform == "linux"
-                and os.path.exists(_PENDING_FLAG_EARLY)):
-            logging.debug("Pending-disclaimer flag rilevato: forzo selezione lingua prima del disclaimer")
-            glossario_data_tmp = carica_glossario(lingua)
-            lingua = scegli_lingua(glossario_data_tmp, lingua)
-            _write_config_language(lingua)
-            logging.debug(f"Lingua scelta dopo installazione GUI: {lingua}")
-
-    else:
-        # Modalità sviluppo: stessa logica Linux/macOS (config file per primo avvio)
-        saved = _read_config_language()
-        if saved:
-            lingua = saved
-            primo_avvio = False
-            logging.debug(f"Sviluppo: lingua da config file: {lingua}")
-        else:
-            primo_avvio = True
-            glossario_data_tmp = carica_glossario("en")
-            lingua = scegli_lingua(glossario_data_tmp, "en")
-            _write_config_language(lingua)
-            logging.debug(f"Sviluppo primo avvio: lingua scelta: {lingua}")
+    lingua, primo_avvio = _resolve_initial_language()
 
     glossario_data = carica_glossario(lingua)
 
