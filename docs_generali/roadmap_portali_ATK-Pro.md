@@ -451,6 +451,12 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   Mirador, manifest o `info.json`; anche questo dominio resta quindi
   promettente come portale culturale, ma non ancora sufficiente come terzo
   campione tecnico riusabile.
+- tentativo aggiuntivo 2026-07-25 su `lodovico.medialibrary.it`: host
+  pubblico reale e coerente con lo stesso ecosistema MLOL DH, ma il probe su
+  root e `media/esplora.aspx` intercetta ancora solo immagini di
+  galleria/copertina e non fa emergere item pubblici, viewer Mirador, manifest
+  o `info.json`; anche questo dominio resta quindi promettente come portale
+  culturale, ma non ancora sufficiente come terzo campione tecnico riusabile.
 
 Scheda minima prima di proporre un nuovo portale:
 
