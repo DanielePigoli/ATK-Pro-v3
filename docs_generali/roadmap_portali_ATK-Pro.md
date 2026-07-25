@@ -447,6 +447,13 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   basta continuare con verifiche dirette e prudenti su collection/manifest
   pubblici finche' non emerge la convenienza di un'integrazione o di una
   sonda specifica.
+- verifica aggiuntiva 2026-07-25 su una famiglia documentaria diversa dello
+  stesso portale Unibo: il manifest pubblico
+  `https://archiviostorico.unibo.it/iiif/2/manifest/archiviostorico/archivio_fotografico/edilizia-universitaria/sezione-moderna/laboratori-delle-arti.json`
+  (archivio fotografico, edilizia universitaria) risponde con codice 200 ed e'
+  valido con 7 canvas. Il pattern IIIF pubblico di `archiviostorico.unibo.it`
+  non copre quindi solo un caso di riviste seriali, ma si estende anche a una
+  seconda famiglia documentaria del portale.
 - la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
   strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
   viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,
