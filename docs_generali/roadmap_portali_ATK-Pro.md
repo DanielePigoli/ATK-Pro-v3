@@ -437,6 +437,13 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   intercetta solo immagini gallery/copertina e non fa emergere item pubblici,
   viewer Mirador, manifest o `info.json`; il dominio resta quindi interessante,
   ma non ancora sufficiente come terzo campione tecnico riusabile.
+- tentativo aggiuntivo 2026-07-25 su `archiviogazzettadiparma.medialibrary.it`
+  (Archivio storico Gazzetta di Parma): host pubblico reale e coerente con
+  l'ecosistema MLOL DH, ma il probe su `home/index.aspx` e `media/esplora.aspx`
+  intercetta solo immagini di galleria/copertina e non fa emergere item
+  pubblici, viewer Mirador, manifest o `info.json`; anche questo dominio resta
+  quindi promettente come portale culturale, ma non ancora sufficiente come
+  terzo campione tecnico riusabile.
 
 Scheda minima prima di proporre un nuovo portale:
 
