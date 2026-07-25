@@ -6,6 +6,14 @@ MAX_PIXMAP_CACHE_ITEMS = 16
 MAX_TEXT_CACHE_ITEMS = 24
 MAX_TEXT_CACHE_BYTES = 1 * 1024 * 1024
 
+
+def _file_signature(path):
+    try:
+        stat = __import__("os").stat(path)
+        return stat.st_mtime_ns, stat.st_size
+    except OSError:
+        return None
+
 class AssetCache:
     def __init__(self):
         self._pixmap_cache = OrderedDict()
@@ -36,13 +44,15 @@ class AssetCache:
         import time
         import logging
         start = time.perf_counter()
+        signature = _file_signature(path)
         with self._lock:
             if path in self._text_cache:
-                text = self._text_cache.pop(path)
-                self._text_cache[path] = text
-                elapsed = (time.perf_counter() - start) * 1000
-                logging.debug(f"[CACHE] get_text HIT {path} ({elapsed:.2f} ms)")
-                return text
+                cached_signature, text = self._text_cache.pop(path)
+                if cached_signature == signature:
+                    self._text_cache[path] = (cached_signature, text)
+                    elapsed = (time.perf_counter() - start) * 1000
+                    logging.debug(f"[CACHE] get_text HIT {path} ({elapsed:.2f} ms)")
+                    return text
         try:
             with open(path, "r", encoding=encoding) as f:
                 text = f.read()
@@ -51,7 +61,7 @@ class AssetCache:
                 text = f.read()
         if len(text.encode(encoding, errors="ignore")) <= MAX_TEXT_CACHE_BYTES:
             with self._lock:
-                self._text_cache[path] = text
+                self._text_cache[path] = (signature, text)
                 while len(self._text_cache) > MAX_TEXT_CACHE_ITEMS:
                     self._text_cache.popitem(last=False)
         elapsed = (time.perf_counter() - start) * 1000
