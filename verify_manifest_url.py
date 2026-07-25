@@ -33,6 +33,29 @@ def canvas_count(manifest: Any) -> int:
     return 0
 
 
+def child_manifest_count(manifest: Any) -> int:
+    if not isinstance(manifest, dict):
+        return 0
+
+    manifests = manifest.get("manifests")
+    if isinstance(manifests, list):
+        return len(manifests)
+
+    return 0
+
+
+def classify_manifest(manifest: Any) -> tuple[str, int]:
+    count = canvas_count(manifest)
+    if count > 0:
+        return ("canvas", count)
+
+    child_count = child_manifest_count(manifest)
+    if child_count > 0:
+        return ("collection", child_count)
+
+    return ("empty", 0)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Verifica prudente di un manifest IIIF diretto: scarica il JSON e conta canvas/items."
@@ -53,10 +76,14 @@ def main(argv: list[str] | None = None) -> int:
         print("FAIL Manifest non scaricato o non valido.")
         return 1
 
-    count = canvas_count(manifest)
-    if count <= 0:
-        print("FAIL Manifest scaricato, ma nessun canvas/item rilevato.")
+    kind, count = classify_manifest(manifest)
+    if kind == "empty":
+        print("FAIL Manifest scaricato, ma nessun canvas/item o manifest figlio rilevato.")
         return 1
+
+    if kind == "collection":
+        print(f"PASS Collection IIIF scaricata e valida. Manifest figli: {count}")
+        return 0
 
     print(f"PASS Manifest scaricato e valido. Canvas/items: {count}")
     return 0
