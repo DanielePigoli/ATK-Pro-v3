@@ -685,6 +685,29 @@ def _build_dl_ficlit_manifest(page_url: str) -> str | None:
     return None
 
 
+def _build_archiviostorico_unibo_manifest(page_url: str) -> str | None:
+    """Archivio Storico Unibo: supporta solo manifest IIIF pubblici gia' noti."""
+    parsed = urlparse(page_url)
+    if parsed.netloc.lower() != "archiviostorico.unibo.it":
+        return None
+
+    path = parsed.path.rstrip("/")
+    if re.fullmatch(r"/iiif/2/manifest/archiviostorico/.+\.json", path, re.IGNORECASE):
+        return f"https://archiviostorico.unibo.it{path}"
+
+    manifest = extract_manifest_url_from_viewer_url(page_url)
+    if manifest:
+        manifest_parsed = urlparse(manifest)
+        manifest_path = manifest_parsed.path.rstrip("/")
+        if (
+            manifest_parsed.netloc.lower() == "archiviostorico.unibo.it"
+            and re.fullmatch(r"/iiif/2/manifest/archiviostorico/.+\.json", manifest_path, re.IGNORECASE)
+        ):
+            return f"https://archiviostorico.unibo.it{manifest_path}"
+
+    return None
+
+
 _BDT_ATTR_URL_RE = re.compile(
     r"""(?ix)
     \b(?:href|src|data-[a-z0-9_-]+|content)\s*=\s*
@@ -1914,6 +1937,7 @@ _ITALIAN_LIBRARY_BUILDERS = {
     "biblioteca_digitale_siena": _build_biblioteca_digitale_siena_manifest,
     "bub_digitale": _build_bub_digitale_manifest,
     "dl_ficlit": _build_dl_ficlit_manifest,
+    "archiviostorico_unibo": _build_archiviostorico_unibo_manifest,
     "biblioteca_digitale_trentina": _build_biblioteca_digitale_trentina_manifest,
     "biblioteca_digitale_lombarda": _build_biblioteca_digitale_lombarda_manifest,
     "rovereto_digital_library": _build_rovereto_manifest,
