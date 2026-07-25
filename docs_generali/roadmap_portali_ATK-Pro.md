@@ -430,6 +430,13 @@ Esito primo micro-step `biblioteche_digitali_locali_iiif` (2026-07-24):
   digital library MLOL DH/Jarvis con item pubblici e manifest IIIF esposti;
   il dominio va quindi escluso da questo sottoramo tecnico, almeno allo stato
   attuale.
+- tentativo aggiuntivo 2026-07-25 su `archiviocanova.medialibrary.it`
+  (Archivio digitale Antonio Canova): host pubblico e chiaramente presentato
+  come portale di collezioni digitalizzate, quindi piu' vicino a MLOL DH del
+  caso BNPZ. Tuttavia il probe su `home/index.aspx` e `media/esplora.aspx`
+  intercetta solo immagini gallery/copertina e non fa emergere item pubblici,
+  viewer Mirador, manifest o `info.json`; il dominio resta quindi interessante,
+  ma non ancora sufficiente come terzo campione tecnico riusabile.
 
 Scheda minima prima di proporre un nuovo portale:
 
