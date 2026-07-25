@@ -600,6 +600,14 @@ def _restore_formats_from_prefs(prefs: dict) -> bool:
     return True
 
 
+def _prompt_for_formats_after_input_load(glossario_data, lingua) -> list[str]:
+    """Apre la selezione formati dopo il caricamento input senza duplicare la persistenza."""
+    selected_formats = ask_image_formats(glossario_data, lingua)
+    if selected_formats:
+        state["formats"] = selected_formats
+    return selected_formats
+
+
 def _get_default_output_dir(sub: str = "") -> str:
     """Ritorna il percorso della cartella output di default.
     In modalità portable: <cartella exe>/output/
@@ -3031,10 +3039,7 @@ def action_open_input(glossario_data, lingua, parent=None):
         msg.exec()
 
         # 1) Selezione formati immagine (pre-seleziona quelli salvati nel config)
-        scelti = ask_image_formats(glossario_data, lingua)
-        if scelti:
-            state["formats"] = scelti
-            _write_config_prefs("formats", scelti)
+        _prompt_for_formats_after_input_load(glossario_data, lingua)
 
         # 2) Selezione cartelle output:
         #    - se incompatibili: avvisa e apre il dialog
