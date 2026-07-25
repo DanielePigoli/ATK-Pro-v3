@@ -490,6 +490,11 @@ Valutazione comparativa operativa (2026-07-25):
   quindi il suo ramo va mantenuto in stato prudente finche' non verifichiamo
   meglio la varianza delle licenze item-level e il rapporto tra manifest
   pubblico, PDF scaricabile e diritti dichiarati.
+- micro-step completato il 2026-07-25 sullo stesso ramo PHAIDRA: la sonda
+  `verify_phaidra_technical_probe.py` ora rileva e riporta esplicitamente
+  notice diritti come `All rights reserved` / `Tutti i diritti riservati`,
+  cosi' il blocco non resta solo descritto in roadmap ma diventa verificabile
+  anche nei controlli tecnici locali futuri.
 - la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
   strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
   viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,

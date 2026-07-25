@@ -34,6 +34,9 @@ ATTR_URL_RE = re.compile(
 )
 ABSOLUTE_URL_RE = re.compile(r"https?://[^\s\"'<>\\)]+", re.IGNORECASE)
 OBJECT_RE = re.compile(r"/(?:view|detail|api/object)/(?P<object_id>o:[0-9]+)(?:[/?#]|$)", re.IGNORECASE)
+RIGHTS_NOTICE_RE = re.compile(
+    r"(?i)\b(all rights reserved|tutti i diritti riservati)\b"
+)
 
 
 def _load_url(url: str, timeout: int) -> str:
@@ -147,6 +150,26 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
             )
         )
 
+    rights_match = RIGHTS_NOTICE_RE.search(html)
+    if rights_match:
+        base_identifier = ""
+        try:
+            parsed_base = urlparse(base_url)
+            object_match = OBJECT_RE.search(parsed_base.path)
+            if object_match:
+                base_identifier = object_match.group("object_id")
+        except Exception:
+            base_identifier = ""
+        candidates.append(
+            ProbeCandidate(
+                kind="rights_notice",
+                role="phaidra_rights_notice",
+                identifier=base_identifier,
+                url=base_url,
+                source=rights_match.group(1),
+            )
+        )
+
     return sorted(candidates, key=lambda c: (c.kind, c.role, c.identifier, c.url))
 
 
@@ -169,7 +192,7 @@ def write_report(path: Path, candidates: list[ProbeCandidate]) -> None:
 
 def _summarize(candidates: list[ProbeCandidate]) -> str:
     if not candidates:
-        return "Nessun record PHAIDRA, manifest, info.json, immagine, PDF o export metadati candidato trovato."
+        return "Nessun record PHAIDRA, manifest, info.json, immagine, PDF, export metadati o notice diritti candidato trovato."
     counts: dict[str, int] = {}
     roles: dict[str, int] = {}
     for candidate in candidates:
