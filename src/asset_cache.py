@@ -2,12 +2,13 @@ import threading
 from collections import OrderedDict
 from PySide6.QtGui import QPixmap
 
+MAX_PIXMAP_CACHE_ITEMS = 16
 MAX_TEXT_CACHE_ITEMS = 24
 MAX_TEXT_CACHE_BYTES = 1 * 1024 * 1024
 
 class AssetCache:
     def __init__(self):
-        self._pixmap_cache = {}
+        self._pixmap_cache = OrderedDict()
         self._text_cache = OrderedDict()
         self._lock = threading.Lock()
 
@@ -17,12 +18,16 @@ class AssetCache:
         start = time.perf_counter()
         with self._lock:
             if path in self._pixmap_cache:
+                pixmap = self._pixmap_cache.pop(path)
+                self._pixmap_cache[path] = pixmap
                 elapsed = (time.perf_counter() - start) * 1000
                 logging.debug(f"[CACHE] get_pixmap HIT {path} ({elapsed:.2f} ms)")
-                return self._pixmap_cache[path]
+                return pixmap
         pixmap = QPixmap(path)
         with self._lock:
             self._pixmap_cache[path] = pixmap
+            while len(self._pixmap_cache) > MAX_PIXMAP_CACHE_ITEMS:
+                self._pixmap_cache.popitem(last=False)
         elapsed = (time.perf_counter() - start) * 1000
         logging.debug(f"[CACHE] get_pixmap MISS {path} ({elapsed:.2f} ms)")
         return pixmap
