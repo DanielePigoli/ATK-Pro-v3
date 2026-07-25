@@ -383,6 +383,11 @@ def _read_config_prefs() -> dict:
 
 def _write_config_prefs(key: str, value) -> None:
     """Aggiorna una singola chiave delle preferenze nel config JSON."""
+    _write_config_prefs_batch({key: value})
+
+
+def _write_config_prefs_batch(updates: dict) -> None:
+    """Aggiorna piu' chiavi delle preferenze in un'unica scrittura del config JSON."""
     global _CONFIG_PREFS_CACHE_PATH, _CONFIG_PREFS_CACHE_SIGNATURE, _CONFIG_PREFS_CACHE_VALUE
     import os as _os
     import json as _json
@@ -394,13 +399,13 @@ def _write_config_prefs(key: str, value) -> None:
         if _os.path.exists(cfg):
             with open(cfg, encoding="utf-8") as fh:
                 data = _json.load(fh)
-        data[key] = value
+        data.update(updates)
         with open(cfg, "w", encoding="utf-8") as fh:
             _json.dump(data, fh, ensure_ascii=False, indent=2)
         _CONFIG_PREFS_CACHE_PATH = cfg
         _CONFIG_PREFS_CACHE_SIGNATURE = _config_file_signature(cfg)
         _CONFIG_PREFS_CACHE_VALUE = _normalize_config_prefs(data)
-        logging.debug(f"Prefs salvate: {key}={value}")
+        logging.debug(f"Prefs salvate: {updates}")
     except Exception as e:
         logging.debug(f"Errore scrittura prefs config: {e}")
 
@@ -482,9 +487,13 @@ def _is_current_disclaimer_accepted() -> bool:
 
 def _write_config_disclaimer_accepted() -> None:
     """Scrive nel config utente l'accettazione della revisione legale corrente."""
-    _write_config_prefs("disclaimer_accepted", True)
-    _write_config_prefs("disclaimer_revision", DISCLAIMER_REVISION)
-    _write_config_prefs("disclaimer_accepted_version", VERSION)
+    _write_config_prefs_batch(
+        {
+            "disclaimer_accepted": True,
+            "disclaimer_revision": DISCLAIMER_REVISION,
+            "disclaimer_accepted_version": VERSION,
+        }
+    )
 
 
 def _get_default_output_dir(sub: str = "") -> str:
