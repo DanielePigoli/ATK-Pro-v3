@@ -554,6 +554,12 @@ Valutazione comparativa operativa (2026-07-25):
   galleria/copertina e non fa emergere item pubblici, viewer Mirador, manifest
   o `info.json`; anche questo dominio resta quindi promettente come portale
   culturale, ma non ancora sufficiente come terzo campione tecnico riusabile.
+- ricontrollo live 2026-07-26 sugli host `archiviogazzettadiparma.medialibrary.it`
+  e `lodovico.medialibrary.it`: la sonda `verify_mlol_dh_technical_probe.py`
+  conferma esito `NO_GO` sia su `home/index.aspx` sia su `media/esplora.aspx`.
+  Nel markup pubblico emergono ancora solo immagini di galleria/copertina e
+  pagine informative `.aspx`, senza URL `/item/{guid}`, manifest Jarvis
+  `meta/iiif/{guid}/manifest` o altri segnali record-level riusabili.
 - decisione operativa 2026-07-26 sul ramo `mlol_digital_humanities_italia` /
   `memooria_jarvis_istanze_italiane`: la riapertura non deve basarsi su nuove
   landing page o immagini isolate, ma su un criterio piu' netto. Per
