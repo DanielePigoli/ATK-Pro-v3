@@ -1,6 +1,8 @@
 import src.manifest_utils as manifest_utils
 from datetime import date
 import json
+from datetime import datetime
+from urllib.parse import urlparse
 
 from src.portal_registry import (
     detect_portal_from_url,
@@ -216,3 +218,20 @@ def test_write_portal_policy_override_template(tmp_path):
     assert set(data["portals"]) == set(PORTAL_REGISTRY)
     assert data["portals"]["antenati"]["record_mode_policy"] == "r_ok"
     assert data["portals"]["manifest_diretto"]["record_mode_policy"] == "variable"
+
+
+def test_registry_policy_metadata_is_present_for_supported_portals():
+    for portal in PORTAL_REGISTRY.values():
+        if portal.key == "manifest_diretto":
+            assert portal.policy_checked_at == ""
+            assert portal.policy_source_urls == ()
+            continue
+
+        parsed_date = datetime.strptime(portal.policy_checked_at, "%Y-%m-%d")
+        assert parsed_date.year >= 2026, portal.key
+        assert portal.policy_source_urls, portal.key
+
+        for source_url in portal.policy_source_urls:
+            parsed = urlparse(source_url)
+            assert parsed.scheme in {"http", "https"}, (portal.key, source_url)
+            assert parsed.netloc, (portal.key, source_url)
