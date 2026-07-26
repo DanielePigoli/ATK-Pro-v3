@@ -607,6 +607,14 @@ Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
   conferma che, allo stato attuale, UniFI espone bene record, metadata e
   surrogate visivi, ma non ancora un percorso manifesto/download pubblico
   equivalente ai portali gia' promossi.
+- micro-step tecnico completato il 2026-07-26 sullo stesso ramo UniFI:
+  aggiunta la sonda dedicata `verify_unifi_technical_probe.py`, con test
+  offline `tests/test_unifi_technical_probe.py`. La sonda intercetta item
+  pubblici, API DSpace-GLAM, bundle, bitstream, thumbnail e surrogate visivi,
+  ma non interpreta automaticamente i link `content` come download pubblico
+  effettivo; sul campione reale `ea8510d3-4f09-41b6-b69a-5c4ff3d0d082`
+  restituisce quindi `REVIEW`, coerente con un backend pubblico forte ma non
+  ancora equivalente a un supporto IIIF/download diretto gia' promuovibile.
 - decisione operativa 2026-07-26 sul ramo UniFI: trattare
   `impronte_digitali_unifi` come candidato forte da monitorare e approfondire,
   non come promozione immediata. Il prossimo eventuale micro-step dovra'
