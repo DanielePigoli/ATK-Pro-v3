@@ -54,3 +54,38 @@ def test_invalid_local_policy_json_returns_error(tmp_path, monkeypatch, capsys):
     captured = capsys.readouterr()
     assert exit_code == 1
     assert "not valid JSON" in captured.out
+
+
+def test_valid_local_policy_reports_active_override_count(tmp_path, monkeypatch, capsys):
+    override_path = tmp_path / "portal_policy_overrides.json"
+    override_path.write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "portals": {
+                    "bncf_teca": {
+                        "record_mode_policy": "r_limited",
+                        "policy_checked_at": "2026-06-01",
+                        "policy_recheck_days": 365,
+                        "policy_source_urls": ["https://example.test/terms"],
+                    },
+                    "gallica": {
+                        "record_mode_policy": "not-valid",
+                        "policy_source_urls": ["", "   "],
+                    },
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["verify_portal_policy.py", "--local-policy", str(override_path), "--today", "2026-06-02"],
+    )
+
+    exit_code = vpp.main()
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert "Active local overrides: 1" in captured.out

@@ -15,6 +15,7 @@ from src.portal_registry import (  # noqa: E402
     R_POLICY_LABELS,
     get_effective_portal_policy,
     get_portal_policy_override_path,
+    load_portal_policy_overrides,
     iter_portals,
     write_portal_policy_override_template,
 )
@@ -52,6 +53,7 @@ def main() -> int:
     print(f"Local policy file: {policy_path}")
     if not policy_path.exists():
         print("Local policy file: not present; using registry defaults.")
+        active_overrides = {}
     else:
         try:
             raw_policy = json.loads(policy_path.read_text(encoding="utf-8"))
@@ -61,6 +63,9 @@ def main() -> int:
         if not isinstance(raw_policy, dict) or not isinstance(raw_policy.get("portals"), dict):
             print("ERROR: local policy file must contain a top-level 'portals' object.")
             return 1
+        active_overrides = load_portal_policy_overrides(policy_path)
+
+    print(f"Active local overrides: {len(active_overrides)}")
 
     for portal in iter_portals():
         policy = get_effective_portal_policy(portal.key, local_policy_path=policy_path, today=today)
