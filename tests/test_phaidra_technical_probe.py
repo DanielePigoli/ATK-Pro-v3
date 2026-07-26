@@ -36,6 +36,24 @@ def test_extract_candidates_finds_rights_notice_from_markup():
     assert by_role["phaidra_rights_notice"].source == "All rights reserved"
 
 
+def test_extract_candidates_ignores_rights_phrase_inside_script_only():
+    html = """
+    <script>
+    const filters = {
+        query: '(dc_license:"All rights reserved" OR dc_license:http://rightsstatements.org/vocab/InC/1.0/)'
+    };
+    </script>
+    <a href="https://phaidra.cab.unipd.it/view/o:327971">scheda</a>
+    <a href="https://phaidra.unipd.it/api/object/o:327971/iiifmanifest">IIIF-MANIFEST</a>
+    """
+
+    candidates = probe.extract_candidates(html, "https://phaidra.cab.unipd.it/view/o:327971")
+    roles = {candidate.role for candidate in candidates}
+
+    assert "phaidra_iiif_manifest" in roles
+    assert "phaidra_rights_notice" not in roles
+
+
 def test_extract_candidates_finds_iiif_image_thumbnail_and_download():
     html = """
     <img src="https://phaidra.unipd.it/api/object/o:369506/thumbnail">

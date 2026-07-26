@@ -485,11 +485,11 @@ Valutazione comparativa operativa (2026-07-25):
   item-level gia' noti sul dominio ufficiale. Le collection di annata restano
   volutamente fuori dal flusso operativo e servono solo come discovery
   manuale verso i manifest figli del singolo fascicolo o oggetto;
-- `phaidra.unipd.it` resta molto promettente sul piano tecnico, ma il record
-  pubblico provato `o:369506` espone nel markup `DC.rights = All rights reserved`;
-  quindi il suo ramo va mantenuto in stato prudente finche' non verifichiamo
-  meglio la varianza delle licenze item-level e il rapporto tra manifest
-  pubblico, PDF scaricabile e diritti dichiarati.
+- `phaidra.unipd.it` resta molto promettente sul piano tecnico, ma il primo
+  record pubblico provato `o:369506` espone nel markup pubblico una traccia
+  `DC.rights = All rights reserved`; quindi il suo ramo va mantenuto in stato
+  prudente finche' non verifichiamo meglio la varianza delle licenze item-level
+  e il rapporto tra manifest pubblico, PDF scaricabile e diritti dichiarati.
 - micro-step completato il 2026-07-25 sullo stesso ramo PHAIDRA: la sonda
   `verify_phaidra_technical_probe.py` ora rileva e riporta esplicitamente
   notice diritti come `All rights reserved` / `Tutti i diritti riservati`,
@@ -497,11 +497,22 @@ Valutazione comparativa operativa (2026-07-25):
   anche nei controlli tecnici locali futuri.
 - decisione operativa 2026-07-26 sullo stesso ramo PHAIDRA: il prossimo
   scouting non deve partire da un nuovo refactor o da una promozione diretta,
-  ma da una soglia go/no-go piu' chiara. Per riaprire davvero il candidato
-  serve almeno un secondo oggetto pubblico PHAIDRA con manifest IIIF stabile e
-  con rights notice o licenza meno restrittiva del primo campione `o:369506`,
-  cosi' da distinguere un limite del singolo record da una chiusura sistemica
-  del portale sul download.
+  ma da una soglia go/no-go piu' chiara. Questa soglia minima ora risulta
+  superata: oltre al primo campione `o:369506`, i record pubblici `o:327971`
+  e `o:566070` espongono un manifest IIIF stabile sul dominio ufficiale
+  `phaidra.unipd.it`, con download pubblico e licenze item-level meno
+  restrittive del primo caso (`CC BY-NC-SA 4.0` nei metadati pubblici del
+  portale). Il candidato non va ancora promosso a supporto tecnico diretto, ma
+  esce dal blocco "serve un secondo oggetto" e rientra in stato `REVIEW`
+  prudente.
+- micro-step tecnico completato il 2026-07-26 sullo stesso ramo PHAIDRA: la
+  sonda `verify_phaidra_technical_probe.py` e' stata corretta per ignorare
+  falsi positivi di rights notice presenti solo in blocchi `<script>` o
+  `<style>` del markup. Dopo la correzione, i controlli live sui record
+  pubblici `o:327971` e `o:566070` restituiscono `REVIEW` anziche' `HOLD`, e
+  `verify_manifest_url.py` conferma per `o:327971` il download valido del
+  manifest `https://phaidra.unipd.it/api/object/o:327971/iiifmanifest`
+  con codice 200 e 1 canvas.
 - la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
   strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
   viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,

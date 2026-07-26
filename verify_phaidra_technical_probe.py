@@ -37,6 +37,8 @@ OBJECT_RE = re.compile(r"/(?:view|detail|api/object)/(?P<object_id>o:[0-9]+)(?:[
 RIGHTS_NOTICE_RE = re.compile(
     r"(?i)\b(all rights reserved|tutti i diritti riservati)\b"
 )
+SCRIPT_BLOCK_RE = re.compile(r"(?is)<script\b[^>]*>.*?</script>")
+STYLE_BLOCK_RE = re.compile(r"(?is)<style\b[^>]*>.*?</style>")
 
 
 def _load_url(url: str, timeout: int) -> str:
@@ -150,7 +152,9 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
             )
         )
 
-    rights_match = RIGHTS_NOTICE_RE.search(html)
+    searchable_html = SCRIPT_BLOCK_RE.sub(" ", html)
+    searchable_html = STYLE_BLOCK_RE.sub(" ", searchable_html)
+    rights_match = RIGHTS_NOTICE_RE.search(searchable_html)
     if rights_match:
         base_identifier = ""
         try:
