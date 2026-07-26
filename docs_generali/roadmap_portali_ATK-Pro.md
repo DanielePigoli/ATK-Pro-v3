@@ -543,6 +543,12 @@ Valutazione comparativa operativa (2026-07-25):
   galleria/copertina e non fa emergere item pubblici, viewer Mirador, manifest
   o `info.json`; anche questo dominio resta quindi promettente come portale
   culturale, ma non ancora sufficiente come terzo campione tecnico riusabile.
+- decisione operativa 2026-07-26 sul ramo `mlol_digital_humanities_italia` /
+  `memooria_jarvis_istanze_italiane`: la riapertura non deve basarsi su nuove
+  landing page o immagini isolate, ma su un criterio piu' netto. Per
+  riattivare davvero il ramo serve un terzo host con pagina item pubblica
+  record-level e manifest IIIF stabile; i casi che mostrano solo galleria,
+  copertina o viewer potenziale senza item pubblico restano in stato `HOLD`.
 
 Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
 
