@@ -594,6 +594,12 @@ Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
   diretto del primo bitstream testato risponde pero' `401`, quindi il portale
   non e' ancora promuovibile come download pubblico diretto anche se mostra un
   backend DSpace-GLAM/IIIF reale e riusabile per scouting prudente.
+- affinamento live 2026-07-26 sullo stesso ramo UniFI: il thumbnail generato
+  del primo bitstream (`THUMBNAIL`) e' invece accessibile pubblicamente come
+  immagine JPEG con codice 200, mentre il file `MAG` non rivela URL manifest
+  o endpoint IIIF pubblici espliciti. Il portale va quindi descritto come
+  consultazione metadata/surrogati web parzialmente aperta, ma non ancora come
+  download o IIIF diretto pubblico pienamente riusabile.
 - decisione operativa 2026-07-26 sul ramo UniFI: trattare
   `impronte_digitali_unifi` come candidato forte da monitorare e approfondire,
   non come promozione immediata. Il prossimo eventuale micro-step dovra'
