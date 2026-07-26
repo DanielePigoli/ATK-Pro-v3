@@ -1,6 +1,6 @@
 # ============================
-# ATK-Pro · .gitignore v2.0.4
-# Aggiornato: 15/12/2025 (v2.0-modular release prep)
+# ATK-Pro · .gitignore
+# Base storica 15/12/2025, estesa per il ciclo v3
 # ============================
 
 # 🔁 Cache e compilati Python
@@ -146,8 +146,8 @@ Thumbs.db
 /portable.txt
 
 # ============================
-# ATK-Pro · .gitignore v3.0.0
-# Aggiornato: 26/04/2026 (v3.0 dev — esclusi script di servizio locali)
+# Estensioni per sviluppo v3
+# Aggiornato: 26/04/2026 (script di servizio locali esclusi dal repo)
 # ============================
 
 # 🔨 Script di servizio usati durante lo sviluppo v3.0

@@ -78,6 +78,10 @@ Nota successiva 2026-07-26 sui punti sopra:
 - `requirements.txt` non presenta piu l'anomalia descritta in modo troppo
   specifico nello snapshot; resta al piu una manutenzione leggera dei commenti
   e delle note di contesto;
+- il controllo root hygiene rieseguito il 2026-07-26 conferma che file
+  temporanei, log, build e output locali osservati nella root risultano per lo
+  piu gia ignorati o coperti da regole di esclusione; non emerge un debito
+  urgente di pulizia distruttiva in questa fase;
 - questo file va quindi letto come fotografia del rischio emerso a fine maggio,
   non come elenco aggiornato dei debiti ancora aperti.
 
@@ -100,9 +104,7 @@ rischio di integrazioni fragili o non coerenti con il disclaimer.
 
 ## Prossime mosse consigliate
 
-1. Eseguire una passata di inventario su file temporanei, log e output locali
-   prima di una release pulita.
-2. Continuare il consolidamento della matrice/roadmap portali come fonte di
+1. Continuare il consolidamento della matrice/roadmap portali come fonte di
    priorita, rischio e metodo tecnico.
-3. Solo dopo, valutare nuovi portali pubblici/istituzionali con IIIF/API o
+2. Solo dopo, valutare nuovi portali pubblici/istituzionali con IIIF/API o
    documentazione tecnica chiara.
