@@ -29,7 +29,7 @@ release pubblica multilingue completa.
 | Portali esistenti | Go italiano; verifica globale aperta | Registry e policy comprendono 25 capability. Lo smoke live del 2026-06-22 passa su tutti i portali italiani e su 24/25 campioni complessivi; Gallica resta da riallineare per risposta HTTP 403 del manifest campione. |
 | Test tecnici | Go | Suite completa del 2026-06-23: 559 test passati e 38 skip attesi; verificatori guida italiana, asset documentali e policy portali superati. |
 | Packaging | Go RC2 dopo build | Build PyInstaller onedir Windows RC1 generata, avviata e provata manualmente; installer Windows RC1 generato con Inno Setup; workflow macOS e Linux superati e artefatti caricati nella pre-release RC1. Per RC2 il perimetro tecnico dei fix AI/OCR e dei portali sensibili e' stato rieseguito; eventuali conferme manuali esterne sui casi Gemini restano utili ma non bloccanti. |
-| File temporanei | Go con controllo finale | Inventario root eseguito: artefatti locali, cache, build, log, screenshot e output test risultano ignorati o coperti da regole di esclusione; prima del tag resta da confermare `git status --short --ignored`. |
+| File temporanei | Go | Inventario root rieseguito e confermato il 2026-07-26: artefatti locali, cache, build, log, screenshot e output test risultano ignorati o coperti da regole di esclusione; `git status --short --ignored` non ha evidenziato gap urgenti di hygiene prima del tag. |
 
 ## Suite smoke pre-RC
 
