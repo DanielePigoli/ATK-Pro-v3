@@ -3,6 +3,7 @@ from src.portal_adapters import (
     PortalRequestAdapter,
     resolve_direct_image_download,
     resolve_direct_pdf_download,
+    resolve_synthetic_manifest_download,
 )
 
 
@@ -279,3 +280,74 @@ def test_portal_request_adapter_handles_unknown_portal():
     assert adapter.referer is None
     assert adapter.tile_max_workers is None
     assert adapter.tile_inter_delay == 0.0
+
+
+def test_resolve_synthetic_manifest_download_for_bdt(monkeypatch):
+    monkeypatch.setattr(
+        "src.portal_adapters._build_bdt_synthetic_manifest",
+        lambda page_url, scraped_html=None: {"sequences": [{"canvases": [{"label": "1"}]}]},
+    )
+
+    adapter, manifest, filename = resolve_synthetic_manifest_download(
+        "biblioteca_digitale_trentina",
+        "https://bdt.bibcom.trento.it/Testi-a-stampa/113",
+        container_id="smoke",
+        title_slug="titolo",
+        scraped_html="<html></html>",
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "BDT"
+    assert manifest == {"sequences": [{"canvases": [{"label": "1"}]}]}
+    assert filename == "manifest_bdt_113_titolo.json"
+
+
+def test_resolve_synthetic_manifest_download_for_bdl(monkeypatch):
+    monkeypatch.setattr(
+        "src.portal_adapters._build_bdl_pdf_manifest",
+        lambda page_url: {"seeAlso": [{"@id": page_url, "format": "application/pdf"}]},
+    )
+
+    adapter, manifest, filename = resolve_synthetic_manifest_download(
+        "biblioteca_digitale_lombarda",
+        "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf",
+        container_id="smoke",
+        title_slug="titolo",
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "BDL"
+    assert manifest["seeAlso"][0]["@id"].endswith("/12404/pdf")
+    assert filename == "manifest_bdl_12404_titolo.json"
+
+
+def test_resolve_synthetic_manifest_download_for_rovereto(monkeypatch):
+    monkeypatch.setattr(
+        "src.portal_adapters._build_rovereto_synthetic_manifest",
+        lambda page_url: {"sequences": [{"canvases": [{"label": "1"}, {"label": "2"}]}]},
+    )
+
+    adapter, manifest, filename = resolve_synthetic_manifest_download(
+        "rovereto_digital_library",
+        "https://digitallibrary.bibliotecacivica.rovereto.tn.it/entities/publication/e4199e9b-c79b-4c3d-b157-be2dcfc0407f",
+        container_id="smoke",
+        title_slug="titolo",
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "Rovereto"
+    assert len(manifest["sequences"][0]["canvases"]) == 2
+    assert filename == "manifest_rovereto_e4199e9b-c79b-4c3d-b157-be2dcfc0407f_titolo.json"
+
+
+def test_resolve_synthetic_manifest_download_returns_none_for_unknown_portal():
+    adapter, manifest, filename = resolve_synthetic_manifest_download(
+        "non_esiste",
+        "https://example.test/item/1",
+        container_id="smoke",
+        title_slug="titolo",
+    )
+
+    assert adapter is None
+    assert manifest is None
+    assert filename is None

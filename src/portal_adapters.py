@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from io import BytesIO
+import re
 
 import requests
 from PIL import Image
@@ -89,6 +90,64 @@ class PortalRequestAdapter:
         )
 
 
+@dataclass(frozen=True)
+class SyntheticManifestPortalAdapter:
+    portal_key: str
+    portal_label: str
+
+    def build_manifest(self, page_url: str, scraped_html: str | None = None):
+        if self.portal_key == "biblioteca_digitale_trentina":
+            return _build_bdt_synthetic_manifest(page_url, scraped_html)
+        if self.portal_key == "biblioteca_digitale_lombarda":
+            return _build_bdl_pdf_manifest(page_url)
+        if self.portal_key == "rovereto_digital_library":
+            return _build_rovereto_synthetic_manifest(page_url)
+        return None
+
+    def build_manifest_filename(self, page_url: str, container_id: str, title_slug: str) -> str:
+        if self.portal_key == "biblioteca_digitale_trentina":
+            bdt_id_match = re.search(r"/(?:Iconografia|Testi-a-stampa)/(\d+)", page_url, re.IGNORECASE)
+            bdt_id = bdt_id_match.group(1) if bdt_id_match else container_id
+            return f"manifest_bdt_{bdt_id}_{title_slug}.json"
+        if self.portal_key == "biblioteca_digitale_lombarda":
+            bdl_id_match = re.search(r"/bdl/public/rest/srv/item/(\d+)/pdf", page_url, re.IGNORECASE)
+            bdl_id = bdl_id_match.group(1) if bdl_id_match else container_id
+            return f"manifest_bdl_{bdl_id}_{title_slug}.json"
+        if self.portal_key == "rovereto_digital_library":
+            rovereto_id_match = re.search(
+                r"/(?:entities/[a-z-]+|server/api/core/items)/([0-9a-f-]{36})",
+                page_url,
+                re.IGNORECASE,
+            )
+            rovereto_id = rovereto_id_match.group(1) if rovereto_id_match else container_id
+            return f"manifest_rovereto_{rovereto_id}_{title_slug}.json"
+        return f"manifest_{container_id}_{title_slug}.json"
+
+
+def _build_bdt_synthetic_manifest(page_url: str, scraped_html: str | None = None):
+    try:
+        from manifest_utils import build_biblioteca_digitale_trentina_synthetic_manifest
+    except ImportError:  # pragma: no cover - package import path
+        from src.manifest_utils import build_biblioteca_digitale_trentina_synthetic_manifest
+    return build_biblioteca_digitale_trentina_synthetic_manifest(page_url, html=scraped_html)
+
+
+def _build_bdl_pdf_manifest(page_url: str):
+    try:
+        from manifest_utils import build_biblioteca_digitale_lombarda_pdf_manifest
+    except ImportError:  # pragma: no cover - package import path
+        from src.manifest_utils import build_biblioteca_digitale_lombarda_pdf_manifest
+    return build_biblioteca_digitale_lombarda_pdf_manifest(page_url)
+
+
+def _build_rovereto_synthetic_manifest(page_url: str):
+    try:
+        from manifest_utils import build_rovereto_synthetic_manifest
+    except ImportError:  # pragma: no cover - package import path
+        from src.manifest_utils import build_rovereto_synthetic_manifest
+    return build_rovereto_synthetic_manifest(page_url)
+
+
 DIRECT_IMAGE_ADAPTERS_BY_CONTEXT = {
     "bnc_direct": DirectImagePortalAdapter(
         portal_label="BNC",
@@ -141,6 +200,21 @@ DIRECT_PDF_ADAPTERS_BY_PORTAL = {
         portal_label="BDT",
         referer="https://bdt.bibcom.trento.it/",
         default_name="documento_bdt",
+    ),
+}
+
+SYNTHETIC_MANIFEST_ADAPTERS_BY_PORTAL = {
+    "biblioteca_digitale_trentina": SyntheticManifestPortalAdapter(
+        portal_key="biblioteca_digitale_trentina",
+        portal_label="BDT",
+    ),
+    "biblioteca_digitale_lombarda": SyntheticManifestPortalAdapter(
+        portal_key="biblioteca_digitale_lombarda",
+        portal_label="BDL",
+    ),
+    "rovereto_digital_library": SyntheticManifestPortalAdapter(
+        portal_key="rovereto_digital_library",
+        portal_label="Rovereto",
     ),
 }
 
@@ -237,3 +311,24 @@ def resolve_direct_pdf_download(portal_key: str | None, tiles_info=None, manifes
                 return adapter, pdf_url
 
     return None, None
+
+
+def resolve_synthetic_manifest_download(
+    portal_key: str | None,
+    page_url: str,
+    *,
+    container_id: str,
+    title_slug: str,
+    scraped_html: str | None = None,
+):
+    """Restituisce (adapter, manifest, manifest_filename) per i portali con builder sintetico stabile."""
+    adapter = SYNTHETIC_MANIFEST_ADAPTERS_BY_PORTAL.get(portal_key)
+    if not adapter:
+        return None, None, None
+
+    manifest = adapter.build_manifest(page_url, scraped_html=scraped_html)
+    if not manifest:
+        return adapter, None, None
+
+    manifest_filename = adapter.build_manifest_filename(page_url, container_id, title_slug)
+    return adapter, manifest, manifest_filename
