@@ -211,6 +211,35 @@ def test_local_policy_override_can_update_record_mode_without_release(tmp_path):
     assert not policy.recheck_due
 
 
+def test_invalid_local_policy_override_falls_back_to_registry(tmp_path):
+    override_path = tmp_path / "portal_policy_overrides.json"
+    override_path.write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "portals": {
+                    "gallica": {
+                        "record_mode_policy": "not-valid",
+                        "policy_checked_at": "not-a-date",
+                        "policy_recheck_days": -10,
+                        "policy_source_urls": ["", "   "],
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    policy = get_effective_portal_policy("gallica", local_policy_path=override_path, today=date(2026, 6, 2))
+
+    assert policy is not None
+    assert policy.policy_source == "registry"
+    assert policy.record_mode_policy == PORTAL_REGISTRY["gallica"].record_mode_policy
+    assert policy.policy_checked_at == PORTAL_REGISTRY["gallica"].policy_checked_at
+    assert policy.policy_recheck_days == PORTAL_REGISTRY["gallica"].policy_recheck_days
+    assert policy.policy_source_urls == PORTAL_REGISTRY["gallica"].policy_source_urls
+
+
 def test_write_portal_policy_override_template(tmp_path):
     output_path = write_portal_policy_override_template(tmp_path / "portal_policy_overrides.json")
     data = json.loads(output_path.read_text(encoding="utf-8"))
