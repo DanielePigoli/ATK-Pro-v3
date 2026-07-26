@@ -495,6 +495,13 @@ Valutazione comparativa operativa (2026-07-25):
   notice diritti come `All rights reserved` / `Tutti i diritti riservati`,
   cosi' il blocco non resta solo descritto in roadmap ma diventa verificabile
   anche nei controlli tecnici locali futuri.
+- decisione operativa 2026-07-26 sullo stesso ramo PHAIDRA: il prossimo
+  scouting non deve partire da un nuovo refactor o da una promozione diretta,
+  ma da una soglia go/no-go piu' chiara. Per riaprire davvero il candidato
+  serve almeno un secondo oggetto pubblico PHAIDRA con manifest IIIF stabile e
+  con rights notice o licenza meno restrittiva del primo campione `o:369506`,
+  cosi' da distinguere un limite del singolo record da una chiusura sistemica
+  del portale sul download.
 - la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
   strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
   viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,
