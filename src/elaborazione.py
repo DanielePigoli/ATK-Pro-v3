@@ -41,6 +41,7 @@ from portal_adapters import (
     PortalRequestAdapter,
     resolve_direct_image_download,
     resolve_direct_pdf_download,
+    resolve_synthetic_manifest_download,
 )
 try:
     from atk_version import PACKAGE_VERSION as VERSION
@@ -526,6 +527,29 @@ class Elaborazione:
             request_adapter = PortalRequestAdapter.for_portal(portale_key, ark_url_lower)
             referer = request_adapter.referer
 
+            synthetic_adapter, synthetic_manifest, synthetic_manifest_filename = resolve_synthetic_manifest_download(
+                portale_key,
+                self.ark_url,
+                container_id=container_id,
+                title_slug=titolo_pulito,
+                scraped_html=getattr(self, "_scraped_html", None),
+            )
+            if synthetic_manifest:
+                os.makedirs(working_folder, exist_ok=True)
+                manifest_path = os.path.join(working_folder, synthetic_manifest_filename)
+                with open(manifest_path, 'w', encoding='utf-8') as _f:
+                    json.dump(synthetic_manifest, _f, ensure_ascii=False, indent=2)
+                self.manifest_path = manifest_path
+                self.output_dir = working_folder
+                n_canvas = len(synthetic_manifest.get('sequences', [{}])[0].get('canvases', []))
+                logger.info(
+                    f"[{synthetic_adapter.portal_label}] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)"
+                )
+                return synthetic_manifest
+            if synthetic_adapter:
+                logger.error(f"[{synthetic_adapter.portal_label}] Impossibile costruire manifest sintetico")
+                return None
+
             # --- BNCF Teca (Firenze): manifest sintetico prioritario ---
             if portale_key == "bncf_teca":
                 from manifest_utils import build_bncf_teca_synthetic_manifest, _build_bncf_teca_manifest, download_bncf_images_brute_force
@@ -675,71 +699,6 @@ class Elaborazione:
                 else:
                     logger.error("[BNC] Impossibile costruire manifest sintetico per BNC Roma")
                     return None
-
-            # --- Biblioteca Digitale Trentina: manifest sintetico da immagini pubbliche ---
-            if portale_key == "biblioteca_digitale_trentina":
-                from manifest_utils import build_biblioteca_digitale_trentina_synthetic_manifest
-                _scraped_html = getattr(self, '_scraped_html', None)
-                manifest = build_biblioteca_digitale_trentina_synthetic_manifest(self.ark_url, html=_scraped_html)
-                if manifest:
-                    os.makedirs(working_folder, exist_ok=True)
-                    bdt_id_match = re.search(r"/(?:Iconografia|Testi-a-stampa)/(\d+)", self.ark_url, re.IGNORECASE)
-                    bdt_id = bdt_id_match.group(1) if bdt_id_match else container_id
-                    manifest_filename = f"manifest_bdt_{bdt_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
-                    n_canvas = len(manifest['sequences'][0]['canvases'])
-                    logger.info(f"[BDT] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
-                    return manifest
-                else:
-                    logger.error("[BDT] Impossibile costruire manifest sintetico")
-                    return None
-
-            # --- Biblioteca Digitale Lombarda: PDF REST pubblico puntuale ---
-            if portale_key == "biblioteca_digitale_lombarda":
-                from manifest_utils import build_biblioteca_digitale_lombarda_pdf_manifest
-                manifest = build_biblioteca_digitale_lombarda_pdf_manifest(self.ark_url)
-                if manifest:
-                    os.makedirs(working_folder, exist_ok=True)
-                    bdl_id_match = re.search(r"/bdl/public/rest/srv/item/(\d+)/pdf", self.ark_url, re.IGNORECASE)
-                    bdl_id = bdl_id_match.group(1) if bdl_id_match else container_id
-                    manifest_filename = f"manifest_bdl_{bdl_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
-                    logger.info(f"[BDL] Manifest sintetico PDF salvato: {manifest_path}")
-                    return manifest
-                logger.error("[BDL] URL non compatibile con PDF REST pubblico")
-                return None
-
-            # --- Rovereto Digital Library: manifest sintetico da API DSpace-GLAM ---
-            if portale_key == "rovereto_digital_library":
-                from manifest_utils import build_rovereto_synthetic_manifest
-                manifest = build_rovereto_synthetic_manifest(self.ark_url)
-                if manifest:
-                    os.makedirs(working_folder, exist_ok=True)
-                    rovereto_id_match = re.search(
-                        r"/(?:entities/[a-z-]+|server/api/core/items)/([0-9a-f-]{36})",
-                        self.ark_url,
-                        re.IGNORECASE,
-                    )
-                    rovereto_id = rovereto_id_match.group(1) if rovereto_id_match else container_id
-                    manifest_filename = f"manifest_rovereto_{rovereto_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
-                    n_canvas = len(manifest['sequences'][0]['canvases'])
-                    logger.info(f"[Rovereto] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
-                    return manifest
-                logger.error("[Rovereto] Impossibile costruire manifest sintetico")
-                return None
 
             # --- Museogalileo Digiteca: manifest sintetico da TecaService ---
             if portale_key == "museogalileo":
