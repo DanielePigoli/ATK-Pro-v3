@@ -78,3 +78,48 @@ def test_write_report_creates_csv(tmp_path: Path):
     text = report.read_text(encoding="utf-8")
     assert "kind,role,identifier,url,source" in text
     assert "jarvis_manifest" in text
+
+
+def test_evaluate_readiness_requires_public_item_or_manifest():
+    readiness = probe._evaluate_readiness([])
+
+    assert readiness.startswith("GO/NO-GO: NO_GO")
+
+
+def test_evaluate_readiness_holds_gallery_only_case():
+    readiness = probe._evaluate_readiness(
+        [
+            probe.ProbeCandidate(
+                kind="image",
+                role="content_image",
+                identifier="cover.jpg",
+                url="https://mlolassets.s3.eu-south-1.amazonaws.com/example/cover.jpg",
+                source="html_attribute",
+            )
+        ]
+    )
+
+    assert readiness.startswith("GO/NO-GO: HOLD")
+
+
+def test_evaluate_readiness_marks_item_and_manifest_for_review():
+    readiness = probe._evaluate_readiness(
+        [
+            probe.ProbeCandidate(
+                kind="catalog_record",
+                role="mlol_item",
+                identifier="185016bb-0d54-412f-9554-5eec348b09f0",
+                url="https://arbor.medialibrary.it/item/185016bb-0d54-412f-9554-5eec348b09f0",
+                source="html_attribute",
+            ),
+            probe.ProbeCandidate(
+                kind="manifest",
+                role="jarvis_manifest",
+                identifier="185016bb-0d54-412f-9554-5eec348b09f0",
+                url="https://archiginnasio.jarvis.memooria.org/meta/iiif/185016bb-0d54-412f-9554-5eec348b09f0/manifest",
+                source="html_attribute",
+            ),
+        ]
+    )
+
+    assert readiness.startswith("GO/NO-GO: REVIEW")

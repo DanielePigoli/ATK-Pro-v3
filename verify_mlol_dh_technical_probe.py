@@ -210,6 +210,26 @@ def _summarize(candidates: list[ProbeCandidate]) -> str:
     return f"{kind_summary} | {role_summary}"
 
 
+def _evaluate_readiness(candidates: list[ProbeCandidate]) -> str:
+    roles = {candidate.role for candidate in candidates}
+    has_record = "mlol_item" in roles
+    has_manifest = any(
+        role in roles
+        for role in {"viewer_manifest_parameter", "jarvis_manifest", "mlol_relative_manifest"}
+    )
+    has_content_image = any(
+        role in roles for role in {"content_image", "iiif_content_image"}
+    )
+
+    if has_content_image and not has_manifest:
+        return "GO/NO-GO: HOLD (solo immagini/vetrina senza manifest record-level pubblico)"
+    if not has_record and not has_manifest:
+        return "GO/NO-GO: NO_GO (nessun item o manifest record-level pubblico emerso)"
+    if has_manifest and has_record:
+        return "GO/NO-GO: REVIEW (item pubblico e manifest IIIF emersi; verificare se l'host aggiunge un campione davvero riusabile)"
+    return "GO/NO-GO: HOLD (segnali tecnici presenti ma non ancora sufficienti per riaprire il candidato)"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -243,6 +263,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Candidati trovati: {len(candidates)}")
     print(f"Report: {args.output}")
     print(_summarize(candidates))
+    print(_evaluate_readiness(candidates))
     for candidate in candidates[:20]:
         label = f"{candidate.kind} [{candidate.role}]"
         if candidate.identifier:
