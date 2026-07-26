@@ -621,6 +621,35 @@ Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
   verificare se il viewer pubblico espone manifest IIIF o immagini web
   riusabili senza autenticazione, distinguendo chiaramente consultazione
   aperta, metadata pubblici e download effettivo.
+- riapertura mirata 2026-07-26 su `doge.unige.net` (DOGE Digital Library,
+  Universita' di Genova): nuova pista italiana molto forte nello stesso ramo
+  `biblioteche_digitali_locali_iiif`. Le fonti ufficiali SBA UniGe descrivono
+  DOGE come digital library basata su DSpace-GLAM, con visualizzatore Mirador,
+  protocollo IIIF, uscita OAI-PMH e disponibilita' generale degli oggetti
+  UniGe con licenza `CC BY-SA`, mentre ai metadati si applica `CC0`.
+- verifica tecnica live 2026-07-26 sul campione reale
+  `https://doge.unige.net/entities/publication/b1c2be2c-e1ae-4676-93e3-07e8e8398f72`:
+  il record pubblico espone item API DSpace-GLAM, handle persistente,
+  metadati item-level con `dc.rights.license = CC BY-SA`, bundle `ORIGINAL`,
+  `THUMBNAIL`, `BRANDED_PREVIEW` e `IIIF-PDF-*`. Il thumbnail item-level e'
+  scaricabile pubblicamente con codice 200, mentre il content del file
+  originale testato risponde `401` e i bitstream principali risultano marcati
+  `iiif` + `nodownload`.
+- micro-step tecnico completato il 2026-07-26 sullo stesso ramo DOGE:
+  aggiunta la sonda dedicata `verify_doge_technical_probe.py`, con test offline
+  `tests/test_doge_technical_probe.py`. La sonda intercetta record pubblici,
+  handle, item API, bundle, bitstream, thumbnail e preview tecniche senza
+  assumere automaticamente che i link `content` dell'`ORIGINAL` siano download
+  pubblici leciti. Sul campione reale la sonda restituisce `REVIEW`, coerente
+  con una consultazione pubblica molto ricca ma ancora distinta dalla piena
+  promozione a supporto download diretto.
+- decisione operativa 2026-07-26 sul ramo DOGE: trattare `doge_unige` come
+  candidato molto forte e gia' ben strumentato, potenzialmente piu' avanzato di
+  UniFI sul piano delle licenze item-level e dei surrogate pubblici. Il
+  prossimo eventuale micro-step dovra' chiarire se esiste un percorso
+  manifesto/preview ufficiale sufficientemente stabile da giustificare una
+  promozione prudente `R_LIMITED`, senza oltrepassare il vincolo `nodownload`
+  dei file originali.
 
 Scheda minima prima di proporre un nuovo portale:
 
