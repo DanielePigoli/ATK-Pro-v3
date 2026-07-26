@@ -12,9 +12,12 @@ alla fase v3; questo file resta come snapshot storico post-localizzazione.
 
 ## Stato Git
 
-- `main` risulta allineato a `origin/main` dopo la PR #13.
-- La localizzazione e la policy portali sono ora integrate nel ramo principale.
-- Il nuovo lavoro parte dal ramo `codex/post-localization-project-audit`.
+- Al momento dello snapshot, `main` risultava allineato a `origin/main` dopo
+  il primo ciclo post-localizzazione allora disponibile.
+- La localizzazione e la policy portali risultavano gia integrate nel ramo
+  principale.
+- Il riferimento al ramo operativo di quel passaggio resta storico e non va
+  letto come branch di lavoro corrente.
 
 ## Verifiche eseguite
 
@@ -67,6 +70,13 @@ Punti fragili o da sorvegliare:
 - la root contiene molti file temporanei, log, output di test e script
   diagnostici: serve una passata di inventario prima di una release pulita.
 
+Nota successiva 2026-07-26 sui punti sopra:
+
+- i README macOS/Linux e `tests/roadmap_tests.md` non sono piu criticita
+  aperte, perche sono stati riallineati in blocchi successivi;
+- questo file va quindi letto come fotografia del rischio emerso a fine maggio,
+  non come elenco aggiornato dei debiti ancora aperti.
+
 ## Lettura architetturale portali
 
 Flusso attuale:
@@ -86,10 +96,10 @@ rischio di integrazioni fragili o non coerenti con il disclaimer.
 
 ## Prossime mosse consigliate
 
-1. Correggere i README macOS/Linux per portarli a v3, repository corretto e
-   disclaimer coerente con `disclaimer_legale_ATK-Pro.txt`.
-2. Ripulire o annotare `requirements.txt` per rimuovere duplicazioni evidenti.
-3. Aggiornare `tests/roadmap_tests.md` o sostituirlo con una roadmap test v3.
-4. Preparare la matrice dei portali gia presenti, con priorita e rischio.
-5. Solo dopo, valutare nuovi portali pubblici/istituzionali con IIIF/API o
+1. Ripulire o annotare `requirements.txt` per rimuovere duplicazioni evidenti.
+2. Eseguire una passata di inventario su file temporanei, log e output locali
+   prima di una release pulita.
+3. Continuare il consolidamento della matrice/roadmap portali come fonte di
+   priorita, rischio e metodo tecnico.
+4. Solo dopo, valutare nuovi portali pubblici/istituzionali con IIIF/API o
    documentazione tecnica chiara.
