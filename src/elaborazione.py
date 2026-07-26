@@ -434,6 +434,20 @@ class Elaborazione:
         self.formats = formats
         return self
 
+    def _set_manifest_location(self, working_folder: str, manifest_filename: str):
+        """Aggiorna i riferimenti runtime al manifest nella cartella di lavoro."""
+        self.manifest_path = os.path.join(working_folder, manifest_filename)
+        self.output_dir = working_folder
+        return self.manifest_path
+
+    def _save_manifest_json(self, manifest, working_folder: str, manifest_filename: str):
+        """Salva un manifest JSON e aggiorna i riferimenti runtime associati."""
+        os.makedirs(working_folder, exist_ok=True)
+        manifest_path = self._set_manifest_location(working_folder, manifest_filename)
+        with open(manifest_path, 'w', encoding='utf-8') as manifest_file:
+            json.dump(manifest, manifest_file, ensure_ascii=False, indent=2)
+        return manifest_path
+
     def run(self, formats=None):
         """Orchestratore principale: scarica manifest e elabora record.
         Se formats è passato, lo usa; altrimenti usa self.formats."""
@@ -535,12 +549,11 @@ class Elaborazione:
                 scraped_html=getattr(self, "_scraped_html", None),
             )
             if synthetic_manifest:
-                os.makedirs(working_folder, exist_ok=True)
-                manifest_path = os.path.join(working_folder, synthetic_manifest_filename)
-                with open(manifest_path, 'w', encoding='utf-8') as _f:
-                    json.dump(synthetic_manifest, _f, ensure_ascii=False, indent=2)
-                self.manifest_path = manifest_path
-                self.output_dir = working_folder
+                manifest_path = self._save_manifest_json(
+                    synthetic_manifest,
+                    working_folder,
+                    synthetic_manifest_filename,
+                )
                 n_canvas = len(synthetic_manifest.get('sequences', [{}])[0].get('canvases', []))
                 logger.info(
                     f"[{synthetic_adapter.portal_label}] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)"
@@ -557,15 +570,10 @@ class Elaborazione:
                 # Proviamo il sintetico come prima scelta per massima robustezza
                 manifest = build_bncf_teca_synthetic_manifest(self.ark_url, working_folder)
                 if manifest and isinstance(manifest, dict):
-                    os.makedirs(working_folder, exist_ok=True)
                     # Use a fixed ID for the manifest filename to avoid regex issues with BNCF IDs
                     safe_id = re.search(r'idr=([A-Za-z0-9]+)', self.ark_url).group(1) if "idr=" in self.ark_url else "BNCF"
                     manifest_filename = f"manifest_{safe_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
+                    manifest_path = self._save_manifest_json(manifest, working_folder, manifest_filename)
                     n_canvas = len(manifest['sequences'][0]['canvases'])
                     logger.info(f"[BNCF] Manifest sintetico generato e salvato: {manifest_path} ({n_canvas} immagini)")
                     return manifest
@@ -627,13 +635,8 @@ class Elaborazione:
                 from manifest_utils import build_findbuch_synthetic_manifest
                 manifest = build_findbuch_synthetic_manifest(self.ark_url)
                 if manifest:
-                    os.makedirs(working_folder, exist_ok=True)
                     manifest_filename = f"manifest_{container_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
+                    manifest_path = self._save_manifest_json(manifest, working_folder, manifest_filename)
                     n_canvas = len(manifest['sequences'][0]['canvases'])
                     logger.info(f"[Findbuch] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
                     return manifest
@@ -646,13 +649,8 @@ class Elaborazione:
                 from manifest_utils import build_museogalileo_synthetic_manifest
                 manifest = build_museogalileo_synthetic_manifest(self.ark_url)
                 if manifest:
-                    os.makedirs(working_folder, exist_ok=True)
                     manifest_filename = f"manifest_{container_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
+                    manifest_path = self._save_manifest_json(manifest, working_folder, manifest_filename)
                     n_canvas = len(manifest['sequences'][0]['canvases'])
                     logger.info(f"[Museogalileo] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
                     return manifest
@@ -681,13 +679,8 @@ class Elaborazione:
                     manifest = build_bncf_teca_synthetic_manifest(self.ark_url, working_folder)
 
                 if manifest and isinstance(manifest, dict):
-                    os.makedirs(working_folder, exist_ok=True)
                     manifest_filename = f"manifest_{container_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
+                    manifest_path = self._save_manifest_json(manifest, working_folder, manifest_filename)
                     n_canvas = len(manifest['sequences'][0]['canvases'])
                     logger.info(f"[BNCF] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
                     return manifest
@@ -704,11 +697,8 @@ class Elaborazione:
                     if manifest:
                         manifest = normalize_iiif_manifest_for_processing(manifest)
                         # Salva su disco (stessa logica di download_manifest)
-                        os.makedirs(working_folder, exist_ok=True)
                         manifest_filename_pw = f"manifest_{container_id}_{titolo_pulito}.json"
-                        manifest_path_pw = os.path.join(working_folder, manifest_filename_pw)
-                        with open(manifest_path_pw, "w", encoding="utf-8") as _fh:
-                            json.dump(manifest, _fh, ensure_ascii=False, indent=2)
+                        manifest_path_pw = self._save_manifest_json(manifest, working_folder, manifest_filename_pw)
                         logger.info(f"[Manifest] Salvato via Playwright: {manifest_path_pw}")
                 except Exception as _e:
                     logger.error(f"[Manifest] Playwright fallback errore: {_e}")
@@ -719,8 +709,7 @@ class Elaborazione:
 
             # Determina percorso manifest (same logic as download_manifest)
             manifest_filename = f"manifest_{container_id}_{titolo_pulito}.json"
-            self.manifest_path = os.path.join(working_folder, manifest_filename)
-            self.output_dir = working_folder  # Aggiorna output_dir a cartella di lavoro
+            self._set_manifest_location(working_folder, manifest_filename)
 
             logger.info(f"[OK] Manifest caricato: {self.manifest_path}")
             return manifest
