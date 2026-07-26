@@ -102,6 +102,14 @@ class SyntheticManifestPortalAdapter:
             return _build_bdl_pdf_manifest(page_url)
         if self.portal_key == "rovereto_digital_library":
             return _build_rovereto_synthetic_manifest(page_url)
+        if self.portal_key == "matricula":
+            return _build_matricula_synthetic_manifest(page_url, scraped_html)
+        if self.portal_key == "internet_archive":
+            return _build_internet_archive_synthetic_manifest(page_url)
+        if self.portal_key == "bnc_roma":
+            return _build_bnc_roma_synthetic_manifest(page_url, scraped_html)
+        if self.portal_key == "internetculturale_estense":
+            return _build_internetculturale_estense_synthetic_manifest(page_url)
         return None
 
     def build_manifest_filename(self, page_url: str, container_id: str, title_slug: str) -> str:
@@ -146,6 +154,38 @@ def _build_rovereto_synthetic_manifest(page_url: str):
     except ImportError:  # pragma: no cover - package import path
         from src.manifest_utils import build_rovereto_synthetic_manifest
     return build_rovereto_synthetic_manifest(page_url)
+
+
+def _build_matricula_synthetic_manifest(page_url: str, scraped_html: str | None = None):
+    try:
+        from manifest_utils import build_matricula_synthetic_manifest
+    except ImportError:  # pragma: no cover - package import path
+        from src.manifest_utils import build_matricula_synthetic_manifest
+    return build_matricula_synthetic_manifest(page_url, html=scraped_html)
+
+
+def _build_internet_archive_synthetic_manifest(page_url: str):
+    try:
+        from manifest_utils import build_ia_synthetic_manifest
+    except ImportError:  # pragma: no cover - package import path
+        from src.manifest_utils import build_ia_synthetic_manifest
+    return build_ia_synthetic_manifest(page_url)
+
+
+def _build_bnc_roma_synthetic_manifest(page_url: str, scraped_html: str | None = None):
+    try:
+        from manifest_utils import build_bnc_roma_synthetic_manifest
+    except ImportError:  # pragma: no cover - package import path
+        from src.manifest_utils import build_bnc_roma_synthetic_manifest
+    return build_bnc_roma_synthetic_manifest(page_url, html=scraped_html)
+
+
+def _build_internetculturale_estense_synthetic_manifest(page_url: str):
+    try:
+        from manifest_utils import build_internetculturale_estense_synthetic_manifest
+    except ImportError:  # pragma: no cover - package import path
+        from src.manifest_utils import build_internetculturale_estense_synthetic_manifest
+    return build_internetculturale_estense_synthetic_manifest(page_url)
 
 
 DIRECT_IMAGE_ADAPTERS_BY_CONTEXT = {
@@ -215,6 +255,22 @@ SYNTHETIC_MANIFEST_ADAPTERS_BY_PORTAL = {
     "rovereto_digital_library": SyntheticManifestPortalAdapter(
         portal_key="rovereto_digital_library",
         portal_label="Rovereto",
+    ),
+    "matricula": SyntheticManifestPortalAdapter(
+        portal_key="matricula",
+        portal_label="Matricula",
+    ),
+    "internet_archive": SyntheticManifestPortalAdapter(
+        portal_key="internet_archive",
+        portal_label="IA",
+    ),
+    "bnc_roma": SyntheticManifestPortalAdapter(
+        portal_key="bnc_roma",
+        portal_label="BNC",
+    ),
+    "internetculturale_estense": SyntheticManifestPortalAdapter(
+        portal_key="internetculturale_estense",
+        portal_label="InternetCulturale",
     ),
 }
 
