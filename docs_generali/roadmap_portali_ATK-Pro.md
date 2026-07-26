@@ -600,6 +600,13 @@ Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
   o endpoint IIIF pubblici espliciti. Il portale va quindi descritto come
   consultazione metadata/surrogati web parzialmente aperta, ma non ancora come
   download o IIIF diretto pubblico pienamente riusabile.
+- ricontrollo live 2026-07-26 sullo stesso item UniFI: anche l'endpoint
+  `server/api/core/items/{uuid}/thumbnail` restituisce senza login un
+  bitstream `THUMBNAIL` dedicato, con contenuto JPEG pubblico scaricabile e
+  senza relazioni aggiuntive o manifest nascosti nell'API item-level. Questo
+  conferma che, allo stato attuale, UniFI espone bene record, metadata e
+  surrogate visivi, ma non ancora un percorso manifesto/download pubblico
+  equivalente ai portali gia' promossi.
 - decisione operativa 2026-07-26 sul ramo UniFI: trattare
   `impronte_digitali_unifi` come candidato forte da monitorare e approfondire,
   non come promozione immediata. Il prossimo eventuale micro-step dovra'
