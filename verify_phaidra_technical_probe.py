@@ -203,6 +203,23 @@ def _summarize(candidates: list[ProbeCandidate]) -> str:
     return f"{kind_summary} | {role_summary}"
 
 
+def _evaluate_readiness(candidates: list[ProbeCandidate]) -> str:
+    roles = {candidate.role for candidate in candidates}
+    restrictive_rights = any(
+        candidate.role == "phaidra_rights_notice"
+        and candidate.source.lower() in {"all rights reserved", "tutti i diritti riservati"}
+        for candidate in candidates
+    )
+
+    if "phaidra_iiif_manifest" not in roles:
+        return "GO/NO-GO: NO_GO (nessun manifest IIIF pubblico stabile emerso)"
+    if restrictive_rights:
+        return "GO/NO-GO: HOLD (manifest pubblico presente ma rights item-level restrittivi)"
+    if "phaidra_download" in roles:
+        return "GO/NO-GO: REVIEW (manifest e download pubblico emersi; verificare coerenza con licenza item-level)"
+    return "GO/NO-GO: REVIEW (manifest pubblico emerso; verificare licenza o rights notice del singolo oggetto)"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -235,6 +252,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Candidati trovati: {len(candidates)}")
     print(f"Report: {args.output}")
     print(_summarize(candidates))
+    print(_evaluate_readiness(candidates))
     for candidate in candidates[:20]:
         label = f"{candidate.kind} [{candidate.role}]"
         if candidate.identifier:

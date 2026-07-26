@@ -134,3 +134,55 @@ def test_summarize_mentions_rights_notice():
 
     assert "rights_notice: 1" in summary
     assert "phaidra_rights_notice: 1" in summary
+
+
+def test_evaluate_readiness_requires_manifest():
+    readiness = probe._evaluate_readiness([])
+
+    assert readiness.startswith("GO/NO-GO: NO_GO")
+
+
+def test_evaluate_readiness_holds_when_rights_are_restrictive():
+    readiness = probe._evaluate_readiness(
+        [
+            probe.ProbeCandidate(
+                kind="manifest",
+                role="phaidra_iiif_manifest",
+                identifier="o:369506",
+                url="https://phaidra.unipd.it/api/object/o:369506/iiifmanifest",
+                source="html_attribute",
+            ),
+            probe.ProbeCandidate(
+                kind="rights_notice",
+                role="phaidra_rights_notice",
+                identifier="o:369506",
+                url="https://phaidra.cab.unipd.it/view/o:369506",
+                source="All rights reserved",
+            ),
+        ]
+    )
+
+    assert readiness.startswith("GO/NO-GO: HOLD")
+
+
+def test_evaluate_readiness_marks_manifest_and_download_for_review():
+    readiness = probe._evaluate_readiness(
+        [
+            probe.ProbeCandidate(
+                kind="manifest",
+                role="phaidra_iiif_manifest",
+                identifier="o:369999",
+                url="https://phaidra.unipd.it/api/object/o:369999/iiifmanifest",
+                source="html_attribute",
+            ),
+            probe.ProbeCandidate(
+                kind="pdf",
+                role="phaidra_download",
+                identifier="o:369999",
+                url="https://phaidra.unipd.it/api/object/o:369999/download",
+                source="html_attribute",
+            ),
+        ]
+    )
+
+    assert readiness.startswith("GO/NO-GO: REVIEW")
