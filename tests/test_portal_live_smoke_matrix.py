@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from pathlib import Path
+from urllib.parse import urlparse
 
-from src.portal_registry import PORTAL_REGISTRY, portal_keys
+from src.portal_registry import PORTAL_REGISTRY, detect_portal_from_url, portal_keys
 import verify_portal_live_smoke as smoke
 
 
@@ -80,6 +81,28 @@ def test_live_smoke_matrix_rows_keep_release_status_and_notes():
     for row in _rows():
         assert row["release_status"] in allowed_statuses, row["portal_key"]
         assert row["notes"].strip(), row["portal_key"]
+
+
+def test_live_smoke_matrix_sample_urls_are_absolute_and_match_detectable_hosts():
+    allowed_aliases = {
+        "memooria": {"brixiana", "memooria"},
+        "manifest_diretto": {None},
+    }
+
+    for row in _rows():
+        sample_url = row["sample_url"].strip()
+        parsed = urlparse(sample_url)
+
+        assert parsed.scheme in {"http", "https"}, row["portal_key"]
+        assert parsed.netloc, row["portal_key"]
+        assert " " not in sample_url, row["portal_key"]
+
+        detected_portal = detect_portal_from_url(sample_url)
+        allowed_detected = allowed_aliases.get(row["portal_key"])
+        if allowed_detected is not None:
+            assert detected_portal in allowed_detected, (row["portal_key"], detected_portal)
+        elif detected_portal is not None:
+            assert detected_portal == row["portal_key"], (row["portal_key"], detected_portal)
 
 
 def test_live_smoke_fetch_uses_synthetic_builder_for_synthetic_portals(monkeypatch, tmp_path):
