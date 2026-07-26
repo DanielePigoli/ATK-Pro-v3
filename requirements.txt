@@ -90,7 +90,7 @@ wsproto==1.2.0                        # WebSocket protocol
 sortedcontainers==2.4.0               # Sorted containers
 PySocks==1.7.1                        # SOCKS proxy support
 
-# === OCR (PLACEHOLDER - disabled for v2.0) ===
+# === OCR (placeholder dependency kept for future scope) ===
 pytesseract==0.3.13                   # Tesseract OCR interface (future scope)
 
 # === INTERNAL UTILITIES ===

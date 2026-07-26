@@ -63,8 +63,9 @@ Punti fragili o da sorvegliare:
 - al momento dello snapshot, `README_MACOS.txt` e `README_LINUX.txt` erano
   ancora allineati a v2.2.0, citavano il repository v2 e un disclaimer piu
   vecchio basato su "Canvas LMS";
-- `requirements.txt` contiene intestazione duplicata e va ripulito in una fase
-  documentale/dependency separata;
+- al momento dello snapshot, `requirements.txt` mostrava ancora qualche
+  incertezza documentale e andava ricontrollato in una fase dependency
+  separata;
 - al momento dello snapshot, `tests/roadmap_tests.md` descriveva una
   situazione v2.0 e poteva non rappresentare lo stato reale della suite v3.0;
 - la root contiene molti file temporanei, log, output di test e script
@@ -74,6 +75,9 @@ Nota successiva 2026-07-26 sui punti sopra:
 
 - i README macOS/Linux e `tests/roadmap_tests.md` non sono piu criticita
   aperte, perche sono stati riallineati in blocchi successivi;
+- `requirements.txt` non presenta piu l'anomalia descritta in modo troppo
+  specifico nello snapshot; resta al piu una manutenzione leggera dei commenti
+  e delle note di contesto;
 - questo file va quindi letto come fotografia del rischio emerso a fine maggio,
   non come elenco aggiornato dei debiti ancora aperti.
 
@@ -96,10 +100,9 @@ rischio di integrazioni fragili o non coerenti con il disclaimer.
 
 ## Prossime mosse consigliate
 
-1. Ripulire o annotare `requirements.txt` per rimuovere duplicazioni evidenti.
-2. Eseguire una passata di inventario su file temporanei, log e output locali
+1. Eseguire una passata di inventario su file temporanei, log e output locali
    prima di una release pulita.
-3. Continuare il consolidamento della matrice/roadmap portali come fonte di
+2. Continuare il consolidamento della matrice/roadmap portali come fonte di
    priorita, rischio e metodo tecnico.
-4. Solo dopo, valutare nuovi portali pubblici/istituzionali con IIIF/API o
+3. Solo dopo, valutare nuovi portali pubblici/istituzionali con IIIF/API o
    documentazione tecnica chiara.
