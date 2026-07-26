@@ -105,6 +105,26 @@ def test_live_smoke_matrix_sample_urls_are_absolute_and_match_detectable_hosts()
             assert detected_portal == row["portal_key"], (row["portal_key"], detected_portal)
 
 
+def test_live_smoke_matrix_duplicate_sample_urls_are_explicit():
+    allowed_reuse = {
+        "https://brixiana.jarvis.memooria.org/meta/iiif/a030f44e-9e0e-4d89-8e2f-c911df2ca1cc/manifest": {
+            "brixiana",
+            "memooria",
+        }
+    }
+    seen_by_url: dict[str, set[str]] = {}
+
+    for row in _rows():
+        sample_url = row["sample_url"].strip()
+        seen_by_url.setdefault(sample_url, set()).add(row["portal_key"])
+
+    for sample_url, portal_keys_for_url in seen_by_url.items():
+        if len(portal_keys_for_url) == 1:
+            continue
+        assert sample_url in allowed_reuse, sample_url
+        assert portal_keys_for_url == allowed_reuse[sample_url], sample_url
+
+
 def test_live_smoke_fetch_uses_synthetic_builder_for_synthetic_portals(monkeypatch, tmp_path):
     def fake_builder(sample_url: str) -> dict:
         assert sample_url == "https://bibdig.museogalileo.it/Teca/Viewer?an=000000006600"
