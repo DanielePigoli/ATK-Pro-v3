@@ -622,26 +622,6 @@ class Elaborazione:
                         logger.error("[BNCF] Download diretto immagini brute-force fallito: nessuna immagine trovata")
                         return None
 
-            # --- Matricula Online: manifest sintetico da HTML scraping ---
-            if portale_key == "matricula":
-                from manifest_utils import build_matricula_synthetic_manifest
-                _scraped_html = getattr(self, '_scraped_html', None)
-                manifest = build_matricula_synthetic_manifest(self.ark_url, html=_scraped_html)
-                if manifest:
-                    os.makedirs(working_folder, exist_ok=True)
-                    manifest_filename = f"manifest_{container_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
-                    n_canvas = len(manifest['sequences'][0]['canvases'])
-                    logger.info(f"[Matricula] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
-                    return manifest
-                else:
-                    logger.error("[Matricula] Impossibile costruire manifest sintetico per Matricula Online")
-                    return None
-
             # --- findbuch.net: manifest sintetico da HTML scraping ---
             if portale_key == "findbuch":
                 from manifest_utils import build_findbuch_synthetic_manifest
@@ -659,45 +639,6 @@ class Elaborazione:
                     return manifest
                 else:
                     logger.error("[Findbuch] Impossibile costruire manifest sintetico per findbuch.net")
-                    return None
-
-            # --- Internet Archive: manifest sintetico (iiif.archivelab.org è down) ---
-            if portale_key == "internet_archive":
-                from manifest_utils import build_ia_synthetic_manifest
-                manifest = build_ia_synthetic_manifest(self.ark_url)
-                if manifest:
-                    os.makedirs(working_folder, exist_ok=True)
-                    manifest_filename = f"manifest_{container_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
-                    n_canvas = len(manifest['sequences'][0]['canvases'])
-                    logger.info(f"[IA] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
-                    return manifest
-                else:
-                    logger.error("[IA] Impossibile costruire manifest sintetico per Internet Archive")
-                    return None
-
-            # --- BNC Roma: manifest sintetico da HTML item-level ---
-            if portale_key == "bnc_roma":
-                from manifest_utils import build_bnc_roma_synthetic_manifest
-                _scraped_html = getattr(self, '_scraped_html', None)
-                manifest = build_bnc_roma_synthetic_manifest(self.ark_url, html=_scraped_html)
-                if manifest:
-                    os.makedirs(working_folder, exist_ok=True)
-                    manifest_filename = f"manifest_{container_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
-                    n_canvas = len(manifest['sequences'][0]['canvases'])
-                    logger.info(f"[BNC] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
-                    return manifest
-                else:
-                    logger.error("[BNC] Impossibile costruire manifest sintetico per BNC Roma")
                     return None
 
             # --- Museogalileo Digiteca: manifest sintetico da TecaService ---
@@ -750,25 +691,6 @@ class Elaborazione:
                     n_canvas = len(manifest['sequences'][0]['canvases'])
                     logger.info(f"[BNCF] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
                     return manifest
-
-            # --- Internet Culturale / Estense: manifest sintetico da magparser ---
-            if portale_key == "internetculturale_estense":
-                from manifest_utils import build_internetculturale_estense_synthetic_manifest
-                manifest = build_internetculturale_estense_synthetic_manifest(self.ark_url)
-                if manifest:
-                    os.makedirs(working_folder, exist_ok=True)
-                    manifest_filename = f"manifest_{container_id}_{titolo_pulito}.json"
-                    manifest_path = os.path.join(working_folder, manifest_filename)
-                    with open(manifest_path, 'w', encoding='utf-8') as _f:
-                        json.dump(manifest, _f, ensure_ascii=False, indent=2)
-                    self.manifest_path = manifest_path
-                    self.output_dir = working_folder
-                    n_canvas = len(manifest['sequences'][0]['canvases'])
-                    logger.info(f"[InternetCulturale] Manifest sintetico salvato: {manifest_path} ({n_canvas} canvas)")
-                    return manifest
-                else:
-                    logger.error("[InternetCulturale] Impossibile costruire manifest sintetico")
-                    return None
 
             # Scarica manifest (requests, con referer del portale)
             manifest = download_manifest(manifest_url, working_folder, self.nome_file, referer=referer)

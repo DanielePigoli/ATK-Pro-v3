@@ -351,3 +351,81 @@ def test_resolve_synthetic_manifest_download_returns_none_for_unknown_portal():
     assert adapter is None
     assert manifest is None
     assert filename is None
+
+
+def test_resolve_synthetic_manifest_download_for_matricula(monkeypatch):
+    monkeypatch.setattr(
+        "src.portal_adapters._build_matricula_synthetic_manifest",
+        lambda page_url, scraped_html=None: {"sequences": [{"canvases": [{"label": "1"}]}]},
+    )
+
+    adapter, manifest, filename = resolve_synthetic_manifest_download(
+        "matricula",
+        "https://data.matricula-online.eu/en/oesterreich/graz-seckau/example/",
+        container_id="smoke",
+        title_slug="titolo",
+        scraped_html="<html></html>",
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "Matricula"
+    assert manifest == {"sequences": [{"canvases": [{"label": "1"}]}]}
+    assert filename == "manifest_smoke_titolo.json"
+
+
+def test_resolve_synthetic_manifest_download_for_internet_archive(monkeypatch):
+    monkeypatch.setattr(
+        "src.portal_adapters._build_internet_archive_synthetic_manifest",
+        lambda page_url: {"sequences": [{"canvases": [{"label": "1"}, {"label": "2"}]}]},
+    )
+
+    adapter, manifest, filename = resolve_synthetic_manifest_download(
+        "internet_archive",
+        "https://archive.org/details/example",
+        container_id="smoke",
+        title_slug="titolo",
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "IA"
+    assert len(manifest["sequences"][0]["canvases"]) == 2
+    assert filename == "manifest_smoke_titolo.json"
+
+
+def test_resolve_synthetic_manifest_download_for_bnc_roma(monkeypatch):
+    monkeypatch.setattr(
+        "src.portal_adapters._build_bnc_roma_synthetic_manifest",
+        lambda page_url, scraped_html=None: {"sequences": [{"canvases": [{"label": "1"}]}]},
+    )
+
+    adapter, manifest, filename = resolve_synthetic_manifest_download(
+        "bnc_roma",
+        "http://digitale.bnc.roma.sbn.it/tecadigitale/libro/example",
+        container_id="smoke",
+        title_slug="titolo",
+        scraped_html="<html></html>",
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "BNC"
+    assert manifest == {"sequences": [{"canvases": [{"label": "1"}]}]}
+    assert filename == "manifest_smoke_titolo.json"
+
+
+def test_resolve_synthetic_manifest_download_for_internetculturale_estense(monkeypatch):
+    monkeypatch.setattr(
+        "src.portal_adapters._build_internetculturale_estense_synthetic_manifest",
+        lambda page_url: {"sequences": [{"canvases": [{"label": "1"}, {"label": "2"}, {"label": "3"}]}]},
+    )
+
+    adapter, manifest, filename = resolve_synthetic_manifest_download(
+        "internetculturale_estense",
+        "https://www.internetculturale.it/jmms/iccuviewer/iccu.jsp?id=oai%3Aexample",
+        container_id="smoke",
+        title_slug="titolo",
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "InternetCulturale"
+    assert len(manifest["sequences"][0]["canvases"]) == 3
+    assert filename == "manifest_smoke_titolo.json"
