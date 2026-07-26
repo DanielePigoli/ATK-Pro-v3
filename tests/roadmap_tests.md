@@ -157,11 +157,13 @@ Usare come controllo rapido dopo modifiche a localizzazione, portali o pipeline:
 python verify_localization.py
 python validate_glossary.py
 python verify_glossary.py
+python verify_disclaimer_consent.py
 python verify_document_assets.py
 python verify_italian_guide_content.py
 python verify_portal_matrix_workbook.py
-python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py verify_localization.py verify_document_assets.py verify_italian_guide_content.py verify_portal_matrix_workbook.py verify_portal_live_smoke.py
-python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py tests\test_tile_downloader.py tests\test_qt_worker_coverage.py tests\test_portal_live_smoke_matrix.py -q
+python verify_portal_policy.py --strict
+python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py src\portal_registry.py verify_localization.py verify_disclaimer_consent.py verify_document_assets.py verify_italian_guide_content.py verify_portal_matrix_workbook.py verify_portal_live_smoke.py verify_manifest_url.py verify_portal_policy.py
+python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py tests\test_tile_downloader.py tests\test_qt_worker_coverage.py tests\test_portal_registry.py tests\test_portal_live_smoke_matrix.py -q
 ```
 
 ## Piano di riallineamento
