@@ -577,6 +577,29 @@ Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
   essere `biblioteche_digitali_locali_iiif`, cioe' biblioteche civiche,
   comunali, universitarie o regionali con IIIF pubblico gia' visibile a
   livello record/item.
+- riapertura mirata 2026-07-26 su `improntedigitali.unifi.it` (Impronte
+  Digitali, Universita' di Firenze): nuova pista concreta nello stesso ramo
+  italiano/italofono. La fonte ufficiale UniFI del 23 dicembre 2025 descrive
+  il portale come digital library pubblica basata su DSpace-GLAM, con viewer
+  Mirador e standard IIIF. Un item pubblico reale,
+  `https://improntedigitali.unifi.it/items/ea8510d3-4f09-41b6-b69a-5c4ff3d0d082`,
+  espone senza login l'API DSpace `server/api/core/items/{uuid}` e i bundle
+  `ORIGINAL`, `LICENSE` e `MAG`.
+- verifica tecnica live 2026-07-26 sullo stesso item UniFI: l'API pubblica
+  restituisce metadati record-level leggibili, con `dc.rights.holder =
+  Universita' degli Studi di Firenze - Sistema Bibliotecario di Ateneo` e
+  `dc.rights.license = CC BY-NC-SA`; il bundle `MAG` e' scaricabile con codice
+  200 e il bundle `ORIGINAL` espone bitstream pagina con metadati
+  `bitstream.viewer.provider = iiif` e `nodownload`. Il contenuto immagine
+  diretto del primo bitstream testato risponde pero' `401`, quindi il portale
+  non e' ancora promuovibile come download pubblico diretto anche se mostra un
+  backend DSpace-GLAM/IIIF reale e riusabile per scouting prudente.
+- decisione operativa 2026-07-26 sul ramo UniFI: trattare
+  `impronte_digitali_unifi` come candidato forte da monitorare e approfondire,
+  non come promozione immediata. Il prossimo eventuale micro-step dovra'
+  verificare se il viewer pubblico espone manifest IIIF o immagini web
+  riusabili senza autenticazione, distinguendo chiaramente consultazione
+  aperta, metadata pubblici e download effettivo.
 
 Scheda minima prima di proporre un nuovo portale:
 
