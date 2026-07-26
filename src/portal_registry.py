@@ -662,7 +662,8 @@ def _normalize_policy_override(raw: object) -> dict[str, object]:
     urls = raw.get("policy_source_urls")
     if isinstance(urls, list):
         clean_urls = tuple(str(url).strip() for url in urls if str(url).strip())
-        normalized["policy_source_urls"] = clean_urls
+        if clean_urls:
+            normalized["policy_source_urls"] = clean_urls
 
     return normalized
 
