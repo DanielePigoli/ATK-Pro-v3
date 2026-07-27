@@ -49,6 +49,15 @@ REST_BITSTREAM_RE = re.compile(
     rf"/server/api/core/bitstreams/(?P<uuid>{UUID_RE})(?:/(?P<subresource>[a-zA-Z][a-zA-Z0-9_-]*))?\b",
     re.IGNORECASE,
 )
+VIEWER_MANIFEST_PARAM_RE = re.compile(r"(?:^|[?&])(?:manifest|manifestId)=([^&#]+)", re.IGNORECASE)
+IIIF_MANIFEST_RE = re.compile(
+    r"/iiif(?:/[\d.]+)?/(?:manifest(?:s)?/)?[^\s\"'<>?#]+(?:manifest(?:\.json)?|\.json)\b",
+    re.IGNORECASE,
+)
+IIIF_INFO_RE = re.compile(
+    r"/iiif(?:/[\d.]+)?/[^\s\"'<>?#]+/info\.json\b",
+    re.IGNORECASE,
+)
 
 
 def _load_url(url: str, timeout: int) -> str:
@@ -89,6 +98,21 @@ def _classify_url(url: str) -> tuple[str, str, str] | None:
 
     if not _is_unifi_host(netloc):
         return None
+
+    manifest_param_match = VIEWER_MANIFEST_PARAM_RE.search(parsed.query)
+    if manifest_param_match:
+        manifest_url = _clean_url(manifest_param_match.group(1), url)
+        if manifest_url:
+            manifest_parsed = urlparse(manifest_url)
+            if _is_unifi_host(manifest_parsed.netloc):
+                manifest_identifier = manifest_parsed.path.rstrip("/").rsplit("/", 1)[-1]
+                return "viewer", "unifi_viewer_manifest_parameter", manifest_identifier
+
+    if IIIF_INFO_RE.search(path):
+        return "iiif_info", "unifi_iiif_info", path.rstrip("/").split("/")[-2]
+
+    if IIIF_MANIFEST_RE.search(path):
+        return "manifest", "unifi_iiif_manifest", path.rstrip("/").rsplit("/", 1)[-1]
 
     item_subresource_match = REST_ITEM_SUBRESOURCE_RE.search(path)
     if item_subresource_match:
@@ -188,7 +212,7 @@ def write_report(path: Path, candidates: list[ProbeCandidate]) -> None:
 
 def _summarize(candidates: list[ProbeCandidate]) -> str:
     if not candidates:
-        return "Nessun item UniFI/DSpace-GLAM, bundle, bitstream, thumbnail o immagine candidata trovato."
+        return "Nessun item UniFI/DSpace-GLAM, bundle, bitstream, viewer, manifest IIIF o immagine candidata trovato."
     counts: dict[str, int] = {}
     roles: dict[str, int] = {}
     for candidate in candidates:
@@ -204,9 +228,15 @@ def _evaluate_readiness(candidates: list[ProbeCandidate]) -> str:
     has_public_item = "unifi_item" in roles or "unifi_rest_item" in roles
     has_bundle_or_bitstream = any(role.startswith("unifi_bundle_") or role.startswith("unifi_bitstream_") for role in roles)
     has_thumbnail = "unifi_item_thumbnail" in roles or "unifi_bitstream_thumbnail" in roles or "public_image" in roles
+    has_iiif_viewer_signal = any(
+        role in {"unifi_viewer_manifest_parameter", "unifi_iiif_manifest", "unifi_iiif_info"}
+        for role in roles
+    )
 
+    if has_public_item and has_bundle_or_bitstream and has_iiif_viewer_signal:
+        return "GO/NO-GO: REVIEW (record/API pubblici e segnali viewer/IIIF emersi; verificare se manifest o immagini web siano davvero riusabili senza login)"
     if has_public_item and has_bundle_or_bitstream and has_thumbnail:
-        return "GO/NO-GO: REVIEW (record, API e surrogate pubblici emersi; verificare se esiste un percorso manifesto/download no-login)"
+        return "GO/NO-GO: REVIEW (record, API e surrogate pubblici emersi; backend promettente ma senza prova sufficiente di manifest/download no-login)"
     if has_public_item and has_bundle_or_bitstream:
         return "GO/NO-GO: HOLD (backend pubblico emerso, ma i surrogate visivi o il percorso di consultazione restano incompleti)"
     if has_public_item:
@@ -218,8 +248,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Sonda tecnica prudente per Impronte Digitali UniFI: cerca item "
-            "pubblici, API DSpace-GLAM, bundle, bitstream, thumbnail e "
-            "surrogate visivi senza dedurre automaticamente un download pubblico."
+            "pubblici, API DSpace-GLAM, bundle, bitstream, viewer, manifest "
+            "IIIF, thumbnail e surrogate visivi senza dedurre automaticamente "
+            "un download pubblico."
         )
     )
     parser.add_argument("--url", help="Pagina pubblica UniFI/DSpace-GLAM da sondare.")

@@ -21,5 +21,11 @@ python -m pytest -q
 - La suite attiva e' allineata al perimetro v3, non alla vecchia baseline v2.
 - I test che toccano portali esterni devono preferire fixture offline, salvo
   verifiche manuali esplicitamente autorizzate.
+- I marker `unit`, `integration`, `gui` e `playwright` sono assegnati in fase
+  di raccolta da `tests/conftest.py`, per mantenere stabile la classificazione
+  senza disseminare decoratori manuali.
+- Il marker `network` esiste per usi futuri, ma allo stato attuale non viene
+  usato dalla suite `pytest`: i controlli con rete reale restano nei verifier
+  manuali come `verify_portal_live_smoke.py` e `verify_manifest_url.py`.
 - Ogni baseline va dichiarata con comando effettivo, risultato osservato e
   data, senza riusare numeri storici fuori contesto.

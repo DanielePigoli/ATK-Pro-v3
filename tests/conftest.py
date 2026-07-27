@@ -61,17 +61,121 @@ root = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 if root not in sys.path:
     sys.path.insert(0, root)
 
-# === Collegamento a rigenera_sezionale (versioni storiche) ===
+# === Compatibilita opzionale con moduli storici esterni ===
 from pathlib import Path
-PATH_SEZIONALE = Path(
-    r"C:\Users\danie\OneDrive\Documenti\Ricerche_genealogiche\AntenatiToolkit_RC1\ATK-Pro\rigenera_sezionale"
-)
-if str(PATH_SEZIONALE) not in sys.path:
-    sys.path.insert(0, str(PATH_SEZIONALE))
+legacy_sezionale_path = os.environ.get("ATK_PRO_LEGACY_SEZIONALE_PATH")
+if legacy_sezionale_path:
+    legacy_path = Path(legacy_sezionale_path)
+    if legacy_path.exists() and str(legacy_path) not in sys.path:
+        sys.path.insert(0, str(legacy_path))
 
 # === Fixture di supporto ===
 import pytest
 from PIL import Image
+
+PLAYWRIGHT_TEST_FILES = {
+    "test_browser_setup.py",
+    "test_browser_setup_extra.py",
+    "test_canvas_id_extractor_complete.py",
+    "test_canvas_id_extractor_fallbacks.py",
+    "test_canvas_id_extractor_gap_completion.py",
+    "test_canvas_id_extractor_gap_forzati.py",
+    "test_direct_manifest_resolution_order.py",
+}
+
+QT_RUNTIME_TEST_FILES = {
+    "test_qt_progressdialog.py",
+    "test_worker_shutdown.py",
+}
+
+INTEGRATION_TEST_FILES = {
+    "test_bdl_direct_pdf.py",
+    "test_bdt_direct_pdf.py",
+    "test_bdt_direct_pdf_policy.py",
+    "test_canvas_processor.py",
+    "test_canvas_processor_extra.py",
+    "test_canvas_processor_fallisce.py",
+    "test_direct_manifest_resolution_order.py",
+    "test_elaborazione_manifest_persistence.py",
+    "test_esegui_elaborazione_headless.py",
+    "test_ficlit_direct_image.py",
+    "test_loader_and_rebuild.py",
+    "test_main.py",
+    "test_main_extra.py",
+    "test_pdf_confirmation_mainthread.py",
+    "test_pdf_formato_feature.py",
+    "test_pdf_integration.py",
+    "test_portal_adapters.py",
+    "test_portal_live_smoke_matrix.py",
+    "test_portal_registry.py",
+    "test_qt_worker_coverage.py",
+    "test_tile_downloader.py",
+    "test_tile_downloader_resilience.py",
+}
+
+INTEGRATION_FILENAME_SNIPPETS = (
+    "_technical_probe.py",
+    "_direct_pdf.py",
+    "_direct_image.py",
+    "_live_smoke",
+)
+
+
+def _item_filename(item):
+    item_path = getattr(item, "path", None)
+    if item_path is not None:
+        return Path(item_path).name
+    return Path(str(item.fspath)).name
+
+
+def _is_cli_test(item):
+    item_path = getattr(item, "path", None)
+    if item_path is not None:
+        return "tests\\cli\\" in str(item_path) or "tests/cli/" in str(item_path)
+    return "tests\\cli\\" in str(item.fspath) or "tests/cli/" in str(item.fspath)
+
+
+def _is_integration_test(item, filename):
+    if filename in INTEGRATION_TEST_FILES:
+        return True
+    if any(snippet in filename for snippet in INTEGRATION_FILENAME_SNIPPETS):
+        return True
+    if _is_cli_test(item):
+        return True
+    if "qtbot" in getattr(item, "fixturenames", ()):
+        return True
+    if filename in QT_RUNTIME_TEST_FILES or filename in PLAYWRIGHT_TEST_FILES:
+        return True
+    if item.nodeid.endswith(
+        "test_pdf_formato_feature.py::TestProcessDocumentPDF::"
+        "test_antenati_ud_prefers_html_canvas_before_playwright"
+    ):
+        return True
+    return False
+
+
+def pytest_collection_modifyitems(config, items):
+    for item in items:
+        filename = _item_filename(item)
+
+        if "qtbot" in getattr(item, "fixturenames", ()):
+            item.add_marker(pytest.mark.gui)
+        elif filename in QT_RUNTIME_TEST_FILES:
+            item.add_marker(pytest.mark.gui)
+
+        if filename in PLAYWRIGHT_TEST_FILES:
+            item.add_marker(pytest.mark.playwright)
+        elif item.nodeid.endswith(
+            "test_pdf_formato_feature.py::TestProcessDocumentPDF::"
+            "test_antenati_ud_prefers_html_canvas_before_playwright"
+        ):
+            item.add_marker(pytest.mark.playwright)
+
+        if _is_integration_test(item, filename):
+            item.add_marker(pytest.mark.integration)
+        else:
+            item.add_marker(pytest.mark.unit)
+
 
 @pytest.fixture
 def sample_tiles(tmp_path):
