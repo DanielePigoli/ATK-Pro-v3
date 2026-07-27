@@ -35,6 +35,12 @@ ATTR_URL_RE = re.compile(
 ABSOLUTE_URL_RE = re.compile(r"https?://[^\s\"'<>\\)]+", re.IGNORECASE)
 AMBRO_CATALOG_RE = re.compile(r"/opac/detail/view/ambro:catalog:(?P<catalog_id>\d+)", re.IGNORECASE)
 DIAMM_MANIFEST_RE = re.compile(r"/manifests/(?P<identifier>[^/]+)/manifest\.json$", re.IGNORECASE)
+UNICATT_VIEWER_RE = re.compile(r"^/veneranda/(?P<viewer_id>[0-9a-f]{16})/?$", re.IGNORECASE)
+UNICATT_MANIFEST_RE = re.compile(
+    r"^/veneranda/data/public/manifests/(?P<manifest_path>(?:[0-9a-f]{2}/){8}[0-9a-f]{16}\.json)$",
+    re.IGNORECASE,
+)
+NO_DOWNLOADABLE_RE = re.compile(r"(?i)\bNo\s+Downloadable\b")
 
 
 def _load_url(url: str, timeout: int) -> str:
@@ -74,6 +80,15 @@ def _classify_url(url: str) -> tuple[str, str, str] | None:
     if "ambrosiana.comperio.it" in netloc and catalog_match:
         return "catalog_record", "comperio_record", catalog_match.group("catalog_id")
 
+    unicatt_viewer_match = UNICATT_VIEWER_RE.match(path)
+    if "digitallibrary.unicatt.it" in netloc and unicatt_viewer_match:
+        return "viewer", "unicatt_viewer_page", unicatt_viewer_match.group("viewer_id")
+
+    unicatt_manifest_match = UNICATT_MANIFEST_RE.match(path)
+    if "digitallibrary.unicatt.it" in netloc and unicatt_manifest_match:
+        manifest_path = unicatt_manifest_match.group("manifest_path")
+        return "manifest", "unicatt_public_manifest", manifest_path.rsplit("/", 1)[-1].removesuffix(".json")
+
     if "/mirador" in path_lower or "mirador" in query_lower:
         return "viewer", "mirador_viewer", ""
 
@@ -98,7 +113,7 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
     seen: set[tuple[str, str]] = set()
     candidates: list[ProbeCandidate] = []
 
-    raw_urls: list[tuple[str, str]] = []
+    raw_urls: list[tuple[str, str]] = [(base_url, "input_url")]
     raw_urls.extend((m.group("url"), "html_attribute") for m in ATTR_URL_RE.finditer(html))
     raw_urls.extend((m.group(0), "absolute_text") for m in ABSOLUTE_URL_RE.finditer(html))
 
@@ -121,6 +136,17 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
                 identifier=identifier,
                 url=normalized,
                 source=source,
+            )
+        )
+
+    if NO_DOWNLOADABLE_RE.search(html):
+        candidates.append(
+            ProbeCandidate(
+                kind="rights_notice",
+                role="no_downloadable_notice",
+                identifier="",
+                url=base_url,
+                source="No Downloadable",
             )
         )
 
@@ -157,6 +183,21 @@ def _summarize(candidates: list[ProbeCandidate]) -> str:
     return f"{kind_summary} | {role_summary}"
 
 
+def _evaluate_readiness(candidates: list[ProbeCandidate]) -> str:
+    roles = {candidate.role for candidate in candidates}
+    has_official_manifest = "unicatt_public_manifest" in roles
+    has_no_downloadable = "no_downloadable_notice" in roles
+    has_external_only_manifest = "external_diamm_manifest" in roles and not has_official_manifest
+
+    if has_official_manifest and has_no_downloadable:
+        return "GO/NO-GO: HOLD (manifest IIIF pubblico ufficiale emerso, ma il viewer dichiara No Downloadable)"
+    if has_official_manifest:
+        return "GO/NO-GO: REVIEW (manifest IIIF pubblico ufficiale emerso; verificare termini item-level prima di qualsiasi supporto)"
+    if has_external_only_manifest:
+        return "GO/NO-GO: HOLD (emerso solo un manifest esterno/aggregatore, non un percorso ufficiale Ambrosiana riusabile)"
+    return "GO/NO-GO: NO_GO (nessun manifest ufficiale o percorso viewer pubblico sufficiente)"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -189,6 +230,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Candidati trovati: {len(candidates)}")
     print(f"Report: {args.output}")
     print(_summarize(candidates))
+    print(_evaluate_readiness(candidates))
     for candidate in candidates[:20]:
         label = f"{candidate.kind} [{candidate.role}]"
         if candidate.identifier:
