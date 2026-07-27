@@ -970,6 +970,37 @@ def _build_rovereto_manifest(page_url: str) -> str | None:
     return page_url if _rovereto_item_api_url(page_url) else None
 
 
+def _doge_is_supported_url(page_url: str) -> bool:
+    parsed = urlparse(page_url)
+    return parsed.netloc.lower() == "doge.unige.net"
+
+
+def _doge_extract_item_uuid(page_url: str) -> str | None:
+    parsed = urlparse(page_url)
+    match = re.search(
+        r"/(?:entities/[a-z-]+|server/api/core/items)/"
+        r"([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\b",
+        parsed.path,
+        re.IGNORECASE,
+    )
+    return match.group(1) if match else None
+
+
+def _doge_item_api_url(page_url: str) -> str | None:
+    if not _doge_is_supported_url(page_url):
+        return None
+    item_uuid = _doge_extract_item_uuid(page_url)
+    if not item_uuid:
+        return None
+    parsed = urlparse(page_url)
+    return f"{parsed.scheme}://{parsed.netloc}/server/api/core/items/{item_uuid}"
+
+
+def _build_doge_manifest(page_url: str) -> str | None:
+    """DOGE UniGe: item DSpace-GLAM gestito via manifest sintetico prudente."""
+    return page_url if _doge_item_api_url(page_url) else None
+
+
 def _rovereto_headers() -> dict:
     return {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -1189,6 +1220,228 @@ def build_rovereto_synthetic_manifest(page_url: str) -> dict | None:
         metadata=[
             {"label": "Portale", "value": "Rovereto Digital Library"},
             {"label": "Item API", "value": item_api_url},
+        ],
+        see_also=[{"@id": source_pdf_url, "format": "application/pdf"}] if source_pdf_url else None,
+    )
+
+
+def _doge_headers() -> dict:
+    return {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Accept": "application/hal+json,application/json;q=0.9,*/*;q=0.8",
+        "Referer": "https://doge.unige.net/",
+    }
+
+
+def _doge_get_json(url: str, timeout: int = 25) -> dict | None:
+    try:
+        response = requests.get(url, headers=_doge_headers(), timeout=timeout)
+        logger.debug(f"[DOGE] GET {url} -> {response.status_code}")
+        if not response.ok:
+            return None
+        data = response.json()
+        return data if isinstance(data, dict) else None
+    except Exception as exc:
+        logger.warning(f"[DOGE] Errore JSON {url}: {exc}")
+        return None
+
+
+def _doge_link(data: dict, name: str) -> str | None:
+    links = data.get("_links")
+    if not isinstance(links, dict):
+        return None
+    entry = links.get(name)
+    if not isinstance(entry, dict):
+        return None
+    href = entry.get("href")
+    return str(href) if href else None
+
+
+def _doge_embedded_items(data: dict, key: str) -> list[dict]:
+    embedded = data.get("_embedded")
+    if not isinstance(embedded, dict):
+        return []
+    values = embedded.get(key)
+    if not isinstance(values, list):
+        return []
+    return [item for item in values if isinstance(item, dict)]
+
+
+def _doge_collect_paginated_items(first_url: str, key: str, max_pages: int = 50) -> list[dict]:
+    items: list[dict] = []
+    seen: set[str] = set()
+    next_url: str | None = first_url
+    while next_url and next_url not in seen and len(seen) < max_pages:
+        seen.add(next_url)
+        data = _doge_get_json(next_url)
+        if not data:
+            break
+        items.extend(_doge_embedded_items(data, key))
+        next_url = _doge_link(data, "next")
+    if next_url and next_url not in seen:
+        logger.warning(f"[DOGE] Paginazione interrotta dopo {max_pages} pagine: {first_url}")
+    return items
+
+
+def _doge_first_metadata_value(data: dict, key: str) -> str | None:
+    metadata = data.get("metadata")
+    if not isinstance(metadata, dict):
+        return None
+    values = metadata.get(key)
+    if not isinstance(values, list):
+        return None
+    for entry in values:
+        if not isinstance(entry, dict):
+            continue
+        value = entry.get("value")
+        if value:
+            return str(value)
+    return None
+
+
+def _doge_page_number(name: str) -> int | None:
+    match = re.fullmatch(r"iiifpdf-(\d+)\.jpg", name.lower())
+    return int(match.group(1)) + 1 if match else None
+
+
+def _doge_bundle_name(bundle: dict) -> str:
+    return str(bundle.get("name") or "").strip()
+
+
+def _doge_bundle_is_relevant(bundle_name: str) -> bool:
+    bundle_upper = bundle_name.upper()
+    return bundle_upper in {"IIIF-ALTERNATIVE-LD", "IIIF-ALTERNATIVE-DOWNLOAD"}
+
+
+def _doge_bitstream_category(bundle_name: str, name: str) -> tuple[str, str, int | None]:
+    bundle_upper = bundle_name.upper()
+    page_number = _doge_page_number(name)
+    if bundle_upper == "IIIF-ALTERNATIVE-LD" and page_number is not None:
+        return "page_image", "yes", page_number
+    if bundle_upper == "IIIF-ALTERNATIVE-DOWNLOAD" and name.lower().endswith(".pdf"):
+        return "source_pdf", "yes", None
+    if bundle_upper in {"ORIGINAL", "IIIF-PDF"} or bundle_upper.startswith("IIIF-PDF-"):
+        return "blocked_original", "no", page_number
+    if bundle_upper == "BRANDED_PREVIEW" and name.lower().endswith(".jpg"):
+        return "preview_image", "review", None
+    if bundle_upper == "THUMBNAIL" and name.lower().endswith(".jpg"):
+        return "thumbnail_image", "review", None
+    if bundle_upper == "TEXT":
+        return "text_derivative", "review", None
+    return "other", "review", page_number
+
+
+def _doge_collect_bitstreams(item_data: dict) -> list[tuple[str, dict]]:
+    bundles_url = _doge_link(item_data, "bundles")
+    if not bundles_url:
+        return []
+
+    bitstreams: list[tuple[str, dict]] = []
+    for bundle in _doge_collect_paginated_items(bundles_url, "bundles"):
+        bitstreams_url = _doge_link(bundle, "bitstreams")
+        if not bitstreams_url:
+            continue
+        bundle_name = _doge_bundle_name(bundle)
+        if not _doge_bundle_is_relevant(bundle_name):
+            continue
+        for bitstream in _doge_collect_paginated_items(bitstreams_url, "bitstreams"):
+            bitstreams.append((bundle_name, bitstream))
+    return bitstreams
+
+
+def build_doge_synthetic_manifest(page_url: str) -> dict | None:
+    """Costruisce un manifest sintetico DOGE da derivati pubblici DSpace-GLAM."""
+    item_api_url = _doge_item_api_url(page_url)
+    if not item_api_url:
+        return None
+
+    item_data = _doge_get_json(item_api_url)
+    if not item_data:
+        logger.error(f"[DOGE] Impossibile leggere item API: {item_api_url}")
+        return None
+
+    title = (
+        str(item_data.get("name") or "")
+        or _doge_first_metadata_value(item_data, "dc.title")
+        or page_url
+    )
+    item_uuid = str(item_data.get("uuid") or _doge_extract_item_uuid(page_url) or "item")
+
+    page_entries: list[dict] = []
+    source_pdf_url = None
+    for bundle_name, bitstream in _doge_collect_bitstreams(item_data):
+        name = str(bitstream.get("name") or "")
+        category, download_candidate, page_number = _doge_bitstream_category(bundle_name, name)
+        content_url = _doge_link(bitstream, "content")
+        if not content_url:
+            continue
+        if category == "source_pdf" and not source_pdf_url:
+            source_pdf_url = content_url
+        if category != "page_image" or download_candidate != "yes" or page_number is None:
+            continue
+        page_entries.append(
+            {
+                "page_number": page_number,
+                "name": name,
+                "content_url": content_url,
+                "uuid": str(bitstream.get("uuid") or ""),
+                "size_bytes": bitstream.get("sizeBytes"),
+            }
+        )
+
+    page_entries = sorted(page_entries, key=lambda entry: (entry["page_number"], entry["name"]))
+    if not page_entries:
+        logger.error(f"[DOGE] Nessuna pagina derivata pubblica trovata: {page_url}")
+        return None
+
+    expected_pages = set(range(page_entries[0]["page_number"], page_entries[-1]["page_number"] + 1))
+    actual_pages = {entry["page_number"] for entry in page_entries}
+    if expected_pages != actual_pages:
+        missing = sorted(expected_pages - actual_pages)
+        logger.warning(f"[DOGE] Sequenza pagine non continua; mancanti: {missing}")
+
+    canvases = []
+    for entry in page_entries:
+        page_number = entry["page_number"]
+        img_url = entry["content_url"]
+        canvases.append(
+            {
+                "@id": f"synthetic://doge_unige/{item_uuid}/canvas/{page_number}",
+                "@type": "sc:Canvas",
+                "label": f"Pagina {page_number}",
+                "images": [
+                    {
+                        "@type": "oa:Annotation",
+                        "motivation": "sc:painting",
+                        "resource": {
+                            "@type": "dctypes:Image",
+                            "@id": img_url,
+                            "format": "image/jpeg",
+                            "service": {
+                                "@context": "doge_direct",
+                                "@id": img_url,
+                                "profile": "doge_direct",
+                                "source_page": page_url,
+                                "item_api_url": item_api_url,
+                                "bitstream_uuid": entry["uuid"],
+                                "page_number": page_number,
+                                "size_bytes": entry.get("size_bytes"),
+                            },
+                        },
+                    }
+                ],
+            }
+        )
+
+    logger.info(f"[DOGE] Manifest sintetico: '{title}', {len(canvases)} pagine")
+    return _build_synthetic_v2_manifest(
+        f"synthetic://doge_unige/{item_uuid}",
+        title,
+        canvases,
+        metadata=[
+            {"label": "Portale", "value": "DOGE Digital Library / Universita di Genova"},
+            {"label": "Item API", "value": item_api_url},
+            {"label": "Derivati pubblici usati", "value": "IIIF-ALTERNATIVE-LD"},
         ],
         see_also=[{"@id": source_pdf_url, "format": "application/pdf"}] if source_pdf_url else None,
     )
@@ -1941,6 +2194,7 @@ _ITALIAN_LIBRARY_BUILDERS = {
     "biblioteca_digitale_trentina": _build_biblioteca_digitale_trentina_manifest,
     "biblioteca_digitale_lombarda": _build_biblioteca_digitale_lombarda_manifest,
     "rovereto_digital_library": _build_rovereto_manifest,
+    "doge_unige": _build_doge_manifest,
     "museogalileo": _build_museogalileo_manifest,
     "internetculturale_estense": _build_internetculturale_estense_manifest,
     "bnc_roma": _build_bnc_roma_manifest,

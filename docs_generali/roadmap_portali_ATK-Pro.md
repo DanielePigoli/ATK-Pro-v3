@@ -651,13 +651,16 @@ Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
   distinguere meglio il caso e restituisce solo `unknown`. La separazione
   operativa resta quindi netta: preview e surrogate pubblici si', originali e
   frame IIIF-PDF no.
-- decisione operativa 2026-07-26 sul ramo DOGE: trattare `doge_unige` come
-  candidato molto forte e gia' ben strumentato, potenzialmente piu' avanzato di
-  UniFI sul piano delle licenze item-level e dei surrogate pubblici. Il
-  prossimo eventuale micro-step dovra' chiarire se esiste un percorso
-  manifesto/preview ufficiale sufficientemente stabile da giustificare una
-  promozione prudente `R_LIMITED`, senza oltrepassare il vincolo `nodownload`
-  dei file originali.
+- decisione operativa 2026-07-27 sul ramo DOGE: il micro-step di verifica e'
+  stato completato e `doge_unige` e' stato promosso a supporto tecnico prudente
+  `R_LIMITED`. Sul campione Euler
+  `b1c2be2c-e1ae-4676-93e3-07e8e8398f72` il backend DSpace-GLAM pubblico non
+  espone in modo riusabile `ORIGINAL` o i frame `IIIF-PDF-*`, che restano
+  separati come contenuti `nodownload`, ma pubblica in modo stabile i derivati
+  `IIIF-ALTERNATIVE-LD` pagina-per-pagina e il PDF
+  `IIIF-ALTERNATIVE-DOWNLOAD`. ATK-Pro ora costruisce quindi un manifest
+  sintetico solo da questi derivati pubblici, con `seeAlso` al PDF derivato,
+  referer DOGE, range esplicito e senza usare originali o frame viewer.
 
 Scheda minima prima di proporre un nuovo portale:
 

@@ -128,6 +128,27 @@ def test_resolve_direct_image_download_for_rovereto_context():
     assert image_url == "https://rovereto.example.test/page-2.png"
 
 
+def test_resolve_direct_image_download_for_doge_context():
+    canvas = {
+        "images": [
+            {
+                "resource": {
+                    "service": {
+                        "@context": "doge_direct",
+                        "@id": "https://doge.unige.net/server/api/core/bitstreams/page-2/content",
+                    }
+                }
+            }
+        ]
+    }
+
+    adapter, image_url = resolve_direct_image_download(None, canvas, None)
+
+    assert adapter is not None
+    assert adapter.portal_label == "DOGE"
+    assert image_url == "https://doge.unige.net/server/api/core/bitstreams/page-2/content"
+
+
 def test_direct_image_adapter_extracts_image_from_canvas_service():
     canvas = {
         "images": [
@@ -338,6 +359,25 @@ def test_resolve_synthetic_manifest_download_for_rovereto(monkeypatch):
     assert adapter.portal_label == "Rovereto"
     assert len(manifest["sequences"][0]["canvases"]) == 2
     assert filename == "manifest_rovereto_e4199e9b-c79b-4c3d-b157-be2dcfc0407f_titolo.json"
+
+
+def test_resolve_synthetic_manifest_download_for_doge(monkeypatch):
+    monkeypatch.setattr(
+        "src.portal_adapters._build_doge_synthetic_manifest",
+        lambda page_url: {"sequences": [{"canvases": [{"label": "1"}, {"label": "2"}]}]},
+    )
+
+    adapter, manifest, filename = resolve_synthetic_manifest_download(
+        "doge_unige",
+        "https://doge.unige.net/entities/publication/b1c2be2c-e1ae-4676-93e3-07e8e8398f72",
+        container_id="smoke",
+        title_slug="titolo",
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "DOGE"
+    assert len(manifest["sequences"][0]["canvases"]) == 2
+    assert filename == "manifest_doge_b1c2be2c-e1ae-4676-93e3-07e8e8398f72_titolo.json"
 
 
 def test_resolve_synthetic_manifest_download_returns_none_for_unknown_portal():

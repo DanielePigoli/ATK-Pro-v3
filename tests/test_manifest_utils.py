@@ -360,6 +360,82 @@ def test_build_rovereto_synthetic_manifest_from_dspace_api(monkeypatch):
     assert canvases[0]["images"][0]["resource"]["@id"] == f"{base}/server/api/core/bitstreams/{page_1_uuid}/content"
 
 
+def test_build_doge_synthetic_manifest_from_dspace_api(monkeypatch):
+    item_uuid = "b1c2be2c-e1ae-4676-93e3-07e8e8398f72"
+    bundle_preview_uuid = "bc7798ff-73d7-4646-bdbc-ecbae0e90a8c"
+    bundle_pdf_uuid = "70d84b70-a88e-454e-b452-ad2faaf778e8"
+    bundle_original_uuid = "191a7a20-cd1b-484e-b585-8700feb4a7c2"
+    page_1_uuid = "2bc1fe3a-6aeb-482a-8ecc-2a3200ed9549"
+    page_2_uuid = "a1096f32-2df1-4cdf-b461-78d4d482ff4f"
+    pdf_uuid = "48db9e61-3de7-49a4-897e-4d329f8a23e2"
+    original_uuid = "3bfea00e-8ece-4a94-8313-05eec10120ea"
+    base = "https://doge.unige.net"
+    item_url = f"{base}/server/api/core/items/{item_uuid}"
+    bundles_url = f"{item_url}/bundles"
+    preview_bundle_url = f"{base}/server/api/core/bundles/{bundle_preview_uuid}"
+    preview_bitstreams_url = f"{preview_bundle_url}/bitstreams"
+    preview_bitstreams_next_url = f"{preview_bitstreams_url}?page=1"
+    pdf_bundle_url = f"{base}/server/api/core/bundles/{bundle_pdf_uuid}"
+    pdf_bitstreams_url = f"{pdf_bundle_url}/bitstreams"
+    original_bundle_url = f"{base}/server/api/core/bundles/{bundle_original_uuid}"
+    original_bitstreams_url = f"{original_bundle_url}/bitstreams"
+
+    def bitstream(uuid, name, size_bytes=123):
+        return {
+            "uuid": uuid,
+            "name": name,
+            "sizeBytes": size_bytes,
+            "_links": {
+                "content": {"href": f"{base}/server/api/core/bitstreams/{uuid}/content"},
+            },
+        }
+
+    responses = {
+        item_url: {
+            "uuid": item_uuid,
+            "name": "DOGE sample",
+            "_links": {"bundles": {"href": bundles_url}},
+        },
+        bundles_url: {
+            "_embedded": {
+                "bundles": [
+                    {"uuid": bundle_original_uuid, "name": "ORIGINAL", "_links": {"bitstreams": {"href": original_bitstreams_url}}},
+                    {"uuid": bundle_preview_uuid, "name": "IIIF-ALTERNATIVE-LD", "_links": {"bitstreams": {"href": preview_bitstreams_url}}},
+                    {"uuid": bundle_pdf_uuid, "name": "IIIF-ALTERNATIVE-DOWNLOAD", "_links": {"bitstreams": {"href": pdf_bitstreams_url}}},
+                ]
+            }
+        },
+        original_bitstreams_url: {
+            "_embedded": {"bitstreams": [bitstream(original_uuid, "IT_GE0056_1066401.pdf", 999)]}
+        },
+        preview_bitstreams_url: {
+            "_links": {"next": {"href": preview_bitstreams_next_url}},
+            "_embedded": {"bitstreams": [bitstream(page_1_uuid, "iiifpdf-000.jpg", 111)]},
+        },
+        preview_bitstreams_next_url: {
+            "_embedded": {"bitstreams": [bitstream(page_2_uuid, "iiifpdf-001.jpg", 222)]},
+        },
+        pdf_bitstreams_url: {
+            "_embedded": {"bitstreams": [bitstream(pdf_uuid, "pdf-multipages.pdf", 333)]}
+        },
+    }
+
+    monkeypatch.setattr(mu, "_doge_get_json", lambda url, timeout=25: responses.get(url))
+
+    manifest = mu.build_doge_synthetic_manifest(
+        f"{base}/entities/publication/{item_uuid}"
+    )
+
+    assert manifest["@id"] == f"synthetic://doge_unige/{item_uuid}"
+    assert manifest["label"] == "DOGE sample"
+    assert manifest["seeAlso"][0]["@id"] == f"{base}/server/api/core/bitstreams/{pdf_uuid}/content"
+    canvases = manifest["sequences"][0]["canvases"]
+    assert [canvas["label"] for canvas in canvases] == ["Pagina 1", "Pagina 2"]
+    assert canvases[0]["images"][0]["resource"]["service"]["@context"] == "doge_direct"
+    assert canvases[0]["images"][0]["resource"]["service"]["page_number"] == 1
+    assert canvases[0]["images"][0]["resource"]["@id"] == f"{base}/server/api/core/bitstreams/{page_1_uuid}/content"
+
+
 @patch("src.manifest_utils.requests.get")
 def test_bncf_synthetic_manifest_does_not_write_debug_xml_by_default(mock_get, tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)

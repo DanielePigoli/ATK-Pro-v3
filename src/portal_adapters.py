@@ -102,6 +102,8 @@ class SyntheticManifestPortalAdapter:
             return _build_bdl_pdf_manifest(page_url)
         if self.portal_key == "rovereto_digital_library":
             return _build_rovereto_synthetic_manifest(page_url)
+        if self.portal_key == "doge_unige":
+            return _build_doge_synthetic_manifest(page_url)
         if self.portal_key == "matricula":
             return _build_matricula_synthetic_manifest(page_url, scraped_html)
         if self.portal_key == "internet_archive":
@@ -129,6 +131,14 @@ class SyntheticManifestPortalAdapter:
             )
             rovereto_id = rovereto_id_match.group(1) if rovereto_id_match else container_id
             return f"manifest_rovereto_{rovereto_id}_{title_slug}.json"
+        if self.portal_key == "doge_unige":
+            doge_id_match = re.search(
+                r"/(?:entities/[a-z-]+|server/api/core/items)/([0-9a-f-]{36})",
+                page_url,
+                re.IGNORECASE,
+            )
+            doge_id = doge_id_match.group(1) if doge_id_match else container_id
+            return f"manifest_doge_{doge_id}_{title_slug}.json"
         return f"manifest_{container_id}_{title_slug}.json"
 
 
@@ -154,6 +164,14 @@ def _build_rovereto_synthetic_manifest(page_url: str):
     except ImportError:  # pragma: no cover - package import path
         from src.manifest_utils import build_rovereto_synthetic_manifest
     return build_rovereto_synthetic_manifest(page_url)
+
+
+def _build_doge_synthetic_manifest(page_url: str):
+    try:
+        from manifest_utils import build_doge_synthetic_manifest
+    except ImportError:  # pragma: no cover - package import path
+        from src.manifest_utils import build_doge_synthetic_manifest
+    return build_doge_synthetic_manifest(page_url)
 
 
 def _build_matricula_synthetic_manifest(page_url: str, scraped_html: str | None = None):
@@ -205,6 +223,10 @@ DIRECT_IMAGE_ADAPTERS_BY_CONTEXT = {
         portal_label="Rovereto",
         referer="https://digitallibrary.bibliotecacivica.rovereto.tn.it/",
     ),
+    "doge_direct": DirectImagePortalAdapter(
+        portal_label="DOGE",
+        referer="https://doge.unige.net/",
+    ),
 }
 
 DIRECT_IMAGE_ADAPTERS_BY_PORTAL = {
@@ -255,6 +277,10 @@ SYNTHETIC_MANIFEST_ADAPTERS_BY_PORTAL = {
     "rovereto_digital_library": SyntheticManifestPortalAdapter(
         portal_key="rovereto_digital_library",
         portal_label="Rovereto",
+    ),
+    "doge_unige": SyntheticManifestPortalAdapter(
+        portal_key="doge_unige",
+        portal_label="DOGE",
     ),
     "matricula": SyntheticManifestPortalAdapter(
         portal_key="matricula",
