@@ -643,6 +643,14 @@ Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
   pubblici leciti. Sul campione reale la sonda restituisce `REVIEW`, coerente
   con una consultazione pubblica molto ricca ma ancora distinta dalla piena
   promozione a supporto download diretto.
+- affinamento live 2026-07-27 sullo stesso ramo DOGE: il bundle
+  `BRANDED_PREVIEW` risulta effettivamente pubblico come immagine JPEG
+  scaricabile con codice 200, mentre i bitstream pagina del bundle
+  `IIIF-PDF-*` testati rispondono `401` sul content diretto, esattamente come
+  il file `ORIGINAL`. L'endpoint item-level `accessStatus` non aiuta a
+  distinguere meglio il caso e restituisce solo `unknown`. La separazione
+  operativa resta quindi netta: preview e surrogate pubblici si', originali e
+  frame IIIF-PDF no.
 - decisione operativa 2026-07-26 sul ramo DOGE: trattare `doge_unige` come
   candidato molto forte e gia' ben strumentato, potenzialmente piu' avanzato di
   UniFI sul piano delle licenze item-level e dei surrogate pubblici. Il
