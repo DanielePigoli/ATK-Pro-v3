@@ -28,7 +28,7 @@ from src.portal_registry import (
 
 def test_registry_has_expected_portal_count_and_unique_keys():
     keys = portal_keys()
-    assert len(keys) == 26
+    assert len(keys) == 28
     assert len(set(keys)) == len(keys)
     assert set(keys) == set(PORTAL_REGISTRY)
 
@@ -51,6 +51,9 @@ def test_detect_portal_from_unambiguous_official_hosts():
     assert detect_portal_from_url(
         "https://archiviostorico.unibo.it/iiif/2/manifest/archiviostorico/riviste/libro_e_moschetto_1927-1943/0131.016/0131.016.003.json"
     ) == "archiviostorico_unibo"
+    assert detect_portal_from_url(
+        "https://phaidra.cab.unipd.it/view/o:327971"
+    ) == "phaidra_unipd"
     assert detect_portal_from_url(
         "https://example.jarvis.memooria.org/schedadl.aspx?id=123"
     ) == "memooria"
@@ -98,6 +101,7 @@ def test_portal_referer_capability_matches_existing_special_cases():
     assert get_portal_referer("bub_digitale") == "https://bub.unibo.it"
     assert get_portal_referer("dl_ficlit") == "https://dl.ficlit.unibo.it"
     assert get_portal_referer("archiviostorico_unibo") == "https://archiviostorico.unibo.it"
+    assert get_portal_referer("phaidra_unipd") == "https://phaidra.cab.unipd.it"
     assert get_portal_referer("biblioteca_digitale_trentina") == "https://bdt.bibcom.trento.it"
     assert get_portal_referer("biblioteca_digitale_lombarda") == "https://www.bdl.servizirl.it"
     assert get_portal_referer("rovereto_digital_library") == "https://digitallibrary.bibliotecacivica.rovereto.tn.it"
@@ -126,6 +130,7 @@ def test_technical_family_lookup_and_grouping():
     assert "bub_digitale" in iiif_direct
     assert "dl_ficlit" in iiif_direct
     assert "archiviostorico_unibo" in iiif_direct
+    assert "phaidra_unipd" in iiif_direct
     assert "matricula" in synthetic
     assert "internet_archive" in synthetic
     assert "biblioteca_digitale_lombarda" in synthetic
@@ -139,6 +144,7 @@ def test_tile_download_policy_marks_heidelberg_rate_limit():
     assert get_portal_tile_download_policy("bub_digitale") == (1, 0.3)
     assert get_portal_tile_download_policy("dl_ficlit") == (1, 0.3)
     assert get_portal_tile_download_policy("archiviostorico_unibo") == (1, 0.3)
+    assert get_portal_tile_download_policy("phaidra_unipd") == (1, 0.3)
     assert get_portal_tile_download_policy("rovereto_digital_library") == (1, 0.3)
     assert get_portal_tile_download_policy("doge_unige") == (1, 0.3)
     assert get_portal_tile_download_policy("gallica") == (None, 0.0)
@@ -154,6 +160,7 @@ def test_record_mode_policy_values_are_known_and_classified():
     assert get_portal_record_mode_policy("gallica") == "r_ok"
     assert get_portal_record_mode_policy("bncf_teca") == "d_only"
     assert get_portal_record_mode_policy("museogalileo") == "d_only"
+    assert get_portal_record_mode_policy("phaidra_unipd") == "r_limited"
     assert get_portal_record_mode_policy("biblioteca_digitale_lombarda") == "d_only"
     assert get_portal_record_mode_policy("matricula") == "r_limited"
     assert get_portal_record_mode_policy("biblioteca_digitale_siena") == "r_limited"

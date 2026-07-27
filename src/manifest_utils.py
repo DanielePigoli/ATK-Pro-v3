@@ -708,6 +708,36 @@ def _build_archiviostorico_unibo_manifest(page_url: str) -> str | None:
     return None
 
 
+def _build_phaidra_manifest(page_url: str) -> str | None:
+    """PHAIDRA UniPD: supporta solo manifest IIIF pubblici item-level ufficiali."""
+    parsed = urlparse(page_url)
+    host = parsed.netloc.lower()
+    if host not in {"phaidra.cab.unipd.it", "phaidra.unipd.it"}:
+        return None
+
+    path = parsed.path.rstrip("/")
+    direct_match = re.fullmatch(r"/api/object/(o:\d+)/iiifmanifest", path, re.IGNORECASE)
+    if direct_match:
+        object_id = direct_match.group(1)
+        return f"https://phaidra.unipd.it/api/object/{object_id}/iiifmanifest"
+
+    object_match = re.fullmatch(r"/(?:view|detail)/(o:\d+)", path, re.IGNORECASE)
+    if object_match:
+        object_id = object_match.group(1)
+        return f"https://phaidra.unipd.it/api/object/{object_id}/iiifmanifest"
+
+    manifest = extract_manifest_url_from_viewer_url(page_url)
+    if manifest:
+        manifest_parsed = urlparse(manifest)
+        manifest_path = manifest_parsed.path.rstrip("/")
+        manifest_match = re.fullmatch(r"/api/object/(o:\d+)/iiifmanifest", manifest_path, re.IGNORECASE)
+        if manifest_parsed.netloc.lower() == "phaidra.unipd.it" and manifest_match:
+            object_id = manifest_match.group(1)
+            return f"https://phaidra.unipd.it/api/object/{object_id}/iiifmanifest"
+
+    return None
+
+
 _BDT_ATTR_URL_RE = re.compile(
     r"""(?ix)
     \b(?:href|src|data-[a-z0-9_-]+|content)\s*=\s*
@@ -2191,6 +2221,7 @@ _ITALIAN_LIBRARY_BUILDERS = {
     "bub_digitale": _build_bub_digitale_manifest,
     "dl_ficlit": _build_dl_ficlit_manifest,
     "archiviostorico_unibo": _build_archiviostorico_unibo_manifest,
+    "phaidra_unipd": _build_phaidra_manifest,
     "biblioteca_digitale_trentina": _build_biblioteca_digitale_trentina_manifest,
     "biblioteca_digitale_lombarda": _build_biblioteca_digitale_lombarda_manifest,
     "rovereto_digital_library": _build_rovereto_manifest,
