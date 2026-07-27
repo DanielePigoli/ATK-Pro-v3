@@ -101,6 +101,7 @@ def test_portal_referer_capability_matches_existing_special_cases():
     assert get_portal_referer("biblioteca_digitale_trentina") == "https://bdt.bibcom.trento.it"
     assert get_portal_referer("biblioteca_digitale_lombarda") == "https://www.bdl.servizirl.it"
     assert get_portal_referer("rovereto_digital_library") == "https://digitallibrary.bibliotecacivica.rovereto.tn.it"
+    assert get_portal_referer("doge_unige") == "https://doge.unige.net"
     assert get_portal_referer("manifest_diretto") is None
     assert get_portal_referer("antenati") is None
     assert get_portal_referer("bncf_teca", "https://teca.bncf.firenze.sbn.it/viewer") == "https://teca.bncf.firenze.sbn.it"
@@ -129,6 +130,7 @@ def test_technical_family_lookup_and_grouping():
     assert "internet_archive" in synthetic
     assert "biblioteca_digitale_lombarda" in synthetic
     assert "rovereto_digital_library" in synthetic
+    assert "doge_unige" in synthetic
 
 
 def test_tile_download_policy_marks_heidelberg_rate_limit():
@@ -138,6 +140,7 @@ def test_tile_download_policy_marks_heidelberg_rate_limit():
     assert get_portal_tile_download_policy("dl_ficlit") == (1, 0.3)
     assert get_portal_tile_download_policy("archiviostorico_unibo") == (1, 0.3)
     assert get_portal_tile_download_policy("rovereto_digital_library") == (1, 0.3)
+    assert get_portal_tile_download_policy("doge_unige") == (1, 0.3)
     assert get_portal_tile_download_policy("gallica") == (None, 0.0)
     assert get_portal_tile_download_policy("non_esiste") == (None, 0.0)
 
@@ -159,6 +162,7 @@ def test_record_mode_policy_values_are_known_and_classified():
     assert get_portal_record_mode_policy("archiviostorico_unibo") == "r_limited"
     assert get_portal_record_mode_policy("biblioteca_digitale_trentina") == "r_limited"
     assert get_portal_record_mode_policy("rovereto_digital_library") == "r_limited"
+    assert get_portal_record_mode_policy("doge_unige") == "r_limited"
     assert get_portal_record_mode_policy("manifest_diretto") == "variable"
 
 
