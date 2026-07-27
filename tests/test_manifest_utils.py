@@ -183,6 +183,24 @@ def test_resolve_archiviostorico_unibo_rejects_non_official_manifest():
     assert mu.resolve_manifest_url(url, "archiviostorico_unibo") is None
 
 
+def test_resolve_phaidra_unipd_from_object_page():
+    url = "https://phaidra.cab.unipd.it/view/o:327971"
+
+    assert mu.resolve_manifest_url(url, "phaidra_unipd") == "https://phaidra.unipd.it/api/object/o:327971/iiifmanifest"
+
+
+def test_resolve_phaidra_unipd_accepts_direct_manifest_url():
+    url = "https://phaidra.unipd.it/api/object/o:327971/iiifmanifest"
+
+    assert mu.resolve_manifest_url(url, "phaidra_unipd") == url
+
+
+def test_resolve_phaidra_unipd_ignores_non_official_manifest_query_and_prefers_object_page():
+    url = "https://phaidra.cab.unipd.it/view/o:327971?manifest=https%3A%2F%2Fexample.test%2Fiiifmanifest"
+
+    assert mu.resolve_manifest_url(url, "phaidra_unipd") == "https://phaidra.unipd.it/api/object/o:327971/iiifmanifest"
+
+
 def test_resolve_biblioteca_digitale_trentina_item_url():
     url = "https://bdt.bibcom.trento.it/Testi-a-stampa/113"
 

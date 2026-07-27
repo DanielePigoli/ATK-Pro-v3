@@ -513,6 +513,19 @@ Valutazione comparativa operativa (2026-07-25):
   `verify_manifest_url.py` conferma per `o:327971` il download valido del
   manifest `https://phaidra.unipd.it/api/object/o:327971/iiifmanifest`
   con codice 200 e 1 canvas.
+- decisione operativa 2026-07-27 sullo stesso ramo PHAIDRA: la soglia minima
+  per la promozione prudente e' ora superata. I campioni pubblici `o:327971`
+  e `o:566070` espongono entrambi pagina oggetto, manifest IIIF ufficiale,
+  thumbnail, export metadati e download pubblico sul dominio
+  `phaidra.unipd.it`, senza rights notice restrittivi emersi nel markup
+  pubblico. Il controllo smoke dedicato su `phaidra_unipd` scarica inoltre con
+  successo il manifest ufficiale di `o:327971`.
+- passo completato il 2026-07-27: `phaidra_unipd` entra come supporto tecnico
+  prudente `iiif_direct` / `R_LIMITED`, limitato ai manifest item-level
+  pubblici del dominio ufficiale PHAIDRA. Restano fuori dal flusso operativo
+  query generiche, collezioni non verificate e qualunque oggetto con rights
+  notice o licenza item-level incompatibili; il ramo mantiene quindi verifica
+  obbligatoria dei diritti del singolo oggetto prima dell'uso.
 - la sonda dedicata `verify_mlol_dh_technical_probe.py` e ora il prossimo
   strumento prudente del ramo: deve cercare item `arbor.medialibrary.it`,
   viewer `viewers.medialibrary.it`, manifest Jarvis `meta/iiif/{guid}/manifest`,
