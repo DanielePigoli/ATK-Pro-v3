@@ -42,6 +42,21 @@ def test_extract_candidates_finds_bundles_bitstreams_and_public_image():
     assert "public_image" in roles
 
 
+def test_extract_candidates_finds_viewer_manifest_and_info_json():
+    html = """
+    <a href="/viewer?manifest=https%3A%2F%2Fimprontedigitali.unifi.it%2Fiiif%2F2%2Fmanifest%2Fea8510d3-4f09-41b6-b69a-5c4ff3d0d082.json">viewer</a>
+    <a href="https://improntedigitali.unifi.it/iiif/2/manifest/ea8510d3-4f09-41b6-b69a-5c4ff3d0d082.json">manifest</a>
+    <a href="/iiif/2/ea8510d3-4f09-41b6-b69a-5c4ff3d0d082/canvas/p1/info.json">info</a>
+    """
+
+    candidates = probe.extract_candidates(html, "https://improntedigitali.unifi.it/items/ea8510d3-4f09-41b6-b69a-5c4ff3d0d082")
+    by_role = {candidate.role: candidate for candidate in candidates}
+
+    assert by_role["unifi_viewer_manifest_parameter"].kind == "viewer"
+    assert by_role["unifi_iiif_manifest"].kind == "manifest"
+    assert by_role["unifi_iiif_info"].kind == "iiif_info"
+
+
 def test_extract_candidates_ignores_duplicates_and_external_urls():
     html = """
     <a href="/items/ea8510d3-4f09-41b6-b69a-5c4ff3d0d082">item 1</a>
@@ -94,3 +109,16 @@ def test_evaluate_readiness_distinguishes_review_from_hold():
 
     assert review.startswith("GO/NO-GO: REVIEW")
     assert hold.startswith("GO/NO-GO: HOLD")
+
+
+def test_evaluate_readiness_marks_viewer_iiif_signals_for_review():
+    review = probe._evaluate_readiness(
+        [
+            probe.ProbeCandidate("catalog_record", "unifi_item", "id", "https://improntedigitali.unifi.it/items/id", "input_url"),
+            probe.ProbeCandidate("api_item", "unifi_rest_item", "id", "https://improntedigitali.unifi.it/server/api/core/items/id", "html_attribute"),
+            probe.ProbeCandidate("bundle", "unifi_bundle_bitstreams", "bundle", "https://improntedigitali.unifi.it/server/api/core/bundles/bundle/bitstreams", "html_attribute"),
+            probe.ProbeCandidate("manifest", "unifi_iiif_manifest", "manifest.json", "https://improntedigitali.unifi.it/iiif/2/manifest/id.json", "html_attribute"),
+        ]
+    )
+
+    assert "viewer/IIIF" in review

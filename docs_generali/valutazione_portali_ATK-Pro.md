@@ -30,6 +30,36 @@ abbonamento, paywall o divieti tecnici/contrattuali non va integrato come
 download diretto. Al massimo puo essere trattato come link esterno/manuale,
 senza automazione di accesso o scaricamento.
 
+## Nota di indirizzo sugli accessi autenticati
+
+Riflessione consolidata il 2026-07-27: la disponibilita, da parte dell'utente,
+di credenziali valide, account o abbonamento non rende di per se un portale
+idoneo all'integrazione diretta. Una simile integrazione potrebbe essere
+tecnicamente realizzabile per singoli portali, soprattutto in presenza di API
+ufficiali e autenticazione OAuth o tramite token, ma richiederebbe anche:
+
+- un caveau sicuro e multipiattaforma, distinto dall'attuale gestione CSV delle
+  chiavi dei provider;
+- gestione del ciclo di vita di token e sessioni, revoca, scadenza, logout e
+  protezione dei segreti;
+- verifica specifica dei termini d'uso, dei diritti dell'account e delle
+  possibilita effettive di accesso o download offerte dall'API;
+- test, documentazione e manutenzione continuativa per ciascun portale.
+
+Nel perimetro attuale di ATK-Pro, tale costo e rischio risultano normalmente
+sproporzionati rispetto al beneficio. La scelta di escludere login, account,
+abbonamenti e paywall resta quindi confermata anche da una valutazione di
+sostenibilita tecnica e manutentiva, oltre che dai paletti legali gia indicati.
+Per questi portali si preferiscono apertura esterna, autenticazione e download
+manuali da parte dell'utente, seguiti dall'eventuale elaborazione locale dei
+file ottenuti legittimamente.
+
+Una futura eccezione potra essere rivalutata solo per un portale ad alto valore
+che offra un'API ufficiale stabile, autorizzi esplicitamente applicazioni di
+terze parti, esponga davvero le risorse utili ad ATK-Pro e presenti un rapporto
+costo/beneficio documentato e favorevole. Non sono comunque ammissibili
+aggiramenti di CAPTCHA, MFA, DRM, anti-bot, paywall o divieti contrattuali.
+
 ## Criteri go/no-go per nuovi portali
 
 Integrare solo se sono soddisfatti tutti i requisiti minimi:

@@ -180,11 +180,30 @@ python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py test
 
 ### Fase 2 - Classificazione test
 
-- [ ] Marcare test che richiedono rete reale.
-- [ ] Marcare test che richiedono GUI/Qt visibile.
-- [ ] Marcare test che richiedono Playwright/browser.
-- [ ] Separare test unitari puri da test di integrazione.
-- [ ] Ridurre dipendenze da percorsi locali storici in `tests/conftest.py`.
+ - [x] Marcare test che richiedono rete reale.
+ - [x] Marcare test che richiedono GUI/Qt visibile.
+ - [x] Marcare test che richiedono Playwright/browser.
+ - [x] Separare test unitari puri da test di integrazione.
+ - [x] Ridurre dipendenze da percorsi locali storici in `tests/conftest.py`.
+
+Aggiornamento 2026-07-27:
+
+- auto-marcatura `gui` in raccolta per test con fixture `qtbot` e per i casi
+  Qt runtime espliciti non basati su widget;
+- auto-marcatura `playwright` per i file che esercitano direttamente setup
+  browser o fallback Playwright, piu il caso puntuale su
+  `test_pdf_formato_feature.py`;
+- separazione `unit`/`integration` spostata nella raccolta `pytest`, con
+  criterio pratico: integration per probe, downloader, pipeline multi-modulo,
+  GUI/browser e test `cli`; unit per i casi restanti;
+- marker `network` registrato formalmente: al 2026-07-27 nessun test della
+  suite `pytest` richiede Internet reale, perche i live check restano fuori da
+  `pytest` nei verifier manuali `verify_portal_live_smoke.py` e
+  `verify_manifest_url.py`;
+- rimosso l'innesto automatico del percorso storico personale
+  `rigenera_sezionale`; l'eventuale compatibilita legacy passa ora da variabile
+  d'ambiente opzionale `ATK_PRO_LEGACY_SEZIONALE_PATH`;
+- Fase 2 considerata chiusa sul lato classificazione e raccolta.
 
 ### Fase 3 - Portali
 

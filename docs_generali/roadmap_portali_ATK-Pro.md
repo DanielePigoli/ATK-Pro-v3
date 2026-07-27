@@ -621,6 +621,17 @@ Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
   verificare se il viewer pubblico espone manifest IIIF o immagini web
   riusabili senza autenticazione, distinguendo chiaramente consultazione
   aperta, metadata pubblici e download effettivo.
+- micro-step di follow-up completato il 2026-07-27 sullo stesso ramo UniFI:
+  la sonda `verify_unifi_technical_probe.py` e' stata estesa per cercare anche
+  segnali di viewer pubblico, parametro `manifest`/`manifestId`, manifest IIIF
+  e `info.json`, con copertura offline aggiuntiva in
+  `tests/test_unifi_technical_probe.py`. Il ricontrollo live sul campione
+  `ea8510d3-4f09-41b6-b69a-5c4ff3d0d082` continua pero' a far emergere solo
+  record DSpace-GLAM, bundle, bitstream, thumbnail e surrogate web, senza
+  manifest IIIF o endpoint `info.json` pubblici riusabili nel markup della
+  pagina item. Il ramo resta quindi in stato `REVIEW`/monitoraggio: backend
+  pubblico forte e utile per scouting, ma nessuna base sufficiente per
+  promozione a supporto IIIF/download diretto.
 - riapertura mirata 2026-07-26 su `doge.unige.net` (DOGE Digital Library,
   Universita' di Genova): nuova pista italiana molto forte nello stesso ramo
   `biblioteche_digitali_locali_iiif`. Le fonti ufficiali SBA UniGe descrivono
