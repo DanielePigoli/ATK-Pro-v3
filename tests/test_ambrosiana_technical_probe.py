@@ -37,6 +37,22 @@ def test_extract_candidates_finds_viewer_info_json_and_cantaloupe_images():
     assert "manifest" in kinds
 
 
+def test_extract_candidates_finds_unicatt_viewer_manifest_and_no_downloadable_notice():
+    html = """
+    <a href="https://digitallibrary.unicatt.it/veneranda/0b02da82800d10a0">viewer</a>
+    <a href="https://digitallibrary.unicatt.it/veneranda/data/public/manifests/0b/02/da/82/80/0d/10/a0/0b02da82800d10a0.json">manifest</a>
+    <div>Restriction of use: No Downloadable</div>
+    """
+
+    candidates = probe.extract_candidates(html, "https://digitallibrary.unicatt.it/veneranda/0b02da82800d10a0")
+    by_role = {candidate.role: candidate for candidate in candidates}
+
+    assert by_role["unicatt_viewer_page"].kind == "viewer"
+    assert by_role["unicatt_public_manifest"].kind == "manifest"
+    assert by_role["no_downloadable_notice"].kind == "rights_notice"
+    assert by_role["no_downloadable_notice"].source == "No Downloadable"
+
+
 def test_extract_candidates_ignores_duplicates_and_marks_site_assets():
     html = """
     <a href="#content">anchor</a>
@@ -72,3 +88,49 @@ def test_write_report_creates_csv(tmp_path: Path):
     text = report.read_text(encoding="utf-8")
     assert "kind,role,identifier,url,source" in text
     assert "24203" in text
+
+
+def test_evaluate_readiness_holds_when_official_manifest_is_no_downloadable():
+    readiness = probe._evaluate_readiness(
+        [
+            probe.ProbeCandidate(
+                kind="viewer",
+                role="unicatt_viewer_page",
+                identifier="0b02da82800d10a0",
+                url="https://digitallibrary.unicatt.it/veneranda/0b02da82800d10a0",
+                source="html_attribute",
+            ),
+            probe.ProbeCandidate(
+                kind="manifest",
+                role="unicatt_public_manifest",
+                identifier="0b02da82800d10a0",
+                url="https://digitallibrary.unicatt.it/veneranda/data/public/manifests/0b/02/da/82/80/0d/10/a0/0b02da82800d10a0.json",
+                source="html_attribute",
+            ),
+            probe.ProbeCandidate(
+                kind="rights_notice",
+                role="no_downloadable_notice",
+                identifier="",
+                url="https://digitallibrary.unicatt.it/veneranda/0b02da82800d10a0",
+                source="No Downloadable",
+            ),
+        ]
+    )
+
+    assert readiness.startswith("GO/NO-GO: HOLD")
+
+
+def test_evaluate_readiness_holds_when_only_external_manifest_emerges():
+    readiness = probe._evaluate_readiness(
+        [
+            probe.ProbeCandidate(
+                kind="manifest",
+                role="external_diamm_manifest",
+                identifier="I-Ma-A-24_Inf",
+                url="https://iiif.diamm.net/manifests/I-Ma-A-24_Inf/manifest.json",
+                source="html_attribute",
+            )
+        ]
+    )
+
+    assert readiness.startswith("GO/NO-GO: HOLD")

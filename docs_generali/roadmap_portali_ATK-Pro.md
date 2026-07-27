@@ -190,6 +190,21 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   `No Downloadable`, quindi il ramo resta fuori dal downloader finche non
   emergono termini item-level compatibili o una modalita pubblica che autorizzi
   il download.
+- follow-up operativo 2026-07-27 sullo stesso ramo Ambrosiana: la sonda
+  `verify_ambrosiana_technical_probe.py` e' stata estesa per distinguere
+  viewer ufficiale UniCatt/Veneranda, manifest pubblico ufficiale e notice
+  `No Downloadable`, oltre al caso separato dei manifest esterni/aggregatori
+  come `iiif.diamm.net`. La verifica diretta del manifest pubblico
+  `0b02da82800d10a0.json` conferma ancora codice 200 e 101 canvas, mentre la
+  pagina viewer ufficiale corrispondente resta descritta pubblicamente come
+  risorsa non scaricabile (`Restriction of use: No Downloadable`).
+- decisione operativa 2026-07-27 sul ramo Ambrosiana: il sottoramo esce dalla
+  sola fase esplorativa ma non viene promosso a supporto tecnico diretto.
+  L'esito corretto resta `HOLD`/fuori downloader: manifest IIIF pubblico
+  ufficiale si', ma vincolo esplicito di non scaricabilita' sulla risorsa
+  pubblica visualizzata. Eventuali riaperture future richiederanno una fonte
+  ufficiale item-level che autorizzi davvero il download o un diverso perimetro
+  d'uso chiaramente documentato.
 - `rovereto_digital_library` e promosso a supporto tecnico prudente. Il
   controllo 2026-06-08 usa l'API pubblica DSpace-GLAM:
   ATK-Pro deriva l'endpoint REST item da URL entity/API, segue la paginazione
