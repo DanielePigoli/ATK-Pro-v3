@@ -108,6 +108,22 @@ Ricontrollo ufficiale SAN/OAI (2026-07-29):
   relativi diritti continuano a dipendere dai sistemi sorgente, quindi non c'e'
   base per un download immagini/PDF generalizzato via SAN.
 
+Ricontrollo ufficiale SIAS/SIUSA (2026-07-29):
+
+- la pagina istituzionale DGA aggiornata al 2026-02-13 continua a presentare
+  il SIAS come ambiente di descrizione del patrimonio documentario degli
+  Archivi di Stato, corredato da strumenti di ricerca che danno accesso diretto
+  agli inventari pubblicati online quando esistono;
+- la pagina ICAR aggiornata al 2026-05-15 continua a descrivere SIUSA come
+  banca dati di complessi archivistici, soggetti produttori/conservatori e
+  strumenti di ricerca, con inventari online interni o esterni al sistema;
+- il quadro architetturale complessivo si sposta verso il nuovo SIA
+  (Sistema Informativo Archivistico), che integra SIAS, SIUSA, Strumenti di
+  ricerca online e Archivio Digitale in una nuova architettura comune;
+- per ATK-Pro questo conferma la linea prudente: SIAS e SIUSA restano fonti di
+  discovery, contesto e apertura guidata di inventari, non basi autonome per
+  un downloader immagini/PDF generalizzato.
+
 Esito primo controllo BeWeB/archivi ecclesiastici italiani (2026-06-05):
 
 - `beweb` e fonte nazionale molto rilevante per beni archivistici ecclesiastici,
