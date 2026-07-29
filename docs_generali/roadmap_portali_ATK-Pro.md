@@ -93,6 +93,21 @@ Esito primo controllo SAN/SIAS/SIUSA (2026-06-05):
   capability di ricerca/metadati e apertura guidata di inventari, distinta dal
   motore di scaricamento immagini.
 
+Ricontrollo ufficiale SAN/OAI (2026-07-29):
+
+- la pagina istituzionale della Direzione generale Archivi aggiornata al
+  2026-02-13 continua a descrivere il SAN come punto di accesso unificato,
+  catalogo CAT e infrastruttura di interoperabilita tra sistemi archivistici;
+- l'endpoint ufficiale `https://www.san.beniculturali.it/oaicat/` continua a
+  documentare un OAI Provider open data dedicato ai metadati SAN, con baseURL
+  `http://www.san.beniculturali.it/oaicat/OAIHandler`, set `SAN` e schemi per
+  soggetti conservatori, produttori, complessi archivistici, strumenti di
+  ricerca e oggetti digitali;
+- la pista tecnica quindi si rafforza, ma resta distinta dal downloader:
+  l'OAI SAN e' una capability metadata/open data; gli oggetti digitali e i
+  relativi diritti continuano a dipendere dai sistemi sorgente, quindi non c'e'
+  base per un download immagini/PDF generalizzato via SAN.
+
 Esito primo controllo BeWeB/archivi ecclesiastici italiani (2026-06-05):
 
 - `beweb` e fonte nazionale molto rilevante per beni archivistici ecclesiastici,
