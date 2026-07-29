@@ -665,6 +665,17 @@ Decisione operativa dopo il micro-ciclo MLOL DH/Jarvis (2026-07-25):
   pagina item. Il ramo resta quindi in stato `REVIEW`/monitoraggio: backend
   pubblico forte e utile per scouting, ma nessuna base sufficiente per
   promozione a supporto IIIF/download diretto.
+- ricontrollo live 2026-07-29 sullo stesso campione UniFI
+  `ea8510d3-4f09-41b6-b69a-5c4ff3d0d082`: la sonda aggiornata continua a
+  restituire `GO/NO-GO: REVIEW`, ma con evidenza piu' ampia del backend
+  pubblico DSpace-GLAM. Dal markup emergono ancora record, entity correlate,
+  item API, bundle, bitstream, thumbnail e surrogate pubblici, per un totale
+  di 410 candidati classificati nel report `.codex_tmp/unifi_probe_2026-07-29.csv`.
+  Non emergono pero' manifest IIIF pubblici, `info.json` riusabili o un
+  percorso di download no-login equivalente ai portali promossi. La decisione
+  prudente quindi non cambia: UniFI resta candidato forte in `REVIEW`,
+  utile per scouting e monitoraggio tecnico, ma non ancora promuovibile a
+  supporto IIIF/download diretto.
 - riapertura mirata 2026-07-26 su `doge.unige.net` (DOGE Digital Library,
   Universita' di Genova): nuova pista italiana molto forte nello stesso ramo
   `biblioteche_digitali_locali_iiif`. Le fonti ufficiali SBA UniGe descrivono
