@@ -46,6 +46,19 @@ def test_extract_candidates_finds_legacy_delivery_and_standard_assets():
     assert "legacy_delivery_viewer" in roles
 
 
+def test_extract_candidates_marks_site_assets_separately():
+    html = """
+    <img src="https://preserver.beic.it/delivery/images/logo.png">
+    <a href="https://preserver.beic.it/delivery/DeliveryManagerServlet?dps_pid=IE7400509">viewer</a>
+    """
+
+    candidates = probe.extract_candidates(html, "https://digital.beic.it/")
+    by_role = {candidate.role: candidate for candidate in candidates}
+
+    assert by_role["site_asset"].kind == "image"
+    assert by_role["delivery_viewer"].kind == "beic_delivery"
+
+
 def test_extract_candidates_ignores_duplicates_and_non_download_links():
     html = """
     <a href="#content">anchor</a>
@@ -85,3 +98,42 @@ def test_write_report_creates_csv(tmp_path: Path):
     text = report.read_text(encoding="utf-8")
     assert "kind,role,identifier,url,source" in text
     assert "IE7400509" in text
+
+
+def test_evaluate_readiness_holds_when_only_record_and_viewer_emerge():
+    readiness = probe._evaluate_readiness(
+        [
+            probe.ProbeCandidate(
+                kind="catalog_record",
+                role="primo_record",
+                identifier="alma9925210904741",
+                url="https://catalogue.beic.it/discovery/fulldisplay?docid=alma9925210904741&context=L&vid=39BEIC_INST:39BEIC_INST",
+                source="html_attribute",
+            ),
+            probe.ProbeCandidate(
+                kind="beic_delivery",
+                role="delivery_viewer",
+                identifier="IE7400509",
+                url="https://preserver.beic.it/delivery/DeliveryManagerServlet?dps_pid=IE7400509",
+                source="html_attribute",
+            ),
+        ]
+    )
+
+    assert readiness.startswith("GO/NO-GO: HOLD")
+
+
+def test_evaluate_readiness_marks_review_when_file_or_manifest_emerge():
+    readiness = probe._evaluate_readiness(
+        [
+            probe.ProbeCandidate(
+                kind="beic_file",
+                role="delivery_file",
+                identifier="IE4411197",
+                url="https://preserver.beic.it/delivery/DeliveryManagerServlet?dps_pid=IE4411197&select_viewer=metsViewer&dps_file=FL4412552",
+                source="html_attribute",
+            )
+        ]
+    )
+
+    assert readiness.startswith("GO/NO-GO: REVIEW")

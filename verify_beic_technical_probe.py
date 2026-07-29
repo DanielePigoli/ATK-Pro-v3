@@ -95,6 +95,8 @@ def _classify_url(url: str) -> tuple[str, str, str] | None:
     if path.endswith("info.json") or "/info.json" in lowered:
         return "iiif_info", "candidate", ""
     if path.endswith((".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff", ".djvu")):
+        if any(token in path for token in ("/logo", "/logos/", "/assets/", "/images/logo", "favicon")):
+            return "image", "site_asset", ""
         return "image", "candidate", ""
     if path.endswith(".pdf") or "format=pdf" in query:
         return "pdf", "candidate", ""
@@ -105,7 +107,7 @@ def extract_candidates(html: str, base_url: str) -> list[ProbeCandidate]:
     seen: set[tuple[str, str]] = set()
     candidates: list[ProbeCandidate] = []
 
-    raw_urls: list[tuple[str, str]] = []
+    raw_urls: list[tuple[str, str]] = [(base_url, "input_url")]
     raw_urls.extend((m.group("url"), "html_attribute") for m in ATTR_URL_RE.finditer(html))
     raw_urls.extend((m.group(0), "absolute_text") for m in ABSOLUTE_URL_RE.finditer(html))
 
@@ -164,6 +166,19 @@ def _summarize(candidates: list[ProbeCandidate]) -> str:
     return f"{kind_summary} | {role_summary}"
 
 
+def _evaluate_readiness(candidates: list[ProbeCandidate]) -> str:
+    roles = {candidate.role for candidate in candidates}
+    has_record = "primo_record" in roles
+    has_delivery = "delivery_viewer" in roles or "legacy_delivery_viewer" in roles
+    has_reusable_signal = any(role in {"candidate", "delivery_file"} for role in roles)
+
+    if has_reusable_signal:
+        return "GO/NO-GO: REVIEW (emersi segnali tecnici da verificare meglio, ma non ancora un pattern stabile riusabile)"
+    if has_record or has_delivery:
+        return "GO/NO-GO: HOLD (record/viewer emersi, ma senza manifest, file o immagini riusabili in modo stabile)"
+    return "GO/NO-GO: NO_GO (nessun percorso tecnico sufficiente emerso)"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -196,6 +211,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Candidati trovati: {len(candidates)}")
     print(f"Report: {args.output}")
     print(_summarize(candidates))
+    print(_evaluate_readiness(candidates))
     for candidate in candidates[:20]:
         label = f"{candidate.kind} [{candidate.role}]"
         if candidate.identifier:
