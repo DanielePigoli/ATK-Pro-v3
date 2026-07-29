@@ -156,9 +156,14 @@ Esito primo scouting biblioteche digitali italiane (2026-06-05):
   documentato. I primi test live non hanno pero individuato un endpoint
   ripetibile: su Preserver `IE7400509` la sonda ha trovato solo il logo del
   viewer, mentre sul record Primo `alma9925210904741` non sono emersi manifest,
-  PDF o immagini utili. La sonda `verify_beic_technical_probe.py` resta attiva
-  per raccogliere nuovi campioni, ma BEIC non entra nel menu finche non emerge
-  un endpoint file/manifest stabile con policy item-level chiara.
+  PDF o immagini utili. Ricontrollo live del 2026-07-29: il probe ora separa
+  esplicitamente gli asset di sito dai segnali tecnici riusabili e classifica
+  entrambi i campioni come `GO/NO-GO: HOLD`; sul Preserver restano solo il
+  viewer `DeliveryManagerServlet` e il logo del sito, sul record Primo resta
+  solo il record catalografico. La sonda `verify_beic_technical_probe.py`
+  resta attiva per raccogliere nuovi campioni, ma BEIC non entra nel menu
+  finche non emerge un endpoint file/manifest stabile con policy item-level
+  chiara.
 - `biblioteca_digitale_lombarda` e promossa solo per PDF puntuale pubblico.
   ATK-Pro accetta endpoint REST del tipo
   `https://www.bdl.servizirl.it/bdl/public/rest/srv/item/{id}/pdf`, costruisce
