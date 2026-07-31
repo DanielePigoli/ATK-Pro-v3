@@ -228,6 +228,23 @@ Esito primo controllo Svizzera italiana / Grigioni / Coira (2026-06-05):
 - `diocesi_chur_coira` offre orientamento ecclesiastico e Findbuch; va trattata
   come link/discovery, non come downloader generico.
 
+Ricontrollo ufficiale Archivio di Stato dei Grigioni (2026-07-31):
+
+- la pagina genealogica conferma che tutti i registri parrocchiali noti sono
+  stati microfilmati e possono essere visionati presso l'Archivio di Stato;
+- resta confermato che i registri di stato civile fino al 1929 sono
+  consultabili in sala di lettura, i registri dei cittadini attinenti fino al
+  1929 sono accessibili al pubblico su microfilm, mentre i registri delle
+  famiglie dal 1929 non possono essere visionati;
+- la pagina di ricerca aggiorna utilmente il quadro tecnico: oltre ai PDF e al
+  sistema informativo dell'archivio, esistono anche elenchi specifici di fondi
+  digitalizzati consultabili online e l'integrazione con `Archives Online` per
+  metadati e documenti delle banche dati collegate;
+- questo amplia il valore di discovery e scouting, ma non cambia il perimetro
+  operativo ATK-Pro: il ramo genealogico principale resta consultativo e
+  regolato, con stato civile e famiglie soggetti a limiti/autorizzazioni e
+  senza base per un downloader generalizzato.
+
 Ricontrollo ufficiale Archivio diocesano di Lugano (2026-07-31):
 
 - la pagina della Curia diocesana continua a indicare l'Archivio storico
