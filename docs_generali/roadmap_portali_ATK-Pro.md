@@ -228,6 +228,19 @@ Esito primo controllo Svizzera italiana / Grigioni / Coira (2026-06-05):
 - `diocesi_chur_coira` offre orientamento ecclesiastico e Findbuch; va trattata
   come link/discovery, non come downloader generico.
 
+Ricontrollo ufficiale Archivio diocesano di Lugano (2026-07-31):
+
+- la pagina della Curia diocesana continua a indicare l'Archivio storico
+  diocesano come servizio di consultazione aperto su appuntamento nei giorni
+  feriali, salvo il mercoledi;
+- il sito diocesano pubblica anche avvisi operativi puntuali, come la chiusura
+  estiva 2026 con riapertura il 18 agosto, segno di un servizio realmente vivo
+  ma gestito come consultazione istituzionale, non come piattaforma di accesso
+  remoto ai documenti;
+- resta quindi confermato il ruolo di riferimento per microfilm e consultazione
+  dei registri parrocchiali ticinesi gia' richiamato dalle disposizioni ASTi,
+  ma senza portale pubblico immagini, API o endpoint di download.
+
 Ricontrollo ufficiale Ticino / SAL / ASTi (2026-07-31):
 
 - l'Archivio di Stato del Cantone Ticino continua a presentarsi come centro di
