@@ -228,6 +228,21 @@ Esito primo controllo Svizzera italiana / Grigioni / Coira (2026-06-05):
 - `diocesi_chur_coira` offre orientamento ecclesiastico e Findbuch; va trattata
   come link/discovery, non come downloader generico.
 
+Ricontrollo ufficiale Ticino / SAL / ASTi (2026-07-31):
+
+- l'Archivio di Stato del Cantone Ticino continua a presentarsi come centro di
+  consultazione pubblica con strumenti online reali, incluso il catalogo
+  `scopeArchiv` dei fondi e pagine di accesso ai servizi;
+- la consultazione in sede o in versione digitale resta gratuita, ma il
+  regolamento e il tariffario confermano emolumenti per alcuni servizi
+  all'utenza, incluse riproduzioni digitali e supporti di ricerca approfonditi;
+- le ricerche genealogiche restano esplicitamente sottoposte a condizioni
+  particolari e a richieste puntuali tramite formulario dedicato;
+- il quadro tecnico si arricchisce con progetti digitali verticali come
+  "Pergamene ticinesi in rete", ma il ramo genealogico principale non si apre
+  per questo a un downloader generale: accesso, riproduzione e consultazione
+  restano regolati caso per caso dall'ASTi e dai servizi collegati.
+
 Esito primo scouting biblioteche digitali italiane (2026-06-05):
 
 - Questo e il primo blocco italiano/italofono con reale potenziale di nuova
