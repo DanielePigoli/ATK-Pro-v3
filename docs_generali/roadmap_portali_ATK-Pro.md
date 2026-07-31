@@ -79,6 +79,23 @@ Esito primo controllo Archivi Nazionali/Archivio Digitale (2026-06-05):
   apertura link, ricerca assistita, note di contesto e, se utile in futuro,
   collegamento documentato verso pagine pubbliche, non scaricamento.
 
+Ricontrollo ufficiale Archivi Nazionali / SIA / Sala Studio (2026-07-31):
+
+- le pagine ICAR aggiornate al 2026-05-15 confermano che il nuovo
+  `Sistema Informativo Archivistico (SIA)` e' il contesto unificato destinato a
+  integrare SIAS, SIUSA, Strumenti di ricerca online e Archivio Digitale nella
+  futura architettura del portale Archivi Nazionali;
+- `Sala Studio` non e' piu' soltanto progettuale: la pagina ufficiale aggiornata
+  al 2026-05-15 la presenta come piattaforma operativa per consultazione in
+  sede, richieste di riproduzione, ricerche da remoto e consulenze, con accesso
+  esclusivo tramite SPID/CIE/eIDAS;
+- la notizia ICAR del 2026-06-30 conferma inoltre che dal 1 luglio 2026 il
+  servizio e' salito a 64 Archivi di Stato attivi sulla piattaforma;
+- tutto questo rafforza il valore strategico della famiglia, ma non sposta il
+  perimetro ATK-Pro: Archivi Nazionali/SIA/Sala Studio restano capability di
+  discovery, accesso ai servizi e orientamento; non esiste una base pubblica
+  no-login equivalente a un downloader immagini/PDF generalizzato.
+
 Esito primo controllo SAN/SIAS/SIUSA (2026-06-05):
 
 - `san_risorse_digitali` e soprattutto catalogo, interoperabilita e strumenti
