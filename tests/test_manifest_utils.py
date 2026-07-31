@@ -1,4 +1,5 @@
 import pytest
+import base64
 from pathlib import Path
 from unittest.mock import patch
 import requests
@@ -58,6 +59,85 @@ def test_resolve_direct_manifest_url_returns_input_url():
 
     assert mu._resolve_direct_manifest_url(url) == url
     assert mu.resolve_manifest_url(url, "manifest_diretto") == url
+
+
+@pytest.mark.parametrize(
+    ("portal", "page_url", "expected"),
+    [
+        (
+            "gallica",
+            "https://gallica.bnf.fr/ark:/12148/bpt6k12345",
+            "https://gallica.bnf.fr/iiif/ark:/12148/bpt6k12345/manifest.json",
+        ),
+        (
+            "vatlib",
+            "https://digi.vatlib.it/view/MSS_Vat.lat.1",
+            "https://digi.vatlib.it/iiif/MSS_Vat.lat.1/manifest.json",
+        ),
+        (
+            "bodleian",
+            "https://digital.bodleian.ox.ac.uk/objects/123e4567-e89b-12d3-a456-426614174000/",
+            "https://iiif.bodleian.ox.ac.uk/iiif/manifest/123e4567-e89b-12d3-a456-426614174000.json",
+        ),
+        (
+            "europeana",
+            "https://www.europeana.eu/en/item/123/abc",
+            "https://iiif.europeana.eu/presentation/123/abc/manifest",
+        ),
+        (
+            "internet_archive",
+            "https://archive.org/details/sample_book",
+            "https://iiif.archivelab.org/iiif/sample_book/manifest.json",
+        ),
+        (
+            "e_codices",
+            "https://www.e-codices.unifr.ch/en/csg/0390/1r/max",
+            "https://www.e-codices.unifr.ch/metadata/iiif/csg-0390/manifest.json",
+        ),
+        (
+            "e_manuscripta",
+            "https://www.e-manuscripta.ch/zuz/content/titleinfo/12345",
+            "https://www.e-manuscripta.ch/i3f/v20/12345/manifest",
+        ),
+        (
+            "e_rara",
+            "https://www.e-rara.ch/zuz/content/titleinfo/67890",
+            "https://www.e-rara.ch/i3f/v20/67890/manifest",
+        ),
+        (
+            "heidelberg",
+            "https://digi.ub.uni-heidelberg.de/diglit/sample123",
+            "https://digi.ub.uni-heidelberg.de/diglit/iiif/sample123/manifest.json",
+        ),
+        (
+            "findbuch",
+            "https://example.findbuch.net/php/view.php?link=abc123",
+            "https://example.findbuch.net/php/view.php?link=abc123",
+        ),
+        (
+            "matricula",
+            "https://data.matricula-online.eu/en/italia/diocese/parish/book/",
+            "https://data.matricula-online.eu/en/italia/diocese/parish/book/",
+        ),
+        (
+            "museogalileo",
+            "https://bibdig.museogalileo.it/Teca/Viewer?an=6600",
+            "https://bibdig.museogalileo.it/Teca/Viewer?an=6600",
+        ),
+        (
+            "internetculturale_estense",
+            "https://www.internetculturale.it/jmms/iccuviewer/iccu.jsp?id=oai%3Aexample%3A123",
+            "https://www.internetculturale.it/jmms/iccuviewer/iccu.jsp?id=oai%3Aexample%3A123",
+        ),
+        (
+            "bnc_roma",
+            "http://digitale.bnc.roma.sbn.it/printedbooks/work",
+            "http://digitale.bnc.roma.sbn.it/printedbooks/work",
+        ),
+    ],
+)
+def test_resolve_manifest_url_for_existing_portals(portal, page_url, expected):
+    assert mu.resolve_manifest_url(page_url, portal) == expected
 
 
 def test_resolve_standard_manifest_url_uses_builder():
@@ -452,6 +532,179 @@ def test_build_doge_synthetic_manifest_from_dspace_api(monkeypatch):
     assert canvases[0]["images"][0]["resource"]["service"]["@context"] == "doge_direct"
     assert canvases[0]["images"][0]["resource"]["service"]["page_number"] == 1
     assert canvases[0]["images"][0]["resource"]["@id"] == f"{base}/server/api/core/bitstreams/{page_1_uuid}/content"
+
+
+def test_build_internet_archive_synthetic_manifest_from_public_metadata(monkeypatch):
+    class Response:
+        ok = True
+
+        def __init__(self, payload):
+            self._payload = payload
+
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return self._payload
+
+    responses = {
+        "https://archive.org/metadata/sample_book": Response(
+            {
+                "server": "archive.org",
+                "dir": "/download/sample_book",
+                "metadata": {"title": "Sample book"},
+                "files": [
+                    {"name": "sample_book_jp2.zip"},
+                    {"name": "sample_book_page_numbers.json"},
+                ],
+            }
+        ),
+        "https://archive.org/download/sample_book/sample_book_page_numbers.json": Response(
+            {"pages": [{}, {}]}
+        ),
+    }
+    monkeypatch.setattr(mu.requests, "get", lambda url, **_kwargs: responses[url])
+
+    manifest = mu.build_ia_synthetic_manifest("https://archive.org/details/sample_book")
+
+    assert manifest["label"] == "Sample book"
+    canvases = manifest["sequences"][0]["canvases"]
+    assert len(canvases) == 2
+    resource = canvases[0]["images"][0]["resource"]
+    assert resource["service"]["@context"] == "ia_direct"
+    assert "sample_book_0001.jp2" in resource["@id"]
+
+
+def test_build_findbuch_synthetic_manifest_from_viewer_html(monkeypatch):
+    html = """
+        <div><b>Bestand:</b></div><div>Parish archive</div>
+        <div><b>Titel:</b></div><div>Baptisms</div>
+        <script>
+          var be_id = 12; var ve_id = '34'; var max = 2;
+          pic_names[0] = 'Folio 1'; pic_names[1] = 'Folio 2';
+        </script>
+    """
+
+    class Response:
+        text = html
+        encoding = None
+
+        def raise_for_status(self):
+            pass
+
+    class Session:
+        def get(self, *_args, **_kwargs):
+            return Response()
+
+    monkeypatch.setattr(mu.requests, "Session", Session)
+    page_url = "https://example.findbuch.net/php/view.php?link=abc123"
+
+    manifest = mu.build_findbuch_synthetic_manifest(page_url)
+
+    assert manifest["label"] == "Parish archive – Baptisms"
+    canvases = manifest["sequences"][0]["canvases"]
+    assert [canvas["label"] for canvas in canvases] == ["Folio 1", "Folio 2"]
+    service = canvases[0]["images"][0]["resource"]["service"]
+    assert service["@context"] == "findbuch_gtpc"
+    assert (service["be_id"], service["ve_id"], service["count"]) == (12, 34, 0)
+
+
+def test_build_internetculturale_synthetic_manifest_from_mag(monkeypatch):
+    mag = """
+        <record><title>Estense sample</title>
+        <page name="Carta 1" w="1200" h="1800" src="cacheman/normal/a.jpg"></page>
+        <page name="Carta 2" w="1201" h="1801" src="https://images.example/b.jpg"></page>
+        </record>
+    """
+    monkeypatch.setattr(
+        mu,
+        "_fetch_internetculturale_mag",
+        lambda *_args, **_kwargs: (mag, "MagTeca - ICCU", "https://example.test/mag"),
+    )
+
+    manifest = mu.build_internetculturale_estense_synthetic_manifest(
+        "https://www.internetculturale.it/jmms/iccuviewer/iccu.jsp?id=oai%3Aexample%3A123"
+    )
+
+    assert manifest["label"] == "Estense sample"
+    canvases = manifest["sequences"][0]["canvases"]
+    assert [canvas["label"] for canvas in canvases] == ["Carta 1", "Carta 2"]
+    assert canvases[0]["images"][0]["resource"]["@id"] == "https://www.internetculturale.it/jmms/cacheman/normal/a.jpg"
+    assert canvases[0]["images"][0]["resource"]["service"]["@context"] == "internetculturale_cacheman_direct"
+
+
+@patch("src.manifest_utils.requests.get")
+def test_build_museogalileo_synthetic_manifest_prefers_high_image(mock_get):
+    mock_get.return_value.raise_for_status.return_value = None
+    mock_get.return_value.json.return_value = {
+        "richiesta": {"token": "public-token", "bidEffettivo": "6600"},
+        "opera": {
+            "titolo": "Galileo sample",
+            "units": [
+                {
+                    "titolo": "Pagina I",
+                    "formati": [
+                        {"id": "low", "tipoFormato": "IMAGE_LOW"},
+                        {"id": "high", "tipoFormato": "IMAGE_HIGH"},
+                    ],
+                }
+            ],
+        },
+    }
+
+    manifest = mu.build_museogalileo_synthetic_manifest(
+        "https://bibdig.museogalileo.it/Teca/Viewer?an=6600"
+    )
+
+    resource = manifest["sequences"][0]["canvases"][0]["images"][0]["resource"]
+    assert manifest["label"] == "Galileo sample"
+    assert resource["@id"].endswith("GetObject?id=high&token=public-token")
+    assert resource["service"]["@context"] == "museogalileo_teca_direct"
+
+
+def test_build_bnc_roma_synthetic_manifest_normalizes_and_orders_images():
+    html = """
+        <title>BNC sample</title>
+        <img src="/img/printedbooks/work/page_002/thumbCrop">
+        <img src="/img/printedbooks/work/page_001/med">
+        <img src="/img/printedbooks/work/page_001/thumbCrop">
+    """
+
+    manifest = mu.build_bnc_roma_synthetic_manifest(
+        "http://digitale.bnc.roma.sbn.it/printedbooks/work", html=html
+    )
+
+    canvases = manifest["sequences"][0]["canvases"]
+    urls = [canvas["images"][0]["resource"]["@id"] for canvas in canvases]
+    assert manifest["label"] == "BNC sample"
+    assert urls == [
+        "http://digitale.bnc.roma.sbn.it/img/printedbooks/work/page_001/med",
+        "http://digitale.bnc.roma.sbn.it/img/printedbooks/work/page_002/med",
+    ]
+
+
+def test_build_matricula_synthetic_manifest_from_public_viewer_html():
+    image_urls = [
+        "http://hosted-images.matricula-online.eu/a.jpg",
+        "https://hosted-images.matricula-online.eu/b.jpg",
+    ]
+    encoded = [base64.b64encode(url.encode()).decode() for url in image_urls]
+    html = (
+        "<title>Baptisms | Parish | Matricula Online</title>"
+        f'<script>"/image/{encoded[0]}"; "/image/{encoded[1]}"; '
+        '"labels": ["Folio 1", "Folio 2"]</script>'
+    )
+
+    manifest = mu.build_matricula_synthetic_manifest(
+        "https://data.matricula-online.eu/en/italia/diocese/parish/book/", html=html
+    )
+
+    assert manifest["label"] == "Baptisms | Parish"
+    canvases = manifest["sequences"][0]["canvases"]
+    assert [canvas["label"] for canvas in canvases] == ["Folio 1", "Folio 2"]
+    resources = [canvas["images"][0]["resource"] for canvas in canvases]
+    assert resources[0]["@id"].startswith("https://")
+    assert all(resource["service"]["@context"] == "matricula_direct" for resource in resources)
 
 
 @patch("src.manifest_utils.requests.get")
