@@ -172,6 +172,27 @@ Esito primo controllo BeWeB/archivi ecclesiastici italiani (2026-06-05):
   da diocesi, parrocchia, privacy e consultazione locale. ATK-Pro puo aiutare a
   orientarsi, non automatizzare.
 
+Ricontrollo ufficiale BeWeB / CEI-Ar (2026-07-31):
+
+- la pagina istituzionale "Cos'e' BeWeB" continua a descrivere il portale come
+  vetrina trasversale del patrimonio culturale ecclesiastico italiano, con
+  ricerca cross-domain e dialogo con sistemi esterni come SAN;
+- la pagina progetto `CEI-Ar` conferma che BeWeB pubblica progressivamente gli
+  inventari prodotti nella rete degli archivi ecclesiastici e che la
+  pubblicazione online avviene tramite accordi e liberatorie degli istituti
+  aderenti, non come esposizione uniforme e automatica di tutti i contenuti;
+- i termini d'uso restano differenziati: schede catalografiche di Persone,
+  Famiglie e Istituti culturali in `CC0`, resto dei contenuti in
+  `CC BY-NC-SA`, con possibili ulteriori diritti di terzi;
+- aggiornamento utile: su alcune schede pubbliche BeWeB espone anche indicatori
+  item-level di licenza immagine e perfino il comando "copia il manifest" IIIF.
+  Questo segnala che in certi rami esistono oggetti tecnicamente strutturati,
+  ma non una capability uniforme e generalizzabile per downloader ATK-Pro;
+- decisione prudente confermata: BeWeB resta portale di discovery, contesto e
+  collegamento a inventari/risorse, con eventuale futura pista metadata/search
+  sulle sole aree catalografiche compatibili, ma senza builder/downloader
+  generico.
+
 Esito primo controllo Svizzera italiana / Grigioni / Coira (2026-06-05):
 
 - `archivio_stato_ticino` e `servizio_archivi_locali_ticino` sono molto
