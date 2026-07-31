@@ -172,6 +172,24 @@ Esito primo controllo BeWeB/archivi ecclesiastici italiani (2026-06-05):
   da diocesi, parrocchia, privacy e consultazione locale. ATK-Pro puo aiutare a
   orientarsi, non automatizzare.
 
+Ricontrollo ufficiale archivi diocesani/parrocchiali italiani (2026-07-31):
+
+- BeWeB continua a mostrare in modo esplicito che gli archivi parrocchiali
+  conservano proprio le serie genealogicamente piu' rilevanti: battesimi,
+  matrimoni, defunti e stati delle anime;
+- il portale conferma anche che tali fondi possono essere conservati non solo
+  presso la parrocchia, ma talvolta presso archivi diocesani o altri istituti
+  ecclesiastici, quindi il luogo di consultazione reale va verificato caso per
+  caso;
+- aggiornamento importante: le notizie BeWeB del 2026 confermano che la
+  pubblicazione di fondi archivistici ecclesiastici continua a crescere e che,
+  quando l'istituto aderente lo consente, si puo' arrivare fino a descrizioni
+  di singole unita' archivistiche tramite l'esplorazione del fondo;
+- questo rafforza il valore di scouting e orientamento per ATK-Pro, ma non
+  cambia il perimetro tecnico-legale: l'accesso ai registri e soprattutto la
+  riproduzione dei contenuti restano dipendenti da diocesi, parrocchia,
+  archivio storico e relative autorizzazioni/condizioni locali.
+
 Ricontrollo ufficiale BeWeB / CEI-Ar (2026-07-31):
 
 - la pagina istituzionale "Cos'e' BeWeB" continua a descrivere il portale come
