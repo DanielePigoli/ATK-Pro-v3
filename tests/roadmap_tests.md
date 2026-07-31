@@ -207,11 +207,26 @@ Aggiornamento 2026-07-27:
 
 ### Fase 3 - Portali
 
-- [ ] Estendere i test su `manifest_utils` per i portali gia presenti.
+- [x] Estendere i test su `manifest_utils` per i portali gia presenti.
 - [x] Aggiungere fixture offline per manifest IIIF v2/v3 rappresentativi.
-- [ ] Aggiungere test per fallback sintetici solo dove legalmente e
+- [x] Aggiungere test per fallback sintetici solo dove legalmente e
   tecnicamente giustificati.
-- [ ] Collegare ogni nuovo portale alla matrice di valutazione tecnica/legale.
+- [x] Collegare ogni nuovo portale alla matrice di valutazione tecnica/legale.
+
+Chiusura fase 3 (2026-07-31):
+
+- `tests/test_manifest_utils.py` copre ora i resolver dei portali gia presenti
+  e i builder sintetici pubblici mantenuti per Internet Archive, Findbuch,
+  Internet Culturale/Estense, Museo Galileo, BNC Roma e Matricula, senza
+  introdurre fallback per candidati in `HOLD`, login o `nodownload`;
+- `tests/test_portal_registry.py` verifica che ogni chiave registrata compaia
+  nella matrice tecnica/legale dei portali esistenti;
+- aggiunto alla matrice il collegamento mancante per
+  `biblioteca_digitale_siena` e riallineato `Matrice_portali.xlsx` alle due
+  fonti Markdown;
+- verifica mirata: `python -m pytest tests\test_manifest_utils.py
+  tests\test_portal_registry.py -q`;
+- verifica matrice: `python verify_portal_matrix_workbook.py`.
 
 ### Fase 4 - Release hygiene
 

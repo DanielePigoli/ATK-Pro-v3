@@ -942,6 +942,21 @@ Matrice iniziale di scouting:
   aggiornare. Dopo ogni modifica alla vista Excel, eseguire
   `python verify_portal_matrix_workbook.py`.
 
+## Chiusura fase 3
+
+Fase 3 chiusa il 2026-07-31. Il ramo
+`biblioteche_digitali_locali_iiif` ha prodotto supporti prudenti solo dove
+manifest, accesso pubblico e policy item-level lo consentono; i candidati con
+login, `nodownload`, endpoint non stabili o termini incompatibili restano
+esclusi, in `HOLD` oppure limitati a discovery/link assistito.
+
+La chiusura comprende anche i residui trasversali: resolver e fallback
+sintetici mantenuti hanno copertura offline in `tests/test_manifest_utils.py`,
+ogni chiave della registry e' verificata contro la matrice tecnica/legale e la
+vista `Matrice_portali.xlsx` e' riallineata alle due fonti Markdown. Ulteriori
+portali appartengono a un nuovo ciclo di scouting, non a una riapertura
+implicita della fase 3.
+
 ## Sequenza tecnica consigliata
 
 1. Mantenere allineata la registry `portale -> capability`; gruppi UI,

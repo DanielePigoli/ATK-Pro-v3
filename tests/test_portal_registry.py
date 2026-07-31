@@ -2,6 +2,7 @@ import src.manifest_utils as manifest_utils
 from datetime import date
 import json
 from datetime import datetime
+from pathlib import Path
 from urllib.parse import urlparse
 
 from src.portal_registry import (
@@ -36,6 +37,22 @@ def test_registry_has_expected_portal_count_and_unique_keys():
 def test_registry_covers_manifest_builders_and_special_portals():
     expected = set(manifest_utils._PORTAL_BUILDERS) | {"antenati", "manifest_diretto"}
     assert set(PORTAL_REGISTRY) == expected
+
+
+def test_every_registered_portal_is_linked_to_the_technical_legal_matrix():
+    matrix_path = (
+        Path(__file__).resolve().parents[1]
+        / "docs_generali"
+        / "matrice_portali_esistenti_ATK-Pro.md"
+    )
+    matrix_text = matrix_path.read_text(encoding="utf-8")
+    matrix_keys = {
+        line.split("|")[1].strip().strip("`")
+        for line in matrix_text.splitlines()
+        if line.startswith("| `")
+    }
+
+    assert set(PORTAL_REGISTRY) <= matrix_keys
 
 
 def test_detect_portal_from_unambiguous_official_hosts():
