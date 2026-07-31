@@ -79,6 +79,22 @@ Esito primo controllo Archivi Nazionali/Archivio Digitale (2026-06-05):
   apertura link, ricerca assistita, note di contesto e, se utile in futuro,
   collegamento documentato verso pagine pubbliche, non scaricamento.
 
+Ricontrollo ufficiale Archivio Digitale ICAR (2026-07-31):
+
+- il portale pubblico continua a essere pienamente consultabile senza
+  registrazione e si presenta come punto unico di accesso al patrimonio
+  digitalizzato degli Archivi di Stato e delle Soprintendenze aderenti;
+- la home pubblica continua a dichiarare 46 istituti presenti e conferma una
+  ricerca trasversale su progetti di digitalizzazione, fondi, complessi,
+  unita' archivistiche e documentarie;
+- la pagina ICAR di contesto aggiornata al 2026-05-15 ribadisce che
+  Archivio Digitale e' uno strumento centrale di consultazione e pubblicazione
+  del patrimonio digitalizzato, gratuito e no-login;
+- i termini d'uso continuano pero' a vietare copia o estrazione massiva,
+  robot e metodi analoghi di raccolta dati. Per ATK-Pro quindi il giudizio non
+  cambia: portale forte per discovery/consultazione, ma ancora fuori dallo
+  scope builder/downloader.
+
 Ricontrollo ufficiale Archivi Nazionali / SIA / Sala Studio (2026-07-31):
 
 - le pagine ICAR aggiornate al 2026-05-15 confermano che il nuovo
