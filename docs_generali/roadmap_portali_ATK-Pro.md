@@ -228,6 +228,22 @@ Esito primo controllo Svizzera italiana / Grigioni / Coira (2026-06-05):
 - `diocesi_chur_coira` offre orientamento ecclesiastico e Findbuch; va trattata
   come link/discovery, non come downloader generico.
 
+Ricontrollo ufficiale Archivio vescovile di Coira (2026-07-31):
+
+- il sito del `Bischöfliches Archiv Chur` continua a presentare un archivio
+  ecclesiastico strutturato, con ordinamento dei fondi, sezioni storiche,
+  repertori online e lavori di descrizione/digitalizzazione in corso su varie
+  serie documentarie;
+- la pagina contatti esplicita pero' che il BAC non e' un archivio pubblico:
+  la consultazione di atti e documenti e' possibile solo previa richiesta e
+  nel locale di lettura/lavoro, con regolamento proprio di sicurezza e uso;
+- il sito segnala anche pause di servizio e istruzioni formali per l'accesso,
+  confermando un modello di consultazione istituzionale controllata, non un
+  accesso remoto aperto ai documenti;
+- il ramo resta quindi utile per orientamento ecclesiastico, link a inventari e
+  comprensione dei fondi, ma non offre una base per download immagini/API
+  generalizzabili.
+
 Ricontrollo ufficiale Archivio di Stato dei Grigioni (2026-07-31):
 
 - la pagina genealogica conferma che tutti i registri parrocchiali noti sono
