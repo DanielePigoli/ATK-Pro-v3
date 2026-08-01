@@ -24,7 +24,9 @@ def test_pdf_integration_selects_single_variant_per_page(tmp_path, monkeypatch):
 
     captured = {}
 
-    def fake_create_pdf_from_images(paths, outpath, resolution_dpi=400):
+    def fake_create_pdf_from_images(
+        paths, outpath, resolution_dpi=400, resource_profile=None
+    ):
         # Salviamo le paths passate per asserzioni
         captured['paths'] = list(paths)
         # Creiamo un PDF fittizio

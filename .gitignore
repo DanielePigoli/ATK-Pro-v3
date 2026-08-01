@@ -84,7 +84,9 @@ portal_policy_overrides.json
 # ✅ ECCEZIONI - File critici che DEVONO essere salvati in GitHub
 !docs_generali/glossario_multilingua_ATK-Pro.json  # CRITICO per localizzazione v2.0
 !manifest.json/  # Mantieni manifest per reference (ma escludiamo i contenuti)
-!.github/workflows/*.yml  # GitHub Actions workflow (CI/CD automation)
+# GitHub Actions workflow (CI/CD automation)
+!.github/workflows/*.yml
+!.github/workflows/*.yaml
 
 # 🧱 Build e distribuzione
 build/
