@@ -56,6 +56,25 @@ git push origin v3.0.0-rc1
 Per tag contenenti `rc`, i workflow devono mantenere la release come
 pre-release e non promuoverla a release stabile.
 
+## Quality gate
+
+Il workflow `quality-gate.yml` esegue automaticamente sulle pull request:
+
+```powershell
+python scripts\quality_gate.py smoke
+```
+
+Da `workflow_dispatch` si puo selezionare anche il profilo completo usato
+prima di una release:
+
+```powershell
+python scripts\quality_gate.py release
+```
+
+Entrambi includono l'audit non distruttivo degli artefatti generati tramite
+`scripts/verify_release_hygiene.py`. I controlli live dei portali restano
+manuali e separati.
+
 ## 🔧 Test Locale Prima del Push
 
 **Windows:**

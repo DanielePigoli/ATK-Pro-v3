@@ -19,7 +19,9 @@ def test_enrich_pdf_metadata_called(tmp_path, monkeypatch):
 
     captured = {}
 
-    def fake_create_pdf_from_images(paths, outpath, resolution_dpi=400):
+    def fake_create_pdf_from_images(
+        paths, outpath, resolution_dpi=400, resource_profile=None
+    ):
         # create a fake pdf
         Path(outpath).write_bytes(b'%PDF')
         return outpath

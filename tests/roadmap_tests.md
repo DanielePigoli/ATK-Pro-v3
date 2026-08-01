@@ -1,6 +1,6 @@
 # Roadmap test - ATK-Pro v3.0
 
-Data snapshot: 2026-05-27
+Data snapshot: 2026-08-01
 
 Questa roadmap sostituisce la precedente fotografia v2.0. I numeri storici
 249/296 non vengono piu usati come baseline, perche non descrivono lo stato
@@ -230,9 +230,24 @@ Chiusura fase 3 (2026-07-31):
 
 ### Fase 4 - Release hygiene
 
-- [ ] Inventariare file temporanei, log e output generati nella root.
-- [ ] Aggiornare documentazione test in base alla suite realmente eseguita.
-- [ ] Definire un comando smoke per PR e un comando completo per release.
+- [x] Inventariare file temporanei, log e output generati nella root.
+- [x] Aggiornare documentazione test in base alla suite realmente eseguita.
+- [x] Definire un comando smoke per PR e un comando completo per release.
+
+Chiusura fase 4 (2026-08-01):
+
+- inventario ripetibile con `python scripts/verify_release_hygiene.py`: 78.241
+  artefatti generati locali riconosciuti e ignorati, nessun artefatto generato
+  tracciato o non coperto da `.gitignore`; nessun file locale e' stato
+  eliminato;
+- gate PR canonico: `python scripts/quality_gate.py smoke`, 11 step completati
+  con 137 test passati;
+- gate release canonico: `python scripts/quality_gate.py release`, 11 step
+  completati con 799 test passati e 38 skip attesi;
+- i due test PDF storici sono stati riallineati al parametro
+  `resource_profile` della firma v3 corrente;
+- `.github/workflows/quality-gate.yml` esegue automaticamente il profilo
+  `smoke` sulle PR e permette di scegliere `smoke` o `release` manualmente.
 
 ## Note operative
 

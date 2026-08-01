@@ -26,26 +26,23 @@ release pubblica multilingue completa.
 | Altre lingue | Go solo con dichiarazione | Per RC tecnica e' accettabile dichiarare che la guida italiana e' la fonte v3 primaria. Per release pubblica multilingue serve propagazione o nota visibile di stato. |
 | Disclaimer e policy portali | Go con consenso revisionato | Il disclaimer esclude scraping massivo, aggiramento login/paywall e portali commerciali chiusi; la revisione v3 deve essere accettata esplicitamente prima di installazione, aggiornamento automatico o avvio portable/bundle. Fino alla propagazione multilingue, il testo legale vincolante e' quello italiano. |
 | Policy runtime D/R portali | Go con re-check periodico | `src/portal_registry.py` applica `R_OK`, `R_LIMITED`, `D_ONLY` e `VARIABLE`; `verify_portal_policy.py` controlla scadenza delle policy e genera `portal_policy_overrides.json` per aggiornamenti locali senza nuova release. |
-| Portali esistenti | Go italiano; verifica globale aperta | Registry e policy comprendono 25 capability. Lo smoke live del 2026-06-22 passa su tutti i portali italiani e su 24/25 campioni complessivi; Gallica resta da riallineare per risposta HTTP 403 del manifest campione. |
-| Test tecnici | Go | Suite completa del 2026-06-23: 559 test passati e 38 skip attesi; verificatori guida italiana, asset documentali e policy portali superati. |
+| Portali esistenti | Go offline; smoke live separato | Registry e policy comprendono 28 capability, tutte collegate alla matrice tecnica/legale e coperte dalla matrice smoke offline. Il controllo live resta manuale e non sostituisce le fixture. |
+| Test tecnici | Go | Gate release del 2026-08-01: 799 test passati e 38 skip attesi; verificatori di localizzazione, glossario, disclaimer, documenti, guida italiana, matrice e policy superati. |
 | Packaging | Go RC2 dopo build | Build PyInstaller onedir Windows RC1 generata, avviata e provata manualmente; installer Windows RC1 generato con Inno Setup; workflow macOS e Linux superati e artefatti caricati nella pre-release RC1. Per RC2 il perimetro tecnico dei fix AI/OCR e dei portali sensibili e' stato rieseguito; eventuali conferme manuali esterne sui casi Gemini restano utili ma non bloccanti. |
-| File temporanei | Go | Inventario root rieseguito e confermato il 2026-07-26: artefatti locali, cache, build, log, screenshot e output test risultano ignorati o coperti da regole di esclusione; `git status --short --ignored` non ha evidenziato gap urgenti di hygiene prima del tag. |
+| File temporanei | Go | Audit automatico del 2026-08-01: 78.241 artefatti generati locali inventariati e ignorati; nessun artefatto generato tracciato o non coperto da `.gitignore`. |
 
 ## Suite smoke pre-RC
 
-Da eseguire su `main` pulito:
+Gate rapido da eseguire sulle PR:
 
 ```powershell
-python verify_localization.py
-python validate_glossary.py
-python verify_glossary.py
-python verify_disclaimer_consent.py
-python verify_document_assets.py
-python verify_italian_guide_content.py
-python verify_portal_matrix_workbook.py
-python verify_portal_policy.py --strict
-python -m py_compile src\main_gui_qt.py src\elaborazione.py src\manifest_utils.py src\tile_downloader.py src\qt_worker.py src\portal_registry.py verify_localization.py verify_disclaimer_consent.py verify_document_assets.py verify_italian_guide_content.py verify_portal_matrix_workbook.py verify_portal_live_smoke.py verify_manifest_url.py verify_portal_policy.py
-python -m pytest tests\test_manifest_utils.py tests\test_manifest_parser.py tests\test_tile_downloader.py tests\test_qt_worker_coverage.py tests\test_portal_registry.py tests\test_portal_live_smoke_matrix.py -q
+python scripts\quality_gate.py smoke
+```
+
+Gate completo da eseguire su `main` pulito prima di una release:
+
+```powershell
+python scripts\quality_gate.py release
 ```
 
 Controllo live portali, manuale e non sostitutivo dei test offline:
