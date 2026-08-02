@@ -1,6 +1,7 @@
 import json, pathlib, re, sys
 
-GLOSSARY_PATH = pathlib.Path(r'c:/ATK-Pro_v3.0/docs_generali/glossario_multilingua_ATK-Pro.json')
+PROJECT_ROOT = pathlib.Path(__file__).resolve().parent
+GLOSSARY_PATH = PROJECT_ROOT / 'docs_generali' / 'glossario_multilingua_ATK-Pro.json'
 
 SUPPORTED_LANGUAGES = [
     "IT", "EN", "ES", "FR", "DE", "PT", "RU", "AR", "NL", "HE", "JA", "SV", "ZH", "RO", "EL", "PL", "DA", "NO", "TR", "VI"
