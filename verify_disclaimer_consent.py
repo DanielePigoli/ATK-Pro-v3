@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
-DISCLAIMER_REVISION = "v3.0.0-legal-disclaimer-2026-05-27"
+DISCLAIMER_REVISION = "v3.0.0-legal-disclaimer-2026-08-02"
 
 FILES = {
     "main_gui": ROOT / "src" / "main_gui_qt.py",
@@ -20,6 +20,9 @@ FILES = {
     "deb_templates": ROOT / ".github" / "deb-scripts" / "templates",
     "linux_workflow": ROOT / ".github" / "workflows" / "build-linux.yml",
     "macos_workflow": ROOT / ".github" / "workflows" / "build-macos.yml",
+    "pyinstaller_spec": ROOT / "ATK-Pro.spec",
+    "license": ROOT / "LICENSE",
+    "third_party_notices": ROOT / "THIRD-PARTY-NOTICES",
 }
 
 
@@ -46,6 +49,9 @@ def main() -> int:
     deb_templates = read("deb_templates")
     linux_workflow = read("linux_workflow")
     macos_workflow = read("macos_workflow")
+    pyinstaller_spec = read("pyinstaller_spec")
+    license_text = read("license")
+    third_party_notices = read("third_party_notices")
 
     for name, text in {
         "src/main_gui_qt.py": main_gui,
@@ -95,7 +101,8 @@ def main() -> int:
     require(issues, "disclaimer_revision" in deb_postinst, "Debian postinst: accepted revision must be persisted")
     require(issues, "Version 2.0" not in deb_templates and "Versione 2.0" not in deb_templates,
             "Debian templates: stale v2 disclaimer text must not be shown")
-    require(issues, "portali genealogici commerciali" in deb_templates and "risorse documentarie o archivistiche di terzi" in deb_templates,
+    require(issues, "GNU Affero General Public License" in deb_templates and "14. GRATUITA' E DONAZIONI" in deb_templates
+            and "15. PREVALENZA DELLE LICENZE" in deb_templates,
             "Debian templates: current v3 legal disclaimer content is missing")
     require(issues, "Description-it: Accettare il Disclaimer" not in deb_templates,
             "Debian templates: translated stale disclaimer sections must not override the canonical text")
@@ -108,6 +115,38 @@ def main() -> int:
             "macOS workflow: DMG must not use stale English legal disclaimer")
     require(issues, "ATK-Pro-Linux.tar.gz" in linux_workflow and "ATK-Pro-Linux.deb" in linux_workflow,
             "Linux workflow: expected tarball and DEB packaging outputs are missing")
+
+    legal_files = ("LICENSE", "LICENSE-DOCUMENTATION", "THIRD-PARTY-NOTICES", "TRADEMARKS")
+    for legal_file in legal_files:
+        require(issues, legal_file in pyinstaller_spec,
+                f"PyInstaller spec: {legal_file} is not bundled")
+        require(issues, f'Source: "{legal_file}"' in inno,
+                f"Inno installer: {legal_file} is not copied to the installation directory")
+        require(issues, legal_file in linux_workflow,
+                f"Linux workflow: {legal_file} is not included in release packages")
+        require(issues, legal_file in macos_workflow,
+                f"macOS workflow: {legal_file} is not included in DMG contents")
+
+    for marker in (
+        "GNU AFFERO GENERAL PUBLIC LICENSE",
+        "Version 3, 19 November 2007",
+        "0. Definitions.",
+        "13. Remote Network Interaction; Use with the GNU General Public License.",
+        "17. Interpretation of Sections 15 and 16.",
+        "END OF TERMS AND CONDITIONS",
+    ):
+        require(issues, marker in license_text, f"LICENSE: missing integral AGPL marker: {marker}")
+
+    for marker in (
+        "PyMuPDF 1.24.12",
+        "PySide6, PySide6_Essentials, PySide6_Addons e Shiboken6 6.10.1",
+        "Qt WebEngine",
+        "Playwright `driver/LICENSE`",
+        "chardet 3.0.4",
+        "non assunti come artefatti finali",
+    ):
+        require(issues, marker in third_party_notices,
+                f"THIRD-PARTY-NOTICES: missing audit marker: {marker}")
 
     old_repo_hits = [
         match.group(0)

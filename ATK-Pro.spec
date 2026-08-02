@@ -79,15 +79,18 @@ a = Analysis(
         # I browser Chromium (~150 MB) vengono scaricati on-demand al primo uso
         
         # Configuration + documentation
-        # ('README.md', '.'),
+        ('LICENSE', '.'),
+        ('LICENSE-DOCUMENTATION', '.'),
+        ('THIRD-PARTY-NOTICES', '.'),
+        ('TRADEMARKS', '.'),
     ],
     hiddenimports=[
         'playwright',
         'PIL',
-        'PySide6',
         'PySide6.QtCore',
         'PySide6.QtGui',
         'PySide6.QtWidgets',
+        'PySide6.QtWebEngineWidgets',
         'requests',
         'urllib3',
         'certifi',

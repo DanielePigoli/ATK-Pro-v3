@@ -59,7 +59,35 @@ STALE_PATTERNS = [
     re.compile(r"serie versioni \(1\.x, 2\.x, 3\.x, 4\.x, 5\.x\)", re.IGNORECASE),
     re.compile(r"Milestones: Python puro", re.IGNORECASE),
     re.compile(r"registry portali", re.IGNORECASE),
+    re.compile(r"Gratuito \(Consigliato\)", re.IGNORECASE),
+    re.compile(r"15 richieste/minuto", re.IGNORECASE),
+    re.compile(r"credenziali proxy nel menu", re.IGNORECASE),
+    re.compile(r"output[/\\\\]logs", re.IGNORECASE),
+    re.compile(r"Run as admin", re.IGNORECASE),
+    re.compile(r"Linux-macOS:\s*<code>sudo</code>", re.IGNORECASE),
 ]
+
+REQUIRED_GUIDE_MARKERS = {
+    "guida.html": ["fonte editoriale canonica"],
+    "guida_01_installazione_configurazione.html": ["Profilo risorse"],
+    "guida_02_operazioni_base.html": [
+        "Archivio Storico UniBO",
+        "PHAIDRA Università di Padova",
+        "DOGE Università di Genova",
+        "non un'autorizzazione indiscriminata",
+    ],
+    "guida_06_ocr_avanzato.html": [
+        "Transkribus",
+        "Calibrazione Assistita",
+        "trascrizione_parziale.txt",
+        "non si tratta del portachiavi protetto",
+    ],
+    "guida_09_supporto_faq.html": [
+        "atkpro.log",
+        "trascrizione_parziale.txt",
+        "nodownload",
+    ],
+}
 
 TRANSLATION_TARGET_AUTONYMS = [
     "Italiano", "English", "Español", "Français", "Deutsch", "Português",
@@ -164,12 +192,24 @@ def check_translation_targets() -> list[str]:
     return issues
 
 
+def check_required_guide_markers() -> list[str]:
+    issues: list[str] = []
+    for filename, markers in REQUIRED_GUIDE_MARKERS.items():
+        path = GUIDE_DIR / filename
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for marker in markers:
+            if marker not in text:
+                issues.append(f"{path.relative_to(ROOT)}: missing required v3 marker '{marker}'")
+    return issues
+
+
 def main() -> int:
     issues: list[str] = []
     for path in CHECK_FILES:
         issues.extend(check_file(path))
     issues.extend(check_guide_index())
     issues.extend(check_translation_targets())
+    issues.extend(check_required_guide_markers())
 
     if issues:
         print("Italian guide content verification failed:")

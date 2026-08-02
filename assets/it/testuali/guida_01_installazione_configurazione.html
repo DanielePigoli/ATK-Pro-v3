@@ -393,7 +393,7 @@
             <ul>
                 <li>Connessione Internet stabile (obbligatoria per accedere a IIIF Manifests)</li>
                 <li>Firewall: Consenti connessioni HTTPS in uscita (porta 443)</li>
-                <li>Proxy aziendale: Se in ambiente corporate, configura le credenziali proxy nel menu</li>
+                <li>Proxy aziendale: ATK-Pro non dispone di un menu interno per le credenziali proxy. Configura il proxy nel sistema operativo o nell'ambiente di rete e verifica con l'amministratore che le connessioni HTTPS verso i portali siano consentite.</li>
             </ul>
             </div>
             <div class="section-box">
@@ -450,6 +450,14 @@
             <p>Rimangono solo i file finali elaborati (immagini nei formati scelti, PDF, manifest e metadati).
             </p>
             <p>Per modificare le cartelle di output usa Menu → Impostazioni → "Seleziona cartelle output". Le scelte vengono memorizzate e ripristinate automaticamente alla sessione successiva.</p>
+            <h4>⚙️ PROFILO RISORSE</h4>
+            <p>Il comando <strong>Impostazioni → Profilo risorse</strong> regola il parallelismo usato durante download, ricostruzione delle immagini e generazione dei PDF:</p>
+            <ul>
+                <li><strong>Leggero:</strong> limita i processi contemporanei e i picchi di memoria; indicato per computer meno potenti o lavorazioni molto lunghe.</li>
+                <li><strong>Bilanciato:</strong> compromesso predefinito tra velocità e stabilità, adatto alla maggior parte dei casi.</li>
+                <li><strong>Veloce:</strong> usa più risorse per ridurre i tempi; sceglilo solo su computer sufficientemente prestanti.</li>
+            </ul>
+            <p>Il profilo non modifica qualità, diritti o quantità dei documenti acquisiti. I limiti prudenziali specifici di un portale continuano ad avere precedenza.</p>
             </div>
             <div class="section-box">
             <h3>3. INTERFACCIA PRINCIPALE</h3>

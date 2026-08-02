@@ -32,7 +32,7 @@ import json as _json_mod
 import re as _re_mod
 
 GITHUB_REPO = "DanielePigoli/ATK-Pro-v3"
-DISCLAIMER_REVISION = "v3.0.0-legal-disclaimer-2026-05-27"
+DISCLAIMER_REVISION = "v3.0.0-legal-disclaimer-2026-08-02"
 DISCLAIMER_ACCEPT_PARAM = f"/ATKACCEPTDISCLAIMER={DISCLAIMER_REVISION}"
 DISCLAIMER_SOURCE_LANGUAGE = "it"
 

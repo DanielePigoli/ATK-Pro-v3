@@ -361,48 +361,17 @@
             <h3>&#129302; Passo 2 — Selezione del Provider IA e API Key</h3>
             <p>Seleziona il provider nel menu a tendina <strong>&ldquo;Seleziona Provider IA&rdquo;</strong>:</p>
             <table>
-                <thead><tr><th>Provider</th><th>Modello</th><th>Costo</th><th>Consigliato per</th></tr></thead>
+                <thead><tr><th>Provider</th><th>Tipo di servizio</th><th>Credenziali</th><th>Note operative</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Google Gemini</strong></td>
-                        <td>Gemini (Flash/Pro)</td>
-                        <td>✅ Gratuito (con limiti)</td>
-                        <td>Uso quotidiano, batch medi</td>
-                    </tr>
-                    <tr>
-                        <td><strong>OpenAI</strong></td>
-                        <td>GPT-4o</td>
-                        <td>A pagamento</td>
-                        <td>Alta precisione su grafia complessa</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Anthropic</strong></td>
-                        <td>Claude compatibile con l&apos;API configurata</td>
-                        <td>A pagamento</td>
-                        <td>Testi lunghi, alta coerenza</td>
-                    </tr>
-                    <tr>
-                        <td><strong>DeepSeek</strong></td>
-                        <td>DeepSeek-V3/R1</td>
-                        <td>Molto Economico</td>
-                        <td>Traduzioni, Testi piana (senza vision)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Mistral / xAI / Groq</strong></td>
-                        <td>Vari (es. Pixtral, Grok-2)</td>
-                        <td>Variabile (Gratis/Pagamento)</td>
-                        <td>Alternative avanzate per sviluppatori</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ollama / HuggingFace</strong></td>
-                        <td>Locali (es. LLaVA, Qwen2.5-VL)</td>
-                        <td>✅ Gratuito (Locale/API)</td>
-                        <td>Privacy assoluta (elaborazione offline)</td>
-                    </tr>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Servizi remoti</td><td>API key del provider</td><td>Modelli e disponibilit&agrave; dipendono dall'account e dalle condizioni correnti del provider.</td></tr>
+                    <tr><td><strong>Mistral, Groq, DeepSeek, xAI</strong></td><td>Endpoint remoti compatibili</td><td>API key del provider</td><td>Selezionare un modello capace di elaborare immagini; non tutti i modelli testuali supportano OCR visuale.</td></tr>
+                    <tr><td><strong>HuggingFace</strong></td><td>Inference API remota</td><td>Token HuggingFace</td><td>Compatibilit&agrave; e risultati dipendono dal modello configurato.</td></tr>
+                    <tr><td><strong>Transkribus</strong></td><td>Servizio HTR remoto</td><td><code>email:password</code> oppure Bearer token</td><td>Richiede un account e almeno una collection disponibile.</td></tr>
+                    <tr><td><strong>Ollama</strong></td><td>Servizio locale</td><td>Nessuna API key remota</td><td>Richiede Ollama attivo e un modello visuale compatibile installato localmente.</td></tr>
                 </tbody>
             </table>
-            <p style="margin-top:0.8rem;">Inserisci la tua API Key nel campo <strong>&ldquo;API Key&rdquo;</strong> (oppure lasciala prelevare in automatico dalla tua <em>Cassaforte delle key</em> in `api_keys.csv`). La chiave &egrave; mascherata per sicurezza e viene salvata automaticamente nelle preferenze.
-            La stessa chiave viene condivisa con il Modulo Traduzione.</p>
+            <p style="margin-top:0.8rem;">Il campo <strong>&ldquo;Modello (opzionale)&rdquo;</strong> permette di sostituire il modello predefinito. Usalo solo se conosci l'identificativo esatto e la compatibilit&agrave; visuale del modello.</p>
+            <p>Puoi inserire la credenziale nel campo dedicato o aprire la <strong>Cassaforte</strong>. Le chiavi IA sono conservate localmente nel caveau CSV <code>api_keys.csv</code>: non si tratta del portachiavi protetto del sistema operativo. Protezione del profilo utente, copie di sicurezza e revoca delle chiavi restano responsabilit&agrave; dell'utente.</p>
         </div>
 
         <div class="section-box">
@@ -432,6 +401,13 @@
                 <li><em>&ldquo;Le abbreviazioni 'fu' e 'q.' indicano 'figlio di' e 'quondam' (defunto).&rdquo;</em></li>
             </ul>
             <p style="margin-top:0.8rem;"><strong>Archivio istruzioni:</strong> Le istruzioni usate pi&ugrave; frequentemente possono essere salvate cliccando <strong>&ldquo;Salva&rdquo;</strong> e richiamate dal menu a tendina &ldquo;Istruzioni Salvate&rdquo; nelle sessioni successive.</p>
+            <p>Le istruzioni salvate possono essere aggiunte, rinominate o eliminate. Il <strong>tipo di documento</strong> determina il prompt di base: oltre ai tipi inclusi puoi creare, modificare o rimuovere profili documentali personalizzati.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#127919; Calibrazione Assistita e Diagnostica (Opzionali)</h3>
+            <p>La calibrazione assistita genera un'anteprima sul primo file selezionato, utile per verificare provider, modello, tipo documentale, istruzioni e trascrizione di riferimento prima di avviare un lotto esteso.</p>
+            <p>L'opzione di diagnostica salva informazioni tecniche aggiuntive sull'elaborazione. Attivala quando devi analizzare un errore o fornire elementi al supporto; controlla il contenuto prima di condividerlo, perché può includere dati relativi al documento o alla richiesta.</p>
         </div>
 
         <div class="section-box">
@@ -463,6 +439,7 @@
             <h3>&#9654;&#65039; Passo 7 — Avvio OCR</h3>
             <p>Clicca <strong>&ldquo;Avvia OCR&rdquo;</strong>. Verrà richiesta la cartella di destinazione per i file di output.</p>
             <p>La barra di avanzamento mostra il progresso (file corrente / totale file). L&apos;elaborazione avviene in un thread separato: l&apos;interfaccia rimane responsiva durante il processing.</p>
+            <p>Durante i batch ATK-Pro aggiorna una trascrizione progressiva <code>*_trascrizione_parziale.txt</code> con i relativi metadati. Se l'elaborazione viene interrotta, conserva questi file per recuperare quanto gi&agrave; trascritto; non considerarli output definitivo finch&eacute; il batch non &egrave; completato e revisionato.</p>
             <p>Al termine, una finestra di dialogo confermer&agrave; il completamento o segnaler&agrave; eventuali errori.</p>
         </div>
     </div>
@@ -471,42 +448,9 @@
         <h2>&#128273; Come Ottenere le API Key</h2>
 
         <div class="section-box">
-            <h3>&#9989; Google Gemini — Gratuito (Consigliato)</h3>
-            <ol>
-                <li>Vai su <a href="https://aistudio.google.com/" target="_blank" rel="noopener"><strong>https://aistudio.google.com/</strong></a></li>
-                <li>Accedi con un Account Google (Gmail)</li>
-                <li>In alto a sinistra, clicca <strong>&ldquo;Get API Key&rdquo;</strong> o <strong>&ldquo;Crea API key&rdquo;</strong></li>
-                <li>Seleziona o crea un progetto Google Cloud (puoi usare quello di default)</li>
-                <li>Clicca <strong>&ldquo;Crea API key nel progetto esistente&rdquo;</strong></li>
-                <li>Copia la chiave generata e incollala nel campo API Key di ATK-Pro</li>
-            </ol>
-            <p style="margin-top:0.8rem;"><strong>Limiti gratuiti (inizio 2026):</strong> Supporto per la famiglia <strong>Gemini 2.5</strong> (Flash e Pro). Google ha introdotto quote dinamiche: i tuoi limiti (RPM/TPM/RPD) sono ora consultabili direttamente nel dashboard di AI Studio. Indicativamente sono disponibili circa 15 richieste/minuto, ideali per l&apos;uso amatoriale e l&apos;elaborazione di singoli registri.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>&#128181; OpenAI (GPT-4o)</h3>
-            <ol>
-                <li>Vai su <a href="https://platform.openai.com/" target="_blank" rel="noopener"><strong>https://platform.openai.com/</strong></a></li>
-                <li>Crea un account o effettua l&apos;accesso</li>
-                <li>Nel menu laterale sinistro, seleziona <strong>&ldquo;API keys&rdquo;</strong></li>
-                <li>Clicca <strong>&ldquo;Create new secret key&rdquo;</strong>, assegna un nome descrittivo</li>
-                <li>Copia immediatamente la chiave: <strong>non verr&agrave; mostrata di nuovo</strong></li>
-                <li>Carica crediti tramite <em>Billing &rarr; Add payment method</em></li>
-            </ol>
-            <p style="margin-top:0.8rem;"><strong>Nota:</strong> servizio a pagamento secondo le condizioni del provider. Verifica sempre prezzi, limiti e modelli disponibili sul sito ufficiale prima di elaborazioni estese.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>&#128181; Anthropic (Claude)</h3>
-            <ol>
-                <li>Vai su <a href="https://console.anthropic.com/" target="_blank" rel="noopener"><strong>https://console.anthropic.com/</strong></a></li>
-                <li>Crea un account o effettua l&apos;accesso</li>
-                <li>Nella dashboard, seleziona <strong>&ldquo;API Keys&rdquo;</strong></li>
-                <li>Clicca <strong>&ldquo;Create Key&rdquo;</strong>, assegna un nome</li>
-                <li>Copia la chiave generata</li>
-                <li>Carica crediti dalla sezione <em>Billing</em></li>
-            </ol>
-            <p style="margin-top:0.8rem;"><strong>Nota:</strong> servizio a pagamento secondo le condizioni del provider. La qualit&agrave; pu&ograve; variare in base al modello, alla grafia e alla complessit&agrave; del documento.</p>
+            <h3>Account, chiavi, modelli e costi</h3>
+            <p>Ottieni le credenziali esclusivamente dalla console ufficiale del provider scelto e non condividerle nei file di input, nelle trascrizioni o nelle richieste di assistenza. Interfacce, modelli, quote, disponibilit&agrave; geografiche e prezzi possono cambiare senza un aggiornamento di ATK-Pro.</p>
+            <p>Prima di un'elaborazione estesa consulta sempre la documentazione e il pannello di fatturazione del tuo account. ATK-Pro non garantisce piani gratuiti, quote minime o la permanenza di uno specifico modello.</p>
         </div>
     </div>
 
