@@ -165,7 +165,6 @@ refactor_guides_it.py
 restructure_docs.py
 split_guida_exact.py
 expand_guides_06_07.py
-translate_guides.py
 add_translations.py
 add_cosatk.py
 duplicate_guides.py
