@@ -28,6 +28,8 @@ jobs:
         python -m pip install "setuptools<70.0" wheel
         python -c "import pkg_resources; print('✓ pkg_resources disponibile')"
         pip install --no-cache-dir pyinstaller -r requirements.txt
+        python -m pip check
+        python -m pip freeze --all
         
     - name: Install Playwright browsers
       run: |

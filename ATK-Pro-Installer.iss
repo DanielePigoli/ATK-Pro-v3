@@ -7,7 +7,7 @@
 #define MyAppPublisher "ATK-Pro Project"
 #define MyAppURL "https://github.com/DanielePigoli/ATK-Pro-v3"
 #define MyAppExeName "ATK-Pro.exe"
-#define MyDisclaimerRevision "v3.0.0-legal-disclaimer-2026-05-27"
+#define MyDisclaimerRevision "v3.0.0-legal-disclaimer-2026-08-02"
 
 [CustomMessages]
 en.LicenseAcceptance=License Acceptance
@@ -345,6 +345,11 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "dist\ATK-Pro\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\ATK-Pro\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+; Licenze e avvisi legali comuni a tutte le lingue
+Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion
+Source: "LICENSE-DOCUMENTATION"; DestDir: "{app}"; Flags: ignoreversion
+Source: "THIRD-PARTY-NOTICES"; DestDir: "{app}"; Flags: ignoreversion
+Source: "TRADEMARKS"; DestDir: "{app}"; Flags: ignoreversion
 ; Copia README e CHANGELOG localizzati in base alla lingua selezionata
 Source: "assets\en\testuali\README.md"; DestDir: "{app}"; DestName: "README.md"; Flags: ignoreversion; Languages: en
 Source: "assets\en\testuali\CHANGELOG.md"; DestDir: "{app}"; DestName: "CHANGELOG.md"; Flags: ignoreversion; Languages: en

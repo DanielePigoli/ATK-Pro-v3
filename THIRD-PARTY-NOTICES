@@ -1,0 +1,248 @@
+ATK-Pro — Componenti di terzi e avvisi di licenza
+
+Data dell’audit: 2 agosto 2026
+
+1. AMBITO
+
+Questo documento riguarda dipendenze software, runtime, font e altri
+componenti di terzi distribuiti o potenzialmente distribuiti con ATK-Pro.
+Tali componenti conservano i rispettivi copyright e le rispettive licenze.
+
+Il codice originale di ATK-Pro è disciplinato dal file LICENSE. La
+documentazione originale è disciplinata dal file LICENSE-DOCUMENTATION.
+
+Le risorse consultate o acquisite attraverso portali esterni non sono
+distribuite né licenziate da ATK-Pro e restano soggette ai diritti e alle
+condizioni stabiliti dai rispettivi titolari.
+
+2. STATO DELLA VERIFICA DEGLI ARTEFATTI
+
+- Windows onedir `dist/ATK-Pro`: esaminato. Build del 23 giugno 2026,
+  generata con Python 3.12.3 e PyInstaller.
+- `ATK-Pro-Windows-installer.zip`: non assunto come artefatto finale perché
+  risale al 18 febbraio 2026.
+- `ATK-Pro-macOS.dmg` e relativo ZIP: non assunti come artefatti finali
+  perché risalgono al 18–19 febbraio 2026.
+- Linux: nel workspace non è presente un artefatto aggiornato esaminabile.
+- Le configurazioni di build Windows, Linux e macOS includono questo file e
+  gli altri documenti legali, ma l’inventario deve essere riconfermato sulle
+  nuove build candidate alla pubblicazione.
+
+Pertanto la tabella seguente costituisce la base verificata della build
+Windows disponibile e la baseline per le prossime build multipiattaforma.
+Non certifica artefatti non ancora ricostruiti.
+
+3. COMPONENTI COPYLEFT O CON OBBLIGHI PARTICOLARI
+
+PyMuPDF 1.24.12
+  Uso rilevato: conversione dei PDF in immagini per il flusso OCR; moduli
+  `pymupdf`/`fitz` e librerie MuPDF presenti nella build Windows.
+  Licenza dichiarata dal pacchetto: GNU Affero General Public License 3.0
+  oppure licenza commerciale Artifex. Per ATK-Pro è adottata l’opzione
+  GNU AGPL v3.
+  Progetto: https://pymupdf.readthedocs.io/
+  Sorgente: https://github.com/pymupdf/PyMuPDF
+
+PySide6, PySide6_Essentials, PySide6_Addons e Shiboken6 6.10.1
+  Uso rilevato: interfaccia grafica Qt. La build Windows disponibile include
+  un insieme molto ampio di librerie Qt, plugin e moduli QML, compresi Qt
+  WebEngine e i relativi componenti Chromium.
+  Licenze dichiarate dai pacchetti: LGPL-3.0-only OR GPL-2.0-only OR
+  GPL-3.0-only. Per la distribuzione insieme ad ATK-Pro sotto AGPL v3 viene
+  assunta l’opzione GPL-3.0-only, compatibile con la combinazione prevista
+  dalla sezione 13 della GNU AGPL v3.
+  Licenze Qt for Python: https://doc.qt.io/qtforpython-6/licenses.html
+  Sorgente Qt for Python: https://code.qt.io/cgit/pyside/pyside-setup.git/
+  Sorgente Qt: https://code.qt.io/cgit/qt/
+  Attribuzioni Qt WebEngine/Chromium:
+  https://doc.qt.io/qt-6/qtwebengine-3rdparty.html
+
+  Una build comparativa del 2 agosto 2026, configurata con i soli import
+  espliciti QtCore, QtGui, QtWidgets e QtWebEngineWidgets, ha continuato a
+  raccogliere 117 DLL Qt e 2.397 file QML, come la build precedente. La
+  raccolta estesa deriva dalle dipendenze Qt WebEngine/QtQuick/QML e dai
+  relativi hook PyInstaller. Non sono state applicate esclusioni manuali di
+  DLL o plugin perché richiederebbero una validazione funzionale completa su
+  Windows, Linux, macOS Intel e macOS Apple Silicon.
+
+certifi 2025.10.5
+  Licenza: Mozilla Public License 2.0 (MPL-2.0).
+  Progetto: https://github.com/certifi/python-certifi
+
+tqdm 4.67.1
+  Licenza dichiarata: MPL-2.0 AND MIT.
+  Progetto: https://github.com/tqdm/tqdm
+
+chardet 3.0.4
+  Il pacchetto è presente nell’archivio Python della build Windows.
+  Licenza dichiarata: GNU Lesser General Public License (LGPL).
+  Progetto: https://github.com/chardet/chardet
+
+Font Aref Ruqaa e Crimson Text
+  Licenza: SIL Open Font License 1.1. I testi OFL.txt sono conservati nelle
+  rispettive directory sotto `assets/common/fonts`.
+
+4. RUNTIME, STRUMENTI DI PACKAGING E COMPONENTI NATIVI
+
+Python 3.12.3
+  Licenza: Python Software Foundation License Version 2 e licenze storiche
+  richiamate dalla distribuzione Python.
+  https://docs.python.org/3/license.html
+
+PyInstaller 6.16.0 e pyinstaller-hooks-contrib 2025.9
+  PyInstaller è lo strumento di generazione degli eseguibili. Parti del
+  bootloader e runtime hook sono presenti negli artefatti.
+  Licenza: GPL-2.0-or-later con eccezione PyInstaller per la distribuzione
+  degli eseguibili generati.
+  https://pyinstaller.org/en/stable/license.html
+
+OpenSSL
+  Le librerie `libcrypto-3` e `libssl-3` sono presenti nella build Windows.
+  Licenza delle versioni OpenSSL 3.x: Apache License 2.0.
+  https://www.openssl.org/source/license.html
+
+Microsoft Visual C++ Runtime
+  File runtime Microsoft sono inclusi da Python/PySide6. Restano soggetti
+  alle condizioni di ridistribuzione Microsoft applicabili.
+
+pywin32
+  Componenti `win32` e `pywin32_system32` sono presenti nella build Windows.
+  Licenza: Python Software Foundation License.
+  https://github.com/mhammond/pywin32
+
+5. DIPENDENZE PYTHON E NODE RILEVATE
+
+Le versioni seguenti provengono dal grafo PyInstaller della build Windows e
+dai metadati dell’ambiente che l’ha prodotta. Una nuova build può modificarle.
+
+Apache License 2.0 e altre licenze permissive dichiarate
+
+- anthropic 0.97.0 — MIT.
+- cryptography 46.0.3 — Apache-2.0 OR BSD-3-Clause.
+- distro 1.9.0 — Apache-2.0.
+- google-ai-generativelanguage 0.6.10 — Apache-2.0.
+- google-api-core 2.28.1 — Apache-2.0.
+- google-api-python-client 2.193.0 — Apache-2.0.
+- google-auth 2.45.0 — Apache-2.0.
+- google-auth-httplib2 0.3.0 — Apache-2.0.
+- google-generativeai 0.8.3 — Apache-2.0.
+- googleapis-common-protos 1.72.0 — Apache-2.0.
+- grpcio 1.76.0 — Apache-2.0.
+- grpcio-status 1.71.2 — Apache-2.0.
+- openai 1.54.0 — Apache-2.0.
+- playwright 1.55.0 — Apache-2.0.
+- proto-plus 1.27.0 — Apache-2.0.
+- requests 2.32.5 — Apache-2.0.
+- rsa 4.9.1 — Apache-2.0.
+- selenium 4.38.0 — Apache-2.0.
+- websocket-client 1.9.0 — Apache-2.0.
+
+MIT o licenze permissive equivalenti
+
+- annotated-types 0.7.0 — MIT.
+- anyio 4.12.0 — MIT.
+- attrs 25.4.0 — MIT.
+- beautifulsoup4 4.14.3 — MIT.
+- cachetools 6.2.4 — MIT.
+- cffi 2.0.0 — MIT.
+- charset-normalizer 3.4.4 — MIT.
+- colorama 0.4.6 — BSD-3-Clause.
+- docstring-parser 0.18.0 — MIT.
+- greenlet 3.2.4 — MIT AND Python-2.0.
+- h11 0.16.0 — MIT.
+- h2 3.2.0 — MIT.
+- hpack 3.0.0 — MIT.
+- httplib2 0.31.2 — MIT.
+- hyperframe 5.2.0 — MIT.
+- jiter 0.13.0 — MIT.
+- outcome 1.3.0.post0 — MIT OR Apache-2.0.
+- piexif 1.1.3 — MIT.
+- pydantic 2.12.5 — MIT.
+- pydantic-core 2.41.5 — MIT.
+- pyee 13.0.0 — MIT.
+- PyYAML 6.0.3 — MIT.
+- sniffio 1.3.1 — MIT OR Apache-2.0.
+- sortedcontainers 2.4.0 — Apache-2.0.
+- soupsieve 2.8.1 — MIT.
+- trio 0.31.0 — MIT OR Apache-2.0.
+- typing-inspection 0.4.2 — MIT.
+- urllib3 2.5.0 — MIT.
+- urllib3-future 2.15.901 — MIT.
+- wsproto 1.2.0 — MIT.
+
+BSD, PSF e altre licenze permissive
+
+- Babel 2.17.0 — BSD-3-Clause.
+- click 8.3.1 — BSD-3-Clause.
+- httpcore 1.0.9 — BSD-3-Clause.
+- httpx 0.28.1 — BSD-3-Clause.
+- idna 3.11 — BSD-3-Clause.
+- Jinja2 3.1.6 — BSD-3-Clause.
+- lxml 6.0.2 — BSD-3-Clause.
+- MarkupSafe 3.0.3 — BSD-3-Clause.
+- NumPy 2.2.6 — BSD-3-Clause; la distribuzione include inoltre avvisi per
+  librerie numeriche incorporate, conservati nel relativo LICENSE.txt.
+- packaging 25.0 — Apache-2.0 OR BSD-2-Clause.
+- Pillow 12.0.0 — MIT-CMU.
+- protobuf 5.29.6 — BSD-3-Clause.
+- pyasn1 0.6.1 — BSD-2-Clause.
+- pyasn1-modules 0.4.2 — BSD.
+- pycparser 2.23 — BSD-3-Clause.
+- Pygments 2.19.2 — BSD-2-Clause.
+- pypdf 6.1.3 — BSD-3-Clause.
+- qh3 1.5.6 — BSD.
+- PySocks 1.7.1 — BSD.
+- python-docx 1.1.2 — MIT.
+- typing-extensions 4.15.0 — PSF-2.0.
+- uritemplate 4.2.0 — BSD-3-Clause OR Apache-2.0.
+
+6. AVVISI INCORPORATI NELLA BUILD WINDOWS ESAMINATA
+
+La build conserva già, all’interno della directory `_internal`, diversi testi
+e avvisi originali, tra cui:
+
+- Playwright `driver/LICENSE`, `package/LICENSE`, `package/NOTICE` e
+  `package/ThirdPartyNotices.txt`;
+- licenze di attrs, click, cryptography, google-api-core,
+  google-api-python-client, MarkupSafe, NumPy e pydantic;
+- `babel/locale-data/LICENSE.unicode`;
+- avvisi delle dipendenze vendorizzate da setuptools.
+
+Tali file devono restare integri negli artefatti. Questo documento non li
+sostituisce.
+
+7. SERVIZI REMOTI
+
+OpenAI, Anthropic, Google Gemini e gli endpoint compatibili configurabili
+sono servizi remoti scelti e attivati dall’utente. I relativi SDK possono
+essere distribuiti come dipendenze software secondo le licenze sopra
+indicate; l’uso delle API rimane invece soggetto ai termini di servizio,
+alle informative privacy e agli eventuali costi del rispettivo fornitore.
+
+8. COMPATIBILITÀ E OBBLIGHI DI RELEASE
+
+L’adozione della GNU AGPL v3 per il codice originale è coerente con il
+componente PyMuPDF distribuito sotto AGPL v3. La combinazione con componenti
+GPL v3 è prevista dalla sezione 13 della AGPL v3. Le dipendenze permissive
+elencate non introducono, sulla base delle licenze dichiarate, un conflitto
+evidente con AGPL v3.
+
+Prima della pubblicazione di ciascuna release devono essere soddisfatte
+almeno le seguenti condizioni:
+
+- rendere disponibile il sorgente corrispondente esatto di ATK-Pro;
+- conservare gli avvisi e i testi di licenza inclusi nelle dipendenze;
+- rendere disponibili i sorgenti corrispondenti richiesti per PyMuPDF,
+  PySide6/Qt/Shiboken6 e gli altri componenti copyleft distribuiti;
+- includere le attribuzioni Qt WebEngine/Chromium e Playwright;
+- rigenerare l’inventario dopo le build Windows, Linux e macOS e confrontare
+  nomi, versioni e file effettivamente presenti;
+- non presentare questo inventario come definitivo se la build successiva
+  differisce da quella esaminata.
+
+9. GRATUITÀ E DONAZIONI
+
+ATK-Pro è distribuito gratuitamente. Le eventuali donazioni sono
+esclusivamente volontarie, non costituiscono il corrispettivo di una licenza,
+di un servizio o dell’accesso a funzionalità aggiuntive e non condizionano in
+alcun modo l’installazione o l’utilizzo del software.

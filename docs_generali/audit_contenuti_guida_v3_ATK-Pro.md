@@ -1,6 +1,23 @@
 # Audit contenutistico guida ATK-Pro v3.0.0
 
-Data audit: 2026-05-26
+Data audit iniziale: 2026-05-26
+Ultimo aggiornamento controllato: 2026-08-01
+
+## Aggiornamento pre-release del 2026-08-01
+
+La guida italiana e' confermata come fonte editoriale canonica per le localizzazioni. Con approvazione esplicita sono stati riallineati i seguenti punti:
+
+- aggiunti Archivio Storico UniBO, PHAIDRA Universita' di Padova e DOGE Universita' di Genova, promossi nella fase 3 con accesso pubblico prudenziale;
+- chiarita la distinzione tra compatibilita' tecnica del portale e autorizzazione al download;
+- documentato `Impostazioni -> Profilo risorse` con i profili Leggero, Bilanciato e Veloce;
+- corretta l'indicazione sul proxy: non esiste un menu interno per le credenziali;
+- riallineato OCR a provider, modello opzionale, tipi documentali personalizzati, istruzioni salvate, calibrazione, diagnostica, revisione e salvataggio progressivo;
+- eliminate dalla sezione OCR promesse stabili su prezzi, gratuita', quote e disponibilita' dei modelli;
+- chiarita la natura locale CSV della Cassaforte IA;
+- corretti troubleshooting, log e permessi, eliminando il ricorso consigliato a privilegi amministrativi;
+- aggiunti casi FAQ per restrizioni dei portali e recupero delle trascrizioni OCR parziali.
+
+Per decisione editoriale del responsabile restano invariati: le valutazioni sociologiche che motivano le 20 lingue e la stima di copertura del 98%; la dicitura macOS, da riesaminare dopo packaging e collaudo su hardware reale. Le altre lingue non sono state ancora propagate e devono partire da questa fonte italiana approvata.
 
 Nota successiva 2026-05-26: la sotto-guida italiana `assets/it/testuali/guida_03_ricerca_assistita_ai.html` e' stata aggiunta e collegata dall'indice italiano. La guida italiana `assets/it/testuali/guida_07_traduzione.html` e' stata riallineata al dialog v3 di Traduzione OCR. La guida italiana `assets/it/testuali/guida_08_esportazione_gedcom.html` e' stata riscritta per descrivere il flusso reale di analisi genealogica/GEDCOM. La guida principale italiana e `assets/it/testuali/guida_02_operazioni_base.html` sono state aggiornate nella sezione Servizi per descrivere i sei moduli v3 come operativi. I percorsi menu residui in guida 03, 04 e 05 sono stati aggiornati al menu attuale, e le FAQ italiane sono state ripulite dai riferimenti obsoleti individuati. Il file esempio e' ora normalizzato come `input_link_base.txt`. Resta da valutare la propagazione multilingue.
 
@@ -12,7 +29,7 @@ Nota successiva 2026-05-31: la guida italiana e' stata rinumerata per rispecchia
 
 La verifica strutturale dei documenti del menu Documenti e dei link locali e' verde. Dopo gli interventi successivi all'audit iniziale, la guida italiana copre ora i tre blocchi che erano release blocker immediati: Ricerca assistita AI, Traduzione OCR e analisi genealogica/GEDCOM.
 
-La scansione dei marker critici sulla guida italiana non trova piu' riferimenti obsoleti nei file trattati. Per una RC tecnica la guida italiana puo' essere trattata come fonte v3 primaria; restano da valutare una revisione editoriale di OCR Avanzato e FAQ, e soprattutto la propagazione o dichiarazione di stato per le altre lingue prima di una release pubblica multilingue completa.
+La scansione dei marker critici sulla guida italiana non trova piu' riferimenti obsoleti nei file trattati. La revisione editoriale dedicata di OCR Avanzato e FAQ e' completata. La guida italiana puo' essere trattata come fonte v3 canonica; resta da eseguire la propagazione controllata nelle altre lingue prima di una release pubblica multilingue completa.
 
 ## Fonti di confronto
 
@@ -66,21 +83,21 @@ La scansione dei marker critici sulla guida italiana non trova piu' riferimenti 
 | File | Stato | Problema principale | Azione prima di RC |
 | --- | --- | --- | --- |
 | `guida.html` | Riallineata come indice | La guida principale non duplica piu' i moduli sezionali; linka `guida_01...guida_09` | Verificare propagazione futura |
-| `guida_01_installazione_configurazione.html` | Parziale | Mappa funzioni aggiornata nei marker critici; resta revisione editoriale complessiva | Rilettura finale |
-| `guida_02_operazioni_base.html` | Riallineata in italiano | Sezione Servizi aggiornata ai sei moduli operativi v3 | Verificare propagazione futura |
+| `guida_01_installazione_configurazione.html` | Riallineata in italiano | Documentati profilo risorse e configurazione proxy effettiva; contenuti lingue e macOS conservati per decisione editoriale | Verificare dopo collaudo macOS |
+| `guida_02_operazioni_base.html` | Riallineata in italiano | Aggiunti i tre portali della fase 3 e chiarito il perimetro tecnico-legale | Verificare propagazione futura |
 | `guida_03_ricerca_assistita_ai.html` | Riallineata in italiano | Posizionata come primo servizio, coerente con il menu `Servizi` | Verificare propagazione futura |
 | `guida_04_visualizzazione_immagini.html` | Riallineata in italiano | Percorso menu aggiornato | Verificare propagazione futura |
 | `guida_05_visualizzazione_metadati.html` | Riallineata in italiano | Percorso menu aggiornato | Verificare propagazione futura |
-| `guida_06_ocr_avanzato.html` | Parziale | Percorso menu aggiornato e note provider rese stabili; resta revisione piu' ampia del modulo OCR | Verificare caveau chiavi, provider e prompt in una passata dedicata |
+| `guida_06_ocr_avanzato.html` | Riallineata in italiano | Provider e funzioni correnti documentati senza promesse commerciali instabili | Verificare propagazione futura |
 | `guida_07_traduzione.html` | Riallineata in italiano | Copertura aggiornata al dialog v3; resta da propagare alle altre lingue quando si fara' il riallineamento multilingue | Verificare link e propagazione futura |
 | `guida_08_esportazione_gedcom.html` | Riallineata in italiano | Copertura aggiornata al dialog v3; resta da propagare alle altre lingue quando si fara' il riallineamento multilingue | Verificare link e propagazione futura |
-| `guida_09_supporto_faq.html` | Parziale | Rimossi riferimenti diretti a placeholder e versioni v2.x; resta revisione editoriale completa | Verificare FAQ v3 e supporto |
+| `guida_09_supporto_faq.html` | Riallineata in italiano | Corretti log, permessi, restrizioni portali e recupero OCR parziale | Verificare propagazione futura |
 
 ## Sequenza consigliata
 
-1. Completare una revisione editoriale italiana di OCR Avanzato e FAQ, senza blocchi critici gia rimossi.
-2. Propagare o riallineare le altre lingue, oppure dichiarare esplicitamente che la guida italiana e' la fonte v3 primaria fino alla traduzione completa.
-3. Aggiungere un controllo automatico leggero per marker vietati o sospetti nella guida v3, evitando falsi positivi sui "placeholder" tecnici delle pagine non scaricabili.
+1. Sottoporre il diff italiano al controllo finale del responsabile.
+2. Dopo approvazione, propagare o riallineare le altre lingue dalla fonte italiana canonica.
+3. Riesaminare la dicitura macOS dopo packaging e collaudo su hardware reale.
 
 ## Criterio RC
 

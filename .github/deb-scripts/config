@@ -7,7 +7,7 @@
 set -e
 . /usr/share/debconf/confmodule
 db_version 2.0
-DISCLAIMER_REVISION="v3.0.0-legal-disclaimer-2026-05-27"
+DISCLAIMER_REVISION="v3.0.0-legal-disclaimer-2026-08-02"
 
 _CURRENT_DISCLAIMER_REVISION=""
 if [ -f /etc/atk-pro/disclaimer_revision ]; then

@@ -334,7 +334,7 @@
         <div class="section">
             <div class="meta-info">
                 <div>
-                    <p><strong>📅 Aggiornamento</strong><br>27 maggio 2026</p>
+                    <p><strong>📅 Aggiornamento</strong><br>2 agosto 2026</p>
                     <p><strong>✍️ Redatto da</strong><br>Daniele Pigoli</p>
                 </div>
                 <div>
@@ -368,7 +368,7 @@
                     <strong>📥 Acquisire Fonti Digitali</strong><br>Immagini e registri da portali pubblici compatibili, con priorità all'area italiana e italofona
                 </div>
                 <div class="feature-item">
-                    <strong>🔧 Ricostruire e Conservare</strong><br>Tile e immagini in file locali ordinati, con formati adatti allo studio e alla conservazione
+                    <strong>🔧 Ricostruire e Conservare</strong><br>Tile e immagini ricostruiti in file locali ordinati, con formati adatti allo studio, all'esportazione e alla conservazione personale
                 </div>
                 <div class="feature-item">
                     <strong>🧭 Orientare la Ricerca</strong><br>Ricerca assistita AI per impostare piste, luoghi, varianti onomastiche e fonti da verificare
@@ -377,7 +377,7 @@
                     <strong>🧠 Supportare la Lettura</strong><br>OCR avanzato, traduzione OCR e analisi genealogica assistita da provider configurabili dall'utente
                 </div>
                 <div class="feature-item">
-                    <strong>🌍 Lavorare in Più Lingue</strong><br>Interfaccia localizzata in 20 lingue e attenzione alle ricerche legate alla diaspora italiana
+                    <strong>🌍 Lavorare in Più Lingue</strong><br>Interfaccia localizzata in 20 lingue, selezionate per offrire una copertura stimata di circa il 98% degli italiani e degli italofoni presenti nel mondo e per sostenere le ricerche legate alla diaspora italiana
                 </div>
                 <div class="feature-item">
                     <strong>⚖️ Operare con Prudenza</strong><br>Esclusione di portali chiusi, commerciali, con login, paywall o restrizioni tecniche non autorizzate
@@ -391,7 +391,7 @@
             <ul>
                 <li>Approccio stratificato con suddivisione per fasi progettuali</li>
                 <li>Documentazione strutturata di ogni fase di sviluppo</li>
-                <li>Focus sulla preservazione digitale e qualità archivistica</li>
+                <li>Attenzione alla qualità dei file, all'organizzazione locale, ai metadati e alla conservazione delle copie di lavoro</li>
             </ul>
 
             <h4>🔵 Architettura Tecnica</h4>
@@ -399,7 +399,7 @@
                 <li><strong>Backend:</strong> Python 3.12+ con moduli specializzati per manifest, tile, immagini, PDF, OCR, traduzione e analisi genealogica</li>
                 <li><strong>Frontend:</strong> Qt 6 per interfaccia grafica multipiattaforma e localizzazione nativa</li>
                 <li><strong>Portali:</strong> registro centrale con gruppi, priorità, avvisi d'uso, referer, famiglia tecnica e policy di download</li>
-                <li><strong>Servizi AI:</strong> dialoghi assistiti con provider configurabili dall'utente e gestione locale delle chiavi tramite caveau</li>
+                <li><strong>Servizi AI:</strong> dialoghi assistiti con provider configurabili dall'utente e gestione locale delle credenziali in un file utente dedicato, che deve essere protetto e non condiviso</li>
                 <li><strong>Packaging:</strong> PyInstaller per Windows (.exe), Linux (.deb / .tar.gz), macOS (.dmg – test su hardware reale in corso)</li>
             </ul>
 
@@ -418,7 +418,7 @@
             <h4>📅 Tappe Principali</h4>
             <ul class="two-col">
                 <li><strong>2025 (v1.x):</strong> Sviluppo iniziale, ricerca metodologica, prototipo in Python puro</li>
-                <li><strong>2025-2026 (v2.x):</strong> Passaggio a GUI Qt, multilingua completa, distribuzione eseguibile professionale</li>
+                <li><strong>2025-2026 (v2.x):</strong> Passaggio a GUI Qt, multilingua completa, prime distribuzioni eseguibili per gli utenti</li>
                 <li><strong>2026 (v3.0.0):</strong> Passaggio a piattaforma multi-portale con registro tecnico, policy legale, selezione di fonti candidate, Ricerca assistita AI, OCR, traduzione, analisi genealogica ed export GEDCOM</li>
             </ul>
 
@@ -426,7 +426,7 @@
             
             <h4>🔧 Funzioni Principali</h4>
             <ul>
-                <li>✅ Download automatico immagini da manifest IIIF 2.0 e 2.1</li>
+                <li>✅ Download e ricostruzione da manifest IIIF Presentation API 2 e 3, oltre che tramite adattatori specifici per i portali tecnicamente supportati</li>
                 <li>✅ Ricostruzione tile con compressione ottimizzata</li>
                 <li>✅ Esportazione PNG, JPG, TIFF</li>
                 <li>✅ Generazione PDF per registri completi</li>
@@ -489,7 +489,7 @@
             <h3>🌟 Filosofia del Progetto</h3>
             <div class="feature-grid">
                 <div class="feature-item">
-                    <strong>📖 Software Libero</strong><br>Strumento gratuito sviluppato a titolo amatoriale, supportato da donazioni volontarie
+                    <strong>📖 Software Libero</strong><br>Codice originale distribuito sotto GNU AGPL v3 o successiva; documentazione originale sotto CC BY-NC-SA 4.0; utilizzo gratuito e donazioni esclusivamente volontarie
                 </div>
                 <div class="feature-item">
                     <strong>🤝 Community-Driven</strong><br>Feedback degli utenti guida priorità di sviluppo
@@ -498,7 +498,7 @@
                     <strong>📊 Focus Qualità Archivistica</strong><br>TIFF lossless, metadati strutturati, preservazione digitale
                 </div>
                 <div class="feature-item">
-                    <strong>🌍 Multilingua Nativo</strong><br>Interfaccia localizzata; guida italiana come baseline v3 prima della propagazione completa
+                    <strong>🌍 Multilingua Nativo</strong><br>Interfaccia in 20 lingue, con copertura stimata di circa il 98% degli italiani e degli italofoni nel mondo; guida italiana come fonte per le successive localizzazioni
                 </div>
                 <div class="feature-item">
                     <strong>⚖️ Prudenza Legale</strong><br>Nessuna integrazione di portali chiusi, commerciali, con login, paywall o restrizioni non autorizzate
@@ -511,11 +511,11 @@
             <h3>📋 Stato della Versione</h3>
             <div class="highlight-box">
                 <p><strong>🎉 Release:</strong> v3.0.0 in fase RC tecnica</p>
-                <p><strong>✅ Status:</strong> Suite automatica verde, build Windows RC avviabile, guida italiana aggiornata alla v3; propagazione multilingue completa da eseguire al consolidamento del perimetro finale</p>
+                <p><strong>✅ Status:</strong> Verifiche automatiche locali superate; guida e documentazione legale italiane aggiornate; packaging Windows, Linux e macOS da rigenerare e verificare sugli artefatti candidati, con validazione macOS su hardware reale ancora da completare; localizzazioni documentali da aggiornare dopo l'approvazione dei testi italiani</p>
                 <p><strong>🧭 Perimetro v3:</strong> portali pubblici compatibili, servizi assistiti da AI, Ricerca assistita AI, OCR, traduzione, analisi genealogica e GEDCOM</p>
                 <p><strong>📧 Supporto:</strong> antenati.toolkit.pro@gmail.com</p>
-                <p><strong>💝 Donazioni:</strong> PayPal.me per supportare sviluppo futuro</p>
-                <p><strong>📝 Documento:</strong> Presentazione viva, soggetto a integrazione progressiva con feedback utenti</p>
+                <p><strong>💝 Donazioni:</strong> Donazioni libere tramite PayPal.me, esclusivamente volontarie e non condizionanti l'accesso o l'utilizzo del software</p>
+                <p><strong>📝 Documento:</strong> Documento aggiornato insieme alla release e soggetto a successive revisioni documentate</p>
             </div>
         </div>
 

@@ -542,12 +542,7 @@
             <h3>3. Se vuoi rielaborare lo stesso record, tieni manifest.json</h3>
             <h4>🔵 P: Crashes improvvisi - cosa fare?</h4>
             <p><strong>R:</strong> Se il programma crasha:</p>
-            <h3>1. Controlla Log:
-                <ul>
-                    <li><strong>Windows:</strong> <code>Documents\ATK-Pro\output\logs\*</code></li>
-                    <li><strong>Linux/macOS:</strong> <code>~/Documents/ATK-Pro/output/logs/*</code></li>
-                </ul>
-            </h3>
+            <h3>1. Controlla il file <code>atkpro.log</code> (oppure <code>atkpro_debug.log</code> quando la diagnostica estesa &egrave; attiva) nella directory applicativa effettiva. La posizione dipende dal tipo di installazione; cerca il file accanto all'eseguibile o nella directory di lavoro dell'applicazione.</h3>
             <h3>2. Copia messaggio errore (CTRL+C sul messaggio)</h3>
             <h3>3. Riavvia programma (spesso risolve)</h3>
             <h3>4. Se crash ripetuto, prova su record IIIF diverso (potrebbe essere problema del manifest, non di ATK-Pro)</h3>
@@ -579,7 +574,7 @@
                     <tr>
                         <td>"Permission denied"</td>
                         <td>Cartella protetta/Read-only</td>
-                        <td>Windows: "Run as admin" / Linux-macOS: <code>sudo</code></td>
+                        <td>Scegli una cartella appartenente al tuo utente e verifica che sia scrivibile; evita cartelle di sistema o protette.</td>
                     </tr>
                     <tr>
                         <td>"URL not found (404)"</td>
@@ -593,6 +588,10 @@
                     </tr>
                 </tbody>
             </table>
+            <h4>🔵 P: Il portale è riconosciuto ma il download viene rifiutato. Perché?</h4>
+            <p><strong>R:</strong> La compatibilità tecnica non elimina le condizioni di accesso. ATK-Pro rifiuta o limita risorse che richiedono login o accesso affiliato, non espongono un endpoint pubblico stabile, sono marcate <code>nodownload</code> oppure non presentano diritti compatibili con l'operazione richiesta. Apri la pagina pubblica dell'oggetto, controlla licenza e condizioni d'uso e prova solo con l'URL ufficiale supportato.</p>
+            <h4>🔵 P: Posso recuperare un batch OCR interrotto?</h4>
+            <p><strong>R:</strong> Controlla nella cartella scelta per l'OCR il file <code>*_trascrizione_parziale.txt</code> e i relativi metadati. Contengono il lavoro salvato progressivamente, da verificare e completare prima di considerarlo definitivo.</p>
             <h4>🆘 SUPPORTO E CONTATTI</h4>
             <p>Se il problema persiste dopo aver provato soluzioni:</p>
             <h3>1. Controlla Presentazione Progetto nel menu Documenti</h3>
