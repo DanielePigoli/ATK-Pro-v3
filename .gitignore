@@ -52,6 +52,7 @@ test_data/
 logs/
 outdir/
 works/
+localization_staging/
 
 # 📚 Cartelle di sviluppo obsolete (archiviate per release v2.0)
 # NOTA: Backups/ e docs_generali/archivio/ manteniamo LOCALMENTE

@@ -10,6 +10,7 @@ documenti in ``localization_staging``; non modifica mai ``assets``.
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import os
@@ -18,6 +19,8 @@ import re
 import sys
 import time
 from typing import Any
+import urllib.error
+import urllib.request
 
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -246,6 +249,82 @@ def load_api_key() -> str:
     return key
 
 
+def load_vault_keys(keys_file: Path) -> dict[str, str]:
+    """Carica una sola chiave per provider senza mai stamparne il valore."""
+    if not keys_file.is_file():
+        raise FileNotFoundError(f"Caveau chiavi non trovato: {keys_file}")
+    lines = keys_file.read_text(encoding="utf-8-sig").splitlines()
+    delimiter = ";"
+    if lines and lines[0].lower().startswith("sep="):
+        delimiter = lines[0][4:5] or ";"
+        lines = lines[1:]
+    keys: dict[str, str] = {}
+    for row in csv.DictReader(lines, delimiter=delimiter):
+        provider = str(row.get("Provider") or "").strip()
+        key = str(row.get("Key") or "").strip()
+        if provider and key and provider not in keys:
+            keys[provider] = key
+    return keys
+
+
+def post_json(
+    url: str, headers: dict[str, str], payload: dict[str, Any], timeout: int = 240,
+) -> dict[str, Any]:
+    request = urllib.request.Request(
+        url,
+        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        headers={"Content-Type": "application/json", **headers},
+        method="POST",
+    )
+    last_error: Exception | None = None
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                return json.load(response)
+        except urllib.error.HTTPError as error:
+            detail = error.read().decode("utf-8", errors="replace")[:800]
+            last_error = RuntimeError(f"HTTP {error.code}: {detail}")
+            if error.code not in (429, 500, 502, 503, 504):
+                raise last_error
+        except Exception as error:
+            last_error = error
+        time.sleep(5 * (attempt + 1))
+    raise RuntimeError(str(last_error))
+
+
+def parse_json_response(raw: str) -> dict[str, str]:
+    raw = raw.strip()
+    raw = re.sub(r"^```(?:json)?\s*", "", raw)
+    raw = re.sub(r"\s*```$", "", raw)
+    start, end = raw.find("{"), raw.rfind("}")
+    if start < 0 or end < start:
+        raise ValueError("Risposta JSON non riconoscibile")
+    parsed = json.loads(raw[start : end + 1])
+    if not isinstance(parsed, dict):
+        raise ValueError("La risposta del provider non è un oggetto JSON")
+    return parsed
+
+
+def build_translation_prompt(texts: dict[str, str], language_name: str) -> str:
+    return (
+        f"Translate every JSON value from Italian to {language_name}. Return only one valid JSON "
+        "object with exactly the same keys. Preserve the complete meaning, including legal scope, "
+        "prohibitions, limitations, qualifications and obligations. Use natural publication-quality "
+        "language. Preserve HTML entities, symbols, numbers, URLs and file names. Never translate "
+        f"these expressions when present: {', '.join(DO_NOT_TRANSLATE)}. Do not add notes, caveats "
+        "or statements that another language prevails.\n\n"
+        + json.dumps(texts, ensure_ascii=False, indent=2)
+    )
+
+
+def chunks(texts: dict[str, str], size: int = 40) -> list[dict[str, str]]:
+    keys = list(texts)
+    return [
+        {key: texts[key] for key in keys[offset : offset + size]}
+        for offset in range(0, len(keys), size)
+    ]
+
+
 class GeminiTranslator:
     def __init__(self, model_name: str, delay_seconds: float) -> None:
         import google.generativeai as genai
@@ -281,6 +360,83 @@ class GeminiTranslator:
             if offset + 40 < len(keys):
                 time.sleep(self.delay_seconds)
         return translated
+
+
+class OpenAITranslator:
+    def __init__(self, api_key: str, model_name: str, delay_seconds: float) -> None:
+        self.api_key = api_key
+        self.model_name = model_name
+        self.delay_seconds = delay_seconds
+
+    def translate(self, texts: dict[str, str], language_name: str) -> dict[str, str]:
+        translated: dict[str, str] = {}
+        blocks = chunks(texts)
+        for index, block in enumerate(blocks):
+            data = post_json(
+                "https://api.openai.com/v1/responses",
+                {"Authorization": f"Bearer {self.api_key}"},
+                {
+                    "model": self.model_name,
+                    "input": build_translation_prompt(block, language_name),
+                    "max_output_tokens": 12000,
+                },
+            )
+            raw = "".join(
+                content.get("text", "")
+                for item in data.get("output", [])
+                for content in item.get("content", [])
+                if content.get("type") == "output_text"
+            )
+            result = parse_json_response(raw)
+            if set(result) != set(block):
+                raise ValueError("OpenAI non ha conservato tutti i segnaposto")
+            translated.update(result)
+            if index + 1 < len(blocks):
+                time.sleep(self.delay_seconds)
+        return translated
+
+
+class ClaudeReviewer:
+    def __init__(self, api_key: str, model_name: str, delay_seconds: float) -> None:
+        self.api_key = api_key
+        self.model_name = model_name
+        self.delay_seconds = delay_seconds
+
+    def review(
+        self, source: dict[str, str], draft: dict[str, str], language_name: str,
+    ) -> dict[str, str]:
+        reviewed: dict[str, str] = {}
+        source_blocks = chunks(source)
+        for index, source_block in enumerate(source_blocks):
+            draft_block = {key: draft[key] for key in source_block}
+            prompt = (
+                f"Review the draft translations from Italian to {language_name}. Correct every value "
+                "that is incomplete, unnatural, terminologically imprecise or changes legal scope. "
+                "Preserve prohibitions, limitations, qualifications and obligations exactly. Preserve "
+                "numbers, URLs, file names, HTML entities and invariant product or licence names. Return "
+                "only one JSON object with exactly the same keys and the final corrected translations. "
+                "Do not add notes or commentary.\n\nSOURCE:\n"
+                + json.dumps(source_block, ensure_ascii=False, indent=2)
+                + "\n\nDRAFT:\n"
+                + json.dumps(draft_block, ensure_ascii=False, indent=2)
+            )
+            data = post_json(
+                "https://api.anthropic.com/v1/messages",
+                {"x-api-key": self.api_key, "anthropic-version": "2023-06-01"},
+                {
+                    "model": self.model_name,
+                    "max_tokens": 12000,
+                    "messages": [{"role": "user", "content": prompt}],
+                },
+            )
+            raw = "".join(block.get("text", "") for block in data.get("content", []))
+            result = parse_json_response(raw)
+            if set(result) != set(source_block):
+                raise ValueError("Claude non ha conservato tutti i segnaposto")
+            reviewed.update(result)
+            if index + 1 < len(source_blocks):
+                time.sleep(self.delay_seconds)
+        return reviewed
 
 
 def audit_sources() -> dict[str, dict[str, Any]]:
@@ -334,38 +490,73 @@ def safe_destination(staging_root: Path, language: str, filename: str) -> Path:
 
 
 def execute_translation(
-    languages: list[str], staging_root: Path, model_name: str, delay_seconds: float,
-    overwrite: bool,
+    languages: list[str], staging_root: Path, provider: str, model_name: str,
+    review_provider: str | None, review_model: str, keys_file: Path | None,
+    delay_seconds: float, overwrite: bool,
 ) -> None:
-    translator = GeminiTranslator(model_name, delay_seconds)
+    vault_keys = load_vault_keys(keys_file) if keys_file else {}
+    if provider == "openai":
+        if "OpenAI" not in vault_keys:
+            raise RuntimeError("Chiave OpenAI assente dal caveau")
+        translator: Any = OpenAITranslator(vault_keys["OpenAI"], model_name, delay_seconds)
+    elif provider == "gemini":
+        translator = GeminiTranslator(model_name, delay_seconds)
+    else:
+        raise ValueError(f"Provider non supportato: {provider}")
+
+    reviewer: ClaudeReviewer | None = None
+    if review_provider == "claude":
+        if "Claude" not in vault_keys:
+            raise RuntimeError("Chiave Claude assente dal caveau")
+        reviewer = ClaudeReviewer(vault_keys["Claude"], review_model, delay_seconds)
+
+    draft_root = staging_root / f"draft-{provider}"
+    reviewed_root = staging_root / f"reviewed-{review_provider}" if reviewer else None
     manifest: dict[str, Any] = {
         "source_language": "it",
-        "provider": "Gemini",
+        "provider": provider,
         "model": model_name,
+        "review_provider": review_provider,
+        "review_model": review_model if reviewer else None,
         "documents": {},
     }
     for language in languages:
         language_name, html_lang, direction = LANGUAGES[language]
         for filename in DOCUMENT_FILES:
             source_path = ITALIAN_DIR / filename
-            destination = safe_destination(staging_root, language, filename)
-            if destination.exists() and not overwrite:
+            draft_destination = safe_destination(draft_root, language, filename)
+            reviewed_destination = (
+                safe_destination(reviewed_root, language, filename) if reviewed_root else None
+            )
+            existing = [path for path in (draft_destination, reviewed_destination) if path and path.exists()]
+            if existing and not overwrite:
                 raise FileExistsError(
-                    f"File di staging già presente: {destination}; usare --overwrite-staging"
+                    f"File di staging già presente: {existing[0]}; usare --overwrite-staging"
                 )
             source = source_path.read_text(encoding="utf-8")
             template, texts = (
                 extract_html_text(source) if filename.endswith(".html") else extract_plain_text(source)
             )
             translated = translator.translate(texts, language_name)
-            rendered = apply_translations(template, texts, translated)
+            draft_rendered = apply_translations(template, texts, translated)
             if filename.endswith(".html"):
-                rendered = update_html_language(rendered, html_lang, direction)
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            destination.write_text(rendered, encoding="utf-8", newline="")
+                draft_rendered = update_html_language(draft_rendered, html_lang, direction)
+            draft_destination.parent.mkdir(parents=True, exist_ok=True)
+            draft_destination.write_text(draft_rendered, encoding="utf-8", newline="")
+
+            final_translations = (
+                reviewer.review(texts, translated, language_name) if reviewer else translated
+            )
+            final_rendered = apply_translations(template, texts, final_translations)
+            if filename.endswith(".html"):
+                final_rendered = update_html_language(final_rendered, html_lang, direction)
+            if reviewed_destination:
+                reviewed_destination.parent.mkdir(parents=True, exist_ok=True)
+                reviewed_destination.write_text(final_rendered, encoding="utf-8", newline="")
             manifest["documents"][f"{language}/{filename}"] = {
                 "source_sha256": sha256_text(source),
-                "output_sha256": sha256_text(rendered),
+                "draft_sha256": sha256_text(draft_rendered),
+                "output_sha256": sha256_text(final_rendered),
                 "translation_units": len(texts),
             }
             print(f"OK  {language}/{filename}: {len(texts)} unità")
@@ -385,9 +576,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--from-lang", help="Riprende dalla lingua indicata")
     parser.add_argument(
         "--execute", action="store_true",
-        help="Autorizza chiamate Gemini e scrittura esclusivamente nello staging",
+        help="Autorizza chiamate esterne e scrittura esclusivamente nello staging",
     )
-    parser.add_argument("--model", default="models/gemini-2.5-flash")
+    parser.add_argument("--provider", choices=("openai", "gemini"), default="openai")
+    parser.add_argument("--model", default="gpt-5.6-sol")
+    parser.add_argument("--review-provider", choices=("claude",))
+    parser.add_argument("--review-model", default="claude-sonnet-5")
+    parser.add_argument("--keys-file", type=Path)
     parser.add_argument("--delay-seconds", type=float, default=10.0)
     parser.add_argument("--staging-root", type=Path, default=DEFAULT_STAGING_ROOT)
     parser.add_argument("--overwrite-staging", action="store_true")
@@ -411,8 +606,9 @@ def main() -> int:
             print("Modalità audit: nessuna API chiamata e nessun file scritto.")
             return 0
         execute_translation(
-            languages, args.staging_root, args.model, args.delay_seconds,
-            args.overwrite_staging,
+            languages, args.staging_root, args.provider, args.model,
+            args.review_provider, args.review_model, args.keys_file,
+            args.delay_seconds, args.overwrite_staging,
         )
         return 0
     except Exception as error:
