@@ -1,22 +1,131 @@
-📋 Legal Disclaimer
+📋 LEGAL DISCLAIMER
 Antenati Toolkit Pro
 
 ATK-Pro – Antenati Toolkit Pro
-Legal Disclaimer and Ethical Use Commitment
+Legal disclaimer, terms of use, and ethical commitment
 
-The ATK-Pro project is designed for archival, genealogical, and consultation purposes.
-All content, unless otherwise stated, is distributed under a Creative Commons BY-NC-SA 4.0 license.
-Direct commercial use, redistribution without attribution, or untracked modification of the original content is prohibited.
-ATK-Pro does not redistribute any content from the Antenati Portal (antenati.cultura.gov.it) nor does it intend to replicate its interface, structure, or organization.
-Anyone who installs or uses ATK-Pro agrees to act in full compliance with the legal notices and terms of use defined by the Ministry of Culture, available at the following address: https://antenati.cultura.gov.it/note-legali/.
-The documents included in the advisory node do not constitute an official source nor do they have any certifying or legal value. 
-The interface and tools developed within the project are intended to facilitate independent consultation by genealogical users in local environments, without connection or support from external services.
-Any references to public bodies, archives, or historical documentation are for study, analysis, and contextualization purposes only.
-Every file present in the ATK-Pro structure (in .txt, .md, .html, or .pdf format) has been drafted with a declarative, archival, or demonstrative intent.
-Directory structures, operational scripts, and genealogical notes are provided in prototype form, without any warranty of functionality or external validation.
-The author of the project disclaims any responsibility regarding the improper use, misinterpretation, or unauthorized modification of the included documents and tools.
-The consultative node is to be understood as a limited circulation archive, intended exclusively for study purposes and not for public or systematic dissemination.
-This declaration is an integral part of the project's documentation architecture.
+1. NATURE AND PURPOSE OF THE PROJECT
+
+ATK-Pro is independently developed software intended for archival, genealogical, documentary, study, and consultation purposes.
+
+The software facilitates access to and local processing of resources that the user may lawfully access through the Portale Antenati and other technically supported archival or documentary portals.
+
+ATK-Pro is not an official service of the Ministry of Culture, the Portale Antenati, the State Archives, or any other entities and portals that may be supported. The presence of references, links, or features relating to third-party services does not imply affiliation, endorsement, sponsorship, or general authorization to reuse their respective content.
+
+2. CODE LICENSE
+
+The original ATK-Pro source code, except for files or portions expressly identified as third-party components, is distributed under the GNU Affero General Public License, version 3 or, at the licensee's option, any later version.
+
+The source code corresponding to the distributed version is made available in the project’s official repository. Instructions for accessing the source code and a copy of the license accompany the release artifacts.
+
+The code license is specified in the LICENSE file.
+
+3. DOCUMENTATION LICENSE
+
+The original documentation, including guides, presentations, and editorial content, is distributed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0), unless otherwise stated.
+
+The documentation license is specified in the LICENSE-DOCUMENTATION file.
+
+4. NAME, LOGO, AND DISTINCTIVE ELEMENTS
+
+The name “ATK-Pro,” the logo, and the distinctive elements of the visual identity are not licensed for the creation or promotion of derivative products and remain reserved to the rights holder.
+
+Their purely descriptive use remains permitted to identify the original project, indicate compatibility, or comply with attribution requirements.
+
+The relevant terms are specified in the TRADEMARKS file.
+
+5. THIRD-PARTY COMPONENTS
+
+Software dependencies, fonts, and other third-party components retain their respective licenses, copyright notices, and any additional terms, as specified in the THIRD-PARTY-NOTICES file.
+
+The licenses granted for the original ATK-Pro code and documentation do not replace or modify the licenses of third-party components.
+
+6. EXTERNAL RESOURCES AND PORTALS
+
+ATK-Pro neither redistributes nor licenses documents, images, metadata, or other resources originating from the Portale Antenati or other external portals.
+
+Such resources remain subject to the rights, licenses, access terms, and reuse rules established by their respective rights holders.
+
+The user must verify the terms applicable to each individual resource and, with regard to the Portale Antenati, must also consult the legal notices published at:
+
+https://antenati.cultura.gov.it/note-legali/
+
+The designation of a portal as technically supported does not constitute a representation as to the lawfulness of any operation that may be performed on its resources.
+
+7. USE OF RESOURCES
+
+ATK-Pro is intended for targeted, specific operations concerning an individual document, archival unit, or register that the user may lawfully access.
+
+The software is not intended for the mass or indiscriminate collection of content, the systematic downloading of entire collections, or the circumvention of authentication systems, subscriptions, temporary passes, paywalls, no-download markers, technical protection measures, or restrictions established by portal operators.
+
+ATK-Pro does not guarantee that a technically accessible resource may also be freely downloaded, reproduced, modified, or redistributed.
+
+The user remains responsible for selecting resources, determining the scope of the operations performed, and complying with applicable law, including provisions concerning copyright, personal data protection, confidentiality, access to archives, and the contractual terms of the services used.
+
+8. ARTIFICIAL INTELLIGENCE FEATURES AND REMOTE SERVICES
+
+Any artificial intelligence-assisted transcription, recognition, translation, or analysis features are activated exclusively by the user.
+
+When a remote provider is selected, the data required for the operation, including images, text, instructions, or metadata, may be transmitted to the systems of the selected provider. Processing is carried out in accordance with the contractual terms and privacy notices prepared by that provider.
+
+ATK-Pro does not control the storage, processing, or potential use of data by remote services. Before transmission, the user must verify that the material may lawfully be transmitted and that it does not contain personal, confidential, or otherwise protected data that is incompatible with the selected service.
+
+API keys and any fees charged by external providers remain the user's responsibility. ATK-Pro does not guarantee the availability, continuity, pricing, performance, or continued existence of third-party models and services.
+
+9. RELIABILITY OF RESULTS
+
+Transcriptions, translations, genealogical data, metadata, and other results generated or reprocessed by the software may contain errors, omissions, inaccurate interpretations, or information that cannot be verified.
+
+In particular, results produced through OCR or artificial intelligence must not be regarded as authentic copies, certifications, professional opinions, or substitutes for consulting the original sources.
+
+The user must verify every significant result by comparing it with the original document and any official sources.
+
+10. DATA RETENTION AND SECURITY
+
+The user is responsible for retaining the documents, transcriptions, configurations, access keys, and other data processed through the software.
+
+Separate backup copies should be created before performing significant operations. The author does not guarantee the recovery of data that has been deleted, overwritten, damaged, left incomplete, or not properly saved.
+
+The user must keep their credentials and API keys secure and must not share them through files, diagnostic logs, or insecure channels.
+
+11. DISCLAIMER OF WARRANTIES
+
+To the extent permitted by applicable law, ATK-Pro, its code, and its documentation are provided “as is” and “as available,” without express or implied warranties.
+
+Among other things, no guarantee is made that the software will be error-free, operate without interruption, be compatible with all systems, that portals and external services will remain permanently available, that it will be fit for a particular purpose, that its results will be accurate, or that data will be preserved.
+
+The warranty disclaimers set forth in the applicable licenses remain valid and are not superseded by this disclaimer.
+
+12. LIMITATION OF LIABILITY
+
+To the extent permitted by applicable law, the author and any contributors shall not be liable for any damage, loss, cost, or consequence arising from the installation or use of ATK-Pro or from the inability to use it.
+
+This includes, by way of example, loss or alteration of data, inaccurate results, unavailability of portals or external services, costs relating to API services or connections, breaches of third-party terms, and use of resources without the necessary authorizations.
+
+Nothing in this disclaimer excludes or limits any liability that cannot be excluded or limited under applicable law.
+
+13. USER RESPONSIBILITY
+
+By installing or using ATK-Pro, the user declares that they have understood that:
+
+- the software is a technical tool and does not constitute authorization to access, download, or reuse third-party resources;
+- the user must verify the rights and terms applicable to each resource;
+- the user must verify the reliability of the results produced;
+- the user must protect personal data, credentials, and API keys;
+- the user must use the software in compliance with the law and the rights of others;
+- the user remains responsible for the operations they choose to perform.
+
+14. FREE OF CHARGE AND DONATIONS
+
+ATK-Pro is distributed free of charge.
+
+Any donations are entirely voluntary, do not constitute payment for a license, service, or access to additional features, and do not in any way affect the installation or use of the software.
+
+15. PRECEDENCE OF LICENSES AND APPLICABLE LAW
+
+This disclaimer supplements the information provided to the user but does not amend or replace the terms of the licenses applicable to the code, documentation, or third-party components.
+
+In the event of a conflict, the text of the relevant license and the mandatory provisions of applicable law shall prevail.
 
 © 2026 Antenati Toolkit Pro
 antenati.toolkit.pro@gmail.com
