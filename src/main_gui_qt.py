@@ -1963,7 +1963,14 @@ class MainWindow(QMainWindow):
                 progress_dialog.update(cur, name, page, page_total)
                 QCoreApplication.processEvents()
 
+            cancel_requested = False
+
             def on_cancel():
+                nonlocal cancel_requested
+                if cancel_requested:
+                    return
+                cancel_requested = True
+                progress_dialog.cancelled = True
                 worker.cancel()
                 progress_dialog.close()
 
@@ -2010,10 +2017,8 @@ class MainWindow(QMainWindow):
                 QCoreApplication.processEvents()
                 if progress_dialog.cancelled:
                     worker.cancel()
-                    worker.terminate()
                     progress_dialog.close()
                     operazione_completata = False
-                    break
             # Chiudi subito la dialog di progresso appena il worker termina
             progress_dialog.close()
             # Mostra la finestra "Operazione completata" SOLO qui, dopo tutto (PDF incluso)

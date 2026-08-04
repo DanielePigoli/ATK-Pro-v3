@@ -336,7 +336,7 @@
             <a href="guida_03_ricerca_assistita_ai.html" class="nav-button">Mod.03 &mdash; Ricerca assistita AI &#8594;</a>
         </div>
         <div class="section-box">
-            <h3>4. CARICAMENTO RECORD - FORMATI DI INPUT</h3>
+            <h3>1. CARICAMENTO RECORD - FORMATI DI INPUT</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
             <h4>📥 STRUTTURA DELL'INPUT E PORTALI SUPPORTATI</h4>
             <p>ATK-Pro accetta file di input con un formato specifico basato su COPPIE: Per OGNI record da elaborare, fornisci Modalità + URL.</p>
@@ -435,7 +435,7 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
                 <li>"Timeout connessione": Connessione Internet lenta/assente</li>
             </ul>
             <h4>💾 SALVATAGGIO RECORD</h4>
-            <p>Dopo il caricamento del manifest, il programma salva automaticamente i metadati IIIF. DOVE: Nella cartella output che scegli (vedi Sezione 5, PASSO 2) <strong>STRUTTURA CARTELLE DOPO CARICAMENTO (prima dell'elaborazione):</strong></p>
+            <p>Dopo il caricamento del manifest, il programma salva automaticamente i metadati IIIF. DOVE: Nella cartella output che scegli (vedi Sezione 2, PASSO 2) <strong>STRUTTURA CARTELLE DOPO CARICAMENTO (prima dell'elaborazione):</strong></p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale (livello principale)
  └─ [nome]/                            ← Sottocartella SOLO per metadati
@@ -468,7 +468,7 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             </ul>
             </div>
             <div class="section-box">
-            <h3>5. ELABORAZIONE E DOWNLOAD IMMAGINI</h3>
+            <h3>2. ELABORAZIONE E DOWNLOAD IMMAGINI</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
             <h4>🎯 FLUSSO DI ELABORAZIONE</h4>
             <p>Il workflow di elaborazione prevede 3 passi:</p>
@@ -518,7 +518,7 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             <p>✓ Almeno 1 record caricato</p>
             <p><strong>Se mancano questi requisiti, appare messaggio di errore:</strong></p>
             <p>❌ "Nessun formato selezionato" → Vai a PASSO 1</p>
-            <p>❌ "Nessun record caricato" → Vai a Caricamento Input (Sezione 4)</p>
+            <p>❌ "Nessun record caricato" → Vai a Caricamento Input (Sezione 1)</p>
             <h4>📺 FINESTRA DI ELABORAZIONE</h4>
             <p>Non appena clicchi "Elabora", si apre una finestra modale con: </p>
             <div style="text-align: center; margin: 20px 0;">
@@ -546,10 +546,10 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             </ul>
             <p>4️⃣ PULSANTE [ANNULLA]</p>
             <ul>
-                <li>Cliccabile durante elaborazione</li>
-                <li>Chiude la finestra di progresso</li>
-                <li>⚠️ L'elaborazione continua in background (non interrompe il download)</li>
-                <li>I file scaricati rimangono nella cartella output selezionata</li>
+                <li>Cliccabile durante l'elaborazione</li>
+                <li>Richiede l'interruzione dell'intero batch e chiude la finestra di progresso</li>
+                <li>L'arresto è cooperativo: può attendere la conclusione della singola richiesta di rete già in corso</li>
+                <li>Nessun output della sessione annullata viene pubblicato nella cartella scelta; i file preesistenti rimangono invariati</li>
             </ul>
             <h4>🔄 DURANTE L'ELABORAZIONE</h4>
             <p><strong>Il programma in background:</strong></p>
@@ -565,9 +565,9 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
                 <li>Puoi annullare in qualsiasi momento</li>
             </ul>
             <h4>⚠️ COMPORTAMENTO SE CLICCHI ANNULLA:</h4>
-            <h3>1. Elaborazione si ferma subito</h3>
-            <h3>2. File parziali vengono rimossi</h3>
-            <h3>3. Finestra si chiude</h3>
+            <h3>1. Viene richiesto l'arresto cooperativo dell'intero batch</h3>
+            <h3>2. Tutti gli output temporanei prodotti dal batch annullato vengono eliminati</h3>
+            <h3>3. I file già presenti nelle cartelle di output prima dell'avvio rimangono invariati</h3>
             <h3>4. Puoi ricominciare da Menu → Output → Elabora</h3>
             <h4>📋 PDF — GENERAZIONE AUTOMATICA DURANTE L'ELABORAZIONE</h4>
             <p>Se hai selezionato <strong>PDF</strong> nella maschera di scelta formati (PASSO 1), il PDF viene generato automaticamente al termine del download di ogni registro o documento, senza nessuna finestra di conferma aggiuntiva.</p>
@@ -633,7 +633,7 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             </ul>
             </div>
             <div class="section-box">
-            <h3>6. PDF PER REGISTRI E DOCUMENTI</h3>
+            <h3>3. PDF PER REGISTRI E DOCUMENTI</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
             <h4>COME ATTIVARE LA GENERAZIONE PDF</h4>
             <p>La generazione del PDF si attiva selezionando la casella <strong>PDF</strong> nella maschera di scelta formati (Menu → Impostazioni → "Seleziona formati immagine").</p>
@@ -659,7 +659,7 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             </ul>
             </div>
             <div class="section">
-        <h2>&#128204; FUNZIONALIT&#192; DISPONIBILI</h2>
+        <h2>4. &#128204; FUNZIONALIT&#192; DISPONIBILI</h2>
         <p>Il menu &ldquo;Servizi&rdquo; contiene le funzioni operative della v3: ricerca assistita AI, visualizzazione immagini, visualizzazione metadati JSON, OCR Avanzato, Traduzione OCR ed Esportazione GEDCOM.</p>
 
         
@@ -744,7 +744,7 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
         </div>
     </div>
             <div class="section-box">
-            <h3>9. CARTELLE E FILE OUTPUT</h3>
+            <h3>5. CARTELLE E FILE OUTPUT</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
             <h4>📂 STRUTTURA OUTPUT</h4>
             <p>Quando elabori un record IIIF, ATK-Pro salva i file nella cartella che hai scelto nel PASSO 2 (Seleziona cartella output).</p>
