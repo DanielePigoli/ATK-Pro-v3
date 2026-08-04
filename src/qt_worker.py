@@ -3,6 +3,8 @@ from PySide6.QtCore import QObject, Signal, QThread
 import logging
 import time
 import os
+import shutil
+import tempfile
 from logging.handlers import RotatingFileHandler
 ATKPRO_ENV = os.environ.get("ATKPRO_ENV", "development").lower()
 logger = logging.getLogger(__name__)
@@ -52,11 +54,37 @@ class ElaborazioneWorker(QThread):
         self.portale = portale
         self.resource_profile = resource_profile
         self._is_cancelled = False
+        self._staging_dirs = {}
         self.results = []
         self.signals = WorkerSignals()
 
     def cancel(self):
         self._is_cancelled = True
+
+    def _staging_dir_for(self, output_dir):
+        actual = os.path.abspath(output_dir)
+        staging = self._staging_dirs.get(actual)
+        if staging is None:
+            os.makedirs(actual, exist_ok=True)
+            staging = tempfile.mkdtemp(prefix=".atkpro_batch_", dir=actual)
+            self._staging_dirs[actual] = staging
+        return actual, staging
+
+    def _discard_staging(self):
+        for staging in self._staging_dirs.values():
+            shutil.rmtree(staging, ignore_errors=True)
+        self._staging_dirs.clear()
+
+    def _commit_staging(self):
+        for actual, staging in self._staging_dirs.items():
+            for root, dirs, files in os.walk(staging):
+                relative = os.path.relpath(root, staging)
+                destination = actual if relative == "." else os.path.join(actual, relative)
+                os.makedirs(destination, exist_ok=True)
+                for filename in files:
+                    os.replace(os.path.join(root, filename), os.path.join(destination, filename))
+            shutil.rmtree(staging, ignore_errors=True)
+        self._staging_dirs.clear()
 
     def run(self):
         total = len(self.records)
@@ -80,6 +108,7 @@ class ElaborazioneWorker(QThread):
                     progress_descr = nome_file
 
                 out_dir = record.get('output') or record.get('output_dir') or os.getcwd()
+                actual_out_dir, working_out_dir = self._staging_dir_for(out_dir)
 
                 # Simulazione
                 if record.get('simulate'):
@@ -122,13 +151,14 @@ class ElaborazioneWorker(QThread):
                 elab = Elaborazione(
                     modalita.lower(),
                     url,
-                    out_dir,
+                    working_out_dir,
                     self.glossario,
                     self.lingua,
                     portale=record_portal,
                     resource_profile=self.resource_profile,
                 )
                 elab.set_nome_file(nome_file)
+                setattr(elab, 'cancel_cb', lambda: self._is_cancelled)
                 # Range canvas opzionale (es. canvas 1-5)
                 elab.canvas_da = record.get('canvas_da') or None
                 elab.canvas_a = record.get('canvas_a') or None
@@ -166,11 +196,15 @@ class ElaborazioneWorker(QThread):
                     pass
                 success = elab.run(formats=self.formats)
 
+                if self._is_cancelled:
+                    logger.info("[Worker] Cancellazione richiesta durante il record; rollback del batch")
+                    break
+
                 if success:
                     results.append({
                         'file': nome_file,
                         'modalita': modalita,
-                        'output': out_dir,
+                        'output': actual_out_dir,
                         'formati': self.formats,
                         'status': 'SUCCESS'
                     })
@@ -178,7 +212,7 @@ class ElaborazioneWorker(QThread):
                     results.append({
                         'file': nome_file,
                         'modalita': modalita,
-                        'output': out_dir,
+                        'output': actual_out_dir,
                         'status': 'FAILED'
                     })
 
@@ -197,6 +231,12 @@ class ElaborazioneWorker(QThread):
                     'errore': str(e),
                     'status': 'ERROR'
                 })
+
+        if self._is_cancelled:
+            self._discard_staging()
+            results = []
+        else:
+            self._commit_staging()
 
         # Fine
         self.results = results

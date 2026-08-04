@@ -279,3 +279,62 @@ class TestElaborazioneWorkerIntegration:
         worker = ElaborazioneWorker(records, formats=["PNG"])
         assert worker is not None
         assert worker.signals is not None
+
+    def test_successful_batch_commits_staged_outputs(self, monkeypatch, tmp_path):
+        import src.qt_worker as qw
+
+        class FakeElab:
+            def __init__(self, record_type, url, output_dir, *args, **kwargs):
+                self.output_dir = output_dir
+            def set_nome_file(self, name):
+                self.name = name
+            def run(self, formats=None):
+                from pathlib import Path
+                Path(self.output_dir, "created.txt").write_text("complete", encoding="utf-8")
+                return True
+
+        monkeypatch.setattr(qw, "Elaborazione", FakeElab)
+        worker = ElaborazioneWorker([{
+            "modalita": "D",
+            "url": "https://example.test/doc",
+            "nome_file": "doc",
+            "output": str(tmp_path),
+        }])
+
+        worker.run()
+
+        assert (tmp_path / "created.txt").read_text(encoding="utf-8") == "complete"
+        assert not list(tmp_path.glob(".atkpro_batch_*"))
+
+    def test_cancelled_batch_rolls_back_staged_outputs(self, monkeypatch, tmp_path):
+        import src.qt_worker as qw
+
+        existing = tmp_path / "existing.txt"
+        existing.write_text("keep", encoding="utf-8")
+        worker = None
+
+        class FakeElab:
+            def __init__(self, record_type, url, output_dir, *args, **kwargs):
+                self.output_dir = output_dir
+            def set_nome_file(self, name):
+                self.name = name
+            def run(self, formats=None):
+                from pathlib import Path
+                Path(self.output_dir, "partial.txt").write_text("partial", encoding="utf-8")
+                worker.cancel()
+                return False
+
+        monkeypatch.setattr(qw, "Elaborazione", FakeElab)
+        worker = ElaborazioneWorker([{
+            "modalita": "D",
+            "url": "https://example.test/doc",
+            "nome_file": "doc",
+            "output": str(tmp_path),
+        }])
+
+        worker.run()
+
+        assert existing.read_text(encoding="utf-8") == "keep"
+        assert not (tmp_path / "partial.txt").exists()
+        assert not list(tmp_path.glob(".atkpro_batch_*"))
+        assert worker.results == []

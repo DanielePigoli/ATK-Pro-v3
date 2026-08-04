@@ -455,8 +455,12 @@ class Elaborazione:
             self.formats = formats
         logger.info(f"[Elaborazione] Avvio run: output_dir={self.output_dir} nome_file={self.nome_file}")
         try:
+            if callable(getattr(self, 'cancel_cb', None)) and self.cancel_cb():
+                return False
             # Download manifest
             self.manifest = self._fetch_manifest()
+            if callable(getattr(self, 'cancel_cb', None)) and self.cancel_cb():
+                return False
             logger.info(f"[Elaborazione] Manifest scaricato: {self.manifest_path if self.manifest_path else 'N/A'}")
             if not self.manifest:
                 logger.error("[Error] Manifest non disponibile")
@@ -1206,6 +1210,8 @@ class Elaborazione:
             from threading import Lock
             immagini_lock = Lock()
             def process_canvas(idx, canvas):
+                if callable(getattr(self, 'cancel_cb', None)) and self.cancel_cb():
+                    return
                 logger.info(f"[Canvas] Elaborazione {idx}/{len(tiles_info)}")
 
                 # Report start of this canvas to caller (worker -> ProgressDialog)
@@ -1369,6 +1375,8 @@ class Elaborazione:
                         return  # nessuna cartella tile da pulire
                     # --- IIIF normale ---
                     info = download_info_json(image_info_url)
+                    if callable(getattr(self, 'cancel_cb', None)) and self.cancel_cb():
+                        return
                     os.makedirs(tile_dir, exist_ok=True)
                     tiles_ok, tiles_missing = download_tiles(
                         info,
@@ -1384,6 +1392,8 @@ class Elaborazione:
                             self.tiles_missing_all = []
                         self.tiles_missing_all.extend(tiles_missing)
                     final_img = rebuild_image(info, tile_dir, source_url=self.ark_url)
+                    if callable(getattr(self, 'cancel_cb', None)) and self.cancel_cb():
+                        return
                     ua = _parse_ua_from_url(self.ark_url)
                     ark = _parse_ark_from_url(self.ark_url)
                     canvas_tail = _last_segment(service_id)
@@ -1437,6 +1447,9 @@ class Elaborazione:
                 futures = [executor.submit(process_canvas, idx, canvas) for idx, canvas in enumerate(tiles_info, 1)]
                 for f in concurrent.futures.as_completed(futures):
                     pass  # errori già loggati
+
+            if callable(getattr(self, 'cancel_cb', None)) and self.cancel_cb():
+                return False
 
             # Verifica immagini finali e retry (max 3 tentativi) per tutte le pagine
             _img_norm_r = [_normalize_format(f) for f in image_formats]
