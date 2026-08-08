@@ -338,29 +338,29 @@
 
     <div class="section">
         <h2>&#128204; Panoramica</h2>
-        <p>Il <strong>Viewer Immagini</strong> di ATK-Pro &egrave; un visualizzatore integrato per l&apos;analisi di documenti genealogici digitalizzati. Si apre attraverso il menu <em>Servizi &rarr; Visualizzazione Immagini</em> dell&apos;applicazione principale. Supporta JPEG, PNG e TIFF (inclusi file multi-pagina).</p>
+        <p>Il <strong>Visualizzatore immagini</strong> di ATK-Pro &egrave; uno strumento integrato per l&apos;analisi di documenti genealogici digitalizzati. Si apre attraverso il menu <em>Servizi &rarr; Visualizzazione Immagini</em> dell&apos;applicazione principale. Supporta JPEG, PNG e TIFF (inclusi file multipagina).</p>
     </div>
 
     <div class="section">
-        <h2>&#128194; Formati Supportati</h2>
+        <h2>&#128194; Formati supportati</h2>
         <div class="section-box">
             <table>
                 <thead><tr><th>Formato</th><th>Estensione</th><th>Note</th></tr></thead>
                 <tbody>
                     <tr><td><strong>JPEG</strong></td><td>.jpg, .jpeg</td><td>Supporto completo</td></tr>
                     <tr><td><strong>PNG</strong></td><td>.png</td><td>Supporto completo</td></tr>
-                    <tr><td><strong>TIFF</strong></td><td>.tif, .tiff</td><td>Supporto multi-pagina con navigazione dedicata</td></tr>
+                    <tr><td><strong>TIFF</strong></td><td>.tif, .tiff</td><td>Supporto multipagina con navigazione dedicata</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <div class="section">
-        <h2>&#128421;&#65039; Interfaccia e Controlli</h2>
+        <h2>&#128421;&#65039; Interfaccia e controlli</h2>
         <div class="section-box">
             <h3>&#128269; Zoom</h3>
             <ul>
-                <li><strong>Rotella del mouse</strong>: Zoom incrementale (passo 15%) centrato sul cursore</li>
+                <li><strong>Rotella del mouse</strong>: zoom incrementale con passo del 15%</li>
                 <li><strong>Pulsante &ldquo; + &rdquo;</strong>: Zoom avanti del 15%</li>
                 <li><strong>Pulsante &ldquo; &minus; &rdquo;</strong>: Zoom indietro del 15%</li>
                 <li><strong>Pulsante &ldquo;Adatta alla finestra&rdquo;</strong>: Ridimensiona l&apos;immagine per occupare l&apos;area disponibile (proporzionalmente)</li>
@@ -370,28 +370,28 @@
         </div>
 
         <div class="section-box">
-            <h3>&#9995;&#65039; Pan (Spostamento)</h3>
-            <p><strong>Click e trascinamento</strong>: Tieni premuto il tasto sinistro del mouse e trascina per spostare l&apos;immagine. Il cursore cambia in mano chiusa durante il trascinamento e in mano aperta al passaggio sull&apos;area dell&apos;immagine.</p>
+            <h3>&#9995;&#65039; Pan (spostamento)</h3>
+            <p><strong>Clic e trascinamento</strong>: tieni premuto il tasto sinistro del mouse e trascina per spostare l&apos;immagine. Il cursore cambia in mano chiusa durante il trascinamento e in mano aperta al passaggio sull&apos;area dell&apos;immagine.</p>
         </div>
 
         <div class="section-box">
-            <h3>&#128197; TIFF Multi-Pagina</h3>
+            <h3>&#128197; TIFF multipagina</h3>
             <p>Per i file TIFF contenenti pi&ugrave; fotogrammi, compare una barra di navigazione aggiuntiva nella toolbar:</p>
             <ul>
                 <li><strong>Campo numerico (spinbox)</strong>: Inserisci il numero della pagina desiderata; il viewer carica immediatamente il fotogramma corrispondente</li>
                 <li><strong>Indicatore &ldquo;/ N&rdquo;</strong>: Mostra il numero totale di pagine accanto al campo numerico</li>
             </ul>
-            <p style="margin-top:0.8rem;"><em>Nota:</em> I registri del Portale Antenati sono spesso distribuiti come TIFF multi-pagina; ogni fotogramma corrisponde a una pagina del registro.</p>
+            <p style="margin-top:0.8rem;"><em>Nota:</em> ogni fotogramma del file TIFF viene gestito come una pagina distinta.</p>
         </div>
 
         <div class="section-box">
-            <h3>&#128203; Pannello Metadati Sidecar (Pannello Destro)</h3>
+            <h3>&#128203; Pannello metadati sidecar (pannello destro)</h3>
             <p>Se nella stessa cartella dell&apos;immagine esiste un file JSON con lo stesso nome base (es. <code>documento.jpg</code> &rarr; cerca <code>documento.json</code>), il pannello destro visualizza i metadati in forma di tabella.</p>
             <ul>
                 <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello destro per ampliare l&apos;area di visualizzazione dell&apos;immagine</li>
                 <li><strong>Pulsante &ldquo;&#9658; Mostra metadati&rdquo;</strong>: Ripristina il pannello metadati</li>
             </ul>
-            <p style="margin-top:0.8rem;">Se non viene trovato alcun sidecar JSON, il pannello destro mostra <em>&ldquo;Nessun sidecar JSON trovato&rdquo;</em>.</p>
+            <p style="margin-top:0.8rem;">Se non viene trovato alcun sidecar JSON, il pannello destro mostra <em>&ldquo;Nessun sidecar JSON trovato&rdquo;</em>. Se il file esiste ma non pu&ograve; essere letto, il pannello segnala un errore di lettura dei metadati.</p>
         </div>
     </div>
 
