@@ -338,8 +338,9 @@
 
     <div class="section">
         <h2>&#128204; Panoramica</h2>
-        <p>Il <strong>Viewer Metadati JSON</strong> di ATK-Pro &egrave; dedicato alla visualizzazione dei file JSON generati durante l&apos;elaborazione dei documenti. Si apre dal menu <em>Servizi &rarr; Visualizzazione Metadati JSON</em> dell&apos;applicazione.</p>
-        <p>Il viewer apre qualsiasi file <code>.json</code>. Cerca automaticamente un&apos;immagine con lo stesso nome nella stessa cartella (estensioni: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tif</code>, <code>.tiff</code>) e, se la trova, la mostra nel pannello destro.</p>
+        <p>Il <strong>Visualizzatore metadati JSON</strong> di ATK-Pro &egrave; dedicato alla visualizzazione dei file JSON generati durante l&apos;elaborazione dei documenti. Si apre dal menu <em>Servizi &rarr; Visualizzazione Metadati JSON</em> dell&apos;applicazione.</p>
+        <p>Il visualizzatore apre file JSON validi strutturati come oggetto, inclusi i sidecar generati da ATK-Pro. Cerca automaticamente un&apos;immagine con lo stesso nome nella stessa cartella (estensioni: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tif</code>, <code>.tiff</code>) e, se la trova, la mostra nel pannello destro.</p>
+        <p>Se il file non contiene JSON valido o non pu&ograve; essere letto, viene mostrato il messaggio <em>&ldquo;Impossibile leggere il file JSON&rdquo;</em>.</p>
     </div>
 
     <div class="section">
@@ -347,23 +348,23 @@
         <p>La finestra &egrave; divisa in due pannelli affiancati:</p>
 
         <div class="section-box">
-            <h3>Pannello Sinistro &mdash; Tabella Metadati</h3>
+            <h3>Pannello sinistro &mdash; tabella metadati</h3>
             <p>I dati del file JSON vengono visualizzati come una <strong>tabella a due colonne</strong>:</p>
             <ul>
                 <li><strong>Campo</strong>: il nome della chiave JSON</li>
-                <li><strong>Valore metadato</strong>: il valore corrispondente</li>
+                <li><strong>Valore</strong>: il valore corrispondente</li>
             </ul>
-            <p style="margin-top:0.8rem;">Vengono visualizzati solo i campi di <strong>primo livello</strong> del JSON. I campi il cui nome inizia con <code>_</code> (underscore) sono omessi perch&eacute; riservati all&apos;uso interno. Strutture annidate (oggetti o array) appaiono come rappresentazione testuale nella colonna Valore.</p>
+            <p style="margin-top:0.8rem;">Vengono visualizzati solo i campi di <strong>primo livello</strong> del JSON. I campi il cui nome inizia con <code>_</code> (underscore) sono omessi perch&eacute; riservati all&apos;uso interno. Le strutture annidate, come oggetti o array, appaiono come testo nella colonna Valore e non come livelli espandibili.</p>
         </div>
 
         <div class="section-box">
-            <h3>Pannello Destro &mdash; Anteprima Immagine</h3>
-            <p>Se viene trovata un&apos;immagine abbinata, questa viene caricata con le stesse funzionalit&agrave; del Viewer Immagini (zoom con rotella, pulsanti +/&minus;, Adatta alla finestra, 1:1, pan con trascinamento).</p>
+            <h3>Pannello destro &mdash; anteprima immagine</h3>
+            <p>Se viene trovata un&apos;immagine abbinata, questa viene caricata con le stesse funzionalit&agrave; del Visualizzatore immagini (zoom con rotella, pulsanti +/&minus;, Adatta alla finestra, 1:1, pan con trascinamento).</p>
             <p style="margin-top:0.8rem;">Se non viene trovata alcuna immagine abbinata, il pannello mostra <em>&ldquo;Nessuna immagine abbinata trovata&rdquo;</em>.</p>
         </div>
 
         <div class="section-box">
-            <h3>Toggle Pannelli</h3>
+            <h3>Mostrare e nascondere il pannello</h3>
             <ul>
                 <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello sinistro con i metadati</li>
                 <li><strong>Pulsante &ldquo;&#9658; Mostra metadati&rdquo;</strong>: Ripristina il pannello metadati</li>
