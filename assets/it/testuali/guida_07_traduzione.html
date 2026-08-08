@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 07: Traduzione</title>
+    <title>📚 Modulo 07: Traduzione OCR</title>
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -327,11 +327,11 @@
 <body>
     <div class="container">
         <header>
-            <h1>📚 Modulo 07: Traduzione</h1>
+        <h1>📚 Modulo 07: Traduzione OCR</h1>
         </header>
 
         <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_06_ocr_avanzato.html" class="nav-button">&#8592; Mod.06 &mdash; Funzioni Avanzate OCR</a>
+        <a href="guida_06_ocr_avanzato.html" class="nav-button">&#8592; Mod.06 &mdash; OCR avanzato</a>
             <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
             <a href="guida_08_esportazione_gedcom.html" class="nav-button">Mod.08 &mdash; Esportazione GEDCOM &#8594;</a>
         </div>
@@ -348,12 +348,12 @@
         <p>La finestra &egrave; organizzata in una barra di configurazione, un&apos;area per il testo sorgente, un campo di istruzioni contestuali e un&apos;area per il risultato.</p>
 
         <div class="section-box">
-            <h3>Barra di Configurazione (In Alto)</h3>
+            <h3>Barra di configurazione</h3>
             <ul>
                 <li><strong>Provider IA</strong>: scegli il servizio da usare tra quelli disponibili nell&apos;installazione, ad esempio Gemini, OpenAI, Claude, Mistral, xAI, DeepSeek, Groq, HuggingFace o Ollama.</li>
                 <li><strong>Modello</strong>: campo opzionale per indicare un modello specifico supportato dal provider. Se lo lasci vuoto, ATK-Pro usa il modello predefinito previsto dalla configurazione.</li>
-                <li><strong>Tipologia Documento</strong>: seleziona il tipo di documento o testo da tradurre. Le tipologie sono collegate ai prompt e possono essere aggiunte, modificate o eliminate dagli appositi pulsanti.</li>
-                <li><strong>API Key e Cassaforte</strong>: inserisci la chiave del provider scelto oppure apri la <em>Cassaforte</em> per gestire le chiavi salvate nel caveau CSV.</li>
+                <li><strong>Tipologia Documento</strong>: seleziona il tipo di documento o testo da tradurre. Puoi creare e rimuovere tipologie personalizzate; per le tipologie integrate puoi modificare il prompt tramite override, ma non eliminarle.</li>
+                <li><strong>API Key e Cassaforte</strong>: inserisci la chiave del provider scelto oppure apri il file della <em>Cassaforte</em> per consultare o modificare il caveau CSV.</li>
                 <li><strong>Lingua di Destinazione</strong>: scegli la lingua moderna in cui vuoi ottenere la traduzione.</li>
             </ul>
         </div>
@@ -372,7 +372,7 @@
             <ul>
                 <li>Premi <strong>Traduci Testo ORA</strong> per avviare l&apos;elaborazione.</li>
                 <li>Durante l&apos;elaborazione il pannello risultato mostra un messaggio di attesa.</li>
-                <li>Il risultato e&apos; modificabile: correggi direttamente la traduzione prima di salvarla.</li>
+                <li>Il risultato &egrave; modificabile: correggi direttamente la traduzione prima di salvarla.</li>
                 <li><strong>Salva Traduzione (TXT)</strong> esporta testo semplice.</li>
                 <li><strong>Esporta in Word (DOCX)</strong> crea un documento Word editabile.</li>
             </ul>
@@ -380,8 +380,8 @@
     </div>
 
     <div class="section">
-        <h2>&#128221; Il Campo Glossario &amp; Contesto — Guida all&apos;Uso</h2>
-        <p>Questo campo opzionale consente di istruire il modello sulle caratteristiche del testo prima che inizi l&apos;elaborazione. E&apos; il punto giusto per chiarire abbreviazioni, formule, lingua sorgente, criteri di resa e parole da non tradurre.</p>
+        <h2>&#128221; Il campo Glossario &amp; Contesto — guida all&apos;uso</h2>
+        <p>Questo campo opzionale consente di istruire il modello sulle caratteristiche del testo prima che inizi l&apos;elaborazione. &Egrave; il punto giusto per chiarire abbreviazioni, formule, lingua sorgente, criteri di resa e parole da non tradurre.</p>
 
         <div class="section-box">
             <h3>Quando usarlo</h3>
@@ -396,7 +396,7 @@
         </div>
 
         <div class="section-box">
-            <h3>Esempi Pratici</h3>
+        <h3>Esempi pratici</h3>
             <p><strong>Esempio 1 &mdash; Atto parrocchiale ottocentesco in dialetto siciliano:</strong></p>
             <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">fu = figlio/a di (defunto)
 q. = quondam (già, defunto)
@@ -419,7 +419,7 @@ Traduci in inglese (non in italiano).</pre>
         </div>
 
         <div class="section-box">
-            <h3>Strategia Consigliata</h3>
+        <h3>Strategia consigliata</h3>
             <ul>
                 <li>Costruisci il glossario <strong>progressivamente</strong>: fai una prima traduzione, individua gli errori ricorrenti, aggiungi istruzioni e riprova.</li>
                 <li>Per registri diversi, conserva glossari separati e incollali nel campo prima dell&apos;elaborazione.</li>
@@ -434,7 +434,7 @@ Traduci in inglese (non in italiano).</pre>
         <div class="section-box">
             <p>La scelta effettiva corrisponde alle 20 lingue supportate dall&apos;interfaccia e dal glossario multilingue di ATK-Pro.</p>
             <table>
-                <thead><tr><th>Lingua</th><th>Autononimo</th><th>Lingua</th><th>Autononimo</th></tr></thead>
+            <thead><tr><th>Lingua</th><th>Autonimo</th><th>Lingua</th><th>Autonimo</th></tr></thead>
                 <tbody>
                     <tr><td>Italiano</td><td>Italiano</td><td>Russo</td><td>&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</td></tr>
                     <tr><td>Inglese</td><td>English</td><td>Arabo</td><td>&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</td></tr>
@@ -452,12 +452,12 @@ Traduci in inglese (non in italiano).</pre>
     </div>
 
     <div class="section">
-        <h2>&#128221; Note Operative</h2>
+        <h2>&#128221; Note operative</h2>
         <div class="section-box">
             <ul>
-                <li>L&apos;elaborazione e&apos; asincrona: la finestra resta utilizzabile mentre il modulo attende la risposta del provider.</li>
-                <li>Per testi lunghi o complessi possono servire piu&apos; tempo e piu&apos; revisioni manuali.</li>
-                <li>La chiave API e il provider selezionato sono condivisi con le preferenze dei moduli IA collegati.</li>
+                <li>L&apos;elaborazione &egrave; asincrona: il pulsante di traduzione viene disabilitato durante la richiesta, mentre la finestra rimane responsiva. Le modifiche apportate ai campi durante l&apos;attesa non cambiano la richiesta gi&agrave; inviata.</li>
+                <li>Per testi lunghi o complessi possono servire pi&ugrave; tempo e pi&ugrave; revisioni manuali.</li>
+                <li>La chiave pu&ograve; provenire dal caveau condiviso; provider, modello, lingua e contesto vengono salvati come preferenze specifiche del modulo di traduzione.</li>
                 <li>La traduzione produce output testuale in TXT o DOCX: non genera immagini, metadati, alberi genealogici o file GEDCOM.</li>
                 <li>Non inviare a provider esterni testi riservati o soggetti a restrizioni se non hai verificato condizioni d&apos;uso, privacy e autorizzazioni.</li>
             </ul>
@@ -465,7 +465,7 @@ Traduci in inglese (non in italiano).</pre>
     </div>
 
     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_06_ocr_avanzato.html" class="nav-button">&#8592; Mod.06 &mdash; Funzioni Avanzate OCR</a>
+        <a href="guida_06_ocr_avanzato.html" class="nav-button">&#8592; Mod.06 &mdash; OCR avanzato</a>
             <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
             <a href="guida_08_esportazione_gedcom.html" class="nav-button">Mod.08 &mdash; Esportazione GEDCOM &#8594;</a>
         </div>
