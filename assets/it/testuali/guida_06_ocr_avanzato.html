@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 06: Funzioni Avanzate OCR</title>
+    <title>📚 Modulo 06: OCR avanzato</title>
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -327,7 +327,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>📚 Modulo 06: Funzioni Avanzate OCR</h1>
+        <h1>📚 Modulo 06: OCR avanzato</h1>
         </header>
 
         <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
@@ -338,17 +338,17 @@
 
     <div class="section">
         <h2>&#128204; Panoramica</h2>
-        <p>Il modulo <strong>OCR Avanzato (Trascrizione Diplomatica)</strong> estrae il testo da immagini e documenti PDF tramite modelli di intelligenza artificiale multimodali (LLM Vision). &Egrave; progettato specificamente per documenti storici: manoscritti, atti notarili, registri parrocchiali, lettere d&apos;archivio in italiano ottocentesco, latino o dialetto.</p>
-        <p>A differenza dei motori OCR tradizionali (Tesseract, ecc.), il modulo interpreta la grafia nel contesto del documento, riconosce abbreviazioni e formule ricorrenti, e pu&ograve; mantenere la struttura del layout originale in formato TEI XML.</p>
+        <p>Il modulo <strong>OCR Avanzato (Trascrizione Diplomatica)</strong> estrae il testo da immagini e documenti PDF tramite modelli multimodali, modelli OCR specializzati e servizi HTR. &Egrave; progettato specificamente per documenti storici: manoscritti, atti notarili, registri parrocchiali, lettere d&apos;archivio in italiano ottocentesco, latino o dialetto.</p>
+        <p>A differenza dei motori OCR tradizionali (Tesseract, ecc.), il modulo pu&ograve; interpretare la grafia nel contesto del documento e riconoscere abbreviazioni e formule ricorrenti. L&apos;output TEI-P5 rappresenta le righe trascritte e, quando riconosciuti, le interruzioni di pagina, le espansioni e i passaggi illeggibili; non riproduce integralmente il layout grafico originale.</p>
         <p>Si apre dal menu <em>Servizi &rarr; OCR Avanzato</em> dell&apos;applicazione principale.</p>
     </div>
 
     <div class="section">
-        <h2>&#128421;&#65039; Interfaccia — Guida Passo per Passo</h2>
+        <h2>&#128421;&#65039; Interfaccia — guida passo per passo</h2>
 
         <div class="section-box">
-            <h3>&#128194; Passo 1 — Selezione dei File</h3>
-            <p>Clicca <strong>&ldquo;Seleziona File (Immagini/PDF)&rdquo;</strong> per aprire il selettore. Puoi selezionare pi&ugrave; file contemporaneamente tenendo premuto <kbd>Ctrl</kbd> o <kbd>Shift</kbd>.</p>
+            <h3>&#128194; Passo 1 — Selezione dei file</h3>
+            <p>Fai clic su <strong>&ldquo;Seleziona File (Immagini/PDF)&rdquo;</strong> per aprire il selettore. Puoi selezionare pi&ugrave; file contemporaneamente tenendo premuto <kbd>Ctrl</kbd> o <kbd>Shift</kbd>.</p>
             <p><strong>Formati accettati:</strong></p>
             <ul>
                 <li><strong>Immagini</strong>: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tiff</code>, <code>.tif</code></li>
@@ -358,35 +358,36 @@
         </div>
 
         <div class="section-box">
-            <h3>&#129302; Passo 2 — Selezione del Provider IA e API Key</h3>
+            <h3>&#129302; Passo 2 — Selezione del provider IA e API key</h3>
             <p>Seleziona il provider nel menu a tendina <strong>&ldquo;Seleziona Provider IA&rdquo;</strong>:</p>
             <table>
                 <thead><tr><th>Provider</th><th>Tipo di servizio</th><th>Credenziali</th><th>Note operative</th></tr></thead>
                 <tbody>
                     <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Servizi remoti</td><td>API key del provider</td><td>Modelli e disponibilit&agrave; dipendono dall'account e dalle condizioni correnti del provider.</td></tr>
-                    <tr><td><strong>Mistral, Groq, DeepSeek, xAI</strong></td><td>Endpoint remoti compatibili</td><td>API key del provider</td><td>Selezionare un modello capace di elaborare immagini; non tutti i modelli testuali supportano OCR visuale.</td></tr>
+                    <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Endpoint remoti compatibili</td><td>API key del provider</td><td>Selezionare un modello capace di elaborare immagini; non tutti i modelli testuali supportano OCR visuale.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Endpoint remoto solo testo nella configurazione corrente</td><td>API key del provider</td><td>Non &egrave; adatto all&apos;OCR visuale finch&eacute; non viene configurato un endpoint e un modello compatibili con immagini.</td></tr>
                     <tr><td><strong>HuggingFace</strong></td><td>Inference API remota</td><td>Token HuggingFace</td><td>Compatibilit&agrave; e risultati dipendono dal modello configurato.</td></tr>
                     <tr><td><strong>Transkribus</strong></td><td>Servizio HTR remoto</td><td><code>email:password</code> oppure Bearer token</td><td>Richiede un account e almeno una collection disponibile.</td></tr>
                     <tr><td><strong>Ollama</strong></td><td>Servizio locale</td><td>Nessuna API key remota</td><td>Richiede Ollama attivo e un modello visuale compatibile installato localmente.</td></tr>
                 </tbody>
             </table>
-            <p style="margin-top:0.8rem;">Il campo <strong>&ldquo;Modello (opzionale)&rdquo;</strong> permette di sostituire il modello predefinito. Usalo solo se conosci l'identificativo esatto e la compatibilit&agrave; visuale del modello.</p>
+            <p style="margin-top:0.8rem;">Il campo <strong>&ldquo;Override Modello (opzionale)&rdquo;</strong> permette di sostituire il modello predefinito. Usalo solo se conosci l'identificativo esatto e la compatibilit&agrave; visuale del modello. Per Gemini questo campo non viene mostrato.</p>
             <p>Puoi inserire la credenziale nel campo dedicato o aprire la <strong>Cassaforte</strong>. Le chiavi IA sono conservate localmente nel caveau CSV <code>api_keys.csv</code>: non si tratta del portachiavi protetto del sistema operativo. Protezione del profilo utente, copie di sicurezza e revoca delle chiavi restano responsabilit&agrave; dell'utente.</p>
         </div>
 
         <div class="section-box">
-            <h3>&#128196; Passo 3 — Formati di Output</h3>
-            <p>Seleziona uno o pi&ugrave; formati di output (tutti e tre selezionati per default):</p>
+            <h3>&#128196; Passo 3 — Formati di output</h3>
+            <p>Seleziona uno o pi&ugrave; formati di output (tutti e tre selezionati per impostazione predefinita):</p>
             <ul>
                 <li><strong>Testo Semplice (.txt)</strong>: Trascrizione piana, massima compatibilit&agrave;. Ideale per elaborazioni successive (traduzione, indicizzazione).</li>
                 <li><strong>Documento Word (.docx)</strong>: Testo formattato, editabile con Microsoft Word o LibreOffice.</li>
-                <li><strong>XML TEI (.xml)</strong>: Formato standard accademico per edizioni digitali critiche (<em>Text Encoding Initiative</em>). Mantiene struttura, layout e metadati del documento.</li>
+                <li><strong>XML TEI (.xml)</strong>: formato TEI-P5 per rappresentare la trascrizione, con intestazione descrittiva, righe e marcatori riconosciuti per pagine, espansioni e testo illeggibile.</li>
             </ul>
             <p style="margin-top:0.8rem;">I file vengono salvati nella cartella di destinazione che sceglierai al momento dell&apos;avvio OCR.</p>
         </div>
 
         <div class="section-box">
-            <h3>&#128221; Passo 4 — Istruzioni Aggiuntive (Opzionale ma Consigliato)</h3>
+            <h3>&#128221; Passo 4 — Istruzioni aggiuntive (opzionale ma consigliato)</h3>
             <p>Il campo <strong>&ldquo;Istruzioni Aggiuntive per l&apos;IA&rdquo;</strong> permette di personalizzare il comportamento del modello per ogni sessione di lavoro:</p>
             <ul>
                 <li>Indicare il dialetto o la variante linguistica del testo</li>
@@ -400,31 +401,31 @@
                 <li><em>&ldquo;Ignora i timbri a margine e le annotazioni in matita rossa.&rdquo;</em></li>
                 <li><em>&ldquo;Le abbreviazioni 'fu' e 'q.' indicano 'figlio di' e 'quondam' (defunto).&rdquo;</em></li>
             </ul>
-            <p style="margin-top:0.8rem;"><strong>Archivio istruzioni:</strong> Le istruzioni usate pi&ugrave; frequentemente possono essere salvate cliccando <strong>&ldquo;Salva&rdquo;</strong> e richiamate dal menu a tendina &ldquo;Istruzioni Salvate&rdquo; nelle sessioni successive.</p>
+            <p style="margin-top:0.8rem;"><strong>Archivio istruzioni:</strong> le istruzioni usate pi&ugrave; frequentemente possono essere salvate con il pulsante <strong>&ldquo;+&rdquo;</strong> e richiamate dal menu a tendina &ldquo;Istruzioni Salvate&rdquo; nelle sessioni successive.</p>
             <p>Le istruzioni salvate possono essere aggiunte, rinominate o eliminate. Il <strong>tipo di documento</strong> determina il prompt di base: oltre ai tipi inclusi puoi creare, modificare o rimuovere profili documentali personalizzati.</p>
         </div>
 
         <div class="section-box">
-            <h3>&#127919; Calibrazione Assistita e Diagnostica (Opzionali)</h3>
-            <p>La calibrazione assistita genera un'anteprima sul primo file selezionato, utile per verificare provider, modello, tipo documentale, istruzioni e trascrizione di riferimento prima di avviare un lotto esteso.</p>
+        <h3>&#127919; Calibrazione Assistita e diagnostica (opzionali)</h3>
+        <p>La calibrazione assistita elabora la porzione superiore del primo file selezionato, mostra il risultato per la correzione e usa il testo approvato come riferimento per l&apos;elaborazione completa. &Egrave; utile per verificare provider, modello, tipo documentale e istruzioni prima di avviare un lotto esteso.</p>
             <p>L'opzione di diagnostica salva informazioni tecniche aggiuntive sull'elaborazione. Attivala quando devi analizzare un errore o fornire elementi al supporto; controlla il contenuto prima di condividerlo, perché può includere dati relativi al documento o alla richiesta.</p>
         </div>
 
         <div class="section-box">
-            <h3>&#127891; Passo 5 — Trascrizione di Riferimento (Few-Shot, Opzionale)</h3>
-            <p>Il campo <strong>&ldquo;Trascrizione di Riferimento&rdquo;</strong> implementa la tecnica del <em>few-shot learning</em>: fornendo all&apos;IA un esempio di trascrizione corretta, essa imparer&agrave; a riconoscere la calligrafia specifica del documento.</p>
+        <h3>&#127891; Passo 5 — Trascrizione di riferimento (few-shot, opzionale)</h3>
+        <p>Il campo <strong>&ldquo;Trascrizione di Riferimento&rdquo;</strong> fornisce al modello un esempio contestuale di trascrizione corretta da usare nella richiesta. Non addestra, modifica o aggiorna il modello.</p>
             <p><strong>Come usarla:</strong></p>
             <ol>
                 <li>Trascrivi manualmente e con precisione la prima pagina (o le prime righe) del registro</li>
                 <li>Incolla il testo trascritto nel campo &ldquo;Trascrizione di Riferimento&rdquo;</li>
                 <li>Avvia l&apos;OCR: il modello user&agrave; quella trascrizione come guida per tutto il resto del documento</li>
             </ol>
-            <p style="margin-top:0.8rem;"><strong>Risultato:</strong> Incremento significativo della precisione, soprattutto su grafie corsive difficili, abbreviazioni insolite o dialettismi locali.<br>
+            <p style="margin-top:0.8rem;"><strong>Risultato:</strong> pu&ograve; migliorare la precisione, soprattutto su grafie corsive difficili, abbreviazioni insolite o dialettismi locali; l&apos;effetto dipende dal provider, dal modello e dalla qualit&agrave; del documento.<br>
             Il campo &ldquo;Cancella Testo&rdquo; (&#10006;) svuota la trascrizione e ripristina la modalit&agrave; standard.</p>
         </div>
 
         <div class="section-box">
-            <h3>&#128269; Passo 6 — Revisione Interattiva (Opzionale)</h3>
+        <h3>&#128269; Passo 6 — Revisione interattiva (opzionale)</h3>
             <p>Spuntare <strong>&ldquo;Abilita Finestra di Revisione Interattiva&rdquo;</strong> attiva una modalit&agrave; interattiva che si apre dopo ogni elaborazione:</p>
             <ul>
                 <li><strong>Pannello sinistro</strong>: immagine originale con zoom (rotella del mouse) e pan</li>
@@ -437,15 +438,15 @@
 
         <div class="section-box">
             <h3>&#9654;&#65039; Passo 7 — Avvio OCR</h3>
-            <p>Clicca <strong>&ldquo;Avvia OCR&rdquo;</strong>. Verrà richiesta la cartella di destinazione per i file di output.</p>
-            <p>La barra di avanzamento mostra il progresso (file corrente / totale file). L&apos;elaborazione avviene in un thread separato: l&apos;interfaccia rimane responsiva durante il processing.</p>
+        <p>Fai clic su <strong>&ldquo;Avvia OCR&rdquo;</strong>. Verrà richiesta la cartella di destinazione per i file di output.</p>
+        <p>La barra di avanzamento mostra il progresso (file corrente / totale file). L&apos;elaborazione avviene in un thread separato: l&apos;interfaccia rimane responsiva durante l&apos;elaborazione.</p>
             <p>Durante i batch ATK-Pro aggiorna una trascrizione progressiva <code>*_trascrizione_parziale.txt</code> con i relativi metadati. Se l'elaborazione viene interrotta, conserva questi file per recuperare quanto gi&agrave; trascritto; non considerarli output definitivo finch&eacute; il batch non &egrave; completato e revisionato.</p>
             <p>Al termine, una finestra di dialogo confermer&agrave; il completamento o segnaler&agrave; eventuali errori.</p>
         </div>
     </div>
 
     <div class="section">
-        <h2>&#128273; Come Ottenere le API Key</h2>
+        <h2>&#128273; Come ottenere le API key</h2>
 
         <div class="section-box">
             <h3>Account, chiavi, modelli e costi</h3>
@@ -455,7 +456,7 @@
     </div>
 
     <div class="section">
-        <h2>&#128161; Consigli per Risultati Ottimali</h2>
+        <h2>&#128161; Consigli per risultati ottimali</h2>
         <div class="section-box">
             <ul>
                 <li><strong>Qualit&agrave; immagini</strong>: Immagini nitide a 300+ DPI producono risultati nettamente migliori. Evita JPEG con compressione elevata (artefatti).</li>
