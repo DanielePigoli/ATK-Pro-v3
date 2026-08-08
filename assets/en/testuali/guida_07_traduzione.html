@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 06: Traduzione</title>
+    <title>📚 Module 07: OCR Translation</title>
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -327,143 +327,147 @@
 <body>
     <div class="container">
         <header>
-            <h1>📚 Modulo 06: Traduzione</h1>
+            <h1>📚 Module 07: OCR Translation</h1>
         </header>
 
         <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_05_ocr_avanzato.html" class="nav-button">&#8592; Mod.05 &mdash; Funzioni Avanzate OCR</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_07_esportazione_gedcom.html" class="nav-button">Mod.07 &mdash; Esportazione GEDCOM &#8594;</a>
+        <a href="guida_06_ocr_avanzato.html" class="nav-button">&#8592; Module 06 &mdash; Advanced OCR</a>
+            <a href="guida.html" class="nav-button">&#127968; Main Index</a>
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">Module 08 &mdash; GEDCOM Export &#8594;</a>
         </div>
 
     <div class="section">
-        <h2>&#128204; Panoramica</h2>
-        <p>Il modulo <strong>Traduzione Paleografica Assistita (LLM)</strong> traduce testi paleografici o antichi &mdash; output dell&apos;OCR Avanzato, trascrizioni manuali o qualsiasi testo in formato <code>.txt</code> &mdash; in una delle 20 lingue moderne disponibili.</p>
-        <p>A differenza dei traduttori generici, il modulo utilizza lo stesso provider LLM configurato per l&apos;OCR e pu&ograve; essere guidato tramite un glossario personalizzato, che consente al modello di trattare correttamente arcaismi, termini tecnici storici, dialettismi e nomi propri.</p>
-        <p>Si apre dal menu <em>Strumenti &rarr; Traduzione</em> dell&apos;applicazione principale. La chiave API &egrave; condivisa con il modulo OCR.</p>
+        <h2>&#128204; Overview</h2>
+        <p>The <strong>AI-Assisted Paleographic Translation (LLM)</strong> module translates transcriptions, paleographic texts, research notes, or <code>.txt</code> files into a modern language selected by the user.</p>
+        <p>It opens from the <em>Services &rarr; OCR Translation</em> menu. The module uses the AI providers configured in ATK-Pro and can retrieve credentials from the shared key vault.</p>
+        <p>Translation is intended as a reading aid: the result must always be reviewed, especially when the source text contains archaic spellings, Latin, notarial formulas, abbreviations, dialects, or proper names.</p>
     </div>
 
     <div class="section">
-        <h2>&#128421;&#65039; Interfaccia</h2>
-        <p>La finestra &egrave; organizzata in tre aree principali:</p>
+        <h2>&#128421;&#65039; Interface</h2>
+        <p>The window is organized into a configuration bar, a source text area, a contextual instructions field, and a results area.</p>
 
         <div class="section-box">
-            <h3>Barra di Configurazione (In Alto)</h3>
+            <h3>Configuration Bar</h3>
             <ul>
-                <li><strong>Provider IA</strong>: Google Gemini (Free/Consigliato), OpenAI (GPT-4o), Anthropic (Claude 3.5)</li>
-                <li><strong>API Key</strong>: Stessa chiave del modulo OCR &mdash; inserirla qui la aggiorna anche nell&apos;OCR e viceversa</li>
-                <li><strong>Lingua di Destinazione</strong>: Scelta tra 20 lingue (vedi lista completa pi&ugrave; in basso)</li>
+                <li><strong>AI provider</strong>: choose the service to use from those available in the installation, such as Gemini, OpenAI, Claude, Mistral, xAI, DeepSeek, Groq, HuggingFace, or Ollama.</li>
+                <li><strong>Model</strong>: optional field for specifying a particular model supported by the provider. If left blank, ATK-Pro uses the default model set in the configuration.</li>
+                <li><strong>Document Type</strong>: select the type of document or text to translate. You can create and remove custom document types; for built-in types, you can edit the prompt through an override but cannot delete the type.</li>
+                <li><strong>API Key and Key Safe</strong>: enter the key for the selected provider or open the <em>Key Safe</em> file to view or edit the CSV vault.</li>
+                <li><strong>Target language</strong>: choose the modern language in which you want the translation.</li>
             </ul>
         </div>
 
         <div class="section-box">
-            <h3>Pannello Sinistro &mdash; Testo Sorgente</h3>
+            <h3>Source text</h3>
             <ul>
-                <li><strong>Area di testo principale</strong>: Incolla direttamente il testo da tradurre. Accetta testo di qualsiasi lunghezza, ma testi molto lunghi potrebbero richiedere pi&ugrave; elaborazione</li>
-                <li><strong>Pulsante &ldquo;Carica File TXT&rdquo;</strong>: Apre un file <code>.txt</code> da disco (ad es. output dell&apos;OCR). Il contenuto sostituisce il testo nell&apos;area</li>
-                <li><strong>Campo &ldquo;Glossario &amp; Contesto&rdquo;</strong>: vedi sezione dedicata</li>
+                <li><strong>Source Text</strong>: paste the transcription to be translated or load a file <code>.txt</code> generated previously.</li>
+                <li><strong>Load TXT File</strong>: opens a text file and inserts it into the source area.</li>
+                <li><strong>Glossary &amp; Context</strong>: allows you to give the model instructions before translation.</li>
             </ul>
         </div>
 
         <div class="section-box">
-            <h3>Pannello Destro &mdash; Risultato Tradotto</h3>
+            <h3>Translated result</h3>
             <ul>
-                <li>La traduzione appare automaticamente al termine dell&apos;elaborazione</li>
-                <li>Il testo &egrave; <strong>liberamente editabile</strong>: puoi correggere errori di traduzione direttamente nell&apos;area prima di esportare</li>
-                <li><strong>Pulsante &ldquo;Salva Traduzione (TXT)&rdquo;</strong>: Salva il risultato come file di testo semplice</li>
-                <li><strong>Pulsante &ldquo;Esporta in Word (DOCX)&rdquo;</strong>: Salva come documento Microsoft Word editabile</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>&#128221; Il Campo Glossario &amp; Contesto — Guida all&apos;Uso</h2>
-        <p>Questo campo opzionale &egrave; la funzione pi&ugrave; potente del modulo traduzione. Permette di istruire il modello LLM su ogni specificit&agrave; del testo prima che inizi l&apos;elaborazione.</p>
-
-        <div class="section-box">
-            <h3>Quando usarlo</h3>
-            <p>Il campo &egrave; particolarmente utile quando il testo contiene:</p>
-            <ul>
-                <li><strong>Arcaismi e parole obsolete</strong> che un traduttore moderno potrebbe interpretare diversamente</li>
-                <li><strong>Termini dialettali</strong> (siciliano, veneto, toscano ecc.) non presenti nei dizionari standard</li>
-                <li><strong>Formule giuridiche o notarili ricorrenti</strong> con significato tecnico specifico</li>
-                <li><strong>Nomi propri o toponimi</strong> che non devono essere tradotti ma trascritti fedelmente</li>
-                <li><strong>Abbreviazioni</strong> con significato convenzionale nel corpus documentale</li>
-            </ul>
-        </div>
-
-        <div class="section-box">
-            <h3>Esempi Pratici</h3>
-            <p><strong>Esempio 1 &mdash; Atto parrocchiale ottocentesco in dialetto siciliano:</strong></p>
-            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">fu = figlio/a di (defunto)
-q. = quondam (già, defunto)
-vid. = vedova/o
-I mesi sono scritti in dialetto (Jinnaru, Frivaru, Marzu...).
-Non tradurre i nomi propri (Nunzio, Rosaria, Salvatore...).
-Gli appellativi 'don' e 'donna' indicano persone di rango elevato, mantenerli.</pre>
-
-            <p style="margin-top:1rem;"><strong>Esempio 2 &mdash; Atto notarile in latino medievale:</strong></p>
-            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Il testo è in latino notarile. Traduci in italiano moderno.
-Mantieni le formule giuridiche standard (rogatio, instrumentum, actum...).
-'lib.' = libbre (moneta, non peso). 'sol.' = soldi.
-I toponimi in genitivo latino vanno sempre resi con il nome italiano corrente.</pre>
-
-            <p style="margin-top:1rem;"><strong>Esempio 3 &mdash; Lettera personale in italiano ottocentesco:</strong></p>
-            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Testo in italiano ottocentesco formale. Rendi in italiano moderno corrente.
-Mantieni el tono formale, non colloquizzare.
-'Pregiatissimo' e 'Esimio' sono formule di cortesia: rendi con equivalenti moderni appropriati.
-Traduci in inglese (non in italiano).</pre>
-        </div>
-
-        <div class="section-box">
-            <h3>Strategia Consigliata</h3>
-            <ul>
-                <li>Costruisci il glossario <strong>progressivamente</strong>: inizia con un primo tentativo di traduzione, identifica le parole mal tradotte, aggiungile al glossario e ritraduce</li>
-                <li>Il campo viene <strong>salvato automaticamente</strong> nelle preferenze: non devi reinserirlo ogni volta che apri il modulo</li>
-                <li>Per registri diversi, crea glossari separati e scambiamoli copia-incollando prima di avviare la traduzione</li>
-                <li>Specifica sempre la <strong>lingua del testo sorgente</strong> (soprattutto per latino, dialetti, lingue regionali) &mdash; il modello performar&agrave; meglio</li>
+                <li>Click <strong>Translate Text NOW</strong> to start processing.</li>
+                <li>During processing, the results panel displays a waiting message.</li>
+                <li>The result is editable: correct the translation directly before saving it.</li>
+                <li><strong>Save Translation (TXT)</strong> exports plain text.</li>
+                <li><strong>Export to Word (DOCX)</strong> creates an editable Word document.</li>
             </ul>
         </div>
     </div>
 
     <div class="section">
-        <h2>&#127760; Lingue di Destinazione Disponibili (20)</h2>
+        <h2>&#128221; The Glossary &amp; Context Field — User Guide</h2>
+        <p>This optional field allows you to instruct the model about the characteristics of the text before processing begins. It is the right place to clarify abbreviations, set phrases, source language, translation criteria, and words that must not be translated.</p>
+
         <div class="section-box">
+            <h3>When to Use It</h3>
+            <p>The field is particularly useful when the text contains:</p>
+            <ul>
+                <li><strong>Archaisms and obsolete words</strong> that a modern translator might interpret differently</li>
+                <li><strong>Dialect terms</strong> (Sicilian, Venetian, Tuscan, etc.) not found in standard dictionaries</li>
+                <li><strong>Recurring legal or notarial formulas</strong> with a specific technical meaning</li>
+                <li><strong>Proper names or place names</strong> that must not be translated but faithfully transcribed</li>
+                <li><strong>Abbreviations</strong> with a conventional meaning in the document corpus</li>
+            </ul>
+        </div>
+
+        <div class="section-box">
+            <h3>Practical Examples</h3>
+            <p><strong>Example 1 &mdash; Nineteenth-century parish record in Sicilian dialect:</strong></p>
+            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">fu = son/daughter of (deceased)
+q. = quondam (late, deceased)
+vid. = widow/widower
+The months are written in dialect (Jinnaru, Frivaru, Marzu...).
+Do not translate proper names (Nunzio, Rosaria, Salvatore...).
+The forms of address 'don' and 'donna' indicate people of high rank; retain them.</pre>
+
+            <p style="margin-top:1rem;"><strong>Example 2 &mdash; Notarial deed in medieval Latin:</strong></p>
+            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">The text is in notarial Latin. Translate it into modern Italian.
+Retain standard legal formulas (rogatio, instrumentum, actum...).
+'lib.' = pounds (currency, not weight). 'sol.' = soldi.
+Place names in the Latin genitive must always be rendered using their current Italian names.</pre>
+
+            <p style="margin-top:1rem;"><strong>Example 3 &mdash; Personal letter in nineteenth-century Italian:</strong></p>
+            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Text in formal nineteenth-century Italian. Render it in contemporary Italian.
+Maintain the formal tone; do not make it colloquial.
+'Pregiatissimo' and 'Esimio' are courtesy formulas: render them using appropriate modern equivalents.
+Translate into English (not Italian).</pre>
+        </div>
+
+        <div class="section-box">
+            <h3>Recommended Strategy</h3>
+            <ul>
+                <li>Build the glossary <strong>progressively</strong>: produce an initial translation, identify recurring errors, add instructions, and try again.</li>
+                <li>For different registers, keep separate glossaries and paste them into the field before processing.</li>
+                <li>Always specify the <strong>language of the source text</strong>, especially for Latin, dialects, regional languages, or multilingual documents.</li>
+                <li>Indicate when proper names, place names, titles, or formulas must be retained and not modernized.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#127760; Target Languages</h2>
+        <div class="section-box">
+            <p>The available selection corresponds to the 20 languages supported by the ATK-Pro interface and multilingual glossary.</p>
             <table>
-                <thead><tr><th>Lingua</th><th>Autononimo</th><th>Lingua</th><th>Autononimo</th></tr></thead>
+                <thead><tr><th>Language</th><th>Autonym</th><th>Language</th><th>Autonym</th></tr></thead>
                 <tbody>
-                    <tr><td>Italiano</td><td>Italiano</td><td>Russo</td><td>&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</td></tr>
-                    <tr><td>Inglese</td><td>English</td><td>Cinese</td><td>&#20013;&#25991;</td></tr>
-                    <tr><td>Tedesco</td><td>Deutsch</td><td>Giapponese</td><td>&#26085;&#26412;&#35486;</td></tr>
-                    <tr><td>Francese</td><td>Fran&ccedil;ais</td><td>Coreano</td><td>&#54620;&#44397;&#50612;</td></tr>
-                    <tr><td>Spagnolo</td><td>Espa&ntilde;ol</td><td>Arabo</td><td>&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</td></tr>
-                    <tr><td>Portoghese</td><td>Portugu&ecirc;s</td><td>Hindi</td><td>&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;</td></tr>
-                    <tr><td>Turco</td><td>T&uuml;rk&ccedil;e</td><td>Greco</td><td>&#917;&#955;&#955;&#951;&#957;&#953;&#954;&#940;</td></tr>
-                    <tr><td>Polacco</td><td>Polski</td><td>Ceco</td><td>&#268;e&scaron;tina</td></tr>
-                    <tr><td>Olandese</td><td>Nederlands</td><td>Svedese</td><td>Svenska</td></tr>
-                    <tr><td>Danese</td><td>Dansk</td><td>Finlandese</td><td>Suomi</td></tr>
+                    <tr><td>Italian</td><td>Italian</td><td>Russian</td><td>&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</td></tr>
+                    <tr><td>English</td><td>English</td><td>Arabic</td><td>&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</td></tr>
+                    <tr><td>Spanish</td><td>Espa&ntilde;ol</td><td>Dutch</td><td>Nederlands</td></tr>
+                    <tr><td>French</td><td>Fran&ccedil;ais</td><td>Hebrew</td><td>&#1506;&#1489;&#1512;&#1497;&#1514;</td></tr>
+                    <tr><td>German</td><td>Deutsch</td><td>Japanese</td><td>&#26085;&#26412;&#35486;</td></tr>
+                    <tr><td>Portuguese</td><td>Portugu&ecirc;s</td><td>Chinese</td><td>&#20013;&#25991;</td></tr>
+                    <tr><td>Polish</td><td>Polski</td><td>Turkish</td><td>T&uuml;rk&ccedil;e</td></tr>
+                    <tr><td>Danish</td><td>Dansk</td><td>Norwegian</td><td>Norsk</td></tr>
+                    <tr><td>Vietnamese</td><td>Ti&#7871;ng Vi&#7879;t</td><td>Greek</td><td>&#917;&#955;&#955;&#951;&#957;&#953;&#954;&#940;</td></tr>
+                    <tr><td>Romanian</td><td>Rom&acirc;n&#259;</td><td>Swedish</td><td>Svenska</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <div class="section">
-        <h2>&#128221; Note Operative</h2>
+        <h2>&#128221; Operational Notes</h2>
         <div class="section-box">
             <ul>
-                <li>L&apos;elaborazione &egrave; <strong>asincrona</strong>: la barra di avanzamento &egrave; indeterminata e la UI rimane responsiva. Per testi lunghi possono volerci alcune decine di secondi</li>
-                <li>Il risultato nel pannello destro pu&ograve; essere liberamente modificato prima di salvare</li>
-                <li>La chiave API e il provider selezionato sono condivisi con il modulo OCR: modificarli qui aggiorna anche le impostazioni OCR</li>
-                <li>Il campo Glossario &amp; Contesto viene salvato automaticamente e ripristinato alla prossima apertura del modulo</li>
-                <li>La traduzione produce solo output testuale (TXT o DOCX): non vengono generate immagini, strutture dati o formati specializzati</li>
+                <li>Processing is asynchronous: <strong>Translate Text NOW</strong> is disabled while the request is running, but the window remains responsive. Changes made to the fields while waiting do not alter the request already sent.</li>
+                <li>Long or complex texts may require more time and more manual revisions.</li>
+                <li>The API key may come from the shared vault; provider, model, language, and context are saved as translation-specific preferences.</li>
+                <li>Translation produces text output in TXT or DOCX: it does not generate images, metadata, family trees, or GEDCOM files.</li>
+                <li>Do not send confidential or restricted texts to external providers unless you have verified the terms of use, privacy provisions, and authorizations.</li>
             </ul>
         </div>
     </div>
 
     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_05_ocr_avanzato.html" class="nav-button">&#8592; Mod.05 &mdash; Funzioni Avanzate OCR</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_07_esportazione_gedcom.html" class="nav-button">Mod.07 &mdash; Esportazione GEDCOM &#8594;</a>
+        <a href="guida_06_ocr_avanzato.html" class="nav-button">&#8592; Module 06 &mdash; Advanced OCR</a>
+            <a href="guida.html" class="nav-button">&#127968; Main Index</a>
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">Module 08 &mdash; GEDCOM Export &#8594;</a>
         </div>
 
         <footer style="text-align: center;">

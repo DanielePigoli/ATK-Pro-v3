@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>&#128302; Modulo 07: Esportazione GEDCOM</title>
+    <title>📚 Module 03: AI-Assisted Search</title>
+    <meta name="description" content="ATK-Pro — AI-Assisted Search">
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -12,14 +13,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -30,7 +31,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -40,12 +41,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -54,21 +55,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 3px solid #a67c52;
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -77,13 +78,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -96,12 +97,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             border: 2px solid #a67c52;
@@ -110,33 +111,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -144,40 +145,39 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
-            border: 2px solid #a67c52;
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +185,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +193,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +215,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +230,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +239,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +262,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             border: 1px solid #a67c52;
             padding: 12px 8px;
@@ -271,7 +271,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +281,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             border: 2px solid #a67c52;
@@ -297,15 +297,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -324,82 +324,106 @@
 
     </style>
 </head>
-
 <body>
     <div class="container">
         <header>
-            <h1>&#128302; Modulo 07: Esportazione GEDCOM</h1>
-            <p style="text-align:center;margin-top:0.5rem;">
-                <span style="background:#7a5c3b;color:white;padding:4px 14px;
-                border-radius:20px;font-size:.9em;">
-                &#128302; Pianificato per versioni future</span>
-            </p>
+            <h1>📚 Module 03: AI-Assisted Search</h1>
         </header>
 
         <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_06_traduzione.html" class="nav-button">&#8592; Mod.06 &mdash; Traduzione</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_08_supporto_faq.html" class="nav-button">Mod.08 &mdash; Documentazione, Supporto e FAQ &#8594;</a>
+            <a href="guida_02_operazioni_base.html" class="nav-button">&#8592; Mod.02 &mdash; Basic Operations</a>
+            <a href="guida.html" class="nav-button">&#127968; Main Index</a>
+            <a href="guida_04_visualizzazione_immagini.html" class="nav-button">Mod.04 &mdash; Image Viewing &#8594;</a>
         </div>
 
         <div class="section">
-            <h2>&#128204; Panoramica</h2>
-            <p>Il modulo <strong>Esportazione GEDCOM</strong> &egrave; in fase di pianificazione. Permetter&agrave; di esportare le relazioni familiari estratte dai documenti genealogici elaborati da ATK-Pro nel formato <strong>GEDCOM</strong> (GEnealogical Data COMmunication), lo standard internazionale per l&apos;interscambio di dati genealogici.</p>
-            <p>Una volta sviluppato, il modulo si occuper&agrave; di aggregare le entit&agrave; estratte dall&apos;OCR (nomi, date, relazioni di parentela) e di strutturarle in un file GEDCOM compatibile con i principali software genealogici.</p>
+            <h2>&#128204; Overview</h2>
+            <p>The <strong>AI-Assisted Search</strong> feature helps turn a genealogical question into a more organized research plan: it suggests portals, research avenues, filters, and sample queries to try manually against the available sources.</p>
+            <p>It opens from the <strong>Services -&gt; AI-Assisted Search</strong> menu. It does not download documents or replace direct consultation of the portals: it provides practical guidance that must be verified, cited, and used with sound archival judgment.</p>
         </div>
 
         <div class="section">
-            <h2>&#127795;&#65039; Interoperabilit&agrave; Pianificata</h2>
-            <div class="section-box">
-                <h3>Software Genealogici Compatibili (Obiettivo)</h3>
-                <p>L&apos;obiettivo &egrave; garantire la compatibilit&agrave; con i principali software e piattaforme genealogici:</p>
-                <ul>
-                    <li>Ancestry</li>
-                    <li>Family Historian</li>
-                    <li>Family Tree Maker</li>
-                    <li>Findmypast</li>
-                    <li>FamilySearch</li>
-                    <li>Geni</li>
-                    <li>Geneanet</li>
-                    <li>Gramps (open source)</li>
-                    <li>Legacy Family Tree</li>
-                    <li>MyHeritage</li>
-                    <li>Reunion (macOS)</li>
-                    <li>RootsMagic</li>
-                    <li>WikiTree</li>
-                </ul>
-                <p style="margin-top:0.8rem;font-style:italic;color:#7a5c3b;">
-                &#128204; <em>Nota: L&apos;elencazione &egrave; puramente indicativa e non vincolante allo sviluppo
-                dell&apos;interoperabilit&agrave; con ciascuna piattaforma o software.</em></p>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>&#9881;&#65039; Funzionalit&agrave; Previste</h2>
-            <div class="section-box">
-                <p>&#9888;&#65039; <strong>Nota:</strong> Le funzionalit&agrave; descritte di seguito rappresentano
-                una <strong>bozza ipotetica</strong> delle possibili integrazioni future. Non vi &egrave; ancora
-                alcun riscontro di fattibilit&agrave; tecnica n&eacute; alcun impegno di sviluppo. Le specifiche
-                potranno variare o essere abbandonate in qualsiasi momento.</p>
-            </div>
+            <h2>&#128269; When to Use It</h2>
             <div class="section-box">
                 <ul>
-                    <li>Estrazione automatica di entit&agrave; (nomi, date, relazioni) dai testi OCR tramite LLM</li>
-                    <li>Linkage ed entity extraction tra registri multipli analizzati in blocco</li>
-                    <li>Generazione di file <code>.ged</code> conformi allo standard GEDCOM 5.5.1 e GEDCOM 7.0</li>
-                    <li>Verifica e deduplicazione automatica degli individui identificati</li>
-                    <li>Esportazione con metadati delle fonti (riferimento al documento originale, pagina, data)</li>
+                    <li>When you start with surnames, places, and time periods but do not know which archives or portals to check first.</li>
+                    <li>When you want to set up a search covering multiple countries, for example regarding Italian emigration to the Americas, Europe, or Oceania.</li>
+                    <li>When you want to obtain sample queries and filters to copy into institutional portals.</li>
+                    <li>When you need to compare alternative strategies for birth, baptism, marriage, death, military conscription, immigration, or citizenship records.</li>
                 </ul>
             </div>
+            <div class="warning">
+                <p><strong>Note:</strong> results generated by an AI model are working hypotheses. They must always be verified against official sources and do not constitute genealogical evidence.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128421;&#65039; Main Fields</h2>
+
+            <div class="section-box">
+                <h3>Search Query</h3>
+                <p>Enter the subject, place, time period, and source type. A useful example is: <code>Rossi and Bianchi in Florence and Prato, 1850–1900, baptisms and marriages</code>.</p>
+                <p>The more specific the request, the more useful the guidance will be: avoid overly general wording and always indicate any migrations, surname variants, or relevant historical regions.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>AI Provider and Optional Model</h3>
+                <p>The provider menu allows you to choose which AI service to use from those configured in the application. The optional model field is only needed if you want to specify a particular model supported by the selected provider; otherwise, it can be left blank.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>Standard Prompt</h3>
+                <p>The feature includes four predefined templates:</p>
+                <ul>
+                    <li><strong>Detailed general search</strong>, for an initial broad survey.</li>
+                    <li><strong>Detailed international strategies</strong>, useful for migration paths and research outside Italy.</li>
+                    <li><strong>Detailed search for specific records</strong>, when you are looking for a specific type of record.</li>
+                    <li><strong>Advanced search with filters</strong>, when you want more structured filters, variants, and queries.</li>
+                </ul>
+            </div>
+
+            <div class="section-box">
+                <h3>Multi-Provider</h3>
+                <p>The <strong>Process with all available providers (multi-provider)</strong> option is enabled by default. If multiple keys are stored in the vault, ATK-Pro can query multiple providers and compare the results. You can disable it when you want to use only the selected provider.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128221; Personal Notes</h2>
+            <p>The notes section allows you to save recurring instructions to add to the request, such as surname variants, historical boundaries, known parishes, archives already checked, or criteria to exclude.</p>
+            <p>You can create a new note, save it, retrieve it from the list, or delete it. The selected note is added to the final prompt sent to the AI provider.</p>
+        </div>
+
+        <div class="section">
+            <h2>&#128190; Results and Saving</h2>
+            <div class="section-box">
+                <p>Click <strong>SUGGEST PORTALS AND QUERIES</strong> to start processing. During processing, the window displays the status of the provider and the key slot being used.</p>
+                <p>Results can be grouped by portal, rationale, sample query, period, record type, or filters/strategies. After generation, you can save the output in text or HTML format using the buttons <strong>SAVE AI RESULTS</strong> and <strong>SAVE HTML RESULT</strong>.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128273; Key Vault</h2>
+            <p>The button <strong>MANAGE KEY VAULT (CSV)</strong> opens key management for the configured providers. The search function uses only providers for which a valid key or compatible local configuration is available.</p>
+        </div>
+
+        <div class="section">
+            <h2>&#9888;&#65039; Operational Limitations</h2>
+            <ul>
+                <li>The function does not bypass logins, paywalls, technical restrictions, or portal terms of use.</li>
+                <li>Suggestions must be verified on the official portal before being included in documented research.</li>
+                <li>The availability of AI providers and models may vary over time.</li>
+                <li>For sensitive research, always keep a record of the sources actually consulted, not merely the AI suggestion.</li>
+            </ul>
         </div>
 
         <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_06_traduzione.html" class="nav-button">&#8592; Mod.06 &mdash; Traduzione</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_08_supporto_faq.html" class="nav-button">Mod.08 &mdash; Documentazione, Supporto e FAQ &#8594;</a>
+            <a href="guida_02_operazioni_base.html" class="nav-button">&#8592; Mod.02 &mdash; Basic Operations</a>
+            <a href="guida.html" class="nav-button">&#127968; Main Index</a>
+            <a href="guida_04_visualizzazione_immagini.html" class="nav-button">Mod.04 &mdash; Image Viewing &#8594;</a>
         </div>
 
-        <footer style="text-align: center;">
+        <footer>
             <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
         </footer>
     </div>

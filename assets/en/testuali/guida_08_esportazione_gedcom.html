@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 04: Visualizzazione Metadati JSON</title>
-    <meta name="description" content="ATK-Pro — Visualizzazione Metadati JSON">
+    <title>&#128302; Module 08: GEDCOM Export</title>
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -172,6 +171,7 @@
         
         .box {
             background: #fafaf5;
+            border: 2px solid #a67c52;
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
@@ -324,62 +324,101 @@
 
     </style>
 </head>
+
 <body>
-<div class="container">
-    <header>
-        <h1>📚 Modulo 04: Visualizzazione Metadati JSON</h1>
-    </header>
+    <div class="container">
+        <header>
+            <h1>&#128302; Module 08: GEDCOM Export</h1>
+        </header>
 
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_03_visualizzazione_immagini.html" class="nav-button">⬅️ Mod.03 — Visualizzazione Immagini</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_05_ocr_avanzato.html" class="nav-button">Mod.05 — Funzioni Avanzate OCR ➡️</a>
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_07_traduzione.html" class="nav-button">&#8592; Mod.07 &mdash; OCR Translation</a>
+            <a href="guida.html" class="nav-button">&#127968; Main Index</a>
+            <a href="guida_09_supporto_faq.html" class="nav-button">Mod.09 &mdash; Documentation, Support, and FAQ &#8594;</a>
         </div>
 
-    <div class="section">
-        <h2>&#128204; Panoramica</h2>
-        <p>Il <strong>Viewer Metadati JSON</strong> di ATK-Pro &egrave; dedicato alla visualizzazione dei file JSON generati durante l&apos;elaborazione dei documenti. Si apre dal menu <em>Strumenti</em> dell&apos;applicazione.</p>
-        <p>Il viewer apre qualsiasi file <code>.json</code>. Cerca automaticamente un&apos;immagine con lo stesso nome nella stessa cartella (estensioni: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tif</code>, <code>.tiff</code>) e, se la trova, la mostra nel pannello destro.</p>
+        <div class="section">
+            <h2>&#128204; Overview</h2>
+            <p>The <strong>GEDCOM Export</strong> module in v3 is an assisted genealogical analysis environment: it processes selected texts, images, or documents, uses an AI provider configured in ATK-Pro, and generates a <code>.ged</code> file together with two supporting CSV files.</p>
+            <p>It can be opened from the <em>Services &rarr; GEDCOM Export</em> menu. Its public name remains tied to the GEDCOM format, but its actual functionality also includes genealogical data extraction, the use of paleographic notes, optional expansion of an existing database, and AI key management.</p>
+            <p>The result must be verified before importing it into genealogy software: AI can help structure data and relationships, but it is no substitute for a critical reading of the sources.</p>
+        </div>
+
+        <div class="section">
+            <h2>&#128421;&#65039; Interface</h2>
+            <div class="section-box">
+                <h3>1. Method and Universal Input</h3>
+                <p>The first section allows you to choose a method preference and the files to be analyzed. The <strong>Auto-Discovery</strong>, <strong>AI Vision</strong>, and <strong>LLM Refinery</strong> options are saved as a preference, but in the current version they do not activate three separate pipelines: actual processing depends mainly on the file type.</p>
+                <ul>
+                    <li><strong>TXT and DOCX</strong>: these files are read through the dedicated text pipeline and included in the prompt as transcriptions.</li>
+                    <li><strong>Other inputs</strong>: these are sent to the selected provider through the available extraction workflow.</li>
+                    <li><strong>Selectable formats</strong>: <code>.pdf</code>, <code>.docx</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.webp</code>, <code>.tiff</code>, <code>.tif</code>, <code>.bmp</code>, <code>.txt</code>, <code>.json</code>, and <code>.csv</code>.</li>
+                </ul>
+            </div>
+
+            <div class="section-box">
+                <h3>2. Expand an Existing Database</h3>
+                <p>The <strong>LOAD DATABASE</strong> button allows you to select an existing genealogical database in GEDCOM or CSV format. If you do not load one, the module creates a new project. When you load a database, the result is automatically saved in the folder containing it, even if you previously selected a different destination.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>3. Paleographic Notes Database</h3>
+                <p>This section links the genealogical work to document types and operational notes. You can select the type of record, retrieve a saved note, create a new one, edit it, or delete it.</p>
+                <p>The notes are used to explain abbreviations, local formulas, the document&apos;s language, kinship rules, uncertain readings, or extraction criteria to the model.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>4. Output Destination</h3>
+                <p>Choose the folder in which to save the result. If an existing database has been loaded, its folder is used instead. The module generates a <code>genealogia_*.ged</code> file in GEDCOM 5.5.1 format and two supporting files with the same base name: <code>*_REVISIONE.csv</code> and <code>*_REGISTRO_ORIGINALE.csv</code>.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>5. AI Engine and Key Vault</h3>
+                <ul>
+                    <li><strong>Provider</strong>: choose the AI service from those configured, such as Claude, OpenAI, Gemini, Mistral, xAI, DeepSeek, Groq, HuggingFace, or Ollama.</li>
+                    <li><strong>Model override</strong>: optional field for specifying a particular model supported by the selected provider; it is hidden when Gemini is selected.</li>
+                    <li><strong>MANAGE KEY VAULT (CSV)</strong>: opens the key vault CSV file directly.</li>
+                    <li><strong>START FULL EXTRACTION</strong>: starts the analysis and generation of the GEDCOM.</li>
+                </ul>
+                <p>You can create and remove custom document types. For built-in types, you can override the prompt, but you cannot delete the document type.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128221; Recommended workflow</h2>
+            <ol>
+                <li>Prepare legible input: transcriptions, images, or files already organized by record.</li>
+                <li>Choose the method preference best suited to the material, keeping in mind that the current version does not use it to select a separate pipeline.</li>
+                <li>If you are continuing existing work, upload the GEDCOM or CSV database.</li>
+                <li>Select the record type and add a specific paleographic note.</li>
+                <li>Choose the output folder, provider, and key.</li>
+                <li>Start the full extraction.</li>
+                <li>Review the generated file <code>.ged</code> before importing it into other programs.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>&#9888;&#65039; Warnings</h2>
+            <div class="section-box">
+                <ul>
+                    <li>The resulting GEDCOM is a working draft, not definitive evidence.</li>
+                    <li>Family relationships, dates, places, and names must be verified against the original sources.</li>
+                    <li>OCR, transcription, or interpretation errors may propagate into the genealogy file.</li>
+                    <li>Before importing the GEDCOM into external software, keep a copy of the original file and check for duplicates.</li>
+                    <li>Do not send confidential or restricted documents to external providers without first reviewing the terms of use, privacy provisions, and required authorizations.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_07_traduzione.html" class="nav-button">&#8592; Mod.07 &mdash; OCR Translation</a>
+            <a href="guida.html" class="nav-button">&#127968; Main Index</a>
+            <a href="guida_09_supporto_faq.html" class="nav-button">Mod.09 &mdash; Documentation, Support, and FAQ &#8594;</a>
+        </div>
+
+        <footer style="text-align: center;">
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
     </div>
-
-    <div class="section">
-        <h2>&#127795;&#65039; Interfaccia</h2>
-        <p>La finestra &egrave; divisa in due pannelli affiancati:</p>
-
-        <div class="section-box">
-            <h3>Pannello Sinistro &mdash; Tabella Metadati</h3>
-            <p>I dati del file JSON vengono visualizzati come una <strong>tabella a due colonne</strong>:</p>
-            <ul>
-                <li><strong>Campo</strong>: il nome della chiave JSON</li>
-                <li><strong>Valore metadato</strong>: il valore corrispondente</li>
-            </ul>
-            <p style="margin-top:0.8rem;">Vengono visualizzati solo i campi di <strong>primo livello</strong> del JSON. I campi il cui nome inizia con <code>_</code> (underscore) sono omessi perch&eacute; riservati all&apos;uso interno. Strutture annidate (oggetti o array) appaiono come rappresentazione testuale nella colonna Valore.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>Pannello Destro &mdash; Anteprima Immagine</h3>
-            <p>Se viene trovata un&apos;immagine abbinata, questa viene caricata con le stesse funzionalit&agrave; del Viewer Immagini (zoom con rotella, pulsanti +/&minus;, Adatta alla finestra, 1:1, pan con trascinamento).</p>
-            <p style="margin-top:0.8rem;">Se non viene trovata alcuna immagine abbinata, il pannello mostra <em>&ldquo;Nessuna immagine abbinata trovata&rdquo;</em>.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>Toggle Pannelli</h3>
-            <ul>
-                <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello sinistro con i metadati</li>
-                <li><strong>Pulsante &ldquo;&#9658; Mostra metadati&rdquo;</strong>: Ripristina il pannello metadati</li>
-            </ul>
-        </div>
-    </div>
-
-     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_03_visualizzazione_immagini.html" class="nav-button">⬅️ Mod.03 — Visualizzazione Immagini</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_05_ocr_avanzato.html" class="nav-button">Mod.05 — Funzioni Avanzate OCR ➡️</a>
-        </div>
-
-    <footer>
-        <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-    </footer>
-</div>
 </body>
 </html>
