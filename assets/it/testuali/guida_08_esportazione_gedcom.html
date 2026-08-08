@@ -332,34 +332,33 @@
         </header>
 
         <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_07_traduzione.html" class="nav-button">&#8592; Mod.07 &mdash; Traduzione</a>
+            <a href="guida_07_traduzione.html" class="nav-button">&#8592; Mod.07 &mdash; Traduzione OCR</a>
             <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
             <a href="guida_09_supporto_faq.html" class="nav-button">Mod.09 &mdash; Documentazione, Supporto e FAQ &#8594;</a>
         </div>
 
         <div class="section">
             <h2>&#128204; Panoramica</h2>
-            <p>Il modulo <strong>Esportazione GEDCOM</strong> della v3 e&apos; un ambiente di analisi genealogica assistita: prende testi, immagini o documenti selezionati, usa un provider IA configurato in ATK-Pro e genera un file <code>.ged</code> nella cartella di output scelta.</p>
+            <p>Il modulo <strong>Esportazione GEDCOM</strong> della v3 &egrave; un ambiente di analisi genealogica assistita: prende testi, immagini o documenti selezionati, usa un provider IA configurato in ATK-Pro e genera un file <code>.ged</code> con due file CSV di supporto.</p>
             <p>Si apre dal menu <em>Servizi &rarr; Esportazione GEDCOM</em>. Il nome pubblico resta legato al formato GEDCOM, ma il lavoro effettivo comprende anche estrazione genealogica, uso di note paleografiche, eventuale incremento di una base esistente e gestione delle chiavi IA.</p>
-            <p>Il risultato deve essere verificato prima di importarlo in un software genealogico: l&apos;IA puo&apos; aiutare a strutturare dati e relazioni, ma non sostituisce la lettura critica delle fonti.</p>
+            <p>Il risultato deve essere verificato prima di importarlo in un software genealogico: l&apos;IA pu&ograve; aiutare a strutturare dati e relazioni, ma non sostituisce la lettura critica delle fonti.</p>
         </div>
 
         <div class="section">
             <h2>&#128421;&#65039; Interfaccia</h2>
             <div class="section-box">
                 <h3>1. Metodo e input universale</h3>
-                <p>La prima sezione permette di scegliere il metodo di lavoro e i file da analizzare.</p>
+                <p>La prima sezione permette di scegliere un&apos;indicazione di metodo e i file da analizzare. Le opzioni <strong>Auto-Discovery</strong>, <strong>Vision IA</strong> e <strong>Refinery LLM</strong> sono memorizzate come preferenza, ma nella versione corrente non attivano tre pipeline distinte: il trattamento effettivo dipende principalmente dal tipo di file.</p>
                 <ul>
-                    <li><strong>Auto-Discovery</strong>: scelta adatta quando vuoi lasciare al modulo il compito di interpretare il materiale selezionato.</li>
-                    <li><strong>Vision IA</strong>: usa un modello capace di leggere immagini quando il materiale di partenza e&apos; visivo.</li>
-                    <li><strong>Refinery LLM</strong>: utile per lavorare su testo gia&apos; estratto o trascritto.</li>
-                    <li><strong>Input</strong>: seleziona uno o piu&apos; atti, immagini, trascrizioni o documenti compatibili con il flusso scelto.</li>
+                    <li><strong>TXT e DOCX</strong>: vengono letti attraverso la pipeline testuale dedicata e inseriti nel prompt come trascrizioni.</li>
+                    <li><strong>Altri input</strong>: vengono inoltrati al provider selezionato secondo il flusso di estrazione disponibile.</li>
+                    <li><strong>Formati selezionabili</strong>: <code>.pdf</code>, <code>.docx</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.webp</code>, <code>.tiff</code>, <code>.tif</code>, <code>.bmp</code>, <code>.txt</code>, <code>.json</code> e <code>.csv</code>.</li>
                 </ul>
             </div>
 
             <div class="section-box">
                 <h3>2. Incrementa base esistente</h3>
-                <p>Il pulsante <strong>CARICA BASE</strong> consente di indicare una base genealogica gia&apos; esistente in formato GEDCOM o CSV. Se non carichi nulla, il modulo crea un nuovo lavoro.</p>
+                <p>Il pulsante <strong>CARICA BASE</strong> consente di indicare una base genealogica gi&agrave; esistente in formato GEDCOM o CSV. Se non carichi nulla, il modulo crea un nuovo lavoro. Quando carichi una base, il risultato viene salvato automaticamente nella cartella che la contiene, anche se in precedenza avevi scelto un&apos;altra destinazione.</p>
             </div>
 
             <div class="section-box">
@@ -370,25 +369,26 @@
 
             <div class="section-box">
                 <h3>4. Destinazione output</h3>
-                <p>Scegli la cartella in cui salvare il risultato. Il file generato usa un nome del tipo <code>genealogia_*.ged</code>.</p>
+                <p>Scegli la cartella in cui salvare il risultato. Se &egrave; stata caricata una base esistente, viene invece usata la cartella della base. Il modulo genera un file <code>genealogia_*.ged</code> in formato GEDCOM 5.5.1 e due file di supporto con lo stesso nome base: <code>*_REVISIONE.csv</code> e <code>*_REGISTRO_ORIGINALE.csv</code>.</p>
             </div>
 
             <div class="section-box">
                 <h3>5. Motore IA e caveau chiavi</h3>
                 <ul>
                     <li><strong>Provider</strong>: scegli il servizio IA tra quelli configurati, ad esempio Claude, OpenAI, Gemini, Mistral, xAI, DeepSeek, Groq, HuggingFace o Ollama.</li>
-                    <li><strong>Override modello</strong>: campo opzionale per indicare un modello specifico supportato dal provider scelto.</li>
-                    <li><strong>GESTISCI CAVEAU CHIAVI (CSV)</strong>: apre la gestione delle chiavi disponibili.</li>
+                    <li><strong>Override modello</strong>: campo opzionale per indicare un modello specifico supportato dal provider scelto; viene nascosto quando il provider &egrave; Gemini.</li>
+                    <li><strong>GESTISCI CAVEAU CHIAVI (CSV)</strong>: apre direttamente il file CSV del caveau.</li>
                     <li><strong>AVVIA ESTRAZIONE COMPLETA</strong>: avvia l&apos;analisi e la generazione del GEDCOM.</li>
                 </ul>
+                <p>Puoi creare e rimuovere tipologie documentali personalizzate. Per le tipologie integrate puoi modificare il prompt tramite override, ma non eliminare la tipologia.</p>
             </div>
         </div>
 
         <div class="section">
             <h2>&#128221; Flusso consigliato</h2>
             <ol>
-                <li>Prepara input leggibili: trascrizioni, immagini o file gia&apos; organizzati per atto.</li>
-                <li>Scegli il metodo di analisi piu&apos; adatto al materiale.</li>
+                <li>Prepara input leggibili: trascrizioni, immagini o file gi&agrave; organizzati per atto.</li>
+                <li>Scegli l&apos;indicazione di metodo pi&ugrave; adatta al materiale, tenendo presente che nella versione corrente non seleziona una pipeline distinta.</li>
                 <li>Se stai proseguendo un lavoro esistente, carica la base GEDCOM o CSV.</li>
                 <li>Seleziona la tipologia di atto e aggiungi una nota paleografica concreta.</li>
                 <li>Scegli cartella di output, provider e chiave.</li>
@@ -401,7 +401,7 @@
             <h2>&#9888;&#65039; Avvertenze</h2>
             <div class="section-box">
                 <ul>
-                    <li>Il GEDCOM prodotto e&apos; una base di lavoro, non una prova definitiva.</li>
+                    <li>Il GEDCOM prodotto &egrave; una base di lavoro, non una prova definitiva.</li>
                     <li>Relazioni familiari, date, luoghi e nomi devono essere verificati sulle fonti originali.</li>
                     <li>Gli errori di OCR, trascrizione o interpretazione possono propagarsi nel file genealogico.</li>
                     <li>Prima di importare il GEDCOM in software esterni, conserva una copia del file originale e controlla eventuali duplicati.</li>
@@ -411,7 +411,7 @@
         </div>
 
         <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_07_traduzione.html" class="nav-button">&#8592; Mod.07 &mdash; Traduzione</a>
+            <a href="guida_07_traduzione.html" class="nav-button">&#8592; Mod.07 &mdash; Traduzione OCR</a>
             <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
             <a href="guida_09_supporto_faq.html" class="nav-button">Mod.09 &mdash; Documentazione, Supporto e FAQ &#8594;</a>
         </div>
