@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 M&oacute;dulo 06: OCR avanzado</title>
+    <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+        
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+        
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+        
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+        
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+        
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+        
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+        
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+        
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+        
+        .metadata strong {
+            color: #2a1a0a;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            
+            
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+        
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+            
+        }
+        
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            
+        }
+        
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+        
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+        
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        .command {
+            background: #f4ede4;
+            
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+        
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+            
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+        
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+        
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .toc ol {
+            margin-left: 30px;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+        <h1>📚 M&oacute;dulo 06: OCR avanzado</h1>
+        </header>
+
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_05_visualizzazione_metadati.html" class="nav-button">&#8592; M&oacute;d.05 &mdash; Visualizaci&oacute;n de metadatos JSON</a>
+            <a href="guida.html" class="nav-button">&#127968; Índice principal</a>
+            <a href="guida_07_traduzione.html" class="nav-button">M&oacute;d.07 &mdash; Traducci&oacute;n &#8594;</a>
+        </div>
+
+    <div class="section">
+        <h2>&#128204; Descripción general</h2>
+        <p>El m&oacute;dulo <strong>OCR avanzado (transcripci&oacute;n diplom&aacute;tica)</strong> extrae texto de im&aacute;genes y documentos PDF mediante modelos multimodales, modelos OCR especializados y servicios HTR. Est&aacute; dise&ntilde;ado espec&iacute;ficamente para documentos hist&oacute;ricos: manuscritos, actas notariales, registros parroquiales y cartas de archivo en italiano del siglo XIX, lat&iacute;n o dialecto.</p>
+        <p>A diferencia de los motores OCR tradicionales (Tesseract, etc.), el m&oacute;dulo puede interpretar la escritura en el contexto del documento y reconocer abreviaturas y f&oacute;rmulas recurrentes. La salida TEI-P5 representa las l&iacute;neas transcritas y, cuando se reconocen, los saltos de p&aacute;gina, las expansiones y los pasajes ilegibles; no reproduce &iacute;ntegramente la disposici&oacute;n gr&aacute;fica original.</p>
+        <p>Se abre desde el menú <em>Servicios &rarr; OCR avanzado</em> de la aplicaci&oacute;n principal.</p>
+    </div>
+
+    <div class="section">
+        <h2>&#128421;&#65039; Interfaz — gu&iacute;a paso a paso</h2>
+
+        <div class="section-box">
+            <h3>&#128194; Paso 1 — Selecci&oacute;n de archivos</h3>
+            <p>Haz clic en <strong>&ldquo;Seleccionar archivos (Im&aacute;genes/PDF)&rdquo;</strong> para abrir el selector. Puedes seleccionar varios archivos a la vez manteniendo pulsada la tecla <kbd>Ctrl</kbd> o <kbd>Shift</kbd>.</p>
+            <p><strong>Formatos aceptados:</strong></p>
+            <ul>
+                <li><strong>Im&aacute;genes</strong>: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tiff</code>, <code>.tif</code></li>
+                <li><strong>PDF</strong>: cualquier documento PDF (escaneado o nativo)</li>
+            </ul>
+            <p style="margin-top:0.8rem;">El n&uacute;mero de archivos seleccionados se muestra junto a la etiqueta. Cada archivo se procesa por separado y genera sus propios archivos de salida.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#129302; Paso 2 — Selecci&oacute;n del proveedor de IA y de la clave de API</h3>
+            <p>Selecciona el proveedor en el men&uacute; desplegable <strong>&ldquo;Seleccionar proveedor de IA:&rdquo;</strong></p>
+            <table>
+                <thead><tr><th>Proveedor</th><th>Tipo de servicio</th><th>Credenciales</th><th>Notas operativas</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Servicios remotos</td><td>Clave de API del proveedor</td><td>Los modelos y su disponibilidad dependen de la cuenta y de las condiciones vigentes del proveedor.</td></tr>
+                    <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Endpoints remotos compatibles</td><td>Clave de API del proveedor</td><td>Selecciona un modelo capaz de procesar im&aacute;genes; no todos los modelos de texto admiten OCR visual.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Endpoint remoto de solo texto en la configuraci&oacute;n actual</td><td>Clave de API del proveedor</td><td>No es adecuado para el OCR visual mientras no se configuren un endpoint y un modelo compatibles con im&aacute;genes.</td></tr>
+                    <tr><td><strong>HuggingFace</strong></td><td>Inference API remota</td><td>Token de HuggingFace</td><td>La compatibilidad y los resultados dependen del modelo configurado.</td></tr>
+                    <tr><td><strong>Transkribus</strong></td><td>Servicio HTR remoto</td><td><code>email:password</code> o bien token Bearer</td><td>Requiere una cuenta y al menos una colección disponible.</td></tr>
+                    <tr><td><strong>Ollama</strong></td><td>Servicio local</td><td>Sin clave API remota</td><td>Requiere que Ollama esté activo y que haya un modelo visual compatible instalado localmente.</td></tr>
+                </tbody>
+            </table>
+            <p style="margin-top:0.8rem;">El campo <strong>&ldquo;Anulación del modelo (opcional)&rdquo;</strong> permite sustituir el modelo predeterminado. Úsalo solo si conoces el identificador exacto y la compatibilidad visual del modelo. Para Gemini, este campo no se muestra.</p>
+            <p>Puedes introducir la credencial en el campo correspondiente o abrir la <strong>Caja fuerte</strong>. Las claves de IA se almacenan localmente en la bóveda CSV <code>api_keys.csv</code>: no se trata del llavero protegido del sistema operativo. La protección del perfil de usuario, las copias de seguridad y la revocación de las claves siguen siendo responsabilidad del usuario.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#128196; Paso 3 — Formatos de salida</h3>
+            <p>Selecciona uno o varios formatos de salida (los tres están seleccionados de forma predeterminada):</p>
+            <ul>
+                <li><strong>Texto sin formato (.txt)</strong>: transcripción sin formato, máxima compatibilidad. Ideal para procesamientos posteriores (traducción, indexación).</li>
+                <li><strong>Documento de Word (.docx)</strong>: texto con formato, editable con Microsoft Word o LibreOffice.</li>
+                <li><strong>XML TEI (.xml)</strong>: formato TEI-P5 para representar la transcripción, con encabezado descriptivo, líneas y marcadores reconocidos para páginas, expansiones y texto ilegible.</li>
+            </ul>
+            <p style="margin-top:0.8rem;">Los archivos se guardan en la carpeta de destino que elegirás al iniciar el OCR.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#128221; Paso 4 — Instrucciones adicionales (opcional, pero recomendado)</h3>
+            <p>El campo <strong>&ldquo;Instrucciones adicionales para la IA&rdquo;</strong> permite personalizar el comportamiento del modelo para cada sesión de trabajo:</p>
+            <ul>
+                <li>Indicar el dialecto o la variante lingüística del texto</li>
+                <li>Señalar las abreviaturas recurrentes y su significado</li>
+                <li>Especificar si deben ignorarse sellos, anotaciones marginales o sellos postales</li>
+                <li>Solicitar que se conserven fórmulas específicas</li>
+            </ul>
+            <p style="margin-top:0.8rem;"><strong>Ejemplos prácticos:</strong></p>
+            <ul>
+                <li><em>&ldquo;Los nombres de los meses están en dialecto siciliano del siglo XIX. No los corrijas.&rdquo;</em></li>
+                <li><em>&ldquo;Ignora los sellos de los márgenes y las anotaciones hechas con lápiz rojo.&rdquo;</em></li>
+                <li><em>&ldquo;La abreviatura 'f.' puede significar 'hijo/a de'; 'fu' y 'q.' indican que la persona mencionada ya había fallecido.&rdquo;</em></li>
+            </ul>
+            <p style="margin-top:0.8rem;"><strong>Archivo de instrucciones:</strong> las instrucciones utilizadas con mayor frecuencia pueden guardarse con el botón <strong>&ldquo;+&rdquo;</strong> y recuperarse desde el menú desplegable &ldquo;Instrucciones guardadas&rdquo; en las sesiones posteriores.</p>
+            <p>Las instrucciones guardadas se pueden añadir, renombrar o eliminar. El <strong>tipo de documento</strong> determina el prompt básico: además de los tipos incluidos, puedes crear, modificar o eliminar perfiles documentales personalizados.</p>
+        </div>
+
+        <div class="section-box">
+        <h3>&#127919; Calibración asistida y diagnóstico (opcionales)</h3>
+        <p>La calibración asistida procesa la parte superior del primer archivo seleccionado, muestra el resultado para su corrección y utiliza el texto aprobado como referencia para el procesamiento completo. Resulta útil para comprobar el proveedor, el modelo, el tipo de documento y las instrucciones antes de iniciar un lote extenso.</p>
+            <p>La opción de diagnóstico guarda información técnica adicional sobre el procesamiento. Actívala cuando necesites analizar un error o proporcionar información al soporte técnico; comprueba el contenido antes de compartirlo, ya que puede incluir datos relacionados con el documento o la solicitud.</p>
+        </div>
+
+        <div class="section-box">
+        <h3>&#127891; Paso 5 — Transcripción de referencia (few-shot, opcional)</h3>
+        <p>El campo <strong>&ldquo;Transcripción de referencia&rdquo;</strong> proporciona al modelo un ejemplo contextual de una transcripción correcta para utilizarlo en la solicitud. No entrena, modifica ni actualiza el modelo.</p>
+            <p><strong>Cómo utilizarla:</strong></p>
+            <ol>
+                <li>Transcribe manualmente y con precisión la primera página (o las primeras líneas) del registro</li>
+                <li>Pega el texto transcrito en el campo &ldquo;Transcripción de referencia&rdquo;</li>
+                <li>Inicia el OCR: el modelo utilizará esa transcripción como guía para todo el resto del documento</li>
+            </ol>
+            <p style="margin-top:0.8rem;"><strong>Resultado:</strong> puede mejorar la precisión, especialmente con caligrafías cursivas difíciles, abreviaturas inusuales o dialectismos locales; el efecto depende del proveedor, del modelo y de la calidad del documento.<br>
+            El campo &ldquo;Borrar Texto&rdquo; (&#10006;) vacía la transcripción y restablece el modo estándar.</p>
+        </div>
+
+        <div class="section-box">
+        <h3>&#128269; Paso 6 — Revisión interactiva (opcional)</h3>
+            <p>Marcar <strong>&ldquo;Activar la ventana de revisión interactiva antes de guardar el OCR&rdquo;</strong> activa un modo interactivo que se abre después de cada procesamiento:</p>
+            <ul>
+                <li><strong>Panel izquierdo</strong>: imagen original con zoom (rueda del ratón) y desplazamiento panorámico</li>
+                <li><strong>Panel derecho</strong>: texto extraído mediante OCR, que se puede editar libremente</li>
+                <li><strong>Botón &ldquo;Aprobar y generar archivo&rdquo;</strong>: guarda el texto revisado en los formatos elegidos</li>
+                <li><strong>Botón &ldquo;Saltar página&rdquo;</strong>: descarta el procesamiento actual y pasa a la página siguiente</li>
+            </ul>
+            <p style="margin-top:0.8rem;">Resulta útil para comprobar en tiempo real la calidad del OCR y corregir errores antes del guardado definitivo. Para lotes de gran tamaño, es preferible desactivar la revisión interactiva y corregir el texto posteriormente.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#9654;&#65039; Paso 7 — Inicio del OCR</h3>
+        <p>Haz clic en <strong>&ldquo;Iniciar OCR&rdquo;</strong>. Se solicitará la carpeta de destino para los archivos de salida.</p>
+        <p>La barra de progreso muestra el avance (archivo actual / total de archivos). El procesamiento se realiza en un hilo independiente: la interfaz sigue respondiendo durante el procesamiento.</p>
+            <p>Durante los lotes, ATK-Pro actualiza una transcripción progresiva <code>*_trascrizione_parziale.txt</code> con los metadatos correspondientes. Este nombre técnico permanece sin traducir por compatibilidad. Si se interrumpe el procesamiento, conserva estos archivos para recuperar lo que ya se haya transcrito; no los consideres una salida definitiva hasta que el lote se haya completado y revisado.</p>
+            <p>Al finalizar, un cuadro de diálogo confirmará que se ha completado el proceso o indicará cualquier error.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#128273; Cómo obtener las claves API</h2>
+
+        <div class="section-box">
+            <h3>Cuentas, claves, modelos y costes</h3>
+            <p>Obtén las credenciales exclusivamente desde la consola oficial del proveedor elegido y no las compartas en los archivos de entrada, en las transcripciones ni en las solicitudes de asistencia. Las interfaces, los modelos, las cuotas, la disponibilidad geográfica y los precios pueden cambiar sin que se actualice ATK-Pro.</p>
+            <p>Antes de realizar un procesamiento extenso, consulta siempre la documentación y el panel de facturación de tu cuenta. ATK-Pro no garantiza planes gratuitos, cuotas mínimas ni la permanencia de un modelo específico.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#128161; Consejos para obtener resultados óptimos</h2>
+        <div class="section-box">
+            <ul>
+                <li><strong>Calidad de las imágenes</strong>: las imágenes nítidas a 300+ DPI producen resultados notablemente mejores. Evita los archivos JPEG con una compresión elevada (artefactos).</li>
+                <li><strong>Utiliza siempre las instrucciones adicionales</strong>: incluso unas pocas líneas de contexto aumentan significativamente la precisión en documentos dialectales o con una caligrafía inusual.</li>
+                <li><strong>Primera página como referencia</strong>: transcribe manualmente la primera página y utiliza el campo &ldquo;Transcripción de referencia&rdquo;; la mejora en las páginas siguientes suele ser notable.</li>
+                <li><strong>Lote de prueba</strong>: para lotes grandes (100+ imágenes), realiza primero una prueba con 5-10 archivos con la revisión interactiva activada antes de proceder con el lote completo.</li>
+                <li><strong>TEI XML</strong>: selecciona el formato XML TEI si tienes previsto depositar la transcripción en archivos digitales académicos o compartirla con otros investigadores.</li>
+                <li><strong>Guarda las instrucciones</strong>: cada serie archivística tiene sus propias características. Guarda un conjunto de instrucciones específico para cada registro o fondo tratado.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_05_visualizzazione_metadati.html" class="nav-button">&#8592; M&oacute;d.05 &mdash; Visualizaci&oacute;n de metadatos JSON</a>
+            <a href="guida.html" class="nav-button">&#127968; Índice principal</a>
+            <a href="guida_07_traduzione.html" class="nav-button">M&oacute;d.07 &mdash; Traducci&oacute;n &#8594;</a>
+        </div>
+
+        <footer style="text-align: center;">
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
+    </div>
+    </div>
+</body>
+</html>
