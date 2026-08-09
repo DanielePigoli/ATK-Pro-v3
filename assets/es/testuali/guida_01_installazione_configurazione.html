@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 01: Installazione, Avvio e Interfaccia</title>
+    <title>📚 Módulo 01: Instalación, inicio e interfaz</title>
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -326,267 +326,277 @@
 <body>
     <div class="container">
         <header>
-            <h1>1. Installazione, Avvio e Interfaccia</h1>
+            <h1>1. Instalación, inicio e interfaz</h1>
         </header>
 
     <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_02_operazioni_base.html" class="nav-button">Mod.02 &mdash; Operazioni di Base &#8594;</a>
+            <a href="guida.html" class="nav-button">&#127968; Índice principal</a>
+            <a href="guida_02_operazioni_base.html" class="nav-button">Mód. 02 &mdash; Operaciones básicas &#8594;</a>
         </div>
         <div class="section-box">
-            <h3>1. INSTALLAZIONE E REQUISITI</h3>
+            <h3>1. INSTALACIÓN Y REQUISITOS</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
             <h4>SISTEMA OPERATIVO</h4>
             <ul>
-                <li><strong>Windows:</strong> Windows 10 o successivo (64-bit) — Professional, Home, Server</li>
-                <li><strong>Linux:</strong> Ubuntu 20.04+ o distribuzioni compatibili (pacchetto .deb o archivio .tar.gz)</li>
-                <li><strong>macOS:</strong> macOS 11 Big Sur o successivo — distribuzione .dmg (test su hardware reale in corso)</li>
-                <li>64-bit obbligatorio su tutte le piattaforme</li>
-                <li>Almeno 2 GB di RAM disponibili (4 GB consigliati per elaborazione batch)</li>
-                <li>1 GB di spazio libero su disco</li>
+                <li><strong>Windows:</strong> Windows 10 o posterior (64 bits) — Professional, Home, Server</li>
+                <li><strong>Linux:</strong> Ubuntu 20.04+ o distribuciones compatibles (paquete .deb o archivo .tar.gz)</li>
+                <li><strong>macOS:</strong> macOS 11 Big Sur o posterior — distribución .dmg (pruebas en hardware real en curso)</li>
+                <li>Se requieren 64 bits en todas las plataformas</li>
+                <li>Al menos 2 GB de RAM disponibles (se recomiendan 4 GB para el procesamiento por lotes)</li>
+                <li>1 GB de espacio libre en disco</li>
             </ul>
-            <h4>INSTALLAZIONE</h4>
+            <h4>INSTALACIÓN</h4>
             <p><strong>🪟 Windows</strong></p>
             <ol>
-                <li>Scarica <code>ATK-Pro-Setup-vx.x.x.exe</code> dalla pagina Release ufficiale</li>
-                <li>Fai doppio click sul file installer</li>
-                <li>Seleziona "Esegui con privilegi di amministratore", se richiesto</li>
-                <li>Segui la procedura guidata (Next → Next → Install)</li>
-                <li>Durante l'installazione verrà richiesta la selezione della lingua (20 disponibili)</li>
-                <li>Al termine, spunta "Avvia ATK-Pro" per avviare il programma</li>
-                <li>Accetta eventuali avvisi di Windows Firewall/Defender</li>
+                <li>Descarga <code>ATK-Pro-Setup-vx.x.x.exe</code> desde la página oficial de versiones</li>
+                <li>Haz doble clic en el archivo de instalación</li>
+                <li>Selecciona "Ejecutar con privilegios de administrador" si se solicita</li>
+                <li>Sigue el asistente (Next → Next → Install)</li>
+                <li>Durante la instalación se solicitará que selecciones el idioma (20 disponibles)</li>
+                <li>Al finalizar, marca "Iniciar ATK-Pro" para ejecutar el programa</li>
+                <li>Acepta cualquier aviso de Windows Firewall/Defender</li>
             </ol>
             <p><strong>🐧 Linux</strong></p>
             <ol>
-                <li>Scarica <code>ATK-Pro-vx.x.x.deb</code> (Debian/Ubuntu) o <code>.tar.gz</code> dalla pagina Release</li>
-                <li><strong>Pacchetto .deb:</strong> <code>sudo dpkg -i ATK-Pro-vx.x.x.deb</code> oppure doppio click in Nautilus/Files</li>
-                <li><strong>Archivio .tar.gz:</strong> estrai e avvia <code>./ATK-Pro</code> dalla cartella estratta</li>
-                <li>La lingua viene selezionata al primo avvio e salvata nel file di configurazione utente</li>
+                <li>Descarga <code>ATK-Pro-vx.x.x.deb</code> (Debian/Ubuntu) o <code>.tar.gz</code> desde la página de versiones</li>
+                <li><strong>Paquete .deb:</strong> <code>sudo dpkg -i ATK-Pro-vx.x.x.deb</code> o haz doble clic en Nautilus/Files</li>
+                <li><strong>Archivo .tar.gz:</strong> extráelo y ejecuta <code>./ATK-Pro</code> desde la carpeta extraída</li>
+                <li>El idioma se selecciona en el primer inicio y se guarda en el archivo de configuración del usuario</li>
             </ol>
             <p><strong>🍎 macOS</strong></p>
             <ol>
-                <li>Scarica <code>ATK-Pro-vx.x.x.dmg</code> dalla pagina Release</li>
-                <li>Apri il file .dmg e trascina ATK-Pro nella cartella Applicazioni</li>
-                <li>Al primo avvio: clic destro → Apri (necessario per applicazioni non notarizzate)</li>
-                <li>La lingua viene selezionata al primo avvio e salvata nel file di configurazione utente</li>
+                <li>Descarga <code>ATK-Pro-vx.x.x.dmg</code> desde la página de versiones</li>
+                <li>Abre el archivo .dmg y arrastra ATK-Pro a la carpeta Aplicaciones</li>
+                <li>En el primer inicio: clic derecho → Abrir (necesario para aplicaciones no notarizadas)</li>
+                <li>El idioma se selecciona en el primer inicio y se guarda en el archivo de configuración del usuario</li>
             </ol>
-            <h4>POSIZIONI DI DEFAULT</h4>
+            <h4>UBICACIONES PREDETERMINADAS</h4>
             <p><strong>🪟 Windows</strong></p>
             <ul>
-                <li>Programma: <code>C:\Program Files\ATK-Pro\</code></li>
-                <li>Output utente: <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\</code></li>
-                <li>Input (opzionale): <code>C:\Users\[TuoNome]\Documents\ATK-Pro\input\</code></li>
+                <li>Programa: <code>C:\Program Files\ATK-Pro\</code></li>
+                <li>Salida del usuario: <code>C:\Users\[TuNombre]\Documents\ATK-Pro\output\</code></li>
+                <li>Entrada (opcional): <code>C:\Users\[TuNombre]\Documents\ATK-Pro\input\</code></li>
             </ul>
             <p><strong>🐧 Linux</strong></p>
             <ul>
-                <li>Programma: <code>/opt/ATK-Pro/</code> (deb) oppure cartella estratta (.tar.gz)</li>
-                <li>Output utente: <code>~/Documents/ATK-Pro/output/</code></li>
-                <li>Input (opzionale): <code>~/Documents/ATK-Pro/input/</code></li>
+                <li>Programa: <code>/opt/ATK-Pro/</code> (deb) o carpeta extraída (.tar.gz)</li>
+                <li>Salida del usuario: <code>~/Documents/ATK-Pro/output/</code></li>
+                <li>Entrada (opcional): <code>~/Documents/ATK-Pro/input/</code></li>
             </ul>
             <p><strong>🍎 macOS</strong></p>
             <ul>
-                <li>Programma: <code>/Applications/ATK-Pro.app</code></li>
-                <li>Output utente: <code>~/Documents/ATK-Pro/output/</code></li>
-                <li>Input (opzionale): <code>~/Documents/ATK-Pro/input/</code></li>
+                <li>Programa: <code>/Applications/ATK-Pro.app</code></li>
+                <li>Salida del usuario: <code>~/Documents/ATK-Pro/output/</code></li>
+                <li>Entrada (opcional): <code>~/Documents/ATK-Pro/input/</code></li>
             </ul>
-            <h4>REQUISITI DI RETE</h4>
+            <h4>REQUISITOS DE RED</h4>
             <ul>
-                <li>Connessione Internet stabile (obbligatoria per accedere a IIIF Manifests)</li>
-                <li>Firewall: Consenti connessioni HTTPS in uscita (porta 443)</li>
-                <li>Proxy aziendale: Se in ambiente corporate, configura le credenziali proxy nel menu</li>
+                <li>Conexión a Internet estable (obligatoria para acceder a manifiestos IIIF)</li>
+                <li>Cortafuegos: Permitir conexiones HTTPS salientes (puerto 443)</li>
+                <li>Proxy corporativo: ATK-Pro no dispone de un menú interno para las credenciales del proxy. Configura el proxy en el sistema operativo o en el entorno de red y verifica con el administrador que estén permitidas las conexiones HTTPS a los portales.</li>
             </ul>
             </div>
             <div class="section-box">
-            <h3>2. PRIMO AVVIO E CONFIGURAZIONE</h3>
+            <h3>2. PRIMER ARRANQUE Y CONFIGURACIÓN</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>PRIMO AVVIO</h4>
-            <h3>1. Clicca su icona ATK-Pro dal Desktop o Menu Start</h3>
-            <h3>2. Se è la prima volta, il programma crea le cartelle utente automaticamente</h3>
-            <h4>SELEZIONE LINGUA</h4>
-            <p><strong>Le lingue disponibili sono:</strong></p>
+            <h4>PRIMER ARRANQUE</h4>
+            <h3>1. Haz clic en el icono ATK-Pro desde el Escritorio o el Menú Inicio</h3>
+            <h3>2. Si es la primera vez, el programa crea las carpetas de usuario automáticamente</h3>
+            <h4>SELECCIÓN DE IDIOMA</h4>
+            <p><strong>Los idiomas disponibles son:</strong></p>
             <ul style="display: flex; flex-direction: column; flex-wrap: wrap; gap: 8px; list-style: none; padding-left: 0;">
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">IT</span>Italiano (Italiano): Fondamentale per i cittadini residenti e i nuovi espatriati.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EN</span>English (Inglese): Lingua ponte per USA, Canada, Australia e Regno Unito.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ES</span>Español (Spagnolo): Copre tutti i paesi ispanici delle Americhe, le Filippine e la Spagna (meta preferita dai giovani italiani nel 2024-2025).</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">FR</span>Français (Francese): Per le storiche e vaste comunità in Francia e Belgio.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DE</span>Deutsch (Tedesco): Per la Germania (quasi 900.000 residenti italiani) e la Svizzera.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PT</span>Português (Portoghese): Indispensabile per il Brasile (bacino di oltre 30 milioni di discendenti).</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RU</span>Русский (Russo): Per coprire le comunità e i discendenti nelle ex repubbliche sovietiche e nei Balcani.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">AR</span> العربية (Arabo, RTL): Per le comunità in Nord Africa (Egitto, Tunisia, Marocco) e per i discendenti nei paesi del Golfo.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NL</span>Nederlands (Olandese): Fondamentale per i Paesi Bassi, hub in fortissima crescita per i laureati italiani nel 2025.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">HE</span> עברית (Ebraico, RTL): Per la significativa e attiva comunità di italiani in Israele.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">JA</span>日本語 (Giapponese): Per la comunità di professionisti e italiani residenti in Giappone.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">SV</span>Svenska (Svedese): La Svezia è la principale destinazione scandinava per gli italiani nel 2025.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ZH</span>中文 (Cinese): Per i residenti e gli operatori economici in Cina.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RO</span>Română (Rumeno): Per la grande comunità di imprenditori e residenti italiani in Romania.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EL</span>Ελληνικά (Greco): Per i legami storici e i residenti stabili nelle isole e nelle città greche.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PL</span>Polski (Polacco): Per gli italiani residenti in Polonia (hub logistico e industriale).</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DA</span>Dansk (Danese): Per i ricercatori e i creativi italiani in Danimarca.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NO</span>Norsk (Norvegese): Per la comunità legata al settore oil&gas e tecnologico.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">TR</span>Türkçe (Turco): Per la storica comunità dei "Levantini" e i residenti a Istanbul.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">VI</span>Tiếng Việt (Vietnamita): Per la crescente comunità di business nel sud-est asiatico.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">IT</span>Italiano (Italiano): Fundamental para los ciudadanos residentes y los nuevos expatriados.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EN</span>English (Inglés): Idioma puente para EE. UU., Canadá, Australia y Reino Unido.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ES</span>Español (Español): Abarca todos los países hispanos de América, Filipinas y España (destino favorito de los jóvenes italianos en 2024-2025).</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">FR</span>Français (Francés): Para las históricas y extensas comunidades en Francia y Bélgica.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DE</span>Deutsch (Alemán): Para Alemania (casi 900.000 residentes italianos) y Suiza.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PT</span>Português (Portugués): Indispensable para Brasil (cuenca de más de 30 millones de descendientes).</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RU</span>Русский (Ruso): Para cubrir a las comunidades y los descendientes en las antiguas repúblicas soviéticas y en los Balcanes.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">AR</span> العربية (Árabe, RTL): Para las comunidades del norte de África (Egipto, Túnez y Marruecos) y para los descendientes en los países del Golfo.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NL</span>Nederlands (Neerlandés): Fundamental para los Países Bajos, un centro en fortísimo crecimiento para los graduados italianos en 2025.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">HE</span> עברית (Hebreo, RTL): Para la significativa y activa comunidad de italianos en Israel.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">JA</span>日本語 (Japonés): Para la comunidad de profesionales e italianos residentes en Japón.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">SV</span>Svenska (Sueco): Suecia es el principal destino escandinavo para los italianos en 2025.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ZH</span>中文 (Chino): Para los residentes y los operadores económicos en China.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RO</span>Română (Rumano): Para la gran comunidad de empresarios y residentes italianos en Rumanía.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EL</span>Ελληνικά (Griego): Por los vínculos históricos y los residentes estables en las islas y ciudades griegas.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PL</span>Polski (Polaco): Para los italianos residentes en Polonia (centro logístico e industrial).</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DA</span>Dansk (Danés): Para los investigadores y creativos italianos en Dinamarca.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NO</span>Norsk (Noruego): Para la comunidad vinculada al sector oil&gas y tecnológico.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">TR</span>Türkçe (Turco): Para la histórica comunidad de los "Levantinos" y los residentes en Estambul.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">VI</span>Tiếng Việt (Vietnamita): Para la creciente comunidad empresarial en el sudeste asiático.</li>
             </ul>
-            <p>con le quali, in base ai dati disponibili a fine 2025, si stima di poter coprire circa il 98% dei discendenti da italiani e delle comunità italiane o italofone sparse per il mondo.</p>
+            <p>con las cuales, según los datos disponibles a finales de 2025, se estima que se podrá cubrir aproximadamente el 98% de los descendientes de italianos y de las comunidades italianas o italófonas repartidas por el mundo.</p>
             <ul>
-                <li>Su <strong>Windows</strong>: la lingua viene scelta durante l'installer e memorizzata nel Registro di Windows</li>
-                <li>Su <strong>Linux/macOS</strong>: la lingua viene selezionata al primo avvio e salvata nel file di configurazione utente</li>
-                <li>In entrambi i casi viene caricata automaticamente a ogni avvio</li>
-                <li>Può essere cambiata in qualsiasi momento tramite Menu → Impostazioni → Cambia lingua</li>
-                <li>Il programma richiede un riavvio per applicare la nuova lingua selezionata</li>
+                <li>En <strong>Windows</strong>: el idioma se elige durante la instalación y se guarda en el Registro de Windows</li>
+                <li>En <strong>Linux/macOS</strong>: el idioma se selecciona durante el primer inicio y se guarda en el archivo de configuración del usuario</li>
+                <li>En ambos casos, se carga automáticamente en cada inicio</li>
+                <li>Puede cambiarse en cualquier momento mediante Menú → Configuración → Cambiar idioma</li>
+                <li>Es necesario reiniciar el programa para aplicar el nuevo idioma seleccionado</li>
             </ul>
-            <h4>📂 CONFIGURAZIONE CARTELLE</h4>
-            <p>Alla prima esecuzione, il programma crea automaticamente le seguenti cartelle:</p>
+            <h4>📂 CONFIGURACIÓN DE CARPETAS</h4>
+            <p>La primera vez que se ejecuta, el programa crea automáticamente las siguientes carpetas:</p>
             <ul>
-                <li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\</code></li>
-                <li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\doc\</code> (default documenti)</li>
-                <li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\reg\</code> (default registri)</li>
-                <li><strong>Linux/macOS:</strong> analoghe sotto <code>~/Documents/ATK-Pro/output/</code></li>
-                <li>Cartella <code>input\</code> analoga (opzionale, per input file)</li>
+                <li><strong>Windows:</strong> <code>C:\Users\[TuNombre]\Documents\ATK-Pro\output\</code></li>
+                <li><strong>Windows:</strong> <code>C:\Users\[TuNombre]\Documents\ATK-Pro\output\doc\</code> (documentos predeterminados)</li>
+                <li><strong>Windows:</strong> <code>C:\Users\[TuNombre]\Documents\ATK-Pro\output\reg\</code> (registros predeterminados)</li>
+                <li><strong>Linux/macOS:</strong> equivalentes más abajo <code>~/Documents/ATK-Pro/output/</code></li>
+                <li>Carpeta <code>input\</code> equivalente (opcional, para archivos de entrada)</li>
             </ul>
-            <p>Durante l'elaborazione vengono create cartelle temporanee per i tile scaricati (<code>tiles_canvas_X/</code>) e, se richiesto il PDF, file temporanei per la sua generazione.
+            <p>Durante el procesamiento se crean carpetas temporales para los mosaicos descargados (<code>tiles_canvas_X/</code>) y, si se solicita el PDF, archivos temporales para generarlo.
             </p>
-            <p>Tutte le cartelle e i file temporanei vengono eliminati automaticamente al termine dell'elaborazione.
+            <p>Todas las carpetas y los archivos temporales se eliminan automáticamente al finalizar el procesamiento.
             </p>
-            <p>Rimangono solo i file finali elaborati (immagini nei formati scelti, PDF, manifest e metadati).
+            <p>Solo permanecen los archivos finales procesados (imágenes en los formatos elegidos, PDF, manifiesto y metadatos).
             </p>
-            <p>Per modificare le cartelle di output usa Menu → Impostazioni → "Seleziona cartelle output". Le scelte vengono memorizzate e ripristinate automaticamente alla sessione successiva.</p>
+            <p>Para modificar la carpeta de salida, usa Menú → Configuración → "Seleccionar carpeta de salida". La opción elegida se guarda y se restaura automáticamente en la siguiente sesión.</p>
+            <h4>⚙️ PERFIL DE RECURSOS</h4>
+            <p>El comando <strong>Configuración → Perfil de recursos</strong> regula el paralelismo utilizado durante la descarga, la reconstrucción de las imágenes y la generación de los PDF:</p>
+            <ul>
+                <li><strong>Ligero:</strong> limita los procesos simultáneos y los picos de memoria; recomendado para ordenadores menos potentes o procesamientos muy prolongados.</li>
+                <li><strong>Equilibrado:</strong> compromiso predeterminado entre velocidad y estabilidad, adecuado para la mayoría de los casos.</li>
+                <li><strong>Rápido:</strong> utiliza más recursos para reducir los tiempos; elígelo únicamente en ordenadores con prestaciones suficientes.</li>
+            </ul>
+            <p>El perfil no modifica la calidad, los derechos ni la cantidad de los documentos adquiridos. Los límites prudenciales específicos de cada portal siguen teniendo prioridad.</p>
             </div>
             <div class="section-box">
-            <h3>3. INTERFACCIA PRINCIPALE</h3>
+            <h3>3. INTERFAZ PRINCIPAL</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>LAYOUT DELLA FINESTRA</h4>
-            <p>La finestra principale di Antenati Toolkit Pro ha una struttura semplice e intuitiva.</p>
+            <h4>DISEÑO DE LA VENTANA</h4>
+            <p>La ventana principal de Antenati Toolkit Pro tiene una estructura sencilla e intuitiva.</p>
             <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window1.webp" alt="Finestra principale ATK-Pro" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+                <img src="images/window1.webp" alt="Ventana principal de ATK-Pro" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
             </div>
-            <h4>📝 LEGENDA TESTATA:</h4>
+            <h4>📝 LEYENDA DEL ENCABEZADO:</h4>
             <ul>
-                <li>[🔲] Icona del programma (Antenati Toolkit Pro logo)</li>
-                <li>"ATK-Pro" Titolo della finestra</li>
-                <li>[_] Riduci a icona (minimizza la finestra)</li>
-                <li>[□] Espandi/Collassa (massimizza o ripristina la finestra)</li>
-                <li>[✕] Chiudi (termina il programma con banner di supporto)</li>
+                <li>[🔲] Icono del programa (logotipo de Antenati Toolkit Pro)</li>
+                <li>"ATK-Pro" Título de la ventana</li>
+                <li>[_] Minimizar (reduce la ventana)</li>
+                <li>[□] Expandir/Colapsar (maximiza o restaura la ventana)</li>
+                <li>[✕] Cerrar (finaliza el programa con un banner de apoyo)</li>
             </ul>
             <!-- Frase sul motto latino spostata in fondo alla descrizione -->
             <p style="margin-top: 10px; color: #5a3e2b;">
-                In calce è riportato il motto latino “Qui ante nos venerunt, in memoria nostra vivunt”, a ricordare l’importanza delle radici e della memoria collettiva.
+                Al pie se reproduce el lema latino “Qui ante nos venerunt, in memoria nostra vivunt”, para recordar la importancia de las raíces y de la memoria colectiva.
             </p>
-            <h4>BARRA DEI MENU</h4>
-            <p>Nella parte superiore della finestra, sotto la testata:</p>
+            <h4>BARRA DE MENÚ</h4>
+            <p>En la parte superior de la ventana, debajo del encabezado:</p>
             <p>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[File input]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Output]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Servizi]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Documenti]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Impostazioni]</span>
+                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Archivo de entrada]</span>
+                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Salida]</span>
+                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Servicios]</span>
+                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Documentos]</span>
+                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Configuración]</span>
             </p>
-            <p>Ogni menu contiene pulsanti e opzioni specifiche (vedi sezione successiva).</p>
-            <h4>MENU DISPONIBILI</h4>
-            <h3>1. FILE INPUT</h3>
-            <p><strong>Gestisce il caricamento dei record IIIF:</strong></p>
-            <pre class="file-structure">├─ Esempio input
-│  └─ Visualizza il file di esempio (mostra formato coppie: modalità D/R + URL)
-├─ Apri input
-│  └─ Seleziona un file .txt con i tuoi record IIIF
-│     (Deve contenere coppie: modalità D/R su riga 1, URL su riga 2)
-└─ Modifica input
-   └─ Modifica il file input attualmente caricato
-      (Aggiungi/rimuovi record, cambia URL, salva modifiche)</pre>
-            <h3>2. OUTPUT</h3>
-            <p><strong>Gestisce elaborazione e output:</strong></p>
-            <pre class="file-structure">├─ Elabora
-│  └─ Avvia il download, la ricostruzione e il salvataggio delle immagini
-│     (Mostra finestra di progresso in tempo reale)
-├─ Apri cartella output
-│  └─ Apre in Esplora Risorse la cartella con i file elaborati
-└─ Visualizza elaborazioni precedenti
-   └─ Lista dei record già elaborati</pre>
-            <h3>3. SERVIZI</h3>
-            <p><strong>Elenco dei servizi integrati:</strong></p>
-            <pre class="file-structure">├─ Visualizzazione Immagini
-│  └─ Viewer immagini scaricate e/o PDF generati
-├─ Visualizzazione Metadati JSON
-│  └─ JSON originali e metadati (genealogici, tecnici, EXIF)
-├─ OCR Avanzato
-│  └─ Testi manoscritti ottocenteschi, latino ecclesiastico, tardo-medievali
-├─ Traduzione OCR
-│  └─ Traduzione automatica testi estratti nelle lingue selezionate
-└─ Esportazione GEDCOM
+            <p>Cada menú contiene botones y opciones específicas (véase la sección siguiente).</p>
+            <h4>MENÚS DISPONIBLES</h4>
+            <h3>1. ARCHIVO DE ENTRADA</h3>
+            <p><strong>Gestiona la carga de los registros IIIF:</strong></p>
+            <pre class="file-structure">├─ Ejemplo de entrada
+│  └─ Muestra el archivo de ejemplo (presenta el formato por pares: modo D/R + URL)
+├─ Abrir entrada
+│  └─ Selecciona un archivo .txt con tus registros IIIF
+│     (Debe contener pares: modo D/R en la línea 1, URL en la línea 2)
+└─ Editar entrada
+   └─ Edita el archivo de entrada cargado actualmente
+      (Añade/elimina registros, cambia URL y guarda los cambios)</pre>
+            <h3>2. SALIDA</h3>
+            <p><strong>Gestiona el procesamiento y la salida:</strong></p>
+            <pre class="file-structure">├─ Procesar
+│  └─ Inicia la descarga, la reconstrucción y el guardado de las imágenes
+│     (Muestra una ventana de progreso en tiempo real)
+├─ Abrir carpeta de salida
+│  └─ Abre en el Explorador de archivos la carpeta que contiene los archivos procesados
+└─ Ver procesamientos anteriores
+   └─ Lista de los registros ya procesados</pre>
+            <h3>3. SERVICIOS</h3>
+            <p><strong>Lista de los servicios integrados:</strong></p>
+            <pre class="file-structure">├─ Búsqueda asistida por IA
+│  └─ Sugiere portales, líneas de investigación y consultas genealógicas que deben verificarse
+├─ Visualización de imágenes
+│  └─ Visor de imágenes descargadas y/o PDF generados
+├─ Visualización de metadatos JSON
+│  └─ JSON originales y metadatos (genealógicos, técnicos y EXIF)
+├─ OCR avanzado
+│  └─ Textos manuscritos del siglo XIX, latín eclesiástico y textos de finales de la Edad Media
+├─ Traducción de OCR
+│  └─ Traducción automática de los textos extraídos a los idiomas seleccionados
+└─ Exportación GEDCOM
    └─ GEDCOM, Gramps, Family Tree Maker, Ancestry, MyHeritage, WikiTree, etc.</pre>
-            <h3>4. DOCUMENTI</h3>
-            <p><strong>Accesso a risorse e documentazione:</strong></p>
-            <pre class="file-structure">├─ Disclaimer - Clausole legali e termini d'uso
-├─ Presentazione autore - Background dell'autore del progetto
-├─ Presentazione progetto - Storia, motivazioni, roadmap di ATK-Pro
-├─ Guida - Questo documento (guida operativa completa)
-└─ Informazioni - Versione, copyright, email di contatto</pre>
-            <h3>5. IMPOSTAZIONI</h3>
-            <p><strong>Configurazione generale del programma:</strong></p>
-            <pre class="file-structure">├─ Cambia lingua
-│  └─ Seleziona la lingua dell'interfaccia (richiede riavvio)
-├─ Seleziona formati immagine
-│  └─ Scegli tra PNG, JPG, TIFF e PDF (almeno 1 obbligatorio)
-│     PDF può essere selezionato da solo o insieme ai formati immagine
-│     La scelta viene memorizzata e pre-selezionata automaticamente alla sessione successiva
-├─ Seleziona cartelle output
-│  └─ Apre prima la scelta della modalità cartelle, poi le finestre di selezione:
-│     • Cartella unica per tutti    → una sola cartella per documenti e registri
-│     • Cartelle separate doc/reg   → una cartella per tutti i doc, una per tutti i reg
-│     • Cartella per ogni record    → una cartella distinta per ciascun record
-│     La modalità e le cartelle vengono memorizzate e ripristinate alla sessione successiva
-├─ Esporta configurazione
-│  └─ Salva le impostazioni attuali in un file
-├─ Importa configurazione
-│  └─ Carica un file di impostazioni precedentemente salvato (ripristina tutte le preferenze e percorsi)
-├─ Verifica aggiornamenti
-│  └─ Controlla la disponibilità di nuove versioni del programma (funzione in sviluppo)
-└─ Chiudi
-    └─ Termina il programma (mostra banner di supporto PayPal.me)</pre>
+            <h3>4. DOCUMENTOS</h3>
+            <p><strong>Acceso a recursos y documentación:</strong></p>
+            <pre class="file-structure">├─ Aviso legal - Cláusulas legales y términos de uso
+├─ Presentación del autor - Trayectoria del autor del proyecto
+├─ Presentación del proyecto - Historia, motivaciones y hoja de ruta de ATK-Pro
+├─ Guía - Índice principal de la guía modular
+└─ Información - Versión, derechos de autor y correo electrónico de contacto</pre>
+            <h3>5. CONFIGURACIÓN</h3>
+            <p><strong>Configuración general del programa:</strong></p>
+            <pre class="file-structure">├─ Cambiar idioma
+│  └─ Selecciona el idioma de la interfaz (requiere reiniciar)
+├─ Seleccionar formatos de imagen
+│  └─ Elige entre PNG, JPG, TIFF y PDF (es obligatorio seleccionar al menos 1)
+│     PDF puede seleccionarse solo o junto con los formatos de imagen
+│     La selección se guarda y se preselecciona automáticamente en la siguiente sesión
+├─ Seleccionar carpeta de salida
+│  └─ Abre primero la selección del modo de organización de las carpetas y, a continuación, las ventanas de selección:
+│     • Carpeta única para todos    → una sola carpeta para documentos y registros
+│     • Carpetas separadas doc./reg.   → una carpeta para todos los documentos y otra para todos los registros
+│     • Carpeta para cada registro    → una carpeta distinta para cada registro
+│     El modo y las carpetas se guardan y se restauran en la siguiente sesión
+├─ Exportar configuración
+│  └─ Guarda la configuración actual en un archivo
+├─ Importar configuración
+│  └─ Carga un archivo de configuración guardado anteriormente (restaura todas las preferencias y rutas)
+├─ Buscar actualizaciones
+│  └─ Comprueba si hay nuevas versiones del programa disponibles
+└─ Cerrar
+    └─ Finaliza el programa (muestra un banner de apoyo de PayPal.me)</pre>
             </div>
             <div class="section-box">
-            <h3>7. LOCALIZZAZIONE MULTILINGUE</h3>
+            <h3>4. LOCALIZACIÓN MULTILINGÜE</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>LINGUE SUPPORTATE</h4>
-            <p>ATK-Pro è disponibile in 20 lingue:</p>
+            <h4>IDIOMAS SOPORTADOS</h4>
+            <p>ATK-Pro está disponible en 20 idiomas:</p>
             <ul style="list-style: none; padding-left: 0;">
                 <li>1. Italiano (IT - Italiano)</li>
-                <li>2. English (EN - Inglese)</li>
-                <li>3. Español (ES - Spagnolo)</li>
-                <li>4. Français (FR - Francese)</li>
-                <li>5. Deutsch (DE - Tedesco)</li>
-                <li>6. Português (PT - Portoghese)</li>
-                <li>7. Русский (RU - Russo)</li>
-                <li>8. العربية (AR - Arabo, RTL)</li>
-                <li>9. Nederlands (NL - Olandese)</li>
-                <li>10. עברית (HE - Ebraico, RTL)</li>
-                <li>11. 日本語 (JA - Giapponese)</li>
-                <li>12. Svenska (SV - Svedese)</li>
-                <li>13. 中文 (ZH - Cinese)</li>
-                <li>14. Română (RO - Rumeno)</li>
-                <li>15. Ελληνικά (EL - Greco)</li>
-                <li>16. Polski (PL - Polacco)</li>
-                <li>17. Dansk (DA - Danese)</li>
-                <li>18. Norsk (NO - Norvegese)</li>
+                <li>2. English (EN - Inglés)</li>
+                <li>3. Español (ES - Español)</li>
+                <li>4. Français (FR - Francés)</li>
+                <li>5. Deutsch (DE - Alemán)</li>
+                <li>6. Português (PT - Portugués)</li>
+                <li>7. Русский (RU - Ruso)</li>
+                <li>8. العربية (AR - Árabe, RTL)</li>
+                <li>9. Nederlands (NL - Neerlandés)</li>
+                <li>10. עברית (HE - Hebreo, RTL)</li>
+                <li>11. 日本語 (JA - Japonés)</li>
+                <li>12. Svenska (SV - Sueco)</li>
+                <li>13. 中文 (ZH - Chino)</li>
+                <li>14. Română (RO - Rumano)</li>
+                <li>15. Ελληνικά (EL - Griego)</li>
+                <li>16. Polski (PL - Polaco)</li>
+                <li>17. Dansk (DA - Danés)</li>
+                <li>18. Norsk (NO - Noruego)</li>
                 <li>19. Türkçe (TR - Turco)</li>
                 <li>20. Tiếng Việt (VI - Vietnamita)</li>
             </ul>
-            <h4>CAMBIO LINGUA</h4>
-            <p>La lingua può essere cambiata in qualsiasi momento tramite Menu → Impostazioni → Cambia lingua.</p>
-            <p>Il programma richiede un riavvio per applicare la nuova lingua.</p>
-            <p>Al riavvio, il programma carica automaticamente la nuova lingua selezionata.</p>
-            <h4>TESTI LOCALIZZATI</h4>
-            <p>Con il cambio lingua vengono tradotti:</p>
+            <h4>CAMBIO DE IDIOMA</h4>
+            <p>El idioma se puede cambiar en cualquier momento mediante Menú → Configuración → Cambiar idioma.</p>
+            <p>Es necesario reiniciar el programa para aplicar el nuevo idioma.</p>
+            <p>Tras reiniciarse, el programa carga automáticamente el nuevo idioma seleccionado.</p>
+            <h4>TEXTOS LOCALIZADOS</h4>
+            <p>Al cambiar de idioma, se traducen:</p>
             <ul>
-                <li>Menu e pulsanti</li>
-                <li>Messaggi di avanzamento</li>
-                <li>Dialoghi di errore/avviso</li>
-                <li>Documenti nel menu Documenti</li>
+                <li>Menús y botones</li>
+                <li>Mensajes de progreso</li>
+                <li>Cuadros de diálogo de error/advertencia</li>
+                <li>Documentos del menú Documentos</li>
             </ul>
-            <h4>NOTA SU FONT E LAYOUT</h4>
+            <h4>NOTA SOBRE LAS FUENTES Y EL DISEÑO</h4>
             <ul>
-                <li>Lingue RTL (Arabo, Ebreo) cambiano layout (menu/controlli allineati a destra)</li>
-                <li>Font UTF-8 multi-lingue garantisce corretta visualizzazione</li>
-                <li>Se vedi caratteri corrotti su Windows, aggiorna a Windows 10+ (issue rara)</li>
+                <li>Los idiomas RTL (árabe y hebreo) cambian el diseño (menús/controles alineados a la derecha)</li>
+                <li>La fuente UTF-8 multilingüe garantiza una visualización correcta</li>
+                <li>Si ves caracteres dañados en Windows, actualiza a Windows 10 o una versión posterior (problema poco frecuente)</li>
             </ul>
             </div>
             
@@ -594,8 +604,8 @@
                 </div>
         
     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_02_operazioni_base.html" class="nav-button">Mod.02 &mdash; Operazioni di Base &#8594;</a>
+            <a href="guida.html" class="nav-button">&#127968; Índice principal</a>
+            <a href="guida_02_operazioni_base.html" class="nav-button">Mód. 02 &mdash; Operaciones básicas &#8594;</a>
         </div>
 
     <footer style="text-align: center;">

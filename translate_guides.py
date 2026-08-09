@@ -645,6 +645,7 @@ def execute_translation(
     languages: list[str], staging_root: Path, provider: str, model_name: str,
     review_provider: str | None, review_model: str, keys_file: Path | None,
     translation_memory_path: Path | None, delay_seconds: float, overwrite: bool,
+    resume: bool,
 ) -> None:
     vault_keys = load_vault_keys(keys_file) if keys_file else {}
     if provider == "openai":
@@ -684,7 +685,7 @@ def execute_translation(
                 safe_destination(reviewed_root, language, filename) if reviewed_root else None
             )
             existing = [path for path in (draft_destination, reviewed_destination) if path and path.exists()]
-            if existing and not overwrite:
+            if existing and not overwrite and not resume:
                 raise FileExistsError(
                     f"File di staging già presente: {existing[0]}; usare --overwrite-staging"
                 )
@@ -692,6 +693,32 @@ def execute_translation(
             template, texts = (
                 extract_html_text(source) if filename.endswith(".html") else extract_plain_text(source)
             )
+            complete_pair = draft_destination.is_file() and (
+                reviewed_destination is None or reviewed_destination.is_file()
+            )
+            if resume and complete_pair:
+                draft_rendered = draft_destination.read_text(encoding="utf-8")
+                final_rendered = (
+                    reviewed_destination.read_text(encoding="utf-8")
+                    if reviewed_destination else draft_rendered
+                )
+                extractor = extract_html_text if filename.endswith(".html") else extract_plain_text
+                _, draft_units = extractor(draft_rendered)
+                _, final_units = extractor(final_rendered)
+                if len(draft_units) != len(texts) or len(final_units) != len(texts):
+                    raise ValueError(
+                        f"Staging esistente non allineato per {language}/{filename}: "
+                        f"sorgente={len(texts)}, draft={len(draft_units)}, reviewed={len(final_units)}"
+                    )
+                manifest["documents"][f"{language}/{filename}"] = {
+                    "source_sha256": sha256_text(source),
+                    "draft_sha256": sha256_text(draft_rendered),
+                    "output_sha256": sha256_text(final_rendered),
+                    "translation_units": len(texts),
+                    "historical_matches": sum(1 for text in texts.values() if text in historical),
+                }
+                print(f"SKIP {language}/{filename}: staging completo e verificato")
+                continue
             translated = translate_using_shared_memory(
                 texts, language_name, translator, shared_draft, historical,
             )
@@ -832,6 +859,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--delay-seconds", type=float, default=10.0)
     parser.add_argument("--staging-root", type=Path, default=DEFAULT_STAGING_ROOT)
     parser.add_argument("--overwrite-staging", action="store_true")
+    parser.add_argument(
+        "--resume-staging", action="store_true",
+        help="Riprende uno staging incompleto e salta solo le coppie già complete e strutturalmente valide",
+    )
     return parser.parse_args()
 
 
@@ -861,6 +892,7 @@ def main() -> int:
             languages, args.staging_root, args.provider, args.model,
             args.review_provider, args.review_model, args.keys_file,
             args.translation_memory, args.delay_seconds, args.overwrite_staging,
+            args.resume_staging,
         )
         return 0
     except Exception as error:
