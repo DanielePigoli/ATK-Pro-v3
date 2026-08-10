@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&#128218; Módulo 09: Documentação, Suporte, Solução de Problemas e Perguntas Frequentes</title>
+    <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+        
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+        
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+        
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+        
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+        
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+        
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+        
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+        
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+        
+        .metadata strong {
+            color: #2a1a0a;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            
+            
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+        
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+            
+        }
+        
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            
+        }
+        
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+        
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+        
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        .command {
+            background: #f4ede4;
+            
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+        
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+            
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+        
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+        
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .toc ol {
+            margin-left: 30px;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>&#128218; Módulo 09: Documentação, Suporte, Solução de Problemas e Perguntas Frequentes</h1>
+        </header>
+
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">&#8592; Mód.08 &mdash; Exportação GEDCOM</a>
+            <a href="guida.html" class="nav-button">&#127968; Índice Principal</a>
+        </div>
+        <div class="section-box">
+            <h3>1. Menu Documentos: recursos e suporte</h3>
+            <p>────────────────────────────────────────────────────────────────────────────────</p>
+            <h4>DOCUMENTOS DISPONÍVEIS</h4>
+            <p>No menu <strong>Documentos</strong> você encontra cinco opções para acessar os recursos informativos do aplicativo.</p>
+            <p><strong>📌 Nota:</strong> os documentos estão incluídos na instalação e podem ser consultados sem conexão com a Internet.</p>
+            <h4>1️⃣ AVISO LEGAL (Cláusulas Legais)</h4>
+            <ul>
+                <li>Abre o texto do aviso legal oficial incluído no aplicativo.</li>
+                <li>Contém: Limitações de responsabilidade, termos de uso, licenças de software</li>
+                <li>Importante ler antes do uso intensivo</li>
+                <li>Pode ser atualizado juntamente com uma nova versão do aplicativo; quando a revisão legal é alterada, uma nova aceitação é solicitada.</li>
+            </ul>
+            <h4>2️⃣ APRESENTAÇÃO DO AUTOR</h4>
+            <ul>
+                <li>Abre: presentazione_autore.html</li>
+                <li>Contém: Breve biografia do autor, experiência arquivística/digital</li>
+                <li>Permite compreender o contexto do projeto</li>
+            </ul>
+            <h4>3️⃣ APRESENTAÇÃO DO PROJETO</h4>
+            <ul>
+                <li>Abre: presentazione_progetto_ATK-Pro.html</li>
+                <li>Contém:
+                    <ul>
+                        <li>Objetivos principais: banco de trabalho genealógico e arquivístico multiportal</li>
+                        <li>Política dos portais: uso de fontes públicas compatíveis, sem contornar login, paywalls ou restrições técnicas</li>
+                        <li>Escopo da v3: registro de portais, Pesquisa assistida por IA, OCR, Tradução de OCR, análise genealógica e exportação GEDCOM</li>
+                        <li>Público-alvo: pesquisadores genealógicos, estudiosos de arquivos e comunidades italianas e de língua italiana em todo o mundo</li>
+                        <li>Multilíngue: 20 idiomas suportados (IT, EN, ES, PT-BR, FR, DE, AR, HE, NL, RU, JA, SV, ZH, RO, EL, PL, DA, NO, TR, VI)</li>
+                    </ul>
+                </li>
+                <li>Documento vivo, sujeito a integração progressiva</li>
+            </ul>
+            <h4>4️⃣ GUIA (Índice principal)</h4>
+            <ul>
+                <li>Abre: guida.html</li>
+                <li>Contém: índice modular do guia da v3 em português brasileiro</li>
+                <li>A partir daqui, é possível acessar as seções operacionais dedicadas: instalação, operações básicas, visualizador, metadados, OCR, tradução, GEDCOM, suporte e Pesquisa assistida por IA</li>
+            </ul>
+            <h4>5️⃣ INFORMAÇÕES</h4>
+            <ul>
+                <li>Exibe uma janela com 3 linhas:
+                    <ul>
+                        <li>1. ATK-Pro vx.x.x (número da versão)</li>
+                        <li>2. ©2026 Daniele Pigoli (direitos autorais e autor)</li>
+                        <li>3. E-mail de suporte (para relatórios/sugestões)</li>
+                    </ul>
+                </li>
+                <li>Usar o e-mail para contatos oficiais</li>
+                <li>Versão atualizada automaticamente</li>
+            </ul>
+            <h4>🌐 Disponibilidade de idiomas</h4>
+            <ul>
+                <li>A apresentação do autor, a apresentação do projeto e o guia são abertos no idioma selecionado, quando disponíveis.</li>
+                <li>A declaração operacional de exoneração de responsabilidade utiliza a revisão jurídica italiana oficial.</li>
+                <li>Se um recurso localizado não estiver disponível, é apresentada a respectiva mensagem.</li>
+                <li>Para o arquivo de entrada de exemplo, o inglês é usado como recurso alternativo.</li>
+            </ul>
+            <h4>💬 COMO ENTRAR EM CONTATO COM O SUPORTE</h4>
+            <p>Email: antenati.toolkit.pro@gmail.com</p>
+            <ul>
+                <li>Para comunicar bugs: descreva o problema + captura de tela/log</li>
+                <li>Para sugestões: Proponha novas funcionalidades ou melhorias</li>
+                <li>Para questões técnicas: Peça esclarecimentos sobre o funcionamento</li>
+                <li>Para propor prioridades de desenvolvimento: sugira melhorias, portais públicos passíveis de avaliação ou funcionalidades a aperfeiçoar.
+                    <ul>
+                        <li>As propostas serão avaliadas, mas o desenvolvimento está condicionado pelo fato de o ATK-Pro ser gerenciado e mantido de forma amadora, e não por uma empresa de software profissional.</li>
+                        <li>Os prazos de implementação dependem da disponibilidade e dos recursos limitados.</li>
+                    </ul>
+                </li>
+            </ul>
+            </div>
+            <div class="section-box">
+            <h3>2. Encerramento do programa e apoio ao projeto</h3>
+            <p>────────────────────────────────────────────────────────────────────────────────</p>
+            <h4>🔴 COMO FECHAR O ATK-PRO</h4>
+            <p>Você pode fechar o programa de uma das formas gerenciadas pelo sistema:</p>
+            <ol>
+                <li>selecione <strong>Configurações &rarr; Fechar</strong>;</li>
+                <li>use o botão de fechar na barra de título;</li>
+                <li>no Windows, use o atalho padrão <strong>Alt+F4</strong>.</li>
+            </ol>
+            <p>Durante o encerramento, é apresentada a janela opcional <strong>Apoie o projeto</strong>.</p>
+            <h4>💰 JANELA "APOIE O PROJETO"</h4>
+            <p>Após escolher um dos 3 métodos de encerramento, é aberta uma janela com:</p>
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="images/window4.webp" alt="Janela Apoie o projeto" style="max-width: 600px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+            </div>
+            <h4>🎯 O que pode fazer nesta janela</h4>
+            <p>👉 OPÇÃO 1: Clique no BANNER (em qualquer parte da imagem)</p>
+            <ul>
+                <li>O navegador é aberto na página oficial do PayPal.me</li>
+                <li>Você pode escolher livremente o valor da doação</li>
+                <li>Pagamento pelo PayPal (com ou sem conta, dependendo do país)</li>
+                <li>Sem qualquer obrigação: também pode decidir não fazer uma doação</li>
+            </ul>
+            <p>📱 OPÇÃO 2: Digitalize o código QR</p>
+            <ol>
+                <li>Abra a câmera do smartphone.</li>
+                <li>Enquadre o código QR do banner.</li>
+                <li>Verifique no navegador o endereço proposto antes de prosseguir.</li>
+            </ol>
+            <p>⏹️ OPÇÃO 3: Clique no botão "Fechar"</p>
+            <ul>
+                <li>Fecha o banner</li>
+                <li>Encerra definitivamente o programa</li>
+                <li>Sem qualquer obrigação: você pode fechar sem fazer uma doação</li>
+            </ul>
+            <h4>📌 NOTAS IMPORTANTES:</h4>
+            <p>✓ As doações são TOTALMENTE FACULTATIVAS</p>
+            <p>✓ O programa funciona de forma idêntica com ou sem doação</p>
+            <p>✓ Sem rastreamento, sem limitação de funções</p>
+            <p>✓ O banner abre o endereço do PayPal configurado pelo projeto; verifique sempre o destino exibido pelo navegador</p>
+            <p>✓ Você pode apoiar o projeto quando quiser</p>
+            <h4>💡 PARA QUE SE DESTINAM AS DOAÇÕES:</h4>
+            <p>Elas apoiam o desenvolvimento futuro do ATK-Pro:</p>
+            <ul>
+                <li>Distribuição, infraestrutura e serviços relacionados ao projeto</li>
+                <li>Dependências e componentes de software</li>
+                <li>Tempo de desenvolvimento, testes, documentação e manutenção das versões posteriores</li>
+                <li>Servidor de teste para validação IIIF</li>
+                <li>Documentação e manutenção</li>
+            </ul>
+            <h4>🙏 ALTERNATIVA ÀS DOAÇÕES:</h4>
+            <p>Se você não puder doar, mas quiser apoiar, pode:</p>
+            <ul>
+                <li>Compartilhar o ATK-Pro nas redes sociais</li>
+                <li>Relatar usos inovadores ou estudos de caso interessantes</li>
+            </ul>
+            </div>
+            <div class="section-box">
+            <h3>3. Solução de problemas e perguntas frequentes</h3>
+            <p>────────────────────────────────────────────────────────────────────────────────</p>
+            <h4>❓ PERGUNTAS FREQUENTES</h4>
+            <h4>🔵 P: O programa trava ao carregar o manifesto?</h4>
+            <p><strong>R:</strong> Geralmente, trata-se de um timeout de rede. Verifique:</p>
+            <ol>
+                <li>Verifique se a conexão com a Internet está funcionando abrindo uma página confiável no navegador.</li>
+                <li>Abra a URL IIIF no navegador e copie-a novamente da barra de endereços.</li>
+                <li>Verifique se o firewall ou o software de segurança permite as conexões do ATK-Pro.</li>
+                <li>Se você usa uma rede com proxy, verifique a configuração de rede do sistema operacional.</li>
+            </ol>
+            <p>Se o problema persistir, tente usar outra URL para testar a conexão IIIF</p>
+            <h4>🔵 P: "Arquivo não encontrado (404)" — o que significa?</h4>
+            <p><strong>R:</strong> A URL do manifesto não está alcançável. Possíveis causas:</p>
+            <ul>
+                <li>URL expirada (repositório não atualizado)</li>
+                <li>Repositório offline</li>
+                <li>Parâmetros incorretos na URL (ID do manifesto errado)</li>
+            </ul>
+            <p>Solução: verifique a URL no navegador antes de colá-la no ATK-Pro</p>
+            <h4>🔵 P: O download está muito lento ou é interrompido?</h4>
+            <p><strong>R:</strong> Tente:</p>
+            <ol>
+                <li>Verifique a estabilidade da rede Wi-Fi ou use uma conexão por cabo, se disponível.</li>
+                <li>Experimente outra URL IIIF pública para saber se a lentidão é causada pelo servidor.</li>
+                <li>Reduza a carga escolhendo o perfil de recursos <strong>Leve</strong>.</li>
+                <li>Se o problema afetar apenas um portal, aguarde e tente novamente: o serviço remoto pode estar sobrecarregado ou temporariamente indisponível.</li>
+            </ol>
+            <h4>🔵 P: A reconstrução das imagens está lenta — como acelerá-la?</h4>
+            <p><strong>R:</strong> A velocidade depende principalmente da resposta do servidor IIIF, do tamanho das imagens, da conexão e dos recursos disponíveis no computador.</p>
+            <ul>
+                <li>Use o perfil <strong>Leve</strong> para reduzir o consumo de recursos ou <strong>Rápido</strong> somente em sistemas adequados.</li>
+                <li>Processe registros com menos páginas por vez se a memória ou a rede estiverem sobrecarregadas.</li>
+                <li>Lembre-se de que alguns portais impõem acesso sequencial, independentemente do perfil escolhido.</li>
+            </ul>
+            <h4>🔵 P: O PDF de saída está corrompido ou não abre?</h4>
+            <p><strong>R:</strong> Tente:</p>
+            <ol>
+                <li>Salve uma cópia útil para o diagnóstico e, em seguida, remova ou renomeie o PDF incompleto.</li>
+                <li>Recarregue o registro em <strong>Arquivo de entrada &rarr; Abrir entrada</strong> e gere novamente o PDF.</li>
+                <li>Verifique se o destino permite gravação e dispõe de espaço suficiente para o processamento.</li>
+                <li>Verifique cada uma das imagens geradas para saber se o problema afeta somente o PDF.</li>
+            </ol>
+            <h4>🔵 P: Como utilizo os arquivos TIFF para arquivamento?</h4>
+            <p><strong>R:</strong> TIFF é um formato sem perdas, perfeito para arquivamento:</p>
+            <ol>
+                <li>Selecione TIFF entre os formatos de imagem.</li>
+                <li>O ATK-Pro salva os arquivos TIFF com compressão LZW sem perdas.</li>
+                <li>Salve uma cópia em uma mídia separada e verifique periodicamente a integridade do backup.</li>
+                <li>A preservação ao longo do tempo também depende das mídias, das cópias e das verificações de integridade, não apenas do formato.</li>
+            </ol>
+            <h4>🔵 P: Posso processar vários registros simultaneamente (em paralelo)?</h4>
+            <p><strong>R:</strong> Os registros de um lote são processados sequencialmente. Dentro de cada registro, as páginas e os blocos podem ser processados em paralelo, de acordo com o portal e o perfil de recursos.</p>
+            <ol>
+                <li>Prepare um arquivo de entrada com todos os registros compatíveis, um após o outro.</li>
+                <li>Selecione-o em <strong>Arquivo de entrada &rarr; Abrir entrada</strong>.</li>
+                <li>Inicie apenas uma vez <strong>Saída &rarr; Processar</strong>.</li>
+                <li>O ATK-Pro prossegue automaticamente com os registros seguintes.</li>
+            </ol>
+            <p>Exemplo: Se a entrada contiver 5 registros, o ATK-Pro processará automaticamente:</p>
+            <ul>
+                <li>Registro 1 (download + reconstrução)</li>
+                <li>Registro 2 (download + reconstrução)</li>
+                <li>... até o Registro 5</li>
+            </ul>
+            <p>Os resultados são salvos nas pastas configuradas; não é necessário reiniciar manualmente o processamento de cada registro.</p>
+            <h4>🔵 P: Onde exatamente os arquivos são salvos?</h4>
+            <p><strong>R:</strong> Caminho padrão:</p>
+            <ul>
+                <li><strong>Instalação padrão:</strong> pasta <code>ATK-Pro/output</code> na pasta Documentos do usuário.</li>
+                <li><strong>Modo portátil:</strong> pasta <code>output</code> ao lado do executável.</li>
+            </ul>
+            <p>Você pode alterar o destino em <strong>Configurações &rarr; Selecionar pasta de saída</strong>. As pastas padrão são criadas automaticamente sempre que possível.</p>
+            <h4>🔵 P: Posso mover os arquivos de saída após o processamento?</h4>
+            <p><strong>R:</strong> Sim, os arquivos finais podem ser movidos após o processamento.</p>
+            <p>Após a conclusão:</p>
+            <ol>
+                <li>Mova a pasta do registro para o novo destino.</li>
+                <li>O PDF final é autônomo; preserve também as imagens e os metadados se fizerem parte do seu arquivo de trabalho.</li>
+                <li>Se você deseja reprocessar o registro, preserve o manifesto e os outros arquivos de origem.</li>
+            </ol>
+            <h4>🔵 P: Falhas inesperadas — o que fazer?</h4>
+            <p><strong>R:</strong> Se o programa travar:</p>
+            <ol>
+                <li>Verifique <code>atkpro.log</code> ou, com o diagnóstico estendido ativado, <code>atkpro_debug.log</code>. A localização depende do tipo de instalação: procure junto ao executável ou no diretório de trabalho do aplicativo.</li>
+                <li>Copie a mensagem de erro ou faça uma captura de tela.</li>
+                <li>Reinicie o programa e repita a operação.</li>
+                <li>Se o erro se repetir, tente outro registro IIIF para distinguir um problema geral de um problema específico do manifesto.</li>
+            </ol>
+            <h4>⚠️ ERROS COMUNS E SOLUÇÕES</h4>
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                <thead style="background-color: #f0f0f0;">
+                    <tr>
+                        <th style="text-align: left;">Erro</th>
+                        <th style="text-align: left;">Causa</th>
+                        <th style="text-align: left;">Solução</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>"Tempo limite da rede"</td>
+                        <td>Servidor IIIF lento/offline</td>
+                        <td>Tente novamente com uma URL diferente</td>
+                    </tr>
+                    <tr>
+                        <td>"Formato IIIF inválido"</td>
+                        <td>A URL não é um manifesto IIIF</td>
+                        <td>Verifique o URL no navegador</td>
+                    </tr>
+                    <tr>
+                        <td>"Espaço em disco cheio"</td>
+                        <td>Espaço em disco insuficiente</td>
+                        <td>Libere espaço na unidade</td>
+                    </tr>
+                    <tr>
+                        <td>"Permissão negada"</td>
+                        <td>Pasta protegida/Somente leitura</td>
+                        <td>Escolha uma pasta pertencente ao seu usuário e verifique se ela permite gravação; evite pastas do sistema ou protegidas.</td>
+                    </tr>
+                    <tr>
+                        <td>"URL não encontrada (404)"</td>
+                        <td>Manifesto IIIF expirado</td>
+                        <td>Verifique o ID no portal</td>
+                    </tr>
+                    <tr>
+                        <td>"Janela não está respondendo"</td>
+                        <td>Processamento lento/pesado</td>
+                        <td>Aguarde ou clique em Cancelar</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4>🔵 P: O portal é reconhecido, mas o download é recusado. Por quê?</h4>
+            <p><strong>R:</strong> A compatibilidade técnica não elimina as condições de acesso. ATK-Pro recusa ou limita recursos que exigem login ou acesso afiliado, não expõem um endpoint público estável, estão marcados <code>nodownload</code> ou não apresentam direitos compatíveis com a operação solicitada. Abra a página pública do objeto, verifique a licença e as condições de uso e tente apenas com o URL oficial suportado.</p>
+            <h4>🔵 P: Posso recuperar um lote de OCR interrompido?</h4>
+            <p><strong>R:</strong> Verifique, na pasta escolhida para o OCR, o arquivo <code>*_trascrizione_parziale.txt</code> e os respectivos metadados. Eles contêm o trabalho salvo progressivamente, que deve ser verificado e concluído antes de ser considerado definitivo.</p>
+            <h4>🆘 SUPORTE E CONTATOS</h4>
+            <p>Se o problema persistir após tentar soluções:</p>
+            <ol>
+                <li>Consulte a apresentação do projeto e este guia no menu <strong>Documentos</strong>.</li>
+                <li>Se o problema continuar sem solução, escreva para <strong>antenati.toolkit.pro@gmail.com</strong> incluindo:</li>
+            </ol>
+            <ul>
+                <li>Versão ATK-Pro (menu Documentos → Informações)</li>
+                <li>Sistema operacional e versão (por exemplo, Windows 10/11, Ubuntu 22.04, macOS 13)</li>
+                <li>URL IIIF que causa problema</li>
+                <li>Captura de tela do erro (se exibido)</li>
+            </ul>
+        </div>
+        
+        <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">&#8592; Mód.08 &mdash; Exportação GEDCOM</a>
+            <a href="guida.html" class="nav-button">&#127968; Índice Principal</a>
+        </div>
+
+        <footer style="text-align: center;">
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
+    </div>
+</body>
+</html>

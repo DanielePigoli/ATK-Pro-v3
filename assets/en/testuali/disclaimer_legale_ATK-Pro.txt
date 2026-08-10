@@ -18,13 +18,13 @@ The original ATK-Pro source code, except for files or portions expressly identif
 
 The source code corresponding to the distributed version is made available in the project’s official repository. Instructions for accessing the source code and a copy of the license accompany the release artifacts.
 
-The code license is specified in the LICENSE file.
+The code license is specified in the file LICENSE.
 
 3. DOCUMENTATION LICENSE
 
 The original documentation, including guides, presentations, and editorial content, is distributed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0), unless otherwise stated.
 
-The documentation license is specified in the LICENSE-DOCUMENTATION file.
+The documentation license is specified in the file LICENSE-DOCUMENTATION.
 
 4. NAME, LOGO, AND DISTINCTIVE ELEMENTS
 
@@ -32,11 +32,11 @@ The name “ATK-Pro,” the logo, and the distinctive elements of the visual ide
 
 Their purely descriptive use remains permitted to identify the original project, indicate compatibility, or comply with attribution requirements.
 
-The relevant terms are specified in the TRADEMARKS file.
+The relevant terms are specified in the file TRADEMARKS.
 
 5. THIRD-PARTY COMPONENTS
 
-Software dependencies, fonts, and other third-party components retain their respective licenses, copyright notices, and any additional terms, as specified in the THIRD-PARTY-NOTICES file.
+Software dependencies, fonts, and other third-party components retain their respective licenses, copyright notices, and any additional terms, as specified in the file THIRD-PARTY-NOTICES.
 
 The licenses granted for the original ATK-Pro code and documentation do not replace or modify the licenses of third-party components.
 

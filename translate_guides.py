@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import html as html_module
 import json
 import os
 from pathlib import Path
@@ -220,6 +221,70 @@ def apply_translations(template: str, source: dict[str, str], translated: dict[s
     if PLACEHOLDER_RE.search(rendered):
         raise ValueError("Sono rimasti segnaposto non sostituiti")
     return rendered
+
+
+def recover_translations(
+    template: str, source: dict[str, str], rendered: str,
+) -> dict[str, str]:
+    """Recupera i valori tradotti dal template senza rieseguire filtri linguistici."""
+    pattern_parts: list[str] = []
+    position = 0
+    for match in PLACEHOLDER_RE.finditer(template):
+        pattern_parts.append(re.escape(template[position : match.start()]))
+        pattern_parts.append(f"(?P<{match.group(1)}>.*?)")
+        position = match.end()
+    pattern_parts.append(re.escape(template[position:]))
+    matched = re.fullmatch("".join(pattern_parts), rendered, flags=re.DOTALL)
+    if matched is None:
+        raise ValueError("Lo staging esistente non conserva il template strutturale")
+    recovered = {identifier: matched.group(identifier) for identifier in source}
+    if not all(value.strip() for value in recovered.values()):
+        raise ValueError("Lo staging esistente contiene traduzioni vuote")
+    return recovered
+
+
+def derive_disclaimer_txt(
+    source_html: str, localized_html: str, source_txt: str,
+    html_lang: str, direction: str,
+) -> str:
+    """Deriva il disclaimer TXT dall'HTML localizzato e revisionato."""
+    html_template, html_source_units = extract_html_text(source_html)
+    localized_template = update_html_language(html_template, html_lang, direction)
+    html_target_units = recover_translations(
+        localized_template, html_source_units, localized_html,
+    )
+    pairs = [
+        (
+            html_module.unescape(html_source_units[identifier]).strip(),
+            html_module.unescape(html_target_units[identifier]).strip(),
+        )
+        for identifier in html_source_units
+    ]
+
+    output: list[str] = []
+    for line in source_txt.splitlines(keepends=True):
+        ending = "\r\n" if line.endswith("\r\n") else "\n" if line.endswith("\n") else ""
+        value = line[: -len(ending)] if ending else line
+        if not should_translate(value):
+            output.append(line)
+            continue
+        bullet = "- " if value.startswith("- ") else ""
+        body = value[len(bullet) :]
+        normalized_body = html_module.unescape(body).strip()
+        candidates = [
+            (source_value, target_value)
+            for source_value, target_value in pairs
+            if normalized_body.casefold().startswith(source_value.casefold())
+        ]
+        if not candidates:
+            raise ValueError(f"Riga TXT non derivabile dal disclaimer HTML: {value}")
+        source_value, target_value = max(candidates, key=lambda pair: len(pair[0]))
+        suffix = normalized_body[len(source_value) :]
+        translated = target_value + suffix
+        if normalized_body == normalized_body.upper() and any(char.isalpha() for char in normalized_body):
+            translated = translated.upper()
+        output.append(f"{bullet}{translated}{ending}")
+    return "".join(output)
 
 
 def update_html_language(html: str, html_lang: str, direction: str) -> str:
@@ -693,6 +758,54 @@ def execute_translation(
             template, texts = (
                 extract_html_text(source) if filename.endswith(".html") else extract_plain_text(source)
             )
+            rendered_template = (
+                update_html_language(template, html_lang, direction)
+                if filename.endswith(".html") else template
+            )
+            if filename == "disclaimer_legale_ATK-Pro.txt":
+                source_html = (ITALIAN_DIR / "disclaimer_legale_ATK-Pro.html").read_text(
+                    encoding="utf-8"
+                )
+                draft_html_path = safe_destination(
+                    draft_root, language, "disclaimer_legale_ATK-Pro.html"
+                )
+                if not draft_html_path.is_file():
+                    raise ValueError("Disclaimer HTML draft assente: impossibile derivare il TXT")
+                draft_rendered = derive_disclaimer_txt(
+                    source_html,
+                    draft_html_path.read_text(encoding="utf-8"),
+                    source,
+                    html_lang,
+                    direction,
+                )
+                draft_destination.parent.mkdir(parents=True, exist_ok=True)
+                draft_destination.write_text(draft_rendered, encoding="utf-8", newline="")
+                final_rendered = draft_rendered
+                if reviewed_destination:
+                    reviewed_html_path = safe_destination(
+                        reviewed_root, language, "disclaimer_legale_ATK-Pro.html"
+                    )
+                    if not reviewed_html_path.is_file():
+                        raise ValueError("Disclaimer HTML revisionato assente: impossibile derivare il TXT")
+                    final_rendered = derive_disclaimer_txt(
+                        source_html,
+                        reviewed_html_path.read_text(encoding="utf-8"),
+                        source,
+                        html_lang,
+                        direction,
+                    )
+                    reviewed_destination.parent.mkdir(parents=True, exist_ok=True)
+                    reviewed_destination.write_text(final_rendered, encoding="utf-8", newline="")
+                manifest["documents"][f"{language}/{filename}"] = {
+                    "source_sha256": sha256_text(source),
+                    "draft_sha256": sha256_text(draft_rendered),
+                    "output_sha256": sha256_text(final_rendered),
+                    "translation_units": len(texts),
+                    "historical_matches": sum(1 for text in texts.values() if text in historical),
+                    "derived_from": "disclaimer_legale_ATK-Pro.html",
+                }
+                print(f"DERIVE {language}/{filename}: {len(texts)} unità dall'HTML")
+                continue
             complete_pair = draft_destination.is_file() and (
                 reviewed_destination is None or reviewed_destination.is_file()
             )
@@ -702,14 +815,16 @@ def execute_translation(
                     reviewed_destination.read_text(encoding="utf-8")
                     if reviewed_destination else draft_rendered
                 )
-                extractor = extract_html_text if filename.endswith(".html") else extract_plain_text
-                _, draft_units = extractor(draft_rendered)
-                _, final_units = extractor(final_rendered)
-                if len(draft_units) != len(texts) or len(final_units) != len(texts):
+                try:
+                    draft_units = recover_translations(rendered_template, texts, draft_rendered)
+                    final_units = recover_translations(rendered_template, texts, final_rendered)
+                except ValueError as error:
                     raise ValueError(
-                        f"Staging esistente non allineato per {language}/{filename}: "
-                        f"sorgente={len(texts)}, draft={len(draft_units)}, reviewed={len(final_units)}"
-                    )
+                        f"Staging esistente non allineato per {language}/{filename}: {error}"
+                    ) from error
+                for identifier, source_text in texts.items():
+                    shared_draft.setdefault(source_text, draft_units[identifier])
+                    shared_reviewed.setdefault(source_text, final_units[identifier])
                 manifest["documents"][f"{language}/{filename}"] = {
                     "source_sha256": sha256_text(source),
                     "draft_sha256": sha256_text(draft_rendered),
@@ -719,14 +834,27 @@ def execute_translation(
                 }
                 print(f"SKIP {language}/{filename}: staging completo e verificato")
                 continue
-            translated = translate_using_shared_memory(
-                texts, language_name, translator, shared_draft, historical,
-            )
-            draft_rendered = apply_translations(template, texts, translated)
-            if filename.endswith(".html"):
-                draft_rendered = update_html_language(draft_rendered, html_lang, direction)
-            draft_destination.parent.mkdir(parents=True, exist_ok=True)
-            draft_destination.write_text(draft_rendered, encoding="utf-8", newline="")
+            reuse_complete_draft = resume and draft_destination.is_file()
+            if reuse_complete_draft:
+                draft_rendered = draft_destination.read_text(encoding="utf-8")
+                try:
+                    translated = recover_translations(rendered_template, texts, draft_rendered)
+                except ValueError as error:
+                    raise ValueError(
+                        f"Draft esistente non allineato per {language}/{filename}: {error}"
+                    ) from error
+                for identifier, source_text in texts.items():
+                    shared_draft.setdefault(source_text, translated[identifier])
+                print(f"REUSE {language}/{filename}: draft completo e verificato")
+            else:
+                translated = translate_using_shared_memory(
+                    texts, language_name, translator, shared_draft, historical,
+                )
+                draft_rendered = apply_translations(template, texts, translated)
+                if filename.endswith(".html"):
+                    draft_rendered = update_html_language(draft_rendered, html_lang, direction)
+                draft_destination.parent.mkdir(parents=True, exist_ok=True)
+                draft_destination.write_text(draft_rendered, encoding="utf-8", newline="")
 
             final_translations = (
                 review_using_shared_memory(

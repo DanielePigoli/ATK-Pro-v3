@@ -36,7 +36,7 @@ Las condiciones correspondientes se indican en el archivo TRADEMARKS.
 
 5. COMPONENTES DE TERCEROS
 
-Las dependencias de software, las fuentes y otros componentes de terceros conservan sus respectivas licencias, sus respectivos avisos de derechos de autor y las posibles condiciones adicionales, indicados en el archivo THIRD-PARTY-NOTICES.
+Las dependencias de software, las fuentes tipográficas y los demás componentes de terceros conservan sus respectivas licencias, avisos de derechos de autor y posibles condiciones adicionales, indicados en el archivo THIRD-PARTY-NOTICES.
 
 Las licencias atribuidas al código y a la documentación originales de ATK-Pro no sustituyen ni modifican las licencias de los componentes de terceros.
 
@@ -110,10 +110,10 @@ Al instalar o utilizar ATK-Pro, el usuario declara haber comprendido que:
 
 - el software constituye una herramienta técnica y no una autorización para acceder, descargar o reutilizar recursos de terceros;
 - debe verificar los derechos y las condiciones aplicables a cada recurso;
-- debe comprobar la fiabilidad de los resultados producidos;
+- debe comprobar la fiabilidad de los resultados obtenidos;
 - debe proteger los datos personales, las credenciales y las claves API;
 - debe utilizar el software respetando la ley y los derechos de terceros;
-- sigue siendo responsable de las operaciones que decida ejecutar.
+- sigue siendo responsable de las operaciones que decida realizar.
 
 14. GRATUIDAD Y DONACIONES
 
