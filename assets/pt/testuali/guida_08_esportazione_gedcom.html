@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&#128302; Módulo 08: Exportação GEDCOM</title>
+    <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+        
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+        
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+        
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+        
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+        
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+        
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+        
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+        
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+        
+        .metadata strong {
+            color: #2a1a0a;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            
+            
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+        
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+            
+        }
+        
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            
+        }
+        
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+        
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+        
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        .command {
+            background: #f4ede4;
+            
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+        
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+            
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+        
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+        
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .toc ol {
+            margin-left: 30px;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>&#128302; Módulo 08: Exportação GEDCOM</h1>
+        </header>
+
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_07_traduzione.html" class="nav-button">&#8592; Mód.07 &mdash; Tradução OCR</a>
+            <a href="guida.html" class="nav-button">&#127968; Índice Principal</a>
+            <a href="guida_09_supporto_faq.html" class="nav-button">Mód.09 &mdash; Documentação, Suporte e Perguntas Frequentes &#8594;</a>
+        </div>
+
+        <div class="section">
+            <h2>&#128204; Visão geral</h2>
+            <p>O módulo <strong>Exportação GEDCOM</strong> da v3 é um ambiente de análise genealógica assistida: recebe textos, imagens ou documentos selecionados, utiliza um provedor de IA configurado no ATK-Pro e gera um arquivo <code>.ged</code> com dois arquivos CSV auxiliares.</p>
+            <p>É aberto pelo menu <em>Serviços &rarr; Exportação GEDCOM</em>. O nome público continua associado ao formato GEDCOM, mas o trabalho efetivo também inclui extração genealógica, uso de notas paleográficas, eventual ampliação de uma base existente e gerenciamento das chaves de IA.</p>
+            <p>O resultado deve ser verificado antes de ser importado para um software de genealogia: a IA pode ajudar a estruturar dados e relações, mas não substitui a leitura crítica das fontes.</p>
+        </div>
+
+        <div class="section">
+            <h2>&#128421;&#65039; Interface</h2>
+            <div class="section-box">
+                <h3>1. Método e entrada universal</h3>
+                <p>A primeira seção permite escolher uma indicação de método e os arquivos a serem analisados. As opções <strong>Auto-Discovery</strong>, <strong>Vision IA</strong> e <strong>Refinery LLM</strong> são armazenadas como preferência, mas, na versão atual, não ativam três pipelines distintos: o processamento efetivo depende principalmente do tipo de arquivo.</p>
+                <ul>
+                    <li><strong>TXT e DOCX</strong>: são lidos por meio do fluxo textual dedicado e inseridos no prompt como transcrições.</li>
+                    <li><strong>Outras entradas</strong>: são encaminhadas ao provedor selecionado de acordo com o fluxo de extração disponível.</li>
+                    <li><strong>Formatos selecionáveis</strong>: <code>.pdf</code>, <code>.docx</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.webp</code>, <code>.tiff</code>, <code>.tif</code>, <code>.bmp</code>, <code>.txt</code>, <code>.json</code> e <code>.csv</code>.</li>
+                </ul>
+            </div>
+
+            <div class="section-box">
+                <h3>2. Ampliar uma base existente</h3>
+                <p>O botão <strong>CARREGAR BASE</strong> permite indicar uma base genealógica já existente em formato GEDCOM ou CSV. Se você não carregar nada, o módulo criará um novo trabalho. Quando uma base é carregada, o resultado é salvo automaticamente na pasta que a contém, mesmo que você tenha escolhido anteriormente outro destino.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>3. Banco de dados de notas paleográficas</h3>
+                <p>Esta seção vincula o trabalho genealógico aos tipos documentais e às notas operacionais. Você pode escolher o tipo de ato, recuperar uma nota salva, criar uma nova, modificá-la ou excluí-la.</p>
+                <p>As notas servem para explicar ao modelo abreviações, fórmulas locais, o idioma do documento, regras de parentesco, dúvidas de leitura ou critérios de extração.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>4. Destino da saída</h3>
+                <p>Escolha a pasta na qual deseja salvar o resultado. Se uma base existente tiver sido carregada, será usada a pasta dessa base. O módulo gera um arquivo <code>genealogia_*.ged</code> em formato GEDCOM 5.5.1 e dois arquivos auxiliares com o mesmo nome-base: <code>*_REVISIONE.csv</code> e <code>*_REGISTRO_ORIGINALE.csv</code>.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>5. Motor de IA e cofre de chaves</h3>
+                <ul>
+                    <li><strong>Provedor</strong>: escolha o serviço de IA entre os configurados, como Claude, OpenAI, Gemini, Mistral, xAI, DeepSeek, Groq, HuggingFace ou Ollama.</li>
+                    <li><strong>Substituição de modelo</strong>: campo opcional para indicar um modelo específico compatível com o provedor escolhido; fica oculto quando o provedor é Gemini.</li>
+                    <li><strong>GERENCIAR COFRE DE CHAVES (CSV)</strong>: abre diretamente o arquivo CSV do cofre.</li>
+                    <li><strong>INICIAR EXTRAÇÃO COMPLETA</strong>: inicia a análise e a geração do GEDCOM.</li>
+                </ul>
+                <p>Você pode criar e remover tipos documentais personalizados. Para os tipos integrados, é possível modificar o prompt por meio de uma substituição, mas não excluir o tipo.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128221; Fluxo recomendado</h2>
+            <ol>
+                <li>Prepare entradas legíveis: transcrições, imagens ou arquivos já organizados por ato.</li>
+                <li>Escolha a indicação de método mais adequada ao material, tendo em mente que, na versão atual, ela não seleciona um fluxo de processamento distinto.</li>
+                <li>Se estiver dando continuidade a um trabalho existente, carregue o arquivo-base GEDCOM ou CSV.</li>
+                <li>Selecione o tipo de ato e adicione uma nota paleográfica concreta.</li>
+                <li>Escolha a pasta de saída, o provedor e a chave.</li>
+                <li>Inicie a extração completa.</li>
+                <li>Verifique o arquivo <code>.ged</code> gerado antes de importá-lo para outros programas.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>&#9888;&#65039; Advertências</h2>
+            <div class="section-box">
+                <ul>
+                    <li>O GEDCOM gerado &eacute; uma base de trabalho, não uma prova definitiva.</li>
+                    <li>As relações familiares, datas, locais e nomes devem ser verificados nas fontes originais.</li>
+                    <li>Erros de OCR, transcrição ou interpretação podem se propagar para o arquivo genealógico.</li>
+                    <li>Antes de importar o GEDCOM para softwares externos, salve uma cópia do arquivo original e verifique a existência de possíveis duplicatas.</li>
+                    <li>Não envie a provedores externos documentos confidenciais ou sujeitos a restrições sem antes verificar os termos de uso, as condições de privacidade e as autorizações.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_07_traduzione.html" class="nav-button">&#8592; Mód.07 &mdash; Tradução OCR</a>
+            <a href="guida.html" class="nav-button">&#127968; Índice Principal</a>
+            <a href="guida_09_supporto_faq.html" class="nav-button">Mód.09 &mdash; Documentação, Suporte e Perguntas Frequentes &#8594;</a>
+        </div>
+
+        <footer style="text-align: center;">
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
+    </div>
+</body>
+</html>
