@@ -538,6 +538,13 @@
                 <li><strong>Modo portátil:</strong> carpeta <code>output</code> junto al ejecutable.</li>
             </ul>
             <p>Puedes cambiar el destino desde <strong>Configuración &rarr; Seleccionar carpeta de salida</strong>. Las carpetas predeterminadas se crean automáticamente cuando es posible.</p>
+            <h4>🔵 P: ¿Por qué ATK-Pro advierte sobre una ruta de salida o la bloquea?</h4>
+            <p><strong>R:</strong> Antes de crear archivos, ATK-Pro comprueba la ruta más larga prevista para el registro. El resumen final distingue dos situaciones:</p>
+            <ul>
+                <li><strong>Error de bloqueo:</strong> el nombre contiene caracteres no permitidos, utiliza un nombre reservado de Windows, termina con un espacio o un punto, o un segmento de la ruta supera el límite admitido. Solo se detiene el registro afectado y no se crea su carpeta de trabajo.</li>
+                <li><strong>Advertencia de compatibilidad:</strong> la ruta está cerca de un umbral preventivo o puede causar problemas con aplicaciones antiguas de Windows. El procesamiento puede continuar, pero conviene elegir un destino más corto.</li>
+            </ul>
+            <p>El perfil <strong>OneDrive/SharePoint</strong> solo se aplica cuando la carpeta seleccionada se encuentra realmente bajo una raíz <code>OneDrive</code> o <code>OneDrive - Organización</code>. Si se produce un error, acorta el nombre del registro o elige una carpeta de destino más próxima a la raíz de la unidad; no es necesario cambiar el nombre ni mover los archivos generados en otros procesamientos.</p>
             <h4>🔵 P: ¿Puedo mover los archivos de salida después del procesamiento?</h4>
             <p><strong>R:</strong> Sí, los archivos finales pueden moverse después del procesamiento.</p>
             <p>Después de completar el proceso:</p>

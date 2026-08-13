@@ -504,6 +504,8 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             <h3>5. Al finalizar, se muestra un resumen de las carpetas elegidas</h3>
             <p>✅ <strong>Los modos y las carpetas se guardan</strong>. La próxima vez que se abra un archivo de entrada, se restaurarán automáticamente si son compatibles con el número de registros.</p>
             <p>⚠️ Si el nuevo archivo de entrada tiene un número de documentos/registros distinto del correspondiente a las carpetas guardadas, se muestra una advertencia y se restablece la selección para solicitar nuevas carpetas.</p>
+            <p>🛡️ <strong>Comprobación preventiva de rutas:</strong> antes de crear carpetas o archivos, ATK-Pro comprueba los nombres y las rutas previstos. Los nombres incompatibles con Windows y los segmentos de ruta excesivamente largos bloquean únicamente el registro afectado; las advertencias de compatibilidad se muestran en el resumen final.</p>
+            <p>☁️ <strong>No se presupone que OneDrive/SharePoint sea el destino predeterminado.</strong> Sus límites específicos solo se aplican cuando la carpeta seleccionada se encuentra realmente bajo una raíz de OneDrive. En las demás rutas, el umbral histórico de Windows de 260 caracteres se considera una advertencia preventiva y no un bloqueo automático.</p>
             <h4>📌 RESUMEN DE MODOS:</h4>
             <ul>
                 <li><strong>Carpeta única:</strong> Sencillo, todo en un mismo lugar. Adecuado para procesamientos rápidos o pruebas</li>

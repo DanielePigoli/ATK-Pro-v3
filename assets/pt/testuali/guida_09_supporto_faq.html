@@ -538,6 +538,13 @@
                 <li><strong>Modo portátil:</strong> pasta <code>output</code> ao lado do executável.</li>
             </ul>
             <p>Você pode alterar o destino em <strong>Configurações &rarr; Selecionar pasta de saída</strong>. As pastas padrão são criadas automaticamente sempre que possível.</p>
+            <h4>🔵 P: Por que o ATK-Pro avisa sobre um caminho de saída ou o bloqueia?</h4>
+            <p><strong>R:</strong> Antes de criar arquivos, o ATK-Pro verifica o caminho mais longo previsto para o registro. O resumo final distingue duas situações:</p>
+            <ul>
+                <li><strong>Erro impeditivo:</strong> o nome contém caracteres não permitidos, usa um nome reservado do Windows, termina com espaço ou ponto, ou um segmento do caminho excede o limite compatível. Apenas o registro afetado é interrompido, e sua pasta de trabalho não é criada.</li>
+                <li><strong>Aviso de compatibilidade:</strong> o caminho está próximo de um limite preventivo ou pode causar problemas com aplicativos mais antigos do Windows. O processamento pode continuar, mas é recomendável escolher um destino mais curto.</li>
+            </ul>
+            <p>O perfil <strong>OneDrive/SharePoint</strong> é aplicado somente quando a pasta selecionada está realmente localizada sob uma raiz <code>OneDrive</code> ou <code>OneDrive - Organização</code>. Em caso de erro, reduza o nome do registro ou escolha uma pasta de destino mais próxima da raiz da unidade; não é necessário renomear nem mover arquivos já produzidos em outros processamentos.</p>
             <h4>🔵 P: Posso mover os arquivos de saída após o processamento?</h4>
             <p><strong>R:</strong> Sim, os arquivos finais podem ser movidos após o processamento.</p>
             <p>Após a conclusão:</p>
