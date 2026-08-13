@@ -47,6 +47,10 @@ try:
     from atk_version import PACKAGE_VERSION as VERSION
 except ImportError:
     from src.atk_version import PACKAGE_VERSION as VERSION
+try:
+    from path_policy import PathPreflightError, preflight_record
+except ImportError:
+    from src.path_policy import PathPreflightError, preflight_record
 
 
 
@@ -492,6 +496,8 @@ class Elaborazione:
                 return self._process_register(tiles_info, metadata)
             else:
                 raise ValueError(f"Tipo record non riconosciuto: {self.record_type}")
+        except PathPreflightError:
+            raise
         except Exception as e:
             logger.error(f"[Error] Errore elaborazione: {e}", exc_info=True)
             return False
@@ -530,6 +536,19 @@ class Elaborazione:
                         working_folder = candidate
                         break
                     i += 1
+
+            # Seconda verifica con l'identificativo risolto dal manifest. Avviene
+            # prima di creare qualunque cartella o file di destinazione.
+            resolved_preflight = preflight_record(
+                output_base,
+                self.nome_file,
+                self.record_type,
+                getattr(self, "formats", ()),
+                container_id=container_id,
+            )
+            resolved_preflight.raise_for_errors()
+            for issue in resolved_preflight.warnings:
+                logger.warning("[Path preflight] %s — %s", issue.message, issue.path)
             os.makedirs(working_folder, exist_ok=True)
 
             # Determina referer in base al portale (per header HTTP corretti)
@@ -717,6 +736,8 @@ class Elaborazione:
 
             logger.info(f"[OK] Manifest caricato: {self.manifest_path}")
             return manifest
+        except PathPreflightError:
+            raise
         except Exception as e:
             logger.error(f"[Error] Errore fetch manifest: {e}", exc_info=True)
             return None
@@ -1787,6 +1808,20 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
             record["output"] = out_dir
 
             logger.info(f"[Output] Record {idx+1}/{len(records)} tipo={modalita} nome={nome_file} -> cartella: {out_dir}")
+            # Prima verifica statica: nessuna scrittura è ancora avvenuta.
+            path_report = preflight_record(out_dir, nome_file, modalita, formats)
+            path_report.raise_for_errors()
+            path_warnings = [
+                {
+                    "code": issue.code,
+                    "message": issue.message,
+                    "path": issue.path,
+                    "profile": path_report.profile.name,
+                }
+                for issue in path_report.warnings
+            ]
+            for issue in path_report.warnings:
+                logger.warning("[Path preflight] %s — %s", issue.message, issue.path)
             # ...existing code...
             # Esegui elaborazione con classe Elaborazione
             elab = Elaborazione(
@@ -1835,7 +1870,8 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
                     "modalita": modalita,
                     "output": out_dir,
                     "formati": formats,
-                    "status": "SUCCESS"
+                    "status": "SUCCESS",
+                    "path_warnings": path_warnings,
                 })
             elif success and tiles_missing:
                 risultati.append({
@@ -1844,7 +1880,8 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
                     "output": out_dir,
                     "formati": formats,
                     "status": "INCOMPLETE",
-                    "tiles_missing": tiles_missing
+                    "tiles_missing": tiles_missing,
+                    "path_warnings": path_warnings,
                 })
             else:
                 risultati.append({
@@ -1852,17 +1889,33 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
                     "modalita": modalita,
                     "output": out_dir,
                     "status": "FAILED",
-                    "tiles_missing": tiles_missing if tiles_missing else None
+                    "tiles_missing": tiles_missing if tiles_missing else None,
+                    "path_warnings": path_warnings,
                 })
 
         except Exception as e:
             logger.error(f"[Error] Errore elaborazione record {nome_file}: {e}", exc_info=True)
-            risultati.append({
+            error_result = {
                 "file": record.get("nome_file", "sconosciuto"),
                 "modalita": modalita,
                 "errore": str(e),
                 "status": "ERROR"
-            })
+            }
+            if isinstance(e, PathPreflightError):
+                error_result["path_preflight"] = {
+                    "profile": e.report.profile.name,
+                    "issues": [
+                        {
+                            "code": issue.code,
+                            "message": issue.message,
+                            "path": issue.path,
+                            "metric": issue.metric,
+                            "limit": issue.limit,
+                        }
+                        for issue in e.report.errors
+                    ],
+                }
+            risultati.append(error_result)
 
     # Chiudi la ProgressDialog prima di restituire i risultati
     if progress:

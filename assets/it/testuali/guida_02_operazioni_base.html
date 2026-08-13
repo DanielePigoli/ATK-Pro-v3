@@ -504,6 +504,8 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             <h3>5. Al termine mostra il riepilogo delle cartelle scelte</h3>
             <p>✅ <strong>Modalità e cartelle vengono memorizzate</strong>. Alla prossima apertura di un file input, vengono ripristinate automaticamente se compatibili con il numero di record.</p>
             <p>⚠️ Se il nuovo file input ha un numero diverso di Documenti/Registri rispetto alle cartelle salvate, viene mostrato un avviso e la selezione viene azzerata per richiedere nuove cartelle.</p>
+            <p>🛡️ <strong>Controllo preventivo dei percorsi:</strong> prima di creare cartelle o file, ATK-Pro verifica i nomi e i percorsi previsti. I nomi incompatibili con Windows e i segmenti eccessivamente lunghi bloccano il solo record interessato; gli avvisi di compatibilità vengono mostrati nel riepilogo finale.</p>
+            <p>☁️ <strong>OneDrive/SharePoint non è assunto come destinazione predefinita.</strong> I relativi limiti vengono applicati soltanto quando la cartella selezionata si trova effettivamente sotto una radice OneDrive. Negli altri percorsi, la soglia storica Windows di 260 caratteri è trattata come avviso prudenziale e non come blocco automatico.</p>
             <h4>📌 RIEPILOGO MODALITÀ:</h4>
             <ul>
                 <li><strong>Cartella unica:</strong> Semplice, tutto in un posto. Adatto per elaborazioni veloci o test</li>
