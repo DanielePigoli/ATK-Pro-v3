@@ -93,3 +93,27 @@ def test_esegui_elaborazione_passes_resource_profile(tmp_path, monkeypatch):
 
     elab_mod.esegui_elaborazione(state, glossario_data=None, lingua='IT', records=records, formats=formats)
     assert captured["resource_profile"] == "veloce"
+
+
+def test_esegui_elaborazione_reports_path_preflight_error_before_processing(tmp_path, monkeypatch):
+    records = [{"modalita": "R", "url": "ark:/dummy/1", "nome_file": "registro:1901"}]
+    out = tmp_path / "out"
+    out.mkdir()
+    state = {
+        "records": records,
+        "formats": ["PNG"],
+        "output_folder": str(out),
+        "output_folders_doc": [],
+        "output_folders_reg": [str(out)],
+    }
+
+    class MustNotRun(FakeElab):
+        def __init__(self, *args, **kwargs):
+            raise AssertionError("L'elaborazione non deve iniziare")
+
+    monkeypatch.setattr(elab_mod, "Elaborazione", MustNotRun)
+    result = elab_mod.esegui_elaborazione(state, records=records, formats=["PNG"])
+
+    assert result[0]["status"] == "ERROR"
+    assert result[0]["path_preflight"]["profile"] in {"windows_desktop", "modern_filesystem"}
+    assert result[0]["path_preflight"]["issues"][0]["code"] == "invalid_character"

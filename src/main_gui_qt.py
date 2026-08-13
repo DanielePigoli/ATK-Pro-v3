@@ -1,4 +1,5 @@
 import json
+import html
 import logging
 import os
 import copy
@@ -130,6 +131,26 @@ def show_operation_completed_dialog(parent, glossario_data, lingua, risultati=No
     if risultati:
         report_lines = []
         for rec in risultati:
+            if rec.get("status") == "ERROR":
+                report_lines.append(
+                    f"<b>{html.escape(str(rec.get('file', '?')))}</b> - "
+                    "<span style='color:#ff6b6b;'>ERRORE</span>"
+                )
+                preflight = rec.get("path_preflight") or {}
+                profile = preflight.get("profile")
+                if profile:
+                    profile_label = "OneDrive/SharePoint" if profile == "onedrive_sharepoint" else "Windows"
+                    report_lines.append(f"<span style='font-size:12px;'>Profilo percorso: {profile_label}</span>")
+                issues = preflight.get("issues") or []
+                if issues:
+                    for issue in issues[:5]:
+                        report_lines.append(
+                            f"<span style='font-size:12px;'>{html.escape(str(issue.get('message', '')))}</span>"
+                        )
+                elif rec.get("errore"):
+                    report_lines.append(
+                        f"<span style='font-size:12px;'>{html.escape(str(rec['errore']))}</span>"
+                    )
             if rec.get("status") == "INCOMPLETE":
                 report_lines.append(f"<b>{rec.get('file','?')}</b> - <span style='color:#ffb347;'>IMMAGINI MANCANTI</span>")
                 tiles = rec.get("tiles_missing") or []
@@ -137,6 +158,18 @@ def show_operation_completed_dialog(parent, glossario_data, lingua, risultati=No
                     report_lines.append(f"<span style='font-size:12px;'>{t}</span>")
                 if len(tiles) > 10:
                     report_lines.append(f"...({len(tiles)-10} altri tile non mostrati)")
+            warnings = rec.get("path_warnings") or []
+            if warnings:
+                profile = warnings[0].get("profile")
+                profile_label = "OneDrive/SharePoint" if profile == "onedrive_sharepoint" else "Windows"
+                report_lines.append(
+                    f"<b>{html.escape(str(rec.get('file', '?')))}</b> - "
+                    f"<span style='color:#ffd166;'>AVVISO PERCORSO ({profile_label})</span>"
+                )
+                for warning in warnings[:5]:
+                    report_lines.append(
+                        f"<span style='font-size:12px;'>{html.escape(str(warning.get('message', '')))}</span>"
+                    )
         if report_lines:
             report_text = "<br>".join(report_lines)
             report_box = QTextEdit()
