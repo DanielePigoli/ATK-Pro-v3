@@ -538,6 +538,13 @@
                 <li><strong>Portable mode:</strong> the <code>output</code> folder next to the executable.</li>
             </ul>
             <p>You can change the destination from <strong>Settings &rarr; Select Output Folder</strong>. Default folders are created automatically whenever possible.</p>
+            <h4>🔵 Q: Why does ATK-Pro warn about or block an output path?</h4>
+            <p><strong>A:</strong> Before creating files, ATK-Pro checks the longest path expected for the record. The final summary distinguishes between two situations:</p>
+            <ul>
+                <li><strong>Blocking error:</strong> the name contains invalid characters, uses a Windows reserved name, ends with a space or period, or a path segment exceeds the supported limit. Only the affected record is stopped, and its working folder is not created.</li>
+                <li><strong>Compatibility warning:</strong> the path is close to a precautionary threshold or may cause problems with older Windows applications. Processing can continue, but selecting a shorter destination is advisable.</li>
+            </ul>
+            <p>The <strong>OneDrive/SharePoint</strong> profile is applied only when the selected folder is actually located under a <code>OneDrive</code> or <code>OneDrive - Organization</code> root. If an error occurs, shorten the record name or select a destination folder closer to the drive root; files already produced by other processing runs do not need to be renamed or moved.</p>
             <h4>🔵 Q: Can I move the output files after processing?</h4>
             <p><strong>A:</strong> Yes, final output files can be moved after processing.</p>
             <p>After completion:</p>

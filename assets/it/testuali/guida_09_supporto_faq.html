@@ -538,6 +538,13 @@
                 <li><strong>Modalità portatile:</strong> cartella <code>output</code> accanto all&apos;eseguibile.</li>
             </ul>
             <p>Puoi cambiare destinazione da <strong>Impostazioni &rarr; Seleziona cartella output</strong>. Le cartelle predefinite vengono create automaticamente quando possibile.</p>
+            <h4>🔵 P: Perché ATK-Pro segnala o blocca un percorso di output?</h4>
+            <p><strong>R:</strong> Prima di creare file, ATK-Pro controlla il percorso più lungo previsto per il record. Il riepilogo finale distingue due situazioni:</p>
+            <ul>
+                <li><strong>Errore bloccante:</strong> il nome contiene caratteri non ammessi, usa un nome riservato Windows, termina con uno spazio o un punto, oppure un segmento supera il limite supportato. Viene fermato soltanto il record interessato e non viene creata la relativa cartella di lavoro.</li>
+                <li><strong>Avviso di compatibilità:</strong> il percorso è vicino a una soglia prudenziale o può creare difficoltà con applicazioni Windows meno recenti. L&apos;elaborazione può continuare, ma conviene scegliere una destinazione più breve.</li>
+            </ul>
+            <p>Il profilo <strong>OneDrive/SharePoint</strong> viene applicato soltanto quando la cartella selezionata si trova realmente sotto una radice <code>OneDrive</code> o <code>OneDrive - Organizzazione</code>. In caso di errore, abbrevia il nome del record o scegli una cartella di destinazione più vicina alla radice dell&apos;unità; non è necessario rinominare o spostare file già prodotti da altre elaborazioni.</p>
             <h4>🔵 P: Posso spostare file output dopo elaborazione?</h4>
             <p><strong>R:</strong> Sì, i file finali possono essere spostati dopo l&apos;elaborazione.</p>
             <p>Dopo completamento:</p>

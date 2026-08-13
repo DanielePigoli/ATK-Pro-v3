@@ -504,6 +504,8 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             <h3>5. Once completed, a summary of the selected folders is displayed</h3>
             <p>✅ <strong>The mode and folders are saved</strong>. The next time an input file is opened, they are restored automatically if compatible with the number of records.</p>
             <p>⚠️ If the new input file contains a different number of documents or registers than the saved folder configuration, a warning is displayed and the selection is reset in order to request new folders.</p>
+            <p>🛡️ <strong>Path preflight:</strong> before creating folders or files, ATK-Pro checks the expected names and paths. Windows-incompatible names and excessively long path segments block only the affected record; compatibility warnings are displayed in the final summary.</p>
+            <p>☁️ <strong>OneDrive/SharePoint is not assumed to be the default destination.</strong> Its specific limits are applied only when the selected folder is actually located under a OneDrive root. For other paths, the legacy Windows threshold of 260 characters is treated as a precautionary warning rather than an automatic block.</p>
             <h4>📌 MODE SUMMARY:</h4>
             <ul>
                 <li><strong>Single folder:</strong> Simple, everything in one place. Suitable for quick processing or testing</li>

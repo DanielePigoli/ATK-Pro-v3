@@ -504,6 +504,8 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
             <h3>5. Ao final, é exibido um resumo das pastas escolhidas</h3>
             <p>✅ <strong>O modo e as pastas são armazenados</strong>. Na próxima abertura de um arquivo de entrada, elas serão restauradas automaticamente se forem compatíveis com o número de registros.</p>
             <p>⚠️ Se o novo arquivo de entrada tiver um número de Documentos/Registros diferente do correspondente às pastas salvas, será exibido um aviso e a seleção será redefinida para solicitar novas pastas.</p>
+            <p>🛡️ <strong>Verificação preventiva de caminhos:</strong> antes de criar pastas ou arquivos, o ATK-Pro verifica os nomes e caminhos previstos. Nomes incompatíveis com o Windows e segmentos de caminho excessivamente longos bloqueiam apenas o registro afetado; os avisos de compatibilidade são exibidos no resumo final.</p>
+            <p>☁️ <strong>O OneDrive/SharePoint não é considerado o destino padrão.</strong> Seus limites específicos são aplicados somente quando a pasta selecionada está realmente localizada sob uma raiz do OneDrive. Nos demais caminhos, o limite histórico de 260 caracteres do Windows é tratado como um aviso preventivo, e não como um bloqueio automático.</p>
             <h4>📌 RESUMO DOS MODOS:</h4>
             <ul>
                 <li><strong>Pasta única:</strong> Simples, tudo em um só lugar. Adequado para processamentos rápidos ou testes</li>
