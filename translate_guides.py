@@ -141,7 +141,7 @@ def sha256_text(text: str) -> str:
 
 def should_translate(text: str) -> bool:
     value = text.strip()
-    if len(value) < 2 or re.fullmatch(r"[\s\d\W]+", value):
+    if not value or re.fullmatch(r"[\s\d\W]+", value):
         return False
     if re.match(r"https?://", value) or re.match(r"^mailto:", value):
         return False
@@ -153,7 +153,7 @@ def should_translate(text: str) -> bool:
 
 
 def extract_html_text(html: str) -> tuple[str, dict[str, str]]:
-    """Sostituisce esclusivamente i nodi testuali traducibili con segnaposto."""
+    """Sostituisce nodi testuali e ``alt`` traducibili con segnaposto."""
     parts = re.split(r"(<[^>]*?>)", html, flags=re.DOTALL)
     texts: dict[str, str] = {}
     stack: list[str] = []
@@ -162,6 +162,30 @@ def extract_html_text(html: str) -> tuple[str, dict[str, str]]:
 
     for index, segment in enumerate(parts):
         if index % 2:
+            def replace_attribute(match: re.Match[str]) -> str:
+                value = match.group(3)
+                if not should_translate(value):
+                    return match.group(0)
+                placeholder = f"T{len(texts):05d}"
+                texts[placeholder] = value
+                return f"{match.group(1)}{match.group(2)}{{{placeholder}}}{match.group(2)}"
+
+            segment = re.sub(
+                r"(\balt\s*=\s*)([\"'])(.*?)\2",
+                replace_attribute,
+                segment,
+                flags=re.IGNORECASE | re.DOTALL,
+            )
+            if re.match(r"<meta\b", segment, flags=re.IGNORECASE) and re.search(
+                r"\bname\s*=\s*([\"'])description\1", segment, flags=re.IGNORECASE,
+            ):
+                segment = re.sub(
+                    r"(\bcontent\s*=\s*)([\"'])(.*?)\2",
+                    replace_attribute,
+                    segment,
+                    count=1,
+                    flags=re.IGNORECASE | re.DOTALL,
+                )
             match = re.match(r"</?([a-zA-Z][a-zA-Z0-9]*)", segment)
             if match:
                 tag = match.group(1).lower()

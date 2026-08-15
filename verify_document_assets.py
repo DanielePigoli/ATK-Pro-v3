@@ -43,6 +43,7 @@ ITALIAN_GUIDE_MODULES = [
 ENGLISH_GUIDE_MODULES = ITALIAN_GUIDE_MODULES.copy()
 SPANISH_GUIDE_MODULES = ITALIAN_GUIDE_MODULES.copy()
 PORTUGUESE_GUIDE_MODULES = ITALIAN_GUIDE_MODULES.copy()
+FRENCH_GUIDE_MODULES = ITALIAN_GUIDE_MODULES.copy()
 
 MENU_DOCUMENTS = {
     "Disclaimer": (
@@ -85,6 +86,8 @@ def expected_guide_modules(lang_dir: Path) -> list[str]:
         return SPANISH_GUIDE_MODULES
     if lang_dir.name == "pt":
         return PORTUGUESE_GUIDE_MODULES
+    if lang_dir.name == "fr":
+        return FRENCH_GUIDE_MODULES
     return BASE_GUIDE_MODULES
 
 
@@ -218,6 +221,7 @@ def main() -> int:
     print(
         f"- Guide modules checked: Italian {len(ITALIAN_GUIDE_MODULES)}, "
         f"English {len(ENGLISH_GUIDE_MODULES)}, Spanish {len(SPANISH_GUIDE_MODULES)}, "
+        f"Portuguese {len(PORTUGUESE_GUIDE_MODULES)}, French {len(FRENCH_GUIDE_MODULES)}, "
         f"other languages {len(BASE_GUIDE_MODULES)}"
     )
     print("- Menu documents checked: Disclaimer, author, project, guide")
