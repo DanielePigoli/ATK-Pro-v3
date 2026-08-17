@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Modul 03: KI-gestützte Recherche</title>
+    <meta name="description" content="ATK-Pro — KI-gestützte Recherche">
+    <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Modul 03: KI-gestützte Recherche</h1>
+        </header>
+
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_02_operazioni_base.html" class="nav-button">&#8592; Mod.02 &mdash; Grundlegende Operationen</a>
+            <a href="guida.html" class="nav-button">&#127968; Hauptindex</a>
+            <a href="guida_04_visualizzazione_immagini.html" class="nav-button">Mod.04 &mdash; Bildanzeige &#8594;</a>
+        </div>
+
+        <div class="section">
+            <h2>&#128204; Überblick</h2>
+            <p>Die Funktion <strong>KI-gestützte Recherche</strong> hilft dabei, eine genealogische Fragestellung in einen strukturierteren Arbeitsplan umzuwandeln: Sie schlägt Portale, Rechercheansätze, Filter und Beispielabfragen vor, die manuell in den verfügbaren Quellen ausprobiert werden können.</p>
+            <p>Sie wird über das Menü <strong>Servizi -&gt; Ricerca assistita AI</strong> geöffnet. Sie lädt keine Dokumente herunter und ersetzt nicht die direkte Nutzung der Portale: Sie liefert praktische Hinweise, die überprüft, belegt und mit archivfachlichem Urteilsvermögen verwendet werden müssen.</p>
+        </div>
+
+        <div class="section">
+            <h2>&#128269; Wann sie verwendet werden sollte</h2>
+            <div class="section-box">
+                <ul>
+                    <li>Wenn du von Nachnamen, Orten und Zeiträumen ausgehst, aber nicht weißt, welche Archive oder Portale du zuerst prüfen solltest.</li>
+                    <li>Wenn du eine Recherche in mehreren Ländern planen möchtest, beispielsweise zur italienischen Auswanderung nach Amerika, Europa oder Ozeanien.</li>
+                    <li>Wenn du Beispielabfragen und Filter erhalten möchtest, die du in institutionelle Portale übernehmen kannst.</li>
+                    <li>Wenn du alternative Strategien für Geburts-, Tauf-, Heirats- und Sterbeurkunden sowie für Militärdienst, Einwanderung oder Staatsangehörigkeit vergleichen möchtest.</li>
+                </ul>
+            </div>
+            <div class="warning">
+                <p><strong>Hinweis:</strong> Die von einem KI-Modell erzeugten Ergebnisse sind Arbeitshypothesen. Sie müssen stets anhand offizieller Quellen überprüft werden und stellen keinen genealogischen Nachweis dar.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128421;&#65039; Hauptfelder</h2>
+
+            <div class="section-box">
+                <h3>Suchanfrage</h3>
+                <p>Gib Person, Ort, Zeitraum und Quellentyp ein. Ein nützliches Beispiel ist: <code>Rossi, Bianchi a Firenze e Prato 1850-1900, battesimi e matrimoni</code>.</p>
+                <p>Je konkreter die Anfrage ist, desto besser lassen sich die Hinweise verwenden: Vermeide zu allgemeine Formulierungen und gib stets etwaige Migrationen, Namensvarianten oder relevante historische Gebiete an.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>KI-Anbieter und optionales Modell</h3>
+                <p>Über das Anbieter-Menü kannst du den zu verwendenden KI-Dienst aus den in der Anwendung konfigurierten Diensten auswählen. Das Feld für das optionale Modell wird nur benötigt, wenn du ein bestimmtes, vom gewählten Anbieter unterstütztes Modell angeben möchtest; andernfalls kann es leer bleiben.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>Standard-Prompt</h3>
+                <p>Die Funktion enthält vier vordefinierte Vorlagen:</p>
+                <ul>
+                    <li><strong>Detaillierte allgemeine Recherche</strong>, für eine erste umfassende Bestandsaufnahme.</li>
+                    <li><strong>Detaillierte internationale Strategien</strong>, nützlich für Migrationswege und Recherchen außerhalb Italiens.</li>
+                    <li><strong>Detaillierte Recherche nach bestimmten Urkunden</strong>, wenn du nach einem bestimmten Urkundentyp suchst.</li>
+                    <li><strong>Erweiterte Recherche mit Filtern</strong>, wenn du Filter, Varianten und strukturiertere Abfragen erhalten möchtest.</li>
+                </ul>
+            </div>
+
+            <div class="section-box">
+                <h3>Multi-Provider</h3>
+                <p>Die Option <strong>Mit allen verfügbaren Anbietern verarbeiten (Multi-Provider)</strong> ist standardmäßig aktiviert. Wenn im Tresor mehrere Schlüssel vorhanden sind, kann ATK-Pro mehrere Anbieter abfragen und die Ergebnisse vergleichen. Du kannst sie deaktivieren, wenn du dich auf den ausgewählten Anbieter beschränken möchtest.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128221; Persönliche Notizen</h2>
+            <p>Im Notizbereich kannst du wiederkehrende Anweisungen speichern, die der Anfrage hinzugefügt werden sollen, beispielsweise Varianten von Nachnamen, historische Grenzen, bekannte Pfarreien, bereits geprüfte Archive oder auszuschließende Kriterien.</p>
+            <p>Du kannst eine neue Notiz erstellen, speichern, aus der Liste aufrufen oder löschen. Die ausgewählte Notiz wird dem endgültigen Prompt hinzugefügt, der an den KI-Anbieter gesendet wird.</p>
+        </div>
+
+        <div class="section">
+            <h2>&#128190; Ergebnisse und Speichern</h2>
+            <div class="section-box">
+                <p>Drücke <strong>PORTALE UND ABFRAGEN VORSCHLAGEN</strong> , um die Verarbeitung zu starten. Während der Verarbeitung zeigt das Fenster den Status des Anbieters und des verwendeten Schlüssel-Slots an.</p>
+                <p>Die Ergebnisse können nach Portal, Begründung, Beispielabfrage, Zeitraum, Urkundentyp oder Filtern/Strategien gruppiert werden. Nach der Erstellung kannst du die Ausgabe im Markdown-Format (.md), als einfachen Text (.txt) oder im HTML-Format (.html) mit den Schaltflächen <strong>KI-ERGEBNISSE SPEICHERN</strong> und <strong>HTML-ERGEBNIS SPEICHERN</strong>.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128273; Schlüsseltresor</h2>
+            <p>Die Schaltfläche <strong>SCHLÜSSELTRESOR VERWALTEN (CSV)</strong> öffnet die Verwaltung der Schlüssel für die konfigurierten Anbieter. Die Recherchefunktion verwendet nur Anbieter, für die ein gültiger Schlüssel oder eine kompatible lokale Konfiguration verfügbar ist.</p>
+        </div>
+
+        <div class="section">
+            <h2>&#9888;&#65039; Betriebliche Einschränkungen</h2>
+            <ul>
+                <li>Die Funktion umgeht keine Anmeldungen, Paywalls, technischen Beschränkungen oder Nutzungsbedingungen der Portale.</li>
+                <li>Die Vorschläge müssen im offiziellen Portal überprüft werden, bevor sie in eine dokumentierte Recherche aufgenommen werden.</li>
+                <li>Die Verfügbarkeit von KI-Anbietern und Modellen kann sich im Laufe der Zeit ändern.</li>
+                <li>Bei sensiblen Recherchen solltest du stets dokumentieren, welche Quellen tatsächlich konsultiert wurden, und nicht nur den KI-Vorschlag festhalten.</li>
+            </ul>
+        </div>
+
+        <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_02_operazioni_base.html" class="nav-button">&#8592; Mod.02 &mdash; Grundlegende Operationen</a>
+            <a href="guida.html" class="nav-button">&#127968; Hauptindex</a>
+            <a href="guida_04_visualizzazione_immagini.html" class="nav-button">Mod.04 &mdash; Bildanzeige &#8594;</a>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
+    </div>
+</body>
+</html>
