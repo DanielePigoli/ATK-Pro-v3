@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 02: Operazioni di base</title>
+    <title>📚 Module 02: Basisbewerkingen</title>
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -327,407 +327,442 @@
 <body>
     <div class="container">
         <header>
-            <h1>📚 Modulo 02: Operazioni di base</h1>
+            <h1>📚 Module 02: Basisbewerkingen</h1>
         </header>
 
     <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
+            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installatie, opstarten en interface</a>
+            <a href="guida.html" class="nav-button">&#127968; Hoofdindex</a>
+            <a href="guida_03_ricerca_assistita_ai.html" class="nav-button">Mod.03 &mdash; AI-ondersteund zoeken &#8594;</a>
         </div>
         <div class="section-box">
-            <h3>4. CARICAMENTO RECORD IIIF - FORMATI DI INPUT</h3>
+            <h3>1. RECORDS LADEN - INVOERFORMATEN</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📥 STRUTTURA DELL'INPUT</h4>
-            <p>ATK-Pro accetta file di input con un formato specifico basato su COPPIE: Per OGNI record da elaborare, fornisci:</p>
-            <h3>1. RIGA 1: Modalità + Nome (facoltativo)</h3>
+            <h4>📥 INVOERSTRUCTUUR EN ONDERSTEUNDE PORTALEN</h4>
+            <p>ATK-Pro accepteert invoerbestanden met een specifiek formaat op basis van PAREN: geef voor ELK te verwerken record Modus + URL op.</p>
+            <p><strong>Ondersteunde portalen:</strong> kopieer en plak de openbare URL van de pagina, viewer, manifest of compatibele PDF. ATK-Pro herkent het portaal en past de bijbehorende technische en voorzorgsmodus toe.</p>
+            <p><strong>Ondersteund</strong> duidt op geverifieerde technische compatibiliteit, niet op een onbeperkte toestemming om te downloaden. De bron moet openbaar toegankelijk zijn en de gebruiker moet rechten, licenties, gebruiksvoorwaarden en beperkingen van het afzonderlijke portaal naleven. ATK-Pro omzeilt geen login, toegang via aangesloten instellingen, paywalls of markeringen <code>nodownload</code>.</p>
+            <p>Antenati (Italië), Gallica (Frankrijk), DigiVatLib (Vaticaan), Bodleian Libraries (Oxford), Europeana IIIF, Matricula Online, Findbuch (Südtirol), e-codices/e-rara/e-manuscripta (Zwitserland), Heidelberg UB, Internet Culturale/Estense, Brixiana, Memooria, BNC Roma, BNCF Teca, Museo Galileo en Internet Archive.</p>
+            <h4>🇮🇹 ITALIAANSE PORTALEN TOEGEVOEGD IN V3</h4>
+            <table>
+                <thead>
+                    <tr><th>Portaal</th><th>Invoer en modus</th><th>Operationele beperkingen</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Biblioteca Digitale Siena</td><td>IIIF-viewerpagina; <code>D</code> of <code>R</code></td><td>Voor <code>R</code> is een expliciet bereik vereist; controleer de rechten van het object.</td></tr>
+                    <tr><td>Biblioteca Digitale Trentina</td><td>Openbare pagina; afbeeldingen of directe PDF</td><td>Gebruik voor registers en reeksen een bereik. Als alleen de PDF zonder bereik wordt gevraagd, gebruikt ATK-Pro de officiële PDF wanneer die beschikbaar is.</td></tr>
+                    <tr><td>Biblioteca Digitale Lombarda</td><td>Openbaar REST-PDF-endpoint; alleen <code>D</code></td><td>Ondersteuning beperkt tot één PDF: geen registers, reeksen of IIIF-afbeeldingen.</td></tr>
+                    <tr><td>Rovereto Digital Library</td><td>Entity-pagina of API-URL van het item; <code>D</code> of <code>R</code></td><td>Downloadt alleen openbare bitstreams die als pagina's zijn herkend; voor <code>R</code> is een bereik vereist.</td></tr>
+                    <tr><td>BUB Digitale</td><td>BUB-pagina met parameter <code>manifest=</code> of BUB IIIF-manifest</td><td>Alleen openbare bronnen; voor <code>R</code> is een bereik vereist en moet de licentie van het afzonderlijke object worden gecontroleerd.</td></tr>
+                    <tr><td>FICLIT Digital Library</td><td>Omeka S-itempagina of FICLIT IIIF-manifest</td><td>Alleen openbare items; voor <code>R</code> is een bereik vereist. De afbeeldingen worden verkregen uit de directe bron van het canvas.</td></tr>
+                    <tr><td>Archivio Storico UniBO</td><td>Openbaar IIIF-manifest van het afzonderlijke item; <code>D</code> of <code>R</code></td><td>Collecties worden niet als invoer geaccepteerd. Voor <code>R</code> is een expliciet bereik vereist en moeten de rechten van het afzonderlijke item worden gecontroleerd.</td></tr>
+                    <tr><td>PHAIDRA Università di Padova</td><td>Openbare pagina van het object of het bijbehorende officiële IIIF-manifest; <code>D</code> of <code>R</code></td><td>Alleen openbare objecten. Voor <code>R</code> is een bereik vereist; controleer de rechtenvermelding of de licentie die aan het item is gekoppeld.</td></tr>
+                    <tr><td>DOGE Università di Genova</td><td>Openbare pagina van het object; <code>D</code> of <code>R</code></td><td>Gebruikt uitsluitend de openbare bronnen die door het portaal expliciet als downloadbaar zijn aangeduid. Uitgesloten zijn originele bronnen of bronnen gemarkeerd als <code>nodownload</code>; voor <code>R</code> is een bereik vereist.</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Opmerking:</strong> BEIC, Ambrosiana en OrienTales zijn niet opgenomen in de downloader: er zijn geen stabiele openbare endpoints gevonden of de onderzochte records vereisen toegang via een aangesloten instelling. Archivi Nazionali, SAN, SIAS, SIUSA, BeWeB en de bronnen uit Ticino, Graubünden en de bisdommen blijven bronnen voor oriëntatie en handmatige raadpleging.</p>
+            <h3>1. REGEL 1: Modus + Naam (optioneel)</h3>
             <ul>
-                <li>D = Documento singolo (una singola immagine/pagina)</li>
-                <li>R = Registro (collezione completa di pagine/documenti)</li>
+                <li>D = Afzonderlijk document (één afbeelding/pagina)</li>
+                <li>R = Register (volledige collectie van pagina's/documenten)</li>
             </ul>
-            <h3>2. RIGA 2: URL del Manifest IIIF</h3>
-            <p><strong>Esempio di file input.txt corretto:</strong></p>
-            <pre class="file-structure"># Commenti iniziano con #
+            <h3>2. REGEL 2: Openbare URL van het record of de bron</h3>
+            <p><strong>Voorbeeld van een correct input.txt-bestand:</strong></p>
+            <pre class="file-structure"># Opmerkingen beginnen met #
 
-RECORD 1 (coppia di righe):
-D - Lettera Importante
+RECORD 1 (paar regels):
+D - Belangrijke brief
 https://biblioteca.example.org/iiif/doc123/manifest.json
 
-RECORD 2 (coppia di righe):
-R - Registro Amministrativo 1920-1925
+RECORD 2 (paar regels):
+R - Administratief register 1920-1925
 https://archives.example.org/iiif/reg456/manifest.json
 
-RECORD 3 (coppia di righe):
-D - Fotografia Singola
+RECORD 3 (paar regels):
+D - Afzonderlijke foto
 https://collections.example.org/iiif/foto789/manifest.json</pre>
-            <h4>📝 REGOLE FORMATO INPUT:</h4>
+            <h4>📝 REGELS VOOR HET INVOERFORMAAT:</h4>
             <ul>
-                <li>Righe vuote: ignorate (puoi usarle per leggibilità)</li>
-                <li>Righe con #: ignorate come commenti</li>
-                <li>Modalità D o R: sono obbligatorie (maiuscole)</li>
-                <li>Nome file: facoltativo dopo modalità (es. "D - Nome" o solo "D")</li>
-                <li>URL: deve iniziare con http:// o https://</li>
-                <li>Coppie: modalità + URL devono stare su righe consecutive</li>
+                <li>Lege regels: worden genegeerd (je kunt ze gebruiken voor de leesbaarheid)</li>
+                <li>Regels met #: worden als opmerkingen genegeerd</li>
+                <li>Modus D/d of R/r: is verplicht; hoofdletters en kleine letters zijn gelijkwaardig</li>
+                <li>Bestandsnaam: optioneel na de modus (bijv. "D - Naam" of alleen "D")</li>
+                <li>URL: moet beginnen met http:// of https://</li>
+                <li>Paren: modus + URL moeten op opeenvolgende regels staan</li>
             </ul>
-            <h4>⚙️ COME CARICARE L'INPUT - 3 OPZIONI DAL MENU:</h4>
-            <p>OPZIONE 1: Visualizza Esempio Input ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Esempio input"</h3>
-            <h3>2. Si apre una finestra che mostra il file di esempio localizzato</h3>
-            <h3>3. Puoi copiare il contenuto come template per il tuo file input</h3>
-            <h3>4. File di esempio: assets/[lingua]/testuali/input_link_base.txt</h3>
-            <p>OPZIONE 2: Apri File Input Pronto ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Apri input"</h3>
-            <h3>2. Si apre un dialog di selezione file</h3>
-            <h3>3. Scegli il tuo file input.txt (deve rispettare il formato coppie)</h3>
-            <h3>4. ATK-Pro carica automaticamente e legge tutti i record</h3>
-            <h3>5. Visualizza numero di record caricati e pronti per l'elaborazione</h3>
-            <p>OPZIONE 3: Modifica Input Già Caricato ──────────────────────────────────────────</p>
-            <h3>1. Dopo aver caricato un file input (OPZIONE 2)</h3>
-            <h3>2. Clicca Menu → "File input" → "Modifica input"</h3>
-            <h3>3. Si apre un editor di testo con il file attualmente caricato</h3>
-            <h3>4. Modifica le coppie (aggiungi, rimuovi, cambia URL)</h3>
-            <h3>5. Clicca "Salva" per aggiornare i record in elaborazione</h3>
-            <h3>6. Il programma reinterpreta il file aggiornato</h3>
-            <h4>📌 DIFFERENZA TRA D E R:</h4>
+            <h4>⚙️ DE INVOER LADEN - 3 OPTIES IN HET MENU:</h4>
+            <p>OPTIE 1: Voorbeeldinvoer weergeven ──────────────────────────────────────</p>
+            <h3>1. Klik op Menu → "File input" → "Esempio input"</h3>
+            <h3>2. Er wordt een venster geopend waarin het gelokaliseerde voorbeeldbestand wordt weergegeven</h3>
+            <h3>3. Je kunt de inhoud kopiëren als sjabloon voor je invoerbestand</h3>
+            <h3>4. Voorbeeldbestand: assets/[lingua]/testuali/input_link_base.txt</h3>
+            <p><strong>Opmerking over de bestandsnaam:</strong> het meegeleverde bestand heet <code>input_link_base.txt</code>. De naam is in v3 genormaliseerd om verwijzingen naar eerdere versies te voorkomen; het formaat blijft compatibel met het laden van IIIF-records.</p>
+            <p>OPTIE 2: Klaar invoerbestand openen ──────────────────────────────────────</p>
+            <h3>1. Klik op Menu → "File input" → "Apri input"</h3>
+            <h3>2. Er wordt een dialoogvenster voor bestandsselectie geopend</h3>
+            <h3>3. Kies je bestand input.txt (dit moet het paarformaat volgen)</h3>
+            <h3>4. ATK-Pro laadt automatisch alle records en leest ze in</h3>
+            <h3>5. Toont het aantal geladen records dat gereed is voor verwerking</h3>
+            <p>OPTIE 3: Reeds geladen invoer wijzigen ──────────────────────────────────────────</p>
+            <h3>1. Nadat je een invoerbestand hebt geladen (OPTIE 2)</h3>
+            <h3>2. Klik op Menu → "File input" → "Modifica input"</h3>
+            <h3>3. Er wordt een teksteditor geopend met het momenteel geladen bestand</h3>
+            <h3>4. Wijzig de paren (toevoegen, verwijderen, URL wijzigen)</h3>
+            <h3>5. Klik op "Salva" om de te verwerken records bij te werken</h3>
+            <h3>6. Het programma interpreteert het bijgewerkte bestand opnieuw</h3>
+            <h4>📌 VERSCHIL TUSSEN D EN R:</h4>
             <ul>
-                <li>D (Documento): Gestisce una singola immagine/pagina
+                <li>D (Document): verwerkt één afbeelding/pagina
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: file singolo per il documento</li>
-                <li style="margin-top: 12px;">R (Registro): Gestisce collezioni multi-pagina
+                <li style="list-style: none; margin-left: 20px;">→ Uitvoer: één bestand voor het document</li>
+                <li style="margin-top: 12px;">R (Register): verwerkt collecties met meerdere pagina's
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: cartella con pagine organizzate + PDF (se richiesto dall'utente)</li>
+                <li style="list-style: none; margin-left: 20px;">→ Uitvoer: map met georganiseerde pagina's + PDF (indien door de gebruiker gevraagd)</li>
             </ul>
-            <h4>✅ VALIDAZIONE RECORD</h4>
-            <p>Dopo il caricamento, il programma verifica:</p>
+            <h4>✅ RECORDVALIDATIE</h4>
+            <p>Na het laden controleert het programma:</p>
             <ul>
-                <li>✓ URL accessibile e raggiungibile</li>
-                <li>✓ Formato IIIF valido (questa versione+)</li>
-                <li>✓ Numero immagini e canvas disponibili</li>
-                <li>✓ Metadata (titolo, autore, data)</li>
+                <li>✓ URL toegankelijk en bereikbaar</li>
+                <li>✓ Compatibele bron: IIIF v2/v3-manifest, ondersteunde pagina, afbeelding of directe PDF afhankelijk van het portaal</li>
+                <li>✓ Aantal beschikbare afbeeldingen en canvassen</li>
+                <li>✓ Metadata (titel, auteur, datum)</li>
             </ul>
-            <h4>❌ ERRORI COMUNI</h4>
+            <h4>❌ VEELVOORKOMENDE FOUTEN</h4>
             <ul>
-                <li>"URL non valido": Controlla copia/incolla URL</li>
-                <li>"Manifest non trovato (404)": URL è scaduto o sbagliato</li>
-                <li>"Formato IIIF non supportato": Il server non usa IIIF standard</li>
-                <li>"Timeout connessione": Connessione Internet lenta/assente</li>
+                <li>"Ongeldige URL": controleer het kopiëren/plakken van de URL</li>
+                <li>"Manifest niet gevonden (404)": URL is verlopen of onjuist</li>
+                <li>"IIIF-formaat niet ondersteund": de server gebruikt geen standaard-IIIF</li>
+                <li>"Verbindingstime-out": internetverbinding is traag of afwezig</li>
             </ul>
-            <h4>💾 SALVATAGGIO RECORD</h4>
-            <p>Dopo il caricamento del manifest, il programma salva automaticamente i metadati IIIF. DOVE: Nella cartella output che scegli (vedi Sezione 5, PASSO 2) <strong>STRUTTURA CARTELLE DOPO CARICAMENTO (prima dell'elaborazione):</strong></p>
+            <h4>💾 RECORDS OPSLAAN</h4>
+            <p>Na het laden van het manifest slaat het programma de IIIF-metadata automatisch op. WAAR: in de uitvoermap die je kiest (zie Sectie 2, STAP 2) <strong>MAPSTRUCTUUR NA HET LADEN (vóór de verwerking):</strong></p>
 <pre class="file-structure">[cartella_output]/
- ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale (livello principale)
- └─ [nome]/                            ← Sottocartella SOLO per metadati
-    ├─ [nome]_genealogico.json        ← Metadati genealogici estratti
-    └─ [nome]_tecnico.json            ← Metadati tecnici (canvas ID, numero pagine)</pre>
-<p> DOPO L'ELABORAZIONE (quando clicchi Menu → Output → Elabora): Nel livello principale vengono aggiunti i file elaborati:</p>
+ ├─ manifest_[ID]_[nome].json         ← Origineel IIIF-manifest (hoofdniveau)
+ └─ [nome]/                            ← Submap ALLEEN voor metadata
+    ├─ [nome]_genealogico.json        ← Geëxtraheerde genealogische metadata
+    └─ [nome]_tecnico.json            ← Technische metadata (canvas ID, aantal pagina's)</pre>
+<p> NA DE VERWERKING (wanneer je klikt op Menu → Output → Elabora): op het hoofdniveau worden de verwerkte bestanden toegevoegd:</p>
 <pre class="file-structure">[cartella_output]/
- ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
- ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite dai tile IIIF (una per pagina)
- ├─ [nome]_canvas_2.jpg/.png/.tif       (formato dipende da quello selezionato)
- ├─ [nome]_canvas_N.jpg/.png/.tif       (N = numero totale di pagine/canvas)
- ├─ [nome].json                        ← Sidecar JSON per ogni immagine (metadati EXIF)
- └─ [nome].pdf                         ← PDF completo (vedi spiegazione sotto)</pre>
+ ├─ manifest_[ID]_[nome].json         ← Origineel IIIF-manifest
+ ├─ [nome]_canvas_1.jpg/.png/.tif     ← Afbeeldingen gereconstrueerd uit IIIF-tiles (één per pagina)
+ ├─ [nome]_canvas_2.jpg/.png/.tif       (formaat is afhankelijk van de gemaakte keuze)
+ ├─ [nome]_canvas_N.jpg/.png/.tif       (N = totaal aantal pagina's/canvassen)
+ ├─ [nome].json                        ← JSON-sidecar voor elke afbeelding (EXIF-metadata)
+ └─ [nome].pdf                         ← Volledige PDF (zie uitleg hieronder)</pre>
 
-<p>I metadati rimangono nella sottocartella [nome]/ come salvati al caricamento.</p>
-<p><strong>NOTA IMPORTANTE: Organizzazione file</strong></p>
+<p>De metadata blijven in de submap [nome]/ zoals ze bij het laden zijn opgeslagen.</p>
+<p><strong>BELANGRIJKE OPMERKING: Bestandsorganisatie</strong></p>
             <ul>
-                <li>Manifest IIIF: livello principale della cartella output</li>
-                <li>Immagini (canvas), PDF, Sidecar JSON: livello principale della cartella output</li>
-                <li>SOLO metadati tecnici e genealogici: salvati in sottocartella [nome]/</li>
-                <li>Le cartelle temporanee (tiles_canvas_X/) vengono eliminate automaticamente al termine</li>
-                <li>Questa struttura consente di gestire più record nella stessa cartella senza confusione</li>
+                <li>IIIF-manifest: hoofdniveau van de uitvoermap</li>
+                <li>Afbeeldingen (canvas), PDF, JSON-sidecar: hoofdniveau van de uitvoermap</li>
+                <li>ALLEEN technische en genealogische metadata: opgeslagen in submap [nome]/</li>
+                <li>De tijdelijke mappen (tiles_canvas_X/) worden aan het einde automatisch verwijderd</li>
+                <li>Met deze structuur kunnen meerdere records zonder verwarring in dezelfde map worden beheerd</li>
             </ul>
-<p><strong>Esempio:</strong> Se elabori "Registro1", troverai:</p>
+<p><strong>Voorbeeld:</strong> Als je "Registro1" verwerkt, vind je:</p>
             <ul>
-                <li>manifest_[ID1]_Registro1.json (livello principale)</li>
-                <li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (livello principale)</li>
-                <li>Registro1.pdf (livello principale)</li>
-                <li>Registro1/ (sottocartella SOLO con metadati genealogico e tecnico)</li>
+                <li>manifest_[ID1]_Registro1.json (hoofdniveau)</li>
+                <li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (hoofdniveau)</li>
+                <li>Registro1.pdf (hoofdniveau)</li>
+                <li>Registro1/ (submap ALLEEN met genealogische en technische metadata)</li>
             </ul>
             </div>
             <div class="section-box">
-            <h3>5. ELABORAZIONE E DOWNLOAD IMMAGINI</h3>
+            <h3>2. AFBEELDINGEN VERWERKEN EN DOWNLOADEN</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>🎯 FLUSSO DI ELABORAZIONE</h4>
-            <p>Il workflow di elaborazione prevede 3 passi:</p>
-            <h4>PASSO 1: SELEZIONA FORMATI IMMAGINE</h4>
+            <h4>🎯 VERWERKINGSWORKFLOW</h4>
+            <p>De verwerkingsworkflow bestaat uit 3 stappen:</p>
+            <h4>STAP 1: AFBEELDINGSFORMATEN SELECTEREN</h4>
             <p>─────────────────────────────────────</p>
-            <h3>1. Carica un file input (File input → Apri input): la finestra formati si apre automaticamente</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona formati immagine"</h3>
-            <h3>3. Si apre una finestra di dialogo con 3 opzioni:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Formato senza perdita (lossless), migliore qualità, file più grandi</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Formato compresso (lossy), buon compromesso qualità/dimensione</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Formato archiviale, massima qualità, file molto grandi</p>
-            <p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Documento PDF</strong></p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Genera un PDF completo con tutte le pagine del registro o documento, in aggiunta ai formati immagine selezionati (o come unico output se nessun formato immagine è selezionato)</p>
-            <h3>4. Seleziona almeno un formato immagine o PDF (puoi sceglierne più di uno)</h3>
-            <h3>5. Clicca "Conferma"</h3>
-            <p>✅ <strong>I formati scelti vengono memorizzati</strong> e pre-selezionati automaticamente alla prossima apertura del programma.</p>
-            <h4>📝 CONSIGLI:</h4>
+            <h3>1. Laad een invoerbestand (File input → Apri input): het venster met formaten wordt automatisch geopend</h3>
+            <h3>2. Of: klik op Menu → "Impostazioni" → "Seleziona formati immagine"</h3>
+            <h3>3. Er wordt een dialoogvenster geopend met 3 opties:</h3>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Formaat zonder kwaliteitsverlies (lossless), beste kwaliteit, grotere bestanden</p>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Gecomprimeerd formaat (lossy), goed compromis tussen kwaliteit en bestandsgrootte</p>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Archiveringsformaat, maximale kwaliteit, zeer grote bestanden</p>
+            <p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>PDF-document</strong></p>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Genereert een volledige PDF met alle pagina's van het register of document, naast de geselecteerde afbeeldingsformaten (of als enige uitvoer als geen afbeeldingsformaat is geselecteerd)</p>
+            <h3>4. Selecteer ten minste één afbeeldingsformaat of PDF (je kunt er meerdere kiezen)</h3>
+            <h3>5. Klik op "Conferma"</h3>
+            <p>✅ <strong>De gekozen formaten worden onthouden</strong> en bij de volgende start van het programma automatisch vooraf geselecteerd.</p>
+            <h4>📝 AANBEVELINGEN:</h4>
             <ul>
-                <li>Per preview/consultazione: JPG (veloce da aprire, minore spazio)</li>
-                <li>Per archivio conservativo: PNG (lossless, compromesso di spazio) o TIFF (massima qualità)</li>
-                <li>Per entrambi: seleziona sia PNG che TIFF</li>
-                <li>Per PDF: seleziona PDF insieme a uno o più formati immagine, oppure seleziona solo PDF per generare esclusivamente il documento PDF senza file immagine separati</li>
+                <li>Voor voorbeeldweergave/raadpleging: JPG (snel te openen, minder opslagruimte)</li>
+                <li>Voor duurzame archivering: PNG (lossless, goed compromis qua opslagruimte) of TIFF (maximale kwaliteit)</li>
+                <li>Voor beide: selecteer zowel PNG als TIFF</li>
+                <li>Voor PDF: selecteer PDF samen met een of meer afbeeldingsformaten, of selecteer alleen PDF om uitsluitend het PDF-document te genereren zonder afzonderlijke afbeeldingsbestanden</li>
             </ul>
-            <h4>PASSO 2: SELEZIONA CARTELLE OUTPUT</h4>
+            <h4>STAP 2: UITVOERMAPPEN SELECTEREN</h4>
             <p>──────────────────────────────────────</p>
-            <h3>1. La finestra cartelle si apre automaticamente dopo la scelta dei formati (quando carichi un file input)</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona cartelle output"</h3>
-            <h3>3. Scegli la MODALITÀ di organizzazione delle cartelle:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella unica per tutti</span> → un'unica cartella per tutti i record (doc e registri)</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartelle separate doc/reg</span> → una cartella per tutti i documenti, una per tutti i registri</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella per ogni record</span> → una cartella distinta per ciascun record nel file input</p>
-            <h3>4. Dopo la scelta della modalità, seleziona le cartelle richieste (1, 2 o N finestre di dialog)</h3>
-            <h3>5. Al termine mostra il riepilogo delle cartelle scelte</h3>
-            <p>✅ <strong>Modalità e cartelle vengono memorizzate</strong>. Alla prossima apertura di un file input, vengono ripristinate automaticamente se compatibili con il numero di record.</p>
-            <p>⚠️ Se il nuovo file input ha un numero diverso di Documenti/Registri rispetto alle cartelle salvate, viene mostrato un avviso e la selezione viene azzerata per richiedere nuove cartelle.</p>
-            <h4>📌 RIEPILOGO MODALITÀ:</h4>
+            <h3>1. Het mappenvenster wordt automatisch geopend nadat de formaten zijn gekozen (wanneer je een invoerbestand laadt)</h3>
+            <h3>2. Of: klik op Menu → "Impostazioni" → "Seleziona cartelle output"</h3>
+            <h3>3. Kies de MODUS voor het organiseren van de mappen:</h3>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Eén map voor alles</span> → één map voor alle records (documenten en registers)</p>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Afzonderlijke mappen doc/reg</span> → één map voor alle documenten en één voor alle registers</p>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Eén map per record</span> → een afzonderlijke map voor elk record in het invoerbestand</p>
+            <h3>4. Selecteer na het kiezen van de modus de vereiste mappen (1, 2 of N dialoogvensters)</h3>
+            <h3>5. Aan het einde wordt een overzicht van de gekozen mappen weergegeven</h3>
+            <p>✅ <strong>Modus en mappen worden onthouden</strong>. Bij het volgende openen van een invoerbestand worden ze automatisch hersteld als ze compatibel zijn met het aantal records.</p>
+            <p>⚠️ Als het nieuwe invoerbestand een ander aantal Documenten/Registers bevat dan waarvoor de mappen zijn opgeslagen, wordt een waarschuwing weergegeven en wordt de selectie gewist zodat nieuwe mappen kunnen worden gekozen.</p>
+            <p>🛡️ <strong>Voorafgaande controle van paden:</strong> voordat mappen of bestanden worden aangemaakt, controleert ATK-Pro de verwachte namen en paden. Namen die niet compatibel zijn met Windows en buitensporig lange padsegmenten blokkeren alleen het betreffende record; compatibiliteitswaarschuwingen worden in het eindoverzicht weergegeven.</p>
+            <p>☁️ <strong>OneDrive/SharePoint wordt niet als standaardbestemming verondersteld.</strong> De bijbehorende beperkingen worden alleen toegepast wanneer de geselecteerde map zich daadwerkelijk onder een OneDrive-root bevindt. Voor andere paden wordt de historische Windows-limiet van 260 tekens als voorzorgswaarschuwing behandeld en niet als automatische blokkering.</p>
+            <h4>📌 OVERZICHT VAN DE MODI:</h4>
             <ul>
-                <li><strong>Cartella unica:</strong> Semplice, tutto in un posto. Adatto per elaborazioni veloci o test</li>
-                <li><strong>Separate doc/reg:</strong> Organizzazione per tipo. Default: <code>output/doc/</code> e <code>output/reg/</code></li>
-                <li><strong>Per ogni record:</strong> Massima flessibilità. Puoi usare drive diversi, NAS, cartelle personalizzate</li>
+                <li><strong>Eén map:</strong> Eenvoudig, alles op één plaats. Geschikt voor snelle verwerkingen of tests</li>
+                <li><strong>Afzonderlijk doc/reg:</strong> Organisatie per type. Standaard: <code>output/doc/</code> en <code>output/reg/</code></li>
+                <li><strong>Per record:</strong> Maximale flexibiliteit. Je kunt verschillende drives, NAS en aangepaste mappen gebruiken</li>
             </ul>
-            <h4>PASSO 3: AVVIA ELABORAZIONE</h4>
+            <h4>STAP 3: VERWERKING STARTEN</h4>
             <p>─────────────────────────────</p>
-            <h3>1. Clicca Menu → "Output" → "Elabora"</h3>
-            <h3>2. Verifica che:</h3>
-            <p>✓ Almeno 1 formato immagine selezionato</p>
-            <p>✓ Almeno 1 record caricato</p>
-            <p><strong>Se mancano questi requisiti, appare messaggio di errore:</strong></p>
-            <p>❌ "Nessun formato selezionato" → Vai a PASSO 1</p>
-            <p>❌ "Nessun record caricato" → Vai a Caricamento Input (Sezione 4)</p>
-            <h4>📺 FINESTRA DI ELABORAZIONE</h4>
-            <p>Non appena clicchi "Elabora", si apre una finestra modale con: </p>
+            <h3>1. Klik op Menu → "Output" → "Elabora"</h3>
+            <h3>2. Controleer of:</h3>
+            <p>✓ Ten minste 1 afbeeldingsformaat is geselecteerd</p>
+            <p>✓ Ten minste 1 record is geladen</p>
+            <p><strong>Als niet aan deze vereisten is voldaan, verschijnt een foutmelding:</strong></p>
+            <p>❌ "Geen formaat geselecteerd" → Ga naar STAP 1</p>
+            <p>❌ "Geen record geladen" → Ga naar Invoer laden (Sectie 1)</p>
+            <h4>📺 VERWERKINGSVENSTER</h4>
+            <p>Zodra je op "Elabora" klikt, wordt een modaal venster geopend met: </p>
             <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window2.webp" alt="Finestra elaborazione in corso" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+                <img src="images/window2.webp" alt="Venster verwerking wordt uitgevoerd" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
             </div>
-            <h4>📊 ELEMENTI VISIBILI:</h4>
-            <p>1️⃣ TITOLO FINESTRA: "Elaborazione in corso"</p>
+            <h4>📊 ZICHTBARE ELEMENTEN:</h4>
+            <p>1️⃣ VENSTERTITEL: "Verwerking bezig"</p>
             <ul>
-                <li>Rimane in primo piano finché l'elaborazione non termina</li>
-                <li>Non puoi interagire con il resto della GUI</li>
+                <li>Blijft op de voorgrond totdat de verwerking is voltooid</li>
+                <li>Je kunt niet met de rest van de GUI werken</li>
             </ul>
-            <p>2️⃣ ETICHETTA PROGRESSO: "Elaborazione record: 2/5 — Nome File"</p>
+            <p>2️⃣ VOORTGANGSLABEL: "Records verwerken: 2/5 — Bestandsnaam"</p>
             <ul>
-                <li>Mostra: record attualmente elaborato (2) su totale (5)</li>
-                <li>Mostra anche il nome del file/registro in elaborazione</li>
-                <li>Si aggiorna in tempo reale man mano che processa i record</li>
-                <li>Es: "Elaborazione record: 1/3 — Registro Matrimoni 1850"</li>
+                <li>Toont: momenteel verwerkt record (2) van totaal (5)</li>
+                <li>Toont ook de naam van het bestand/register dat wordt verwerkt</li>
+                <li>Wordt in realtime bijgewerkt naarmate de records worden verwerkt</li>
+                <li>Bijv.: "Records verwerken: 1/3 — Huwelijksregister 1850"</li>
             </ul>
-            <p>3️⃣ BARRA DI PROGRESSO: Avanzamento visuale</p>
+            <p>3️⃣ VOORTGANGSBALK: Visuele voortgang</p>
             <ul>
-                <li>Formato numerico: "2/5" (numero attuale / totale)</li>
-                <li>Barra colore che avanza da sinistra a destra</li>
-                <li>Raggiunge il 100% (massima larghezza) quando completo</li>
-                <li>NON mostra percentuale, solo numero</li>
+                <li>Numerieke indeling: "2/5" (huidig nummer / totaal)</li>
+                <li>Gekleurde balk die van links naar rechts voortschrijdt</li>
+                <li>Bereikt 100% (maximale breedte) wanneer voltooid</li>
+                <li>Toont GEEN percentage, alleen het nummer</li>
             </ul>
-            <p>4️⃣ PULSANTE [ANNULLA]</p>
+            <p>4️⃣ KNOP [ANNULEREN]</p>
             <ul>
-                <li>Cliccabile durante elaborazione</li>
-                <li>Chiude la finestra di progresso</li>
-                <li>⚠️ L'elaborazione continua in background (non interrompe il download)</li>
-                <li>I file scaricati rimangono nella cartella output selezionata</li>
+                <li>Klikbaar tijdens de verwerking</li>
+                <li>Vraagt om de volledige batch te stoppen en sluit het voortgangsvenster</li>
+                <li>Het stoppen verloopt coöperatief: mogelijk wordt gewacht tot het afzonderlijke netwerkverzoek dat al bezig is, is voltooid</li>
+                <li>Er wordt geen uitvoer van de geannuleerde sessie gepubliceerd in de gekozen map; reeds bestaande bestanden blijven ongewijzigd</li>
             </ul>
-            <h4>🔄 DURANTE L'ELABORAZIONE</h4>
-            <p><strong>Il programma in background:</strong></p>
-            <pre class="file-structure">├─ Scarica immagini dai server IIIF
-├─ Legge manifest per canvas ID
-├─ Ricostruisce tile in immagini complete
-├─ Converte nei formati selezionati (PNG, JPG, TIFF)
-└─ Salva nelle cartelle scelte</pre>
-            <p><strong>La GUI mostra progress in tempo reale:</strong></p>
+            <h4>🔄 TIJDENS DE VERWERKING</h4>
+            <p><strong>Het programma voert op de achtergrond het volgende uit:</strong></p>
+            <pre class="file-structure">├─ Downloadt afbeeldingen van IIIF-servers
+├─ Leest manifests voor canvas ID
+├─ Reconstrueert tiles tot volledige afbeeldingen
+├─ Converteert naar de geselecteerde formaten (PNG, JPG, TIFF)
+└─ Slaat ze op in de gekozen mappen</pre>
+            <p><strong>De GUI toont de voortgang in realtime:</strong></p>
             <ul>
-                <li>Ogni 2-3 secondi aggiorna numero record</li>
-                <li>Nessun blocco: interfaccia rimane reattiva</li>
-                <li>Puoi annullare in qualsiasi momento</li>
+                <li>Werkt elke 2-3 seconden het aantal records bij</li>
+                <li>Geen blokkering: de interface blijft responsief</li>
+                <li>Je kunt op elk moment annuleren</li>
             </ul>
-            <h4>⚠️ COMPORTAMENTO SE CLICCHI ANNULLA:</h4>
-            <h3>1. Elaborazione si ferma subito</h3>
-            <h3>2. File parziali vengono rimossi</h3>
-            <h3>3. Finestra si chiude</h3>
-            <h3>4. Puoi ricominciare da Menu → Output → Elabora</h3>
-            <h4>📋 PDF — GENERAZIONE AUTOMATICA DURANTE L'ELABORAZIONE</h4>
-            <p>Se hai selezionato <strong>PDF</strong> nella maschera di scelta formati (PASSO 1), il PDF viene generato automaticamente al termine del download di ogni registro o documento, senza nessuna finestra di conferma aggiuntiva.</p>
-            <h4>📌 COMPORTAMENTO:</h4>
+            <h4>⚠️ GEDRAG WANNEER JE OP ANNULEREN KLIKT:</h4>
+            <h3>1. Er wordt gevraagd om de volledige batch coöperatief te stoppen</h3>
+            <h3>2. Alle tijdelijke uitvoer die door de geannuleerde batch is geproduceerd, wordt verwijderd</h3>
+            <h3>3. Bestanden die vóór de start al in de uitvoermappen aanwezig waren, blijven ongewijzigd</h3>
+            <h3>4. Je kunt opnieuw beginnen via Menu → Output → Verwerken</h3>
+            <h4>📋 PDF — AUTOMATISCHE GENERATIE TIJDENS DE VERWERKING</h4>
+            <p>Als je <strong>PDF</strong> hebt geselecteerd in het venster voor formaatkeuze (STAP 1), wordt de PDF automatisch gegenereerd nadat het downloaden van elk register of document is voltooid, zonder extra bevestigingsvenster.</p>
+            <h4>📌 GEDRAG:</h4>
             <ul>
-                <li>✅ <strong>PDF selezionato nella maschera formati:</strong> il PDF viene generato automaticamente al termine del download; non viene chiesta nessuna conferma aggiuntiva</li>
-                <li>❌ <strong>PDF non selezionato:</strong> solo le immagini nei formati scelti, nessun PDF</li>
+                <li>✅ <strong>PDF geselecteerd in het venster voor formaatkeuze:</strong> de PDF wordt automatisch gegenereerd nadat het downloaden is voltooid; er wordt geen extra bevestiging gevraagd</li>
+                <li>❌ <strong>PDF niet geselecteerd:</strong> alleen de afbeeldingen in de gekozen formaten, geen PDF</li>
             </ul>
-            <p>Caratteristiche del PDF generato:</p>
+            <p>Kenmerken van de gegenereerde PDF:</p>
             <ul>
-                <li>Nome file: <code>[nome].pdf</code>, senza suffissi aggiuntivi (es. <code>Registro Matrimoni 1920.pdf</code>)</li>
-                <li>Salvato nella cartella output scelta, allo stesso livello delle immagini</li>
-                <li>Pagine in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N)</li>
-                <li>Se un canvas non è scaricabile, viene inserita una pagina <em>placeholder</em> localizzata con link diretto al canvas originale su Antenati</li>
-                <li>Nessun file temporaneo rimane nella cartella output al termine della generazione</li>
+                <li>Bestandsnaam: <code>[nome].pdf</code>, zonder extra achtervoegsels (bijv. <code>Registro Matrimoni 1920.pdf</code>)</li>
+                <li>Opgeslagen in de gekozen uitvoermap, op hetzelfde niveau als de afbeeldingen</li>
+                <li>Pagina's in oplopende numerieke volgorde (canvas 1 → canvas 2 → … → canvas N)</li>
+                <li>Als een canvas niet kan worden gedownload, wordt een <em>placeholder</em> pagina ingevoegd, gelokaliseerd, met een directe link naar het oorspronkelijke canvas op Antenati</li>
+                <li>Na het genereren blijven er geen tijdelijke bestanden achter in de uitvoermap</li>
             </ul>
-            <h4>⚠️ COSA NON FARE DURANTE ELABORAZIONE:</h4>
+            <h4>⚠️ WAT JE NIET MOET DOEN TIJDENS DE VERWERKING:</h4>
             <ul>
-                <li>❌ Non chiudere il programma (perde file parziali)</li>
-                <li>❌ Non staccare disco esterno (errore salvataggio)</li>
-                <li>❌ Non spegnere PC/laptop</li>
-                <li>❌ Non staccare internet (arresta download)</li>
+                <li>❌ Sluit het programma niet af (gedeeltelijke bestanden gaan verloren)</li>
+                <li>❌ Koppel de externe schijf niet los (opslagfout)</li>
+                <li>❌ Schakel de pc/laptop niet uit</li>
+                <li>❌ Verbreek de internetverbinding niet (stopt het downloaden)</li>
             </ul>
-            <h4>✅ COSA PUOI FARE:</h4>
+            <h4>✅ WAT JE WEL KUNT DOEN:</h4>
             <ul>
-                <li>✓ Aspettare che finisca (è la procedura normale)</li>
-                <li>✓ Cliccare Annulla se urgente</li>
-                <li>✓ Usare il PC per altre cose normalmente (minimizza solo la finestra)</li>
+                <li>✓ Wachten tot het proces is voltooid (dit is de normale procedure)</li>
+                <li>✓ Op Annuleren klikken als dat dringend nodig is</li>
+                <li>✓ De pc normaal voor andere dingen gebruiken (minimaliseer alleen het venster)</li>
             </ul>
-            <h4>🎉 FINE ELABORAZIONE</h4>
-            <p>Quando tutti i record sono stati elaborati:</p>
-            <h3>1. La finestra di progresso si chiude automaticamente</h3>
-            <h3>2. Appare un messaggio: "Operazione completata"</h3>
-            <h3>3. Clicca OK per chiudere il messaggio</h3>
-            <h3>4. La finestra di progresso scompare completamente</h3>
-            <p>Dopo:</p>
+            <h4>🎉 EINDE VERWERKING</h4>
+            <p>Wanneer alle records zijn verwerkt:</p>
+            <h3>1. Het voortgangsvenster wordt automatisch gesloten</h3>
+            <h3>2. Er verschijnt een bericht: "Bewerking voltooid"</h3>
+            <h3>3. Klik op OK om het bericht te sluiten</h3>
+            <h3>4. Het voortgangsvenster verdwijnt volledig</h3>
+            <p>Daarna:</p>
             <ul>
-                <li>Visualizza file output nelle cartelle che hai selezionato al PASSO 2</li>
-                <li>Ogni documento/registro ha propria sottocartella all'interno della cartella da te scelta</li>
-                <li>Immagini sono pronte per uso (visualizzazione, stampa, archiviazione, PDF)</li>
+                <li>Bekijk de uitvoerbestanden in de mappen die je bij STAP 2 hebt geselecteerd</li>
+                <li>Elk document/register heeft een eigen submap binnen de door jou gekozen map</li>
+                <li>De afbeeldingen zijn klaar voor gebruik (weergave, afdrukken, archivering, PDF)</li>
             </ul>
-            <h4>✅ OUTPUT GENERATO:</h4>
-            <p>Per ogni record elaborato troverai:</p>
+            <h4>✅ GEGENEREERDE UITVOER:</h4>
+            <p>Voor elk verwerkt record vind je:</p>
             <ul>
-                <li>Immagini nei formati selezionati (PNG, JPG, TIFF)</li>
-                <li>manifest_[ID]_[nome].json → Manifest IIIF originale con metadati strutturati</li>
-                <li>[nome]_genealogico.json → Metadati genealogici (date, luoghi, nomi, comuni, province)</li>
-                <li>[nome]_tecnico.json → Metadati tecnici (numero canvas, lista canvas ID, diritti, file generati)</li>
-                <li>[nome].json → Sidecar JSON per ogni immagine (metadati EXIF embedded)</li>
+                <li>Afbeeldingen in de geselecteerde formaten (PNG, JPG, TIFF)</li>
+                <li>manifest_[ID]_[nome].json → Oorspronkelijk IIIF-manifest met gestructureerde metadata</li>
+                <li>[nome]_genealogico.json → Genealogische metadata (datums, plaatsen, namen, gemeenten, provincies)</li>
+                <li>[nome]_tecnico.json → Technische metadata (aantal canvas, lijst met canvas ID, rechten, gegenereerde bestanden)</li>
+                <li>[nome].json → JSON-sidecar voor elke afbeelding (ingesloten EXIF-metadata)</li>
             </ul>
-            <h4>📝 NOTA SUI NOMI FILE:</h4>
+            <h4>📝 OPMERKING OVER BESTANDSNAMEN:</h4>
             <ul>
-                <li>Il [nome] base viene preso direttamente dal file input.txt (riga utente)</li>
-                <li>Se scrivi nel file input "Registro Matrimoni 1920", i file saranno:
+                <li>De basis-[nome] wordt rechtstreeks overgenomen uit het bestand input.txt (gebruikersregel)</li>
+                <li>Als je in het inputbestand "Registro Matrimoni 1920" schrijft, worden de bestanden:
                     <ul>
                         <li>Registro Matrimoni 1920_canvas_1.jpg</li>
                         <li>Registro Matrimoni 1920_genealogico.json</li>
                         <li>Registro Matrimoni 1920_tecnico.json</li>
                     </ul>
                 </li>
-                <li>I suffissi JSON rimangono in EN (_genealogico, _tecnico) per compatibilità</li>
-                <li>Puoi usare nomi in qualunque lingua nel file input (IT, EN, misto)</li>
+                <li>De JSON-achtervoegsels blijven in EN (_genealogico, _tecnico) voor compatibiliteit</li>
+                <li>Je kunt namen in elke taal gebruiken in het inputbestand (IT, EN, gemengd)</li>
             </ul>
             </div>
             <div class="section-box">
-            <h3>6. PDF PER REGISTRI E DOCUMENTI</h3>
+            <h3>3. PDF VOOR REGISTERS EN DOCUMENTEN</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>COME ATTIVARE LA GENERAZIONE PDF</h4>
-            <p>La generazione del PDF si attiva selezionando la casella <strong>PDF</strong> nella maschera di scelta formati (Menu → Impostazioni → "Seleziona formati immagine").</p>
-            <p>Puoi combinare PDF con uno o più formati immagine (es. PDF + PNG), oppure selezionare solo PDF per ottenere esclusivamente il documento senza file immagine separati.</p>
-            <h4>📄 CARATTERISTICHE DEL PDF GENERATO</h4>
+            <h4>PDF-GENERATIE ACTIVEREN</h4>
+            <p>De PDF-generatie wordt geactiveerd door het selectievakje <strong>PDF</strong> te selecteren in het venster voor formaatkeuze (Menu → Instellingen → "Afbeeldingsformaten selecteren").</p>
+            <p>Je kunt PDF combineren met een of meer afbeeldingsformaten (bijv. PDF + PNG), of alleen PDF selecteren om uitsluitend het document te verkrijgen zonder afzonderlijke afbeeldingsbestanden.</p>
+            <h4>📄 KENMERKEN VAN DE GEGENEREERDE PDF</h4>
             <ul>
-                <li><strong>Nome file:</strong> il PDF è denominato semplicemente <code>[nome].pdf</code>, senza suffissi aggiuntivi — ad esempio <code>Registro Matrimoni 1920.pdf</code></li>
-                <li><strong>Posizione:</strong> salvato nella cartella output scelta, allo stesso livello delle immagini: <code>[cartella_scelta]\[nome].pdf</code></li>
-                <li><strong>Ordine pagine:</strong> le pagine sono sempre in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N), indipendentemente dall'ordine in cui i tile vengono scaricati</li>
-                <li><strong>Pagine placeholder:</strong> se un canvas non è disponibile (errore di rete o risorsa temporaneamente non raggiungibile), al suo posto viene inserita automaticamente una pagina <em>placeholder</em> localizzata nella lingua selezionata. La pagina placeholder contiene:
+                <li><strong>Bestandsnaam:</strong> de PDF krijgt eenvoudigweg de naam <code>[nome].pdf</code>, zonder extra achtervoegsels — bijvoorbeeld <code>Registro Matrimoni 1920.pdf</code></li>
+                <li><strong>Locatie:</strong> opgeslagen in de gekozen uitvoermap, op hetzelfde niveau als de afbeeldingen: <code>[cartella_scelta]\[nome].pdf</code></li>
+                <li><strong>Paginavolgorde:</strong> de pagina's staan altijd in oplopende numerieke volgorde (canvas 1 → canvas 2 → … → canvas N), ongeacht de volgorde waarin de tiles worden gedownload</li>
+                <li><strong>Placeholderpagina's:</strong> als een canvas niet beschikbaar is (netwerkfout of bron tijdelijk niet bereikbaar), wordt op die plaats automatisch een <em>placeholder</em> pagina ingevoegd die is gelokaliseerd in de geselecteerde taal. De placeholderpagina bevat:
                     <ul>
-                        <li>Un testo di avviso localizzato (es. "Immagine non disponibile")</li>
-                        <li>Il link diretto al canvas originale su Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>), così da poter consultare la fonte in modo semplice</li>
+                        <li>Een gelokaliseerde waarschuwingstekst (bijv. "Afbeelding niet beschikbaar")</li>
+                        <li>De directe link naar het oorspronkelijke canvas op Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>), zodat de bron eenvoudig kan worden geraadpleegd</li>
                     </ul>
-                    In questo modo viene sempre generato il PDF, con tutte le informazioni necessarie a completarlo in caso di immagini non scaricate.
+                    Op deze manier wordt de PDF altijd gegenereerd, met alle informatie die nodig is om deze aan te vullen wanneer afbeeldingen niet zijn gedownload.
                 </li>
-                <li><strong>Pulizia automatica:</strong> i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine del processo. Nella cartella output rimangono solo le immagini nei formati scelti, il PDF finale, i manifest e i metadati</li>
+                <li><strong>Automatische opschoning:</strong> de tijdelijke bestanden die voor het genereren van de PDF worden gebruikt, worden aan het einde van het proces automatisch verwijderd. In de uitvoermap blijven alleen de afbeeldingen in de gekozen formaten, de definitieve PDF, de manifests en de metadata over</li>
             </ul>
-            <h4>🚫 Se PDF non è selezionato:</h4>
+            <h4>🚫 Als PDF niet is geselecteerd:</h4>
             <ul>
-                <li>Solo le immagini vengono scaricate nei formati selezionati</li>
-                <li>Nessun PDF generato</li>
+                <li>Alleen de afbeeldingen worden gedownload in de geselecteerde formaten</li>
+                <li>Geen PDF gegenereerd</li>
             </ul>
             </div>
             <div class="section">
-        <h2>&#128204; FUNZIONALIT&#192; DISPONIBILI E PIANIFICATE</h2>
-        <p>Il menu &ldquo;Servizi&rdquo; contiene 5 funzioni: 4 gi&agrave; disponibili, 1 pianificata per versioni future.</p>
+        <h2>4. &#128204; BESCHIKBARE FUNCTIES</h2>
+        <p>Het menu &ldquo;Services&rdquo; bevat de operationele functies van v3: AI-ondersteund zoeken, afbeeldingsweergave, weergave van JSON-metadata, Geavanceerde OCR, OCR-vertaling en GEDCOM-export.</p>
 
         
 
         <div class="section-box">
-            <h3>1&#65039;&#8419; VISUALIZZAZIONE IMMAGINI &#9989;</h3>
-            <p>Viewer integrato per immagini genealogiche:</p>
+            <h3>1&#65039;&#8419; AI-ONDERSTEUND ZOEKEN &#9989;</h3>
+            <p>Assistent voor het opzetten van genealogische zoekstrategieën:</p>
             <ul>
-                <li>Formati supportati: JPG, PNG, TIFF (inclusi TIFF multi-pagina con navigazione avanti/indietro)</li>
-                <li>Zoom con rotella del mouse e pulsanti dedicati</li>
-                <li>Pan con trascinamento del mouse</li>
-                <li>Modalit&agrave; &ldquo;Adatta alla finestra&rdquo; e &ldquo;1:1 pixel&rdquo;</li>
-                <li>Sidecar JSON affiancato all&apos;immagine (EXIF e metadati tecnici)</li>
+                <li>Zet achternamen, plaatsen, perioden en doelstellingen om in zoeksporen</li>
+                <li>Stelt portalen, filters en voorbeeldquery's voor die handmatig moeten worden gecontroleerd</li>
+                <li>Ondersteunt Italiaanse, Italiaanstalige, migratie- en internationale scenario's</li>
+                <li>Maakt persoonlijke notities, vergelijking tussen meerdere providers en het opslaan van resultaten mogelijk</li>
             </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_03_visualizzazione_immagini.html">Vedi Guida Visualizzazione Immagini</a></p>
+            <p><strong>Status:</strong> &#9989; Beschikbaar &ndash;
+            <a href="guida_03_ricerca_assistita_ai.html">Zie Handleiding AI-ondersteund zoeken</a></p>
         </div>
 
         <div class="section-box">
-            <h3>2&#65039;&#8419; VISUALIZZAZIONE METADATI JSON &#9989;</h3>
-            <p>Viewer ad albero per metadati strutturati:</p>
+            <h3>2&#65039;&#8419; AFBEELDINGSWEERGAVE &#9989;</h3>
+            <p>Geïntegreerde viewer voor genealogische afbeeldingen:</p>
             <ul>
-                <li>Apertura diretta di file <code>_genealogico.json</code> e <code>_tecnico.json</code></li>
-                <li>Visualizzazione ad albero espandibile</li>
-                <li>Sezioni: dati genealogici, metadati tecnici, EXIF dalle immagini</li>
-                <li>Anteprima immagine abbinata affiancata al pannello metadati</li>
+                <li>Ondersteunde formaten: JPG, PNG, TIFF (inclusief TIFF met meerdere pagina's en navigatie vooruit/achteruit)</li>
+                <li>Zoomen met het muiswiel en speciale knoppen</li>
+                <li>Pannen door met de muis te slepen</li>
+                <li>Modi &ldquo;Aanpassen aan venster&rdquo; en &ldquo;1:1 pixel&rdquo;</li>
+                <li>JSON-sidecar naast de afbeelding (EXIF en technische metadata)</li>
             </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_04_visualizzazione_metadati.html">Vedi Guida Visualizzazione Metadati JSON</a></p>
+            <p><strong>Status:</strong> &#9989; Beschikbaar &ndash;
+            <a href="guida_04_visualizzazione_immagini.html">Zie Handleiding Afbeeldingsweergave</a></p>
         </div>
 
         <div class="section-box">
-            <h3>3&#65039;&#8419; OCR AVANZATO &#9989;</h3>
-            <p>Trattamento OCR avanzato tramite LLM Vision:</p>
+            <h3>3&#65039;&#8419; WEERGAVE VAN JSON-METADATA &#9989;</h3>
+            <p>Boomstructuurviewer voor gestructureerde metadata:</p>
             <ul>
-                <li>Estrazione testo da documenti antichi (inclusi manoscritti in italiano ottocentesco e latino)</li>
-                <li>Mantenimento della struttura e dei riferimenti del layout (TEI XML)</li>
-                <li>Riconoscimento e pulizia automatica dei dati strutturati (es. tabelle, ruoli)</li>
-                <li>Estrazione di entit&agrave; (nomi, date, relazioni) in formato JSON navigabile</li>
+                <li>Direct openen van bestanden <code>_genealogico.json</code> en <code>_tecnico.json</code></li>
+                <li>Uitvouwbare boomstructuurweergave</li>
+                <li>Secties: genealogische gegevens, technische metadata, EXIF uit afbeeldingen</li>
+                <li>Voorbeeld van de gekoppelde afbeelding naast het metadatapaneel</li>
             </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_05_ocr_avanzato.html">Vedi Guida OCR Avanzato</a></p>
+            <p><strong>Status:</strong> &#9989; Beschikbaar &ndash;
+            <a href="guida_05_visualizzazione_metadati.html">Zie Handleiding Weergave van JSON-metadata</a></p>
         </div>
 
         <div class="section-box">
-            <h3>4&#65039;&#8419; TRADUZIONE &#9989;</h3>
-            <p>Traduzione contestuale dei testi estratti:</p>
+            <h3>4&#65039;&#8419; GEAVANCEERDE OCR &#9989;</h3>
+            <p>Geavanceerde OCR-verwerking via LLM Vision:</p>
             <ul>
-                <li>Traduzione automatica in 20 lingue supportate</li>
-                <li>Gestione della formattazione e del layout originale</li>
-                <li>Possibilit&agrave; di alternare il testo originale e il testo tradotto</li>
+                <li>Tekstextractie uit oude documenten (inclusief handschriften in negentiende-eeuws Italiaans en Latijn)</li>
+                <li>Behoud van structuur en lay-outreferenties (TEI XML)</li>
+                <li>Automatische herkenning en opschoning van gestructureerde gegevens (bijv. tabellen, rollen)</li>
+                <li>Extractie van entiteiten (namen, datums, relaties) in navigeerbaar JSON-formaat</li>
             </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_06_traduzione.html">Vedi Guida Traduzione</a></p>
+            <p><strong>Status:</strong> &#9989; Beschikbaar &ndash;
+            <a href="guida_06_ocr_avanzato.html">Zie Handleiding Geavanceerde OCR</a></p>
         </div>
 
         <div class="section-box">
-            <h3>5&#65039;&#8419; ESPORTAZIONE GEDCOM</h3>
-            <p>Esportazione in formati genealogici:</p>
+            <h3>5&#65039;&#8419; OCR-VERTALING &#9989;</h3>
+            <p>Contextuele vertaling van geëxtraheerde of getranscribeerde teksten:</p>
             <ul>
-                <li>GEDCOM (standard genealogico internazionale)</li>
-                <li>Interoperabilit&agrave; con software genealogici: Ancestry, Family Historian, Family Tree Maker,
-                Findmypast, FamilySearch, Geni, Geneanet, Gramps, Legacy Family Tree, MyHeritage,
-                Reunion (macOS), RootsMagic, WikiTree</li>
+                <li>Vertaling van OCR-teksten, handmatige transcripties en TXT-bestanden</li>
+                <li>Gebruik van documenttypen, woordenlijst en context</li>
+                <li>Configureerbare AI-provider, optioneel model en Sleutelkluis</li>
+                <li>Uitvoer als TXT of bewerkbare DOCX</li>
             </ul>
-            <p style="font-style:italic;color:#7a5c3b;margin-top:0.6rem;">
-            &#128204; <em>Nota: L&apos;elencazione dei software &egrave; puramente indicativa e non
-            vincolante allo sviluppo dell&apos;interoperabilit&agrave; con ciascuna piattaforma.</em></p>
-            <p style="margin-top:0.6rem;"><strong>Status:</strong> &#128302; Pianificata &ndash;
-            <a href="guida_07_esportazione_gedcom.html">Vedi Guida GEDCOM</a></p>
+            <p><strong>Status:</strong> &#9989; Beschikbaar &ndash;
+            <a href="guida_07_traduzione.html">Zie Handleiding OCR-vertaling</a></p>
+        </div>
+
+        <div class="section-box">
+            <h3>6&#65039;&#8419; GEDCOM-EXPORT &#9989;</h3>
+            <p>Ondersteunde genealogische analyse en GEDCOM-export:</p>
+            <ul>
+                <li>Universele invoer met Auto-Discovery-methode, Vision AI of Refinery LLM</li>
+                <li>Mogelijkheid om een bestaande GEDCOM- of CSV-basis uit te breiden</li>
+                <li>Paleografische notities en documenttypen om de extractie te sturen</li>
+                <li>Genereren van een bestand <code>genealogia_*.ged</code> dat vóór gebruik moet worden gecontroleerd</li>
+            </ul>
+            <p style="margin-top:0.6rem;"><strong>Status:</strong> &#9989; Beschikbaar &ndash;
+            <a href="guida_08_esportazione_gedcom.html">Zie GEDCOM-handleiding</a></p>
         </div>
     </div>
             <div class="section-box">
-            <h3>9. CARTELLE E FILE OUTPUT</h3>
+            <h3>5. UITVOERMAPPEN EN -BESTANDEN</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📂 STRUTTURA OUTPUT</h4>
-            <p>Quando elabori un record IIIF, ATK-Pro salva i file nella cartella che hai scelto nel PASSO 2 (Seleziona cartella output).</p>
-            <h4>STRUTTURA ORGANIZZATA PER RECORD:</h4>
+            <h4>📂 UITVOERSTRUCTUUR</h4>
+            <p>Wanneer je een IIIF-record verwerkt, slaat ATK-Pro de bestanden op in de map die je bij STAP 2 hebt gekozen (Uitvoermap selecteren).</p>
+            <h4>PER RECORD GEORGANISEERDE STRUCTUUR:</h4>
             <pre class="file-structure">[cartella_output]/
-├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
-├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite (una per pagina)
+├─ manifest_[ID]_[nome].json         ← Oorspronkelijk IIIF-manifest
+├─ [nome]_canvas_1.jpg/.png/.tif     ← Gereconstrueerde afbeeldingen (één per pagina)
 ├─ [nome]_canvas_2.jpg/.png/.tif
-├─ [nome]_canvas_N.jpg/.png/.tif     ← (N = numero totale pagine/canvas)
-├─ [nome].json                       ← Sidecar JSON per ogni immagine (EXIF)
-├─ [nome].pdf                        ← PDF completo (solo se richiesto)
-└─ [nome]/                           ← Sottocartella SOLO per metadati
-   ├─ [nome]_genealogico.json        ← Metadati genealogici
-   └─ [nome]_tecnico.json            ← Metadati tecnici</pre>
-            <h4>MULTI-RECORD NELLA STESSA CARTELLA:</h4>
-            <p>Se elabori 3 record nella stessa cartella, la struttura diventa:</p>
+├─ [nome]_canvas_N.jpg/.png/.tif     ← (N = totaal aantal pagina's/canvas)
+├─ [nome].json                       ← JSON-sidecar voor elke afbeelding (EXIF)
+├─ [nome].pdf                        ← Volledige PDF (alleen indien aangevraagd)
+└─ [nome]/                           ← Submap ALLEEN voor metadata
+   ├─ [nome]_genealogico.json        ← Genealogische metadata
+   └─ [nome]_tecnico.json            ← Technische metadata</pre>
+            <h4>MEERDERE RECORDS IN DEZELFDE MAP:</h4>
+            <p>Als je 3 records in dezelfde map verwerkt, wordt de structuur:</p>
             <pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID1]_Registro1.json
 ├─ Registro1_canvas_1.jpg
@@ -752,19 +787,19 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ Registro3/
     ├─ Registro3_genealogico.json
     └─ Registro3_tecnico.json</pre>
-            <h4>📌 NOTE SULLA STRUTTURA:</h4>
+            <h4>📌 OPMERKINGEN OVER DE STRUCTUUR:</h4>
             <ul>
-                <li>Manifest IIIF, Immagini, PDF, Sidecar JSON: nel livello principale</li>
-                <li>SOLO metadati tecnici e genealogici: in sottocartelle [nome]/ (uno per record)</li>
-                <li>Le cartelle temporanee (<code>tiles_canvas_X/</code>) e i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine dell'elaborazione: nella cartella output non rimane nessun file di lavoro intermedio</li>
-                <li>Questa organizzazione consente di gestire molteplici record nella stessa cartella senza confusione tra file</li>
+                <li>IIIF-manifest, afbeeldingen, PDF, JSON-sidecar: op het hoofdniveau</li>
+                <li>ALLEEN technische en genealogische metadata: in submappen [nome]/ (één per record)</li>
+                <li>De tijdelijke mappen (<code>tiles_canvas_X/</code>) en de tijdelijke bestanden die voor het genereren van de PDF worden gebruikt, worden aan het einde van de verwerking automatisch verwijderd: er blijven geen tussenliggende werkbestanden achter in de uitvoermap</li>
+                <li>Met deze indeling kunnen meerdere records zonder verwarring tussen bestanden in dezelfde map worden beheerd</li>
             </ul>
-            <h4>📋 CONVENZIONE DI DENOMINAZIONE:</h4>
+            <h4>📋 NAAMGEVINGSCONVENTIE:</h4>
             <ul>
                 <li>Manifest: manifest_[ID]_[nome].json</li>
-                <li>Immagini: [nome]_canvas_1, [nome]_canvas_2, ... [nome]_canvas_N</li>
-                <li>JSON metadati: [nome]_genealogico.json, [nome]_tecnico.json</li>
-                <li>JSON immagini: [nome].json (per ogni canvas)</li>
+                <li>Afbeeldingen: [nome]_canvas_1, [nome]_canvas_2, ... [nome]_canvas_N</li>
+                <li>JSON-metadata: [nome]_genealogico.json, [nome]_tecnico.json</li>
+                <li>JSON-afbeeldingen: [nome].json (voor elk canvas)</li>
                 <li>PDF: [nome].pdf</li>
             </ul>
             </div>
@@ -773,9 +808,9 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
                 </div>
         
     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
+            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installatie, Opstarten en Interface</a>
+            <a href="guida.html" class="nav-button">&#127968; Hoofdindex</a>
+            <a href="guida_03_ricerca_assistita_ai.html" class="nav-button">Mod.03 &mdash; AI-ondersteund zoeken &#8594;</a>
         </div>
 
     <footer style="text-align: center;">

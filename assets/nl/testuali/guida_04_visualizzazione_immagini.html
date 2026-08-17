@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="nl" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Module 04: Afbeeldingsweergave</title>
+    <meta name="description" content="ATK-Pro — Afbeeldingsweergave">
+    <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+        
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+        
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+        
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+        
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+        
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+        
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+        
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+        
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+        
+        .metadata strong {
+            color: #2a1a0a;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            
+            
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+        
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+            
+        }
+        
+        .box {
+            background: #fafaf5;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            
+        }
+        
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+        
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+        
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        .command {
+            background: #f4ede4;
+            
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+        
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+            
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+        
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+        
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .toc ol {
+            margin-left: 30px;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📚 Module 04: Afbeeldingsweergave</h1>
+    </header>
+
+    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+        <a href="guida_03_ricerca_assistita_ai.html" class="nav-button">⬅️ Mod.03 — AI-ondersteund onderzoek</a>
+            <a href="guida.html" class="nav-button">🏠 Hoofdindex</a>
+            <a href="guida_05_visualizzazione_metadati.html" class="nav-button">Mod.05 — Weergave van JSON-metagegevens ➡️</a>
+        </div>
+
+    <div class="section">
+        <h2>&#128204; Overzicht</h2>
+        <p>De <strong>afbeeldingsviewer</strong> van ATK-Pro is een geïntegreerd hulpmiddel voor de analyse van gedigitaliseerde genealogische documenten. De viewer wordt geopend via het menu <em>Services &rarr; Afbeeldingsweergave</em> van de hoofdtoepassing. JPEG, PNG en TIFF worden ondersteund (inclusief bestanden met meerdere pagina&apos;s).</p>
+    </div>
+
+    <div class="section">
+        <h2>&#128194; Ondersteunde formaten</h2>
+        <div class="section-box">
+            <table>
+                <thead><tr><th>Formaat</th><th>Extensie</th><th>Opmerkingen</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>JPEG</strong></td><td>.jpg, .jpeg</td><td>Volledige ondersteuning</td></tr>
+                    <tr><td><strong>PNG</strong></td><td>.png</td><td>Volledige ondersteuning</td></tr>
+                    <tr><td><strong>TIFF</strong></td><td>.tif, .tiff</td><td>Ondersteuning voor meerdere pagina's met speciale navigatie</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#128421;&#65039; Interface en bedieningselementen</h2>
+        <div class="section-box">
+            <h3>&#128269; Zoom</h3>
+            <ul>
+                <li><strong>Muiswiel</strong>: stapsgewijs zoomen in stappen van 15%</li>
+                <li><strong>Knop &ldquo; + &rdquo;</strong>: 15% inzoomen</li>
+                <li><strong>Knop &ldquo; &minus; &rdquo;</strong>: 15% uitzoomen</li>
+                <li><strong>Knop &ldquo;Aanpassen aan venster&rdquo;</strong>: Past de grootte van de afbeelding proportioneel aan zodat deze de beschikbare ruimte vult</li>
+                <li><strong>Knop &ldquo;1:1&rdquo;</strong>: Weergave op oorspronkelijke resolutie (één afbeeldingspixel = één schermpixel)</li>
+            </ul>
+            <p style="margin-top:0.8rem;">Het huidige zoomniveau is altijd zichtbaar in de procentindicator tussen de knoppen + en &minus;. Het bereik loopt van 5% tot 800%.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#9995;&#65039; Pan (verschuiven)</h3>
+            <p><strong>Klikken en slepen</strong>: houd de linkermuisknop ingedrukt en sleep om de afbeelding te verschuiven. Tijdens het slepen verandert de cursor in een gesloten hand en wanneer de cursor boven het afbeeldingsgebied staat in een open hand.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#128197; TIFF met meerdere pagina's</h3>
+            <p>Bij TIFF-bestanden met meerdere frames verschijnt een extra navigatiebalk in de werkbalk:</p>
+            <ul>
+                <li><strong>Numeriek veld (spinbox)</strong>: Voer het gewenste paginanummer in; de viewer laadt onmiddellijk het bijbehorende frame</li>
+                <li><strong>Indicator &ldquo;/ N&rdquo;</strong>: Toont naast het numerieke veld het totale aantal pagina's</li>
+            </ul>
+            <p style="margin-top:0.8rem;"><em>Opmerking:</em> elk frame van het TIFF-bestand wordt als een afzonderlijke pagina behandeld.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#128203; Paneel met sidecar-metagegevens (rechterpaneel)</h3>
+            <p>Als zich in dezelfde map als de afbeelding een JSON-bestand met dezelfde basisnaam bevindt (bijv. <code>documento.jpg</code> &rarr; zoekt naar <code>documento.json</code>), worden de metagegevens in het rechterpaneel in tabelvorm weergegeven.</p>
+            <ul>
+                <li><strong>Knop &ldquo;&#9668; Metagegevens verbergen&rdquo;</strong>: Verbergt het rechterpaneel om het weergavegebied van de afbeelding te vergroten</li>
+                <li><strong>Knop &ldquo;&#9658; Metagegevens tonen&rdquo;</strong>: Herstelt het metagegevenspaneel</li>
+            </ul>
+            <p style="margin-top:0.8rem;">Als er geen JSON-sidecar wordt gevonden, toont het rechterpaneel <em>&ldquo;Geen JSON-sidecar gevonden&rdquo;</em>. Als het bestand bestaat maar niet kan worden gelezen, meldt het paneel een fout bij het lezen van de metagegevens.</p>
+        </div>
+    </div>
+
+     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+        <a href="guida_03_ricerca_assistita_ai.html" class="nav-button">⬅️ Mod.03 — AI-ondersteund onderzoek</a>
+            <a href="guida.html" class="nav-button">🏠 Hoofdindex</a>
+            <a href="guida_05_visualizzazione_metadati.html" class="nav-button">Mod.05 — Weergave van JSON-metagegevens ➡️</a>
+        </div>
+
+    <footer>
+        <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+    </footer>
+</div>
+</body>
+</html>

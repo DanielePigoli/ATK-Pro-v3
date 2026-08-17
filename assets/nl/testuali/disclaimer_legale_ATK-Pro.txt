@@ -1,23 +1,131 @@
-📋 Juridische disclaimer
+📋 JURIDISCHE DISCLAIMER
 Antenati Toolkit Pro
 
 ATK-Pro – Antenati Toolkit Pro
-Juridische disclaimer en ethisch gebruik
+Juridische disclaimer, gebruiksvoorwaarden en ethische verplichting
 
-Het ATK-Pro-project is bedoeld voor archief-, genealogische en consultatiedoeleinden.
-Alle inhoud, tenzij anders aangegeven, wordt verspreid onder de Creative Commons BY-NC-SA 4.0-licentie.
-Direct commercieel gebruik, herdistributie zonder bronvermelding of niet-traceerbare wijziging van de originele inhoud is verboden.
-ATK-Pro herdistribueert geen inhoud van het Antenati-portaal (antenati.cultura.gov.it) en is niet van plan de interface, structuur of organisatie ervan te repliceren.
-Iedereen die ATK-Pro installeert of gebruikt, stemt ermee in volledig te voldoen aan de juridische kennisgevingen en gebruiksvoorwaarden die zijn vastgesteld door het Ministerie van Cultuur, beschikbaar op het volgende adres:
+1. AARD EN DOEL VAN HET PROJECT
+
+ATK-Pro is onafhankelijk ontwikkelde software voor archief-, genealogische en documentaire doeleinden, alsmede voor studie en raadpleging.
+
+De software vergemakkelijkt de toegang tot en lokale verwerking van bronnen waartoe de gebruiker rechtmatig toegang heeft via het Portale Antenati en andere technisch ondersteunde archief- of documentatieportalen.
+
+ATK-Pro is geen officiële dienst van het Ministero della Cultura, het Portale Antenati, de Archivi di Stato of andere eventueel ondersteunde instanties en portalen. De aanwezigheid van verwijzingen, koppelingen of functies met betrekking tot diensten van derden houdt geen affiliatie, goedkeuring, sponsoring of algemene toestemming voor hergebruik van de betreffende inhoud in.
+
+2. LICENTIE VAN DE CODE
+
+De oorspronkelijke broncode van ATK-Pro, met uitzondering van bestanden of gedeelten die uitdrukkelijk als componenten van derden zijn aangeduid, wordt verspreid onder de GNU Affero General Public License, versie 3 of, naar keuze van de licentienemer, enige latere versie.
+
+De broncode die overeenkomt met de verspreide versie wordt beschikbaar gesteld in de officiële repository van het project. Informatie over de toegang tot de broncode en een kopie van de licentie worden bij de release-artefacten geleverd.
+
+De licentie van de code is vermeld in het bestand LICENSE.
+
+3. LICENTIE VAN DE DOCUMENTATIE
+
+De oorspronkelijke documentatie, waaronder handleidingen, presentaties en redactionele inhoud, wordt verspreid onder de Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0), tenzij anders aangegeven.
+
+De licentie van de documentatie is vermeld in het bestand LICENSE-DOCUMENTATION.
+
+4. NAAM, LOGO EN ONDERSCHEIDENDE ELEMENTEN
+
+De naam “ATK-Pro”, het logo en de onderscheidende elementen van de visuele identiteit worden niet in licentie gegeven voor het maken of promoten van afgeleide producten en blijven voorbehouden aan de rechthebbende.
+
+Het louter beschrijvende gebruik ervan blijft toegestaan om het oorspronkelijke project te identificeren, compatibiliteit aan te geven of aan verplichtingen inzake naamsvermelding te voldoen.
+
+De desbetreffende voorwaarden zijn vermeld in het bestand TRADEMARKS.
+
+5. COMPONENTEN VAN DERDEN
+
+Softwareafhankelijkheden, lettertypen en andere componenten van derden behouden hun respectieve licenties, auteursrechtvermeldingen en eventuele aanvullende voorwaarden, zoals vermeld in het bestand THIRD-PARTY-NOTICES.
+
+De licenties die van toepassing zijn op de oorspronkelijke code en documentatie van ATK-Pro vervangen of wijzigen de licenties van componenten van derden niet.
+
+6. EXTERNE BRONNEN EN PORTALEN
+
+ATK-Pro verspreidt documenten, afbeeldingen, metadata of andere bronnen afkomstig van het Portale Antenati of andere externe portalen niet opnieuw en verleent daarvoor geen licenties.
+
+Deze bronnen blijven onderworpen aan de rechten, licenties, toegangsvoorwaarden en regels voor hergebruik die door de respectieve rechthebbenden zijn vastgesteld.
+
+De gebruiker dient de voorwaarden te controleren die op elke afzonderlijke bron van toepassing zijn en, wat het Portale Antenati betreft, tevens de juridische informatie te raadplegen die is gepubliceerd op het adres:
+
 https://antenati.cultura.gov.it/note-legali/
-De documenten die zijn opgenomen in de consultatieve node vormen geen officiële bron en hebben geen certificerende of juridische waarde.
-De interface en tools die binnen het project zijn ontwikkeld, zijn bedoeld om onafhankelijke consultatie door genealogische gebruikers in lokale omgevingen te vergemakkelijken, zonder verbinding of ondersteuning van externe diensten.
-Eventuele verwijzingen naar openbare instanties, archieven of historische documentatie zijn uitsluitend bedoeld voor studie, analyse en contextualisering.
-Elk bestand in de ATK-Pro-structuur (in .txt, .md, .html of .pdf-formaat) is opgesteld met een declaratief, archief- of demonstratief doel.
-Directorystructuren, operationele scripts en genealogische aantekeningen worden als prototype verstrekt, zonder enige garantie voor functionaliteit of externe validatie.
-De auteur van het project wijst elke verantwoordelijkheid af voor onjuist gebruik, verkeerde interpretatie of niet-geautoriseerde wijziging van de opgenomen documenten en tools.
-De consultatieve node moet worden beschouwd als een archief met beperkte circulatie, uitsluitend bedoeld voor studiedoeleinden en niet voor openbare of systematische verspreiding.
-Deze verklaring maakt integraal deel uit van de documentatiearchitectuur van het project.
+
+De vermelding dat een portaal technisch wordt ondersteund, vormt geen verklaring over de rechtmatigheid van elke handeling die met de bronnen ervan kan worden uitgevoerd.
+
+7. WIJZE VAN GEBRUIK VAN DE BRONNEN
+
+ATK-Pro is bedoeld voor gerichte en specifieke handelingen met betrekking tot een afzonderlijk document, een afzonderlijke archiefeenheid of een afzonderlijk register waartoe de gebruiker rechtmatig toegang heeft.
+
+De software is niet bedoeld voor het massaal of willekeurig verzamelen van inhoud, het systematisch downloaden van volledige collecties of het omzeilen van authenticatie, abonnementen, tijdelijke toegangspassen, betaalmuren, aanduidingen die downloaden verbieden, technische beschermingsmaatregelen of beperkingen die door de beheerders van de portalen zijn ingesteld.
+
+ATK-Pro garandeert niet dat een technisch bereikbare bron ook vrij kan worden gedownload, gereproduceerd, gewijzigd of opnieuw verspreid.
+
+De gebruiker blijft verantwoordelijk voor de keuze van de bronnen, de omvang van de uitgevoerde handelingen en de naleving van de toepasselijke wetgeving, waaronder bepalingen inzake auteursrecht, bescherming van persoonsgegevens, vertrouwelijkheid, toegang tot archieven en contractuele voorwaarden van de gebruikte diensten.
+
+8. FUNCTIES VOOR KUNSTMATIGE INTELLIGENTIE EN EXTERNE DIENSTEN
+
+Eventuele functies voor transcriptie, herkenning, vertaling of analyse met ondersteuning van kunstmatige intelligentie worden uitsluitend door de gebruiker geactiveerd.
+
+Wanneer een externe aanbieder wordt geselecteerd, kunnen de voor de handeling noodzakelijke gegevens, waaronder afbeeldingen, teksten, instructies of metadata, worden verzonden naar de systemen van de gekozen aanbieder. De verwerking vindt plaats overeenkomstig de contractuele voorwaarden en privacyverklaringen van die aanbieder.
+
+ATK-Pro heeft geen controle over de opslag, verwerking of het eventuele gebruik van gegevens door externe diensten. Vóór verzending moet de gebruiker controleren of het materiaal rechtmatig mag worden verzonden en geen persoonsgegevens, vertrouwelijke gegevens of anderszins beschermde gegevens bevat die onverenigbaar zijn met de geselecteerde dienst.
+
+API-sleutels en eventuele kosten die door externe aanbieders in rekening worden gebracht, blijven onder de verantwoordelijkheid van de gebruiker. ATK-Pro garandeert niet de beschikbaarheid, continuïteit, prijzen, prestaties of blijvende beschikbaarheid van modellen en diensten van derden.
+
+9. BETROUWBAARHEID VAN DE RESULTATEN
+
+Transcripties, vertalingen, genealogische gegevens, metadata en andere resultaten die door de software worden gegenereerd of opnieuw verwerkt, kunnen fouten, weglatingen, onjuiste interpretaties of niet-verifieerbare informatie bevatten.
+
+Met name resultaten die met OCR of kunstmatige intelligentie zijn geproduceerd, mogen niet worden beschouwd als authentieke kopieën, certificeringen, professionele adviezen of vervangingen voor het raadplegen van de oorspronkelijke bronnen.
+
+De gebruiker dient elk relevant resultaat te controleren door het te vergelijken met het oorspronkelijke document en eventuele officiële bronnen.
+
+10. GEGEVENSBEWARING EN BEVEILIGING
+
+De gebruiker is verantwoordelijk voor het bewaren van documenten, transcripties, configuraties, toegangssleutels en andere gegevens die via de software worden verwerkt.
+
+Voordat belangrijke handelingen worden uitgevoerd, is het raadzaam afzonderlijke reservekopieën te maken. De auteur garandeert niet dat verwijderde, overschreven, beschadigde, onvolledige of niet correct opgeslagen gegevens kunnen worden hersteld.
+
+De gebruiker dient zijn inloggegevens en API-sleutels te beveiligen en mag deze niet delen via bestanden, diagnostische logboeken of onbeveiligde kanalen.
+
+11. AFWEZIGHEID VAN GARANTIES
+
+Voor zover toegestaan door de toepasselijke wetgeving worden ATK-Pro, de bijbehorende code en de documentatie geleverd “zoals ze zijn” en “zoals beschikbaar”, zonder uitdrukkelijke of stilzwijgende garanties.
+
+Er wordt onder meer geen garantie gegeven op de afwezigheid van fouten, de continuïteit van de werking, compatibiliteit met alle systemen, permanente beschikbaarheid van externe portalen en diensten, geschiktheid voor een bepaald doel, juistheid van de resultaten of bewaring van gegevens.
+
+De uitsluitingen van garanties waarin de toepasselijke licenties voorzien, blijven van kracht en worden niet door deze disclaimer vervangen.
+
+12. BEPERKING VAN AANSPRAKELIJKHEID
+
+Voor zover toegestaan door de toepasselijke wetgeving zijn de auteur en eventuele medewerkers niet aansprakelijk voor schade, verliezen, kosten of gevolgen die voortvloeien uit de installatie, het gebruik of de onmogelijkheid om ATK-Pro te gebruiken.
+
+Dit omvat onder meer verlies of wijziging van gegevens, onjuiste resultaten, onbeschikbaarheid van externe portalen of diensten, kosten in verband met API's of verbindingen, schendingen van voorwaarden van derden en gebruik van bronnen zonder de noodzakelijke toestemmingen.
+
+Geen enkele bepaling van deze disclaimer sluit aansprakelijkheid uit of beperkt deze voor zover deze volgens de toepasselijke wetgeving niet kan worden uitgesloten of beperkt.
+
+13. VERANTWOORDELIJKHEID VAN DE GEBRUIKER
+
+Door ATK-Pro te installeren of te gebruiken, verklaart de gebruiker te begrijpen dat:
+
+- de software een technisch hulpmiddel is en geen toestemming vormt voor toegang tot, het downloaden of hergebruiken van bronnen van derden;
+- hij de rechten en voorwaarden die op elke bron van toepassing zijn, moet controleren;
+- hij de betrouwbaarheid van de geproduceerde resultaten moet controleren;
+- hij persoonsgegevens, inloggegevens en API-sleutels moet beschermen;
+- hij de software moet gebruiken in overeenstemming met de wet en de rechten van anderen;
+- hij verantwoordelijk blijft voor de handelingen die hij besluit uit te voeren.
+
+14. GRATIS EN DONATIES
+
+ATK-Pro wordt gratis verspreid.
+
+Eventuele donaties zijn uitsluitend vrijwillig, vormen geen tegenprestatie voor een licentie, dienst of toegang tot aanvullende functionaliteiten en hebben op geen enkele wijze invloed op de installatie of het gebruik van de software.
+
+15. VOORRANG VAN LICENTIES EN TOEPASSELIJK RECHT
+
+Deze disclaimer vormt een aanvulling op de voor de gebruiker bestemde informatie, maar wijzigt of vervangt de voorwaarden van de licenties die van toepassing zijn op de code, de documentatie of componenten van derden niet.
+
+In geval van tegenstrijdigheid hebben de tekst van de toepasselijke licentie en de dwingende bepalingen van het toepasselijke recht voorrang.
 
 © 2026 Antenati Toolkit Pro
 antenati.toolkit.pro@gmail.com

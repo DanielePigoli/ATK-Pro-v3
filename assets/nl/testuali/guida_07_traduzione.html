@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="nl" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Module 07: OCR-vertaling</title>
+    <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+        
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+        
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+        
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+        
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+        
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+        
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+        
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+        
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+        
+        .metadata strong {
+            color: #2a1a0a;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            
+            
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+        
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+            
+        }
+        
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            
+        }
+        
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+        
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+        
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        .command {
+            background: #f4ede4;
+            
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+        
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+            
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+        
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+        
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .toc ol {
+            margin-left: 30px;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+        <h1>📚 Module 07: OCR-vertaling</h1>
+        </header>
+
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+        <a href="guida_06_ocr_avanzato.html" class="nav-button">&#8592; Mod.06 &mdash; Geavanceerde OCR</a>
+            <a href="guida.html" class="nav-button">&#127968; Hoofdindex</a>
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">Mod.08 &mdash; GEDCOM-export &#8594;</a>
+        </div>
+
+    <div class="section">
+        <h2>&#128204; Overzicht</h2>
+        <p>De module <strong>LLM-ondersteunde paleografische vertaling</strong> vertaalt transcripties, paleografische teksten, onderzoeksnotities of bestanden <code>.txt</code> naar een moderne taal die door de gebruiker is gekozen.</p>
+        <p>Je opent deze via het menu <em>Services &rarr; OCR-vertaling</em>. De module gebruikt de in ATK-Pro geconfigureerde AI-providers, met dezelfde logica voor sleutels en voorkeuren als bij de OCR- en genealogische services.</p>
+        <p>De vertaling blijft een hulpmiddel bij het lezen: het resultaat moet altijd worden nagekeken, vooral wanneer de brontekst oude spellingen, Latijn, notariële formules, afkortingen, dialecten of eigennamen bevat.</p>
+    </div>
+
+    <div class="section">
+        <h2>&#128421;&#65039; Interface</h2>
+        <p>Het venster is ingedeeld in een configuratiebalk, een gebied voor de brontekst, een veld voor contextuele instructies en een gebied voor het resultaat.</p>
+
+        <div class="section-box">
+            <h3>Configuratiebalk</h3>
+            <ul>
+                <li><strong>AI-provider</strong>: kies de te gebruiken service uit de services die in de installatie beschikbaar zijn, bijvoorbeeld Gemini, OpenAI, Claude, Mistral, xAI, DeepSeek, Groq, HuggingFace of Ollama.</li>
+                <li><strong>Model</strong>: optioneel veld om een specifiek model op te geven dat door de provider wordt ondersteund. Laat je het leeg, dan gebruikt ATK-Pro het standaardmodel dat in de configuratie is ingesteld.</li>
+                <li><strong>Documenttype</strong>: selecteer het type document of tekst dat je wilt vertalen. Je kunt aangepaste typen maken en verwijderen; voor ingebouwde typen kun je de prompt via een override wijzigen, maar je kunt ze niet verwijderen.</li>
+                <li><strong>API-sleutel en kluis</strong>: voer de sleutel van de gekozen provider in of open het bestand van de <em>Kluis</em> om de CSV-kluis te raadplegen of te wijzigen.</li>
+                <li><strong>Doeltaal</strong>: kies de moderne taal waarin je de vertaling wilt ontvangen.</li>
+            </ul>
+        </div>
+
+        <div class="section-box">
+            <h3>Brontekst</h3>
+            <ul>
+                <li><strong>Brontekst</strong>: plak de transcriptie die je wilt vertalen of laad een bestand <code>.txt</code> dat eerder is gegenereerd.</li>
+                <li><strong>TXT-bestand laden</strong>: opent een tekstbestand en plaatst het in het brongebied.</li>
+                <li><strong>Glossarium &amp; context</strong>: hiermee kun je het model vóór de vertaling instructies geven.</li>
+            </ul>
+        </div>
+
+        <div class="section-box">
+            <h3>Vertaald resultaat</h3>
+            <ul>
+                <li>Klik op <strong>Vertaal tekst NU</strong> om de verwerking te starten.</li>
+                <li>Tijdens de verwerking toont het resultatenpaneel een wachtbericht.</li>
+                <li>Het resultaat is bewerkbaar: corrigeer de vertaling rechtstreeks voordat je deze opslaat.</li>
+                <li><strong>Vertaling opslaan (TXT)</strong> exporteert platte tekst.</li>
+                <li><strong>Exporteren naar Word (DOCX)</strong> maakt een bewerkbaar Word-document.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&amp;#128221; Het veld Glossarium &amp; context — gebruiksgids</h2>
+        <p>Met dit optionele veld kun je het model vóór het begin van de verwerking instrueren over de kenmerken van de tekst. Dit is de juiste plaats om afkortingen, formules, de brontaal, vertaalcriteria en woorden die niet vertaald mogen worden toe te lichten.</p>
+
+        <div class="section-box">
+            <h3>Wanneer gebruiken</h3>
+            <p>Het veld is bijzonder nuttig wanneer de tekst het volgende bevat:</p>
+            <ul>
+                <li><strong>Archaïsmen en verouderde woorden</strong> die een moderne vertaler anders zou kunnen interpreteren</li>
+                <li><strong>Dialecttermen</strong> (Siciliaans, Venetiaans, Toscaans enz.) die niet in standaardwoordenboeken voorkomen</li>
+                <li><strong>Terugkerende juridische of notariële formules</strong> met een specifieke technische betekenis</li>
+                <li><strong>Eigennamen of toponiemen</strong> die niet vertaald mogen worden maar getrouw moeten worden getranscribeerd</li>
+                <li><strong>Afkortingen</strong> met een conventionele betekenis binnen het documentcorpus</li>
+            </ul>
+        </div>
+
+        <div class="section-box">
+        <h3>Praktijkvoorbeelden</h3>
+            <p><strong>Voorbeeld 1 &mdash; Negentiende-eeuwse parochieakte in Siciliaans dialect:</strong></p>
+            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">f. = zoon/dochter van
+fu = reeds overleden
+q. = quondam (reeds overleden)
+vid. = weduwe/weduwnaar
+De maanden zijn in dialect geschreven (Jinnaru, Frivaru, Marzu...).
+Vertaal de eigennamen niet (Nunzio, Rosaria, Salvatore...).
+De aanspreektitels 'don' en 'donna' duiden personen van hoge rang aan; behoud ze.</pre>
+
+            <p style="margin-top:1rem;"><strong>Voorbeeld 2 &mdash; Notariële akte in middeleeuws Latijn:</strong></p>
+            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">De tekst is in notarieel Latijn. Vertaal naar modern Italiaans.
+Behoud de standaard juridische formules (rogatio, instrumentum, actum...).
+'lib.' = ponden (munteenheid, niet gewicht). 'sol.' = soldi.
+Toponiemen in de Latijnse genitief moeten altijd worden weergegeven met de huidige Italiaanse naam.</pre>
+
+            <p style="margin-top:1rem;"><strong>Voorbeeld 3 &mdash; Persoonlijke brief in negentiende-eeuws Italiaans:</strong></p>
+            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Tekst in formeel negentiende-eeuws Italiaans. Vertaal naar modern Engels.
+Behoud de formele toon en maak deze niet informeel.
+'Pregiatissimo' en 'Esimio' zijn beleefdheidsformules: geef ze weer met passende Engelse equivalenten.
+Vertaal eigennamen niet.</pre>
+        </div>
+
+        <div class="section-box">
+        <h3>Aanbevolen strategie</h3>
+            <ul>
+                <li>Bouw het glossarium <strong>geleidelijk</strong>op: maak een eerste vertaling, identificeer terugkerende fouten, voeg instructies toe en probeer opnieuw.</li>
+                <li>Bewaar voor verschillende registers afzonderlijke glossaria en plak ze vóór de verwerking in het veld.</li>
+                <li>Vermeld altijd de <strong>taal van de brontekst</strong>, vooral bij Latijn, dialecten, regionale talen of meertalige documenten.</li>
+                <li>Geef aan wanneer eigennamen, toponiemen, titels of formules behouden moeten blijven en niet gemoderniseerd mogen worden.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#127760; Doeltalen</h2>
+        <div class="section-box">
+            <p>De daadwerkelijke keuze komt overeen met de 20 talen die door de interface en het meertalige glossarium van ATK-Pro worden ondersteund.</p>
+            <table>
+            <thead><tr><th>Taal</th><th>Autoniem</th><th>Taal</th><th>Autoniem</th></tr></thead>
+                <tbody>
+                    <tr><td>Italiaans</td><td>Italiano</td><td>Russisch</td><td>&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</td></tr>
+                    <tr><td>Engels</td><td>English</td><td>Arabisch</td><td>&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</td></tr>
+                    <tr><td>Spaans</td><td>Espa&ntilde;ol</td><td>Nederlands</td><td>Nederlands</td></tr>
+                    <tr><td>Frans</td><td>Fran&ccedil;ais</td><td>Hebreeuws</td><td>&#1506;&#1489;&#1512;&#1497;&#1514;</td></tr>
+                    <tr><td>Duits</td><td>Deutsch</td><td>Japans</td><td>&#26085;&#26412;&#35486;</td></tr>
+                    <tr><td>Portugees</td><td>Portugu&ecirc;s</td><td>Chinees</td><td>&#20013;&#25991;</td></tr>
+                    <tr><td>Pools</td><td>Polski</td><td>Turks</td><td>T&uuml;rk&ccedil;e</td></tr>
+                    <tr><td>Deens</td><td>Dansk</td><td>Noors</td><td>Norsk</td></tr>
+                    <tr><td>Vietnamees</td><td>Ti&#7871;ng Vi&#7879;t</td><td>Grieks</td><td>&#917;&#955;&#955;&#951;&#957;&#953;&#954;&#940;</td></tr>
+                    <tr><td>Roemeens</td><td>Rom&acirc;n&#259;</td><td>Zweeds</td><td>Svenska</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#128221; Operationele opmerkingen</h2>
+        <div class="section-box">
+            <ul>
+                <li>De verwerking is asynchroon: de vertaalknop wordt tijdens de aanvraag uitgeschakeld, terwijl het venster responsief blijft. Wijzigingen die tijdens het wachten in de velden worden aangebracht, veranderen de reeds verzonden aanvraag niet.</li>
+                <li>Voor lange of complexe teksten kunnen meer tijd en meerdere handmatige revisies nodig zijn.</li>
+                <li>De sleutel kan uit de gedeelde kluis komen; provider, model, taal en context worden opgeslagen als modulespecifieke voorkeuren voor de vertaalmodule.</li>
+                <li>De vertaling levert tekstuitvoer in TXT of DOCX op: er worden geen afbeeldingen, metadata, stambomen of GEDCOM-bestanden gegenereerd.</li>
+                <li>Stuur geen vertrouwelijke of aan beperkingen onderworpen teksten naar externe providers als je de gebruiksvoorwaarden, privacyvoorwaarden en vereiste toestemmingen niet hebt gecontroleerd.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+        <a href="guida_06_ocr_avanzato.html" class="nav-button">&#8592; Mod.06 &mdash; Geavanceerde OCR</a>
+            <a href="guida.html" class="nav-button">&#127968; Hoofdindex</a>
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">Mod.08 &mdash; GEDCOM-export &#8594;</a>
+        </div>
+
+        <footer style="text-align: center;">
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
+    </div>
+    </div>
+</body>
+</html>
