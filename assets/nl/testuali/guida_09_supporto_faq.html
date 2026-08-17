@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="nl" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&#128218; Module 09: Documentatie, ondersteuning, probleemoplossing en FAQ</title>
+    <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+        
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+        
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+        
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+        
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+        
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+        
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+        
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+        
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+        
+        .metadata strong {
+            color: #2a1a0a;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            
+            
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+        
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+        
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+            
+        }
+        
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            
+        }
+        
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+        
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+        
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        .command {
+            background: #f4ede4;
+            
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+        
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+        
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+            
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+        
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+        
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .toc ol {
+            margin-left: 30px;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>&#128218; Module 09: Documentatie, ondersteuning, probleemoplossing en FAQ</h1>
+        </header>
+
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">&#8592; Mod.08 &mdash; GEDCOM-export</a>
+            <a href="guida.html" class="nav-button">&#127968; Hoofdindex</a>
+        </div>
+        <div class="section-box">
+            <h3>1. Menu Documenten: bronnen en ondersteuning</h3>
+            <p>────────────────────────────────────────────────────────────────────────────────</p>
+            <h4>BESCHIKBARE DOCUMENTEN</h4>
+            <p>In het menu <strong>Documenten</strong> vind je vijf opties om toegang te krijgen tot de informatiebronnen van de toepassing.</p>
+            <p><strong>📌 Opmerking:</strong> de documenten zijn opgenomen in de installatie en kunnen zonder internetverbinding worden geraadpleegd.</p>
+            <h4>1️⃣ DISCLAIMER (Juridische bepalingen)</h4>
+            <ul>
+                <li>Opent de tekst van de officiële juridische disclaimer die in de toepassing is opgenomen.</li>
+                <li>Bevat: aansprakelijkheidsbeperkingen, gebruiksvoorwaarden, softwarelicenties</li>
+                <li>Belangrijk om te lezen vóór intensief gebruik</li>
+                <li>Kan samen met een nieuwe versie van de toepassing worden bijgewerkt; wanneer de juridische revisie verandert, wordt opnieuw om acceptatie gevraagd.</li>
+            </ul>
+            <h4>2️⃣ PRESENTATIE VAN DE AUTEUR</h4>
+            <ul>
+                <li>Opent: presentazione_autore.html</li>
+                <li>Bevat: korte biografie van de auteur, ervaring met archieven en digitale technologie</li>
+                <li>Maakt het mogelijk de achtergrond van het project te begrijpen</li>
+            </ul>
+            <h4>3️⃣ PROJECTPRESENTATIE</h4>
+            <ul>
+                <li>Opent: presentazione_progetto_ATK-Pro.html</li>
+                <li>Bevat:
+                    <ul>
+                        <li>Belangrijkste doelstellingen: genealogische en archivistische werkbank voor meerdere portalen</li>
+                        <li>Portaalbeleid: gebruik van compatibele openbare bronnen, zonder logins, paywalls of technische beperkingen te omzeilen</li>
+                        <li>Reikwijdte v3: portaalregister, AI-ondersteund zoeken, OCR, OCR-vertaling, genealogische analyse en GEDCOM-export</li>
+                        <li>Doelgroepen: genealogische onderzoekers, archiefonderzoekers, Italiaanse en Italiaanstalige gemeenschappen wereldwijd</li>
+                        <li>Meertalig: 20 ondersteunde talen (IT, EN, ES, PT, FR, DE, AR, HE, NL, RU, JA, SV, ZH, RO, EL, PL, DA, NO, TR, VI)</li>
+                    </ul>
+                </li>
+                <li>Levend document, dat geleidelijk wordt aangevuld</li>
+            </ul>
+            <h4>4️⃣ HANDLEIDING (Hoofdindex)</h4>
+            <ul>
+                <li>Opent: guida.html</li>
+                <li>Bevat: modulaire index van de Italiaanse handleiding v3</li>
+                <li>Van hieruit heb je toegang tot de specifieke operationele secties: installatie, basishandelingen, viewer, metadata, OCR, vertaling, GEDCOM, ondersteuning en AI-ondersteund zoeken</li>
+            </ul>
+            <h4>5️⃣ INFORMATIE</h4>
+            <ul>
+                <li>Toont een venster met 3 regels:
+                    <ul>
+                        <li>1. ATK-Pro vx.x.x (versienummer)</li>
+                        <li>2. ©2026 Daniele Pigoli (copyright en auteur)</li>
+                        <li>3. E-mailadres voor ondersteuning (voor meldingen/suggesties)</li>
+                    </ul>
+                </li>
+                <li>Gebruik e-mail voor officiële contacten</li>
+                <li>Versie automatisch bijgewerkt</li>
+            </ul>
+            <h4>🌐 Beschikbaarheid van talen</h4>
+            <ul>
+                <li>De presentatie van de auteur, de projectpresentatie en de handleiding worden geopend in de geselecteerde taal, indien beschikbaar.</li>
+                <li>De operationele disclaimer gebruikt de officiële Italiaanse juridische revisie.</li>
+                <li>Als een gelokaliseerde bron niet beschikbaar is, wordt het bijbehorende bericht weergegeven.</li>
+                <li>Voor het voorbeeldinvoerbestand wordt Engels als fallback gebruikt.</li>
+            </ul>
+            <h4>💬 CONTACT OPNEMEN MET DE ONDERSTEUNING</h4>
+            <p>E-mail: antenati.toolkit.pro@gmail.com</p>
+            <ul>
+                <li>Om bugs te melden: beschrijf het probleem + screenshot/log</li>
+                <li>Voor suggesties: stel nieuwe functies of verbeteringen voor</li>
+                <li>Voor technische vragen: vraag om uitleg over de werking</li>
+                <li>Om ontwikkelingsprioriteiten voor te stellen: suggereer verbeteringen, openbare portalen die kunnen worden geëvalueerd of functies die verder kunnen worden verfijnd.
+                    <ul>
+                        <li>Voorstellen worden beoordeeld, maar de ontwikkeling is afhankelijk van het feit dat ATK-Pro op hobbymatige basis wordt beheerd en onderhouden, en niet door een professioneel softwarebedrijf.</li>
+                        <li>De implementatietijd is afhankelijk van de beschikbaarheid en de beperkte middelen.</li>
+                    </ul>
+                </li>
+            </ul>
+            </div>
+            <div class="section-box">
+            <h3>2. Het programma afsluiten en het project ondersteunen</h3>
+            <p>────────────────────────────────────────────────────────────────────────────────</p>
+            <h4>🔴 ATK-PRO AFSLUITEN</h4>
+            <p>Je kunt het programma afsluiten op een van de door het systeem ondersteunde manieren:</p>
+            <ol>
+                <li>selecteer <strong>Instellingen &rarr; Sluiten</strong>;</li>
+                <li>gebruik de sluitknop in de titelbalk;</li>
+                <li>gebruik in Windows de standaardsneltoets <strong>Alt+F4</strong>.</li>
+            </ol>
+            <p>Tijdens het afsluiten wordt het optionele venster weergegeven <strong>Ondersteun het project</strong>.</p>
+            <h4>💰 VENSTER "ONDERSTEUN HET PROJECT"</h4>
+            <p>Nadat je een van de 3 afsluitmethoden hebt gekozen, wordt een venster geopend met:</p>
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="images/window4.webp" alt="Venster Ondersteun het project" style="max-width: 600px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+            </div>
+            <h4>🎯 Wat je in dit venster kunt doen</h4>
+            <p>👉 OPTIE 1: Klik op de BANNER (een willekeurig deel van de afbeelding)</p>
+            <ul>
+                <li>De browser wordt geopend met de officiële PayPal.me-pagina</li>
+                <li>Je kunt het donatiebedrag kiezen (volledig vrij)</li>
+                <li>Betaling via PayPal (met of zonder account, afhankelijk van het land)</li>
+                <li>Geen verplichting: je kunt er ook voor kiezen niet te doneren</li>
+            </ul>
+            <p>📱 OPTIE 2: scan de QR-code</p>
+            <ol>
+                <li>Open de camera van de smartphone.</li>
+                <li>Richt de camera op de QR-code van de banner.</li>
+                <li>Controleer in de browser het voorgestelde adres voordat je verdergaat.</li>
+            </ol>
+            <p>⏹️ OPTIE 3: Klik op de knop "Sluiten"</p>
+            <ul>
+                <li>Sluit de banner</li>
+                <li>Sluit het programma definitief af</li>
+                <li>Geen verplichting: je kunt afsluiten zonder te doneren</li>
+            </ul>
+            <h4>📌 BELANGRIJKE OPMERKINGEN:</h4>
+            <p>✓ Donaties zijn VOLLEDIG VRIJWILLIG</p>
+            <p>✓ Het programma werkt precies hetzelfde met of zonder donatie</p>
+            <p>✓ Geen tracking, geen functiebeperkingen</p>
+            <p>✓ De banner opent het door het project geconfigureerde PayPal-adres; controleer altijd de bestemming die door de browser wordt weergegeven</p>
+            <p>✓ Je kunt het project ondersteunen wanneer je maar wilt</p>
+            <h4>💡 WAARVOOR WORDEN DE DONATIES GEBRUIKT:</h4>
+            <p>Ze ondersteunen de verdere ontwikkeling van ATK-Pro:</p>
+            <ul>
+                <li>Distributie, infrastructuur en diensten die aan het project zijn gekoppeld</li>
+                <li>Afhankelijkheden en softwarecomponenten</li>
+                <li>Tijd voor ontwikkeling, tests, documentatie en onderhoud van volgende versies</li>
+                <li>Testserver voor IIIF-validatie</li>
+                <li>Documentatie en onderhoud</li>
+            </ul>
+            <h4>🙏 ALTERNATIEF VOOR DONATIES:</h4>
+            <p>Als je niet kunt doneren maar toch wilt helpen, kun je:</p>
+            <ul>
+                <li>ATK-Pro delen via sociale media</li>
+                <li>Innovatieve toepassingen of interessante praktijkvoorbeelden melden</li>
+            </ul>
+            </div>
+            <div class="section-box">
+            <h3>3. Probleemoplossing en FAQ</h3>
+            <p>────────────────────────────────────────────────────────────────────────────────</p>
+            <h4>❓ VEELGESTELDE VRAGEN</h4>
+            <h4>🔵 V: Loopt het programma vast tijdens het laden van een manifest?</h4>
+            <p><strong>A:</strong> Meestal gaat het om een netwerktime-out. Controleer:</p>
+            <ol>
+                <li>Controleer of de internetverbinding werkt door een betrouwbare pagina in de browser te openen.</li>
+                <li>Open de IIIF-URL in de browser en kopieer deze opnieuw uit de adresbalk.</li>
+                <li>Controleer of de firewall of beveiligingssoftware verbindingen van ATK-Pro toestaat.</li>
+                <li>Als je een netwerk met proxy gebruikt, controleer dan de netwerkconfiguratie van het besturingssysteem.</li>
+            </ol>
+            <p>Als het probleem aanhoudt, probeer dan een andere URL om de IIIF-verbinding te testen</p>
+            <h4>🔵 V: "Bestand niet gevonden (404)" - wat betekent dit?</h4>
+            <p><strong>A:</strong> De URL van het manifest is niet bereikbaar. Mogelijke oorzaken:</p>
+            <ul>
+                <li>URL verlopen (repository niet bijgewerkt)</li>
+                <li>Repository offline</li>
+                <li>Onjuiste URL-parameters (verkeerde manifest-ID)</li>
+            </ul>
+            <p>Oplossing: controleer de URL in de browser voordat je deze in ATK-Pro plakt</p>
+            <h4>🔵 V: Is de download erg traag of wordt deze onderbroken?</h4>
+            <p><strong>A:</strong> Probeer het volgende:</p>
+            <ol>
+                <li>Controleer de stabiliteit van het Wi-Fi-netwerk of gebruik, indien beschikbaar, een bekabelde verbinding.</li>
+                <li>Probeer een andere openbare IIIF-URL om te bepalen of de vertraging door de server wordt veroorzaakt.</li>
+                <li>Verminder de belasting door het bronprofiel te kiezen <strong>Licht</strong>.</li>
+                <li>Als het probleem slechts één portaal betreft, wacht dan en probeer het opnieuw: de externe dienst kan overbelast of tijdelijk niet beschikbaar zijn.</li>
+            </ol>
+            <h4>🔵 V: Is de reconstructie van afbeeldingen traag - hoe kan ik dit versnellen?</h4>
+            <p><strong>A:</strong> De snelheid hangt voornamelijk af van de responstijd van de IIIF-server, de grootte van de afbeeldingen, de verbinding en de beschikbare computerbronnen.</p>
+            <ul>
+                <li>Gebruik het profiel <strong>Leggero</strong> om het gebruik van systeembronnen te beperken, of <strong>Veloce</strong> alleen op geschikte systemen.</li>
+                <li>Verwerk registers met minder pagina's per keer als het geheugen of netwerk zwaar wordt belast.</li>
+                <li>Houd er rekening mee dat sommige portalen sequentiële toegang afdwingen, ongeacht het gekozen profiel.</li>
+            </ul>
+            <h4>🔵 V: Is de PDF-uitvoer beschadigd of kan deze niet worden geopend?</h4>
+            <p><strong>A:</strong> Probeer het volgende:</p>
+            <ol>
+                <li>Bewaar een kopie die nuttig kan zijn voor de diagnose en verwijder of hernoem vervolgens de onvolledige PDF.</li>
+                <li>Laad het record opnieuw via <strong>File input &rarr; Apri input</strong> en genereer de PDF opnieuw.</li>
+                <li>Controleer of er naar de doelmap kan worden geschreven en of er voldoende ruimte beschikbaar is voor de verwerking.</li>
+                <li>Controleer de afzonderlijk gegenereerde afbeeldingen om vast te stellen of het probleem alleen de PDF betreft.</li>
+            </ol>
+            <h4>🔵 V: Hoe gebruik ik TIFF-bestanden voor archivering?</h4>
+            <p><strong>A:</strong> TIFF is een lossless formaat en is uitstekend geschikt voor archivering:</p>
+            <ol>
+                <li>Selecteer TIFF als afbeeldingsformaat.</li>
+                <li>ATK-Pro slaat TIFF-bestanden op met lossless LZW-compressie.</li>
+                <li>Bewaar een kopie op een afzonderlijk opslagmedium en controleer regelmatig de integriteit van de back-up.</li>
+                <li>Langdurige bewaring hangt ook af van opslagmedia, kopieën en integriteitscontroles, niet alleen van het formaat.</li>
+            </ol>
+            <h4>🔵 V: Kan ik meerdere records tegelijk verwerken (parallel)?</h4>
+            <p><strong>A:</strong> De records in een batch worden sequentieel verwerkt. Binnen één record kunnen pagina&apos;s en tiles parallel worden verwerkt, afhankelijk van het portaal en het bronnenprofiel.</p>
+            <ol>
+                <li>Maak een invoerbestand met alle ondersteunde records, achter elkaar.</li>
+                <li>Selecteer dit via <strong>File input &rarr; Apri input</strong>.</li>
+                <li>Start slechts één keer <strong>Output &rarr; Elabora</strong>.</li>
+                <li>ATK-Pro gaat automatisch verder met de volgende records.</li>
+            </ol>
+            <p>Voorbeeld: als de invoer 5 records bevat, verwerkt ATK-Pro automatisch:</p>
+            <ul>
+                <li>Record 1 (download + reconstructie)</li>
+                <li>Record 2 (download + reconstructie)</li>
+                <li>... tot en met Record 5</li>
+            </ul>
+            <p>De resultaten worden opgeslagen in de geconfigureerde mappen; het is niet nodig om de verwerking voor elk record handmatig opnieuw te starten.</p>
+            <h4>🔵 V: Waar worden de bestanden precies opgeslagen?</h4>
+            <p><strong>A:</strong> Standaardpad:</p>
+            <ul>
+                <li><strong>Standaardinstallatie:</strong> map <code>ATK-Pro/output</code> in de Documenten-map van de gebruiker.</li>
+                <li><strong>Draagbare modus:</strong> map <code>output</code> naast het uitvoerbare bestand.</li>
+            </ul>
+            <p>Je kunt de bestemming wijzigen via <strong>Impostazioni &rarr; Seleziona cartella output</strong>. De standaardmappen worden waar mogelijk automatisch aangemaakt.</p>
+            <h4>🔵 V: Waarom meldt of blokkeert ATK-Pro een uitvoerpad?</h4>
+            <p><strong>A:</strong> Voordat bestanden worden aangemaakt, controleert ATK-Pro het langste verwachte pad voor het record. Het eindoverzicht maakt onderscheid tussen twee situaties:</p>
+            <ul>
+                <li><strong>Blokkerende fout:</strong> de naam bevat niet-toegestane tekens, gebruikt een gereserveerde Windows-naam, eindigt met een spatie of punt, of een padsegment overschrijdt de ondersteunde limiet. Alleen het betreffende record wordt gestopt en de bijbehorende werkmap wordt niet aangemaakt.</li>
+                <li><strong>Compatibiliteitswaarschuwing:</strong> het pad ligt dicht bij een voorzichtige grenswaarde of kan problemen veroorzaken met oudere Windows-toepassingen. De verwerking kan doorgaan, maar het is raadzaam een kortere bestemming te kiezen.</li>
+            </ul>
+            <p>Het profiel <strong>OneDrive/SharePoint</strong> wordt alleen toegepast wanneer de geselecteerde map zich daadwerkelijk onder een hoofdmap bevindt <code>OneDrive</code> of <code>OneDrive - Organizzazione</code>. Verkort bij een fout de recordnaam of kies een doelmap dichter bij de hoofdmap van het station; het is niet nodig bestanden die al door andere verwerkingen zijn aangemaakt te hernoemen of te verplaatsen.</p>
+            <h4>🔵 V: Kan ik uitvoerbestanden na de verwerking verplaatsen?</h4>
+            <p><strong>A:</strong> Ja, de definitieve bestanden kunnen na de verwerking worden verplaatst.</p>
+            <p>Na voltooiing:</p>
+            <ol>
+                <li>Verplaats de map van het record naar de nieuwe bestemming.</li>
+                <li>De definitieve PDF is zelfstandig bruikbaar; bewaar ook de afbeeldingen en metadata als deze deel uitmaken van je werkarchief.</li>
+                <li>Als je van plan bent het record opnieuw te verwerken, bewaar dan het manifest en de overige bronbestanden.</li>
+            </ol>
+            <h4>🔵 V: Onverwachte crashes - wat te doen?</h4>
+            <p><strong>A:</strong> Als het programma crasht:</p>
+            <ol>
+                <li>Controleer <code>atkpro.log</code> of, wanneer uitgebreide diagnostiek is ingeschakeld, <code>atkpro_debug.log</code>. De locatie hangt af van het installatietype: zoek naast het uitvoerbare bestand of in de werkmap van de toepassing.</li>
+                <li>Kopieer de foutmelding of maak een schermafbeelding.</li>
+                <li>Start het programma opnieuw en herhaal de bewerking.</li>
+                <li>Als de fout opnieuw optreedt, probeer dan een ander IIIF-record om onderscheid te maken tussen een algemeen probleem en een probleem dat specifiek is voor het manifest.</li>
+            </ol>
+            <h4>⚠️ VEELVOORKOMENDE FOUTEN EN OPLOSSINGEN</h4>
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                <thead style="background-color: #f0f0f0;">
+                    <tr>
+                        <th style="text-align: left;">Fout</th>
+                        <th style="text-align: left;">Oorzaak</th>
+                        <th style="text-align: left;">Oplossing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>"Network timeout"</td>
+                        <td>IIIF-server traag/offline</td>
+                        <td>Probeer opnieuw met een andere URL</td>
+                    </tr>
+                    <tr>
+                        <td>"Invalid IIIF format"</td>
+                        <td>URL is geen IIIF Manifest</td>
+                        <td>Controleer de URL in de browser</td>
+                    </tr>
+                    <tr>
+                        <td>"Disk space full"</td>
+                        <td>Onvoldoende schijfruimte</td>
+                        <td>Maak ruimte vrij op het station</td>
+                    </tr>
+                    <tr>
+                        <td>"Permission denied"</td>
+                        <td>Beveiligde/Read-only map</td>
+                        <td>Kies een map die bij je gebruikersaccount hoort en controleer of ernaar kan worden geschreven; vermijd systeem- of beveiligde mappen.</td>
+                    </tr>
+                    <tr>
+                        <td>"URL not found (404)"</td>
+                        <td>IIIF Manifest verlopen</td>
+                        <td>Controleer de ID in het Portaal</td>
+                    </tr>
+                    <tr>
+                        <td>"Window not responding"</td>
+                        <td>Trage/zware verwerking</td>
+                        <td>Wacht of klik op Annulla</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4>🔵 V: Het portaal wordt herkend, maar de download wordt geweigerd. Waarom?</h4>
+            <p><strong>A:</strong> Technische compatibiliteit heft de toegangsvoorwaarden niet op. ATK-Pro weigert of beperkt bronnen die een login of toegang via een aangesloten instelling vereisen, geen stabiel openbaar endpoint beschikbaar stellen, zijn gemarkeerd <code>nodownload</code> of geen rechten vermelden die verenigbaar zijn met de gevraagde bewerking. Open de openbare pagina van het object, controleer de licentie en gebruiksvoorwaarden en probeer alleen de ondersteunde officiële URL.</p>
+            <h4>🔵 V: Kan ik een onderbroken OCR-batch herstellen?</h4>
+            <p><strong>A:</strong> Controleer in de voor OCR gekozen map het bestand <code>*_trascrizione_parziale.txt</code> en de bijbehorende metadata. Deze bevatten het progressief opgeslagen werk, dat moet worden gecontroleerd en voltooid voordat het als definitief kan worden beschouwd.</p>
+            <h4>🆘 ONDERSTEUNING EN CONTACT</h4>
+            <p>Als het probleem blijft bestaan nadat je de oplossingen hebt geprobeerd:</p>
+            <ol>
+                <li>Raadpleeg de projectpresentatie en deze handleiding via het menu <strong>Documenti</strong>.</li>
+                <li>Als het probleem onopgelost blijft, schrijf dan naar <strong>antenati.toolkit.pro@gmail.com</strong> en vermeld:</li>
+            </ol>
+            <ul>
+                <li>ATK-Pro-versie (menu Documenti → Informazioni)</li>
+                <li>Besturingssysteem en versie (bijv. Windows 10/11, Ubuntu 22.04, macOS 13)</li>
+                <li>IIIF-URL die het probleem veroorzaakt</li>
+                <li>Schermafbeelding van de fout (indien weergegeven)</li>
+            </ul>
+        </div>
+        
+        <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">&#8592; Mod.08 &mdash; GEDCOM-export</a>
+            <a href="guida.html" class="nav-button">&#127968; Hoofdindex</a>
+        </div>
+
+        <footer style="text-align: center;">
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
+    </div>
+</body>
+</html>
