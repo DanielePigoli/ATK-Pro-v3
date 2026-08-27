@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from io import BytesIO
 import re
+import time
 
 import requests
 from PIL import Image
@@ -18,17 +19,28 @@ class DirectImagePortalAdapter:
     referer: str
     timeout: int = 45
     host_fragment: str | None = None
+    retry_attempts: int = 1
+    retry_delay: float = 0.0
 
     def download_image(self, image_url: str):
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            "Accept": "image/jpeg,image/*;q=0.9,*/*;q=0.8",
             "Referer": self.referer,
         }
-        response = requests.get(image_url, headers=headers, timeout=self.timeout)
-        if not response.ok or not response.content:
-            return None, response.status_code if response is not None else None, 0
-        image = Image.open(BytesIO(response.content)).copy()
-        return image, response.status_code, len(response.content)
+        last_status = None
+        for attempt in range(1, max(1, self.retry_attempts) + 1):
+            try:
+                response = requests.get(image_url, headers=headers, timeout=self.timeout)
+                last_status = response.status_code
+                if response.ok and response.content:
+                    image = Image.open(BytesIO(response.content)).copy()
+                    return image, response.status_code, len(response.content)
+            except Exception:
+                last_status = None
+            if attempt < self.retry_attempts and self.retry_delay:
+                time.sleep(self.retry_delay * attempt)
+        return None, last_status, 0
 
     def matches_service_id(self, service_id: str | None) -> bool:
         return bool(self.host_fragment and service_id and self.host_fragment in service_id)
@@ -99,7 +111,7 @@ class SyntheticManifestPortalAdapter:
         if self.portal_key == "biblioteca_digitale_trentina":
             return _build_bdt_synthetic_manifest(page_url, scraped_html)
         if self.portal_key == "biblioteca_digitale_lombarda":
-            return _build_bdl_pdf_manifest(page_url)
+            return _build_bdl_synthetic_manifest(page_url)
         if self.portal_key == "rovereto_digital_library":
             return _build_rovereto_synthetic_manifest(page_url)
         if self.portal_key == "doge_unige":
@@ -150,12 +162,12 @@ def _build_bdt_synthetic_manifest(page_url: str, scraped_html: str | None = None
     return build_biblioteca_digitale_trentina_synthetic_manifest(page_url, html=scraped_html)
 
 
-def _build_bdl_pdf_manifest(page_url: str):
+def _build_bdl_synthetic_manifest(page_url: str):
     try:
-        from manifest_utils import build_biblioteca_digitale_lombarda_pdf_manifest
+        from manifest_utils import build_biblioteca_digitale_lombarda_synthetic_manifest
     except ImportError:  # pragma: no cover - package import path
-        from src.manifest_utils import build_biblioteca_digitale_lombarda_pdf_manifest
-    return build_biblioteca_digitale_lombarda_pdf_manifest(page_url)
+        from src.manifest_utils import build_biblioteca_digitale_lombarda_synthetic_manifest
+    return build_biblioteca_digitale_lombarda_synthetic_manifest(page_url)
 
 
 def _build_rovereto_synthetic_manifest(page_url: str):
@@ -230,6 +242,13 @@ DIRECT_IMAGE_ADAPTERS_BY_CONTEXT = {
 }
 
 DIRECT_IMAGE_ADAPTERS_BY_PORTAL = {
+    "biblioteca_digitale_lombarda": DirectImagePortalAdapter(
+        portal_label="BDL",
+        referer="https://www.bdl.servizirl.it/",
+        timeout=60,
+        retry_attempts=3,
+        retry_delay=2.0,
+    ),
     "dl_ficlit": DirectImagePortalAdapter(
         portal_label="FICLIT",
         referer="https://dl.ficlit.unibo.it/",
@@ -323,6 +342,13 @@ def ficlit_direct_image_url_from_canvas(canvas: dict) -> str | None:
 def resolve_direct_image_download(portal_key: str | None, canvas: dict, service_id: str | None):
     """Restituisce (adapter, image_url) per i portali a immagine diretta supportati."""
     portal_adapter = DIRECT_IMAGE_ADAPTERS_BY_PORTAL.get(portal_key)
+
+    if portal_adapter and portal_key == "biblioteca_digitale_lombarda":
+        resource = canvas.get("images", [{}])[0].get("resource", {})
+        image_url = str(resource.get("@id") or resource.get("id") or "").strip()
+        if image_url.startswith("https://www.bdl.servizirl.it/cantaloupe/iiif/2/"):
+            return portal_adapter, image_url
+        return None, None
 
     if portal_adapter and portal_key == "dl_ficlit":
         image_url = ficlit_direct_image_url_from_canvas(canvas)

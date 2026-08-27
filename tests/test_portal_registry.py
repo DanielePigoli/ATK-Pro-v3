@@ -178,7 +178,7 @@ def test_record_mode_policy_values_are_known_and_classified():
     assert get_portal_record_mode_policy("bncf_teca") == "d_only"
     assert get_portal_record_mode_policy("museogalileo") == "d_only"
     assert get_portal_record_mode_policy("phaidra_unipd") == "r_limited"
-    assert get_portal_record_mode_policy("biblioteca_digitale_lombarda") == "d_only"
+    assert get_portal_record_mode_policy("biblioteca_digitale_lombarda") == "r_limited"
     assert get_portal_record_mode_policy("matricula") == "r_limited"
     assert get_portal_record_mode_policy("biblioteca_digitale_siena") == "r_limited"
     assert get_portal_record_mode_policy("bub_digitale") == "r_limited"

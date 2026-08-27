@@ -421,7 +421,7 @@ class Elaborazione:
         self.record_type = record_type.upper()
         self.ark_url = ark_url
         self.output_dir = output_dir
-        self.nome_file = ""
+        self.nome_file = self._default_output_name()
         self.manifest = None
         self.manifest_path = None
         self.glossario_data = glossario_data
@@ -429,9 +429,16 @@ class Elaborazione:
         self.portale = portale
         self.resource_profile = resource_profile
 
+    def _default_output_name(self) -> str:
+        if self._portal_key() == "biblioteca_digitale_lombarda":
+            match = re.search(r"/bdl/public/rest/(?:srv|json)/item/(\d+)", self.ark_url, re.IGNORECASE)
+            if match:
+                return f"BDL_{match.group(1)}"
+        return "documento"
+
     def set_nome_file(self, nome: str):
-        """Imposta il nome file per il record."""
-        self.nome_file = nome
+        """Imposta il nome file per il record, con fallback stabile se vuoto."""
+        self.nome_file = str(nome or "").strip() or self._default_output_name()
 
     def set_formats(self, formats):
         """Imposta i formati di output desiderati."""
@@ -489,6 +496,12 @@ class Elaborazione:
 
             # Processa in base al tipo
             if self.record_type == "D":
+                if self._portal_key() == "biblioteca_digitale_lombarda" and len(tiles_info) > 1:
+                    logger.info(
+                        f"[BDL] Documento multipagina rilevato ({len(tiles_info)} canvas): "
+                        "elaborazione completa come registro"
+                    )
+                    return self._process_register(tiles_info, metadata)
                 logger.info(f"[Elaborazione] Tipo D: {self.nome_file}")
                 return self._process_document(tiles_info, metadata)
             elif self.record_type == "R":
@@ -520,7 +533,12 @@ class Elaborazione:
 
             # Se manifest_url è un dict, usiamo un ID fittizio per la cartella o l'ID estratto dall'URL
             if isinstance(manifest_url, dict):
-                container_id = re.search(r'idr=([A-Za-z0-9]+)', self.ark_url).group(1) if "idr=" in self.ark_url else "BNCF_SYNTH"
+                synthetic_id = str(manifest_url.get("@id") or manifest_url.get("id") or "").rstrip("/")
+                container_id = synthetic_id.rsplit("/", 1)[-1] if synthetic_id else "SYNTH"
+                if "idr=" in self.ark_url:
+                    idr_match = re.search(r"idr=([A-Za-z0-9]+)", self.ark_url)
+                    if idr_match:
+                        container_id = idr_match.group(1)
             else:
                 container_id = manifest_url.strip("/").split("/")[-2]
 
@@ -1230,6 +1248,7 @@ class Elaborazione:
 
             from threading import Lock
             immagini_lock = Lock()
+            failed_direct_canvases = []
             def process_canvas(idx, canvas):
                 if callable(getattr(self, 'cancel_cb', None)) and self.cancel_cb():
                     return
@@ -1311,6 +1330,9 @@ class Elaborazione:
                             logger.info(f"[{direct_adapter.portal_label}] Pagina {idx} scaricata da adapter diretto: {_size} byte")
                         else:
                             logger.error(f"[{direct_adapter.portal_label}] Errore download pagina {idx}: HTTP {_status} url={_img_url[:100]}")
+                            if self._portal_key() == "biblioteca_digitale_lombarda":
+                                with immagini_lock:
+                                    failed_direct_canvases.append((idx, canvas, direct_adapter, _img_url))
                         self._save_direct_canvas_outputs(
                             final_img,
                             canvas,
@@ -1471,6 +1493,39 @@ class Elaborazione:
 
             if callable(getattr(self, 'cancel_cb', None)) and self.cancel_cb():
                 return False
+
+            # BDL: secondo passaggio mirato. Ritenta solo i canvas che nel primo
+            # passaggio hanno prodotto un placeholder e li sovrascrive se recuperati.
+            if failed_direct_canvases:
+                logger.warning(
+                    f"[BDL] Secondo passaggio su {len(failed_direct_canvases)} canvas falliti"
+                )
+                still_failed = []
+                for idx, canvas, direct_adapter, image_url in failed_direct_canvases:
+                    if callable(getattr(self, 'cancel_cb', None)) and self.cancel_cb():
+                        return False
+                    final_img, status, size = direct_adapter.download_image(image_url)
+                    if final_img is None:
+                        still_failed.append(idx)
+                        logger.error(f"[BDL] Canvas {idx} ancora non disponibile: HTTP {status}")
+                        continue
+                    nome_base = f"{self.nome_file}_canvas_{idx}"
+                    self._save_direct_canvas_outputs(
+                        final_img,
+                        canvas,
+                        image_url,
+                        f"page_{idx}",
+                        nome_base,
+                        formats,
+                        image_formats,
+                        pdf_in_formats,
+                        temp_pdf_dir=temp_pdf_dir,
+                    )
+                    logger.info(f"[BDL] Canvas {idx} recuperato al secondo passaggio: {size} byte")
+                if still_failed:
+                    logger.warning(f"[BDL] Placeholder residui: {len(still_failed)} canvas {still_failed}")
+                else:
+                    logger.info("[BDL] Tutti i canvas falliti sono stati recuperati")
 
             # Verifica immagini finali e retry (max 3 tentativi) per tutte le pagine
             _img_norm_r = [_normalize_format(f) for f in image_formats]
@@ -1686,7 +1741,6 @@ class Elaborazione:
                     selected_paths,
                     pdf_full_path,
                     resolution_dpi=400,
-                    resource_profile=self.resource_profile,
                 )
             except Exception as e:
                 logger.error(f"[Error] Errore nel filtrare le immagini per PDF: {e}", exc_info=True)

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="da" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Modul 07: OCR-oversættelse</title>
+    <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+        <h1>📚 Modul 07: OCR-oversættelse</h1>
+        </header>
+
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+        <a href="guida_06_ocr_avanzato.html" class="nav-button">&#8592; Mod.06 &mdash; Avanceret OCR</a>
+            <a href="guida.html" class="nav-button">&#127968; Hovedindeks</a>
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">Mod.08 &mdash; GEDCOM-eksport &#8594;</a>
+        </div>
+
+    <div class="section">
+        <h2>&#128204; Oversigt</h2>
+        <p>Modulet <strong>Assisteret palæografisk oversættelse (LLM)</strong> oversætter transskriptioner, palæografiske tekster, forskningsnoter eller filer i formatet <code>.txt</code> til et moderne sprog valgt af brugeren.</p>
+        <p>Det åbnes fra menuen <em>Tjenester &rarr; OCR-oversættelse</em>. Modulet bruger de AI-udbydere, der er konfigureret i ATK-Pro, med samme nøgle- og præferencelogik som OCR- og slægtsforskningstjenesterne.</p>
+        <p>Oversættelsen er et hjælpemiddel til læsning: Resultatet skal altid gennemgås, især når kildeteksten indeholder ældre stavemåder, latin, notarformler, forkortelser, dialekter eller egennavne.</p>
+    </div>
+
+    <div class="section">
+        <h2>&#128421;&#65039; Brugerflade</h2>
+        <p>Vinduet består af en konfigurationslinje, et område til kildeteksten, et felt til kontekstinstruktioner og et område til resultatet.</p>
+
+        <div class="section-box">
+            <h3>Konfigurationslinje</h3>
+            <ul>
+                <li><strong>AI-udbyder</strong>: Vælg den tjeneste, der skal bruges, blandt dem som er tilgængelige i installationen, f.eks. Gemini, OpenAI, Claude, Mistral, xAI, DeepSeek, Groq, HuggingFace eller Ollama.</li>
+                <li><strong>Model</strong>: Valgfrit felt til angivelse af en bestemt model, som udbyderen understøtter. Hvis feltet er tomt, bruger ATK-Pro den standardmodel, der er fastsat i konfigurationen.</li>
+                <li><strong>Dokumenttype</strong>: Vælg typen af dokument eller tekst, der skal oversættes. Du kan oprette og fjerne brugerdefinerede typer; for de indbyggede typer kan du tilsidesætte prompten, men ikke slette dem.</li>
+                <li><strong>API-nøgle og nøgleboks</strong>: Indtast nøglen til den valgte udbyder, eller åbn filen i <em>Nøgleboksen</em> for at se eller ændre CSV-nøgleboksen.</li>
+                <li><strong>Målsprog</strong>: Vælg det moderne sprog, som oversættelsen skal leveres på.</li>
+            </ul>
+        </div>
+
+        <div class="section-box">
+            <h3>Kildetekst</h3>
+            <ul>
+                <li><strong>Kildetekst</strong>: Indsæt den transskription, der skal oversættes, eller indlæs en fil i formatet <code>.txt</code> som tidligere er genereret.</li>
+                <li><strong>Indlæs TXT-fil</strong>: Åbner en tekstfil og indsætter den i kildeområdet.</li>
+                <li><strong>Ordliste og kontekst</strong>: Gør det muligt at give modellen instruktioner før oversættelsen.</li>
+            </ul>
+        </div>
+
+        <div class="section-box">
+            <h3>Oversat resultat</h3>
+            <ul>
+                <li>Tryk på <strong>Oversæt tekst NU</strong> for at starte behandlingen.</li>
+                <li>Under behandlingen viser resultatpanelet en ventemeddelelse.</li>
+                <li>Resultatet kan redigeres: Ret oversættelsen direkte, før den gemmes.</li>
+                <li><strong>Gem oversættelse (TXT)</strong> eksporterer almindelig tekst.</li>
+                <li><strong>Eksportér til Word (DOCX)</strong> opretter et redigerbart Word-dokument.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#128221; Feltet Ordliste og kontekst — brugsvejledning</h2>
+        <p>Dette valgfrie felt gør det muligt at informere modellen om tekstens egenskaber, før behandlingen begynder. Her kan du afklare forkortelser, formuleringer, kildesprog, gengivelsesprincipper og ord, der ikke skal oversættes.</p>
+
+        <div class="section-box">
+            <h3>Hvornår skal det bruges?</h3>
+            <p>Feltet er især nyttigt, når teksten indeholder:</p>
+            <ul>
+                <li><strong>Arkaismer og forældede ord</strong> som en moderne oversætter kan fortolke anderledes</li>
+                <li><strong>Dialektudtryk</strong> (siciliansk, venetiansk, toscansk osv.), som ikke findes i standardordbøger</li>
+                <li><strong>Tilbagevendende juridiske eller notarielle formuleringer</strong> med en bestemt faglig betydning</li>
+                <li><strong>Egennavne eller stednavne</strong> som ikke skal oversættes, men gengives nøjagtigt</li>
+                <li><strong>Forkortelser</strong> med en konventionel betydning i dokumentsamlingen</li>
+            </ul>
+        </div>
+
+        <div class="section-box">
+        <h3>Praktiske eksempler</h3>
+            <p><strong>Eksempel 1 &mdash; Kirkebogsakt fra 1800-tallet på siciliansk dialekt:</strong></p>
+            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">f. = søn/datter af
+fu = allerede afdød
+q. = quondam (allerede afdød)
+vid. = enke/enkemand
+Månederne er skrevet på dialekt (Jinnaru, Frivaru, Marzu ...).
+Oversæt ikke egennavnene (Nunzio, Rosaria, Salvatore ...).
+Tiltaleformerne 'don' og 'donna' betegner personer af høj rang og skal bevares.</pre>
+
+            <p style="margin-top:1rem;"><strong>Eksempel 2 &mdash; Notarialakt på middelalderlatin:</strong></p>
+            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Teksten er på notarielt latin. Oversæt til moderne italiensk.
+Bevar de juridiske standardformler (rogatio, instrumentum, actum ...).
+'lib.' = lire (valuta, ikke vægt). 'sol.' = soldi.
+Stednavne i latinsk genitiv skal altid gengives med det nuværende italienske navn.</pre>
+
+            <p style="margin-top:1rem;"><strong>Eksempel 3 &mdash; Personligt brev på italiensk fra 1800-tallet:</strong></p>
+            <pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Tekst på formelt italiensk fra 1800-tallet. Oversæt til moderne engelsk.
+Bevar den formelle tone uden at gøre den dagligdags.
+'Pregiatissimo' og 'Esimio' er høflighedsudtryk: Gengiv dem med passende engelske ækvivalenter.
+Oversæt ikke egennavne.</pre>
+        </div>
+
+        <div class="section-box">
+        <h3>Anbefalet fremgangsmåde</h3>
+            <ul>
+                <li>Opbyg ordlisten <strong>løbende</strong>: Lav en første oversættelse, find tilbagevendende fejl, tilføj instruktioner, og prøv igen.</li>
+                <li>Brug separate ordlister til forskellige registre, og indsæt den relevante ordliste i feltet før behandlingen.</li>
+                <li>Angiv altid <strong>kildetekstens sprog</strong>, især ved latin, dialekter, regionale sprog eller flersprogede dokumenter.</li>
+                <li>Angiv, når egennavne, stednavne, titler eller formuleringer skal bevares og ikke moderniseres.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#127760; Målsprog</h2>
+        <div class="section-box">
+            <p>Det faktiske udvalg svarer til de 20 sprog, som understøttes af ATK-Pro-brugerfladen og den flersprogede ordliste.</p>
+            <table>
+            <thead><tr><th>Sprog</th><th>Egenbetegnelse</th><th>Sprog</th><th>Egenbetegnelse</th></tr></thead>
+                <tbody>
+                    <tr><td>Italiensk</td><td>Italiano</td><td>Russisk</td><td>&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</td></tr>
+                    <tr><td>Engelsk</td><td>English</td><td>Arabisk</td><td>&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</td></tr>
+                    <tr><td>Spansk</td><td>Espa&ntilde;ol</td><td>Nederlandsk</td><td>Nederlands</td></tr>
+                    <tr><td>Fransk</td><td>Fran&ccedil;ais</td><td>Hebraisk</td><td>&#1506;&#1489;&#1512;&#1497;&#1514;</td></tr>
+                    <tr><td>Tysk</td><td>Deutsch</td><td>Japansk</td><td>&#26085;&#26412;&#35486;</td></tr>
+                    <tr><td>Portugisisk</td><td>Portugu&ecirc;s</td><td>Kinesisk</td><td>&#20013;&#25991;</td></tr>
+                    <tr><td>Polsk</td><td>Polski</td><td>Tyrkisk</td><td>T&uuml;rk&ccedil;e</td></tr>
+                    <tr><td>Dansk</td><td>Dansk</td><td>Norsk</td><td>Norsk</td></tr>
+                    <tr><td>Vietnamesisk</td><td>Ti&#7871;ng Vi&#7879;t</td><td>Græsk</td><td>&#917;&#955;&#955;&#951;&#957;&#953;&#954;&#940;</td></tr>
+                    <tr><td>Rumænsk</td><td>Rom&acirc;n&#259;</td><td>Svensk</td><td>Svenska</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#128221; Praktiske bemærkninger</h2>
+        <div class="section-box">
+            <ul>
+                <li>Behandlingen er asynkron: Oversættelsesknappen deaktiveres under anmodningen, mens vinduet forbliver responsivt. Ændringer i felterne under ventetiden påvirker ikke den anmodning, der allerede er sendt.</li>
+                <li>Lange eller komplekse tekster kan kræve mere tid og flere manuelle gennemgange.</li>
+                <li>Nøglen kan hentes fra den fælles nøgleboks; udbyder, model, sprog og kontekst gemmes som indstillinger specifikt for oversættelsesmodulet.</li>
+                <li>Oversættelsen leverer tekstoutput i TXT- eller DOCX-format: Den genererer ikke billeder, metadata, slægtstræer eller GEDCOM-filer.</li>
+                <li>Send ikke fortrolige eller begrænsede tekster til eksterne udbydere, før du har kontrolleret brugsvilkår, databeskyttelse og tilladelser.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+        <a href="guida_06_ocr_avanzato.html" class="nav-button">&#8592; Mod.06 &mdash; Avanceret OCR</a>
+            <a href="guida.html" class="nav-button">&#127968; Hovedindeks</a>
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">Mod.08 &mdash; GEDCOM-eksport &#8594;</a>
+        </div>
+
+        <footer style="text-align: center;">
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
+    </div>
+    </div>
+</body>
+</html>
