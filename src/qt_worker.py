@@ -97,10 +97,13 @@ class ElaborazioneWorker(QThread):
             try:
                 modalita = str(record.get('modalita', '')).strip().upper()
                 url = record.get('url')
-                nome_file = record.get('nome_file', 'documento')
+                import re
+                nome_file = str(record.get('nome_file') or '').strip()
+                if not nome_file:
+                    bdl_match = re.search(r'/bdl/public/rest/(?:srv|json)/item/(\d+)', str(url), re.IGNORECASE)
+                    nome_file = f'BDL_{bdl_match.group(1)}' if bdl_match else 'documento'
                 dettaglio = record.get('descrizione') or record.get('tipo') or ''
                 # Rimuovi eventuale 'pag. x' da dettaglio
-                import re
                 dettaglio_clean = re.sub(r'—?\s*pag\.\s*\d+\s*$', '', dettaglio).strip()
                 if dettaglio_clean:
                     progress_descr = f"{nome_file} — {dettaglio_clean}"

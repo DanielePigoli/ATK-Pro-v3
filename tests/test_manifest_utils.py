@@ -317,10 +317,35 @@ def test_build_biblioteca_digitale_trentina_synthetic_manifest_from_html():
     assert canvases[1]["label"] == "Pagina 2"
 
 
-def test_resolve_biblioteca_digitale_lombarda_pdf_url():
+@patch("src.manifest_utils.requests.get")
+def test_resolve_biblioteca_digitale_lombarda_pdf_url_builds_multipage_manifest(mock_get):
     url = "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf"
+    mock_get.return_value.ok = True
+    mock_get.return_value.json.return_value = [
+        {"id": "1", "idMediaServer": 2443857, "cantaloupeUrl": "https://www.bdl.servizirl.it/cantaloupe/", "zoomWidth": 2681, "zoomHeight": 3987},
+        {"id": "2", "idMediaServer": 2443847, "cantaloupeUrl": "https://www.bdl.servizirl.it/cantaloupe/", "zoomWidth": 2681, "zoomHeight": 3987},
+    ]
 
-    assert mu.resolve_manifest_url(url, "biblioteca_digitale_lombarda") == url
+    manifest = mu.resolve_manifest_url(url, "biblioteca_digitale_lombarda")
+    assert mock_get.call_args.args[0].endswith("/json/item/12404/bookreader/pages")
+    canvases = manifest["sequences"][0]["canvases"]
+    assert len(canvases) == 2
+    assert canvases[0]["width"] == 2681
+    service = canvases[0]["images"][0]["resource"]["service"]
+    assert service["@id"] == "https://www.bdl.servizirl.it/cantaloupe/iiif/2/2443857"
+    assert manifest["seeAlso"][0]["@id"] == url
+
+
+@patch("src.manifest_utils.requests.get")
+def test_bdl_bookreader_failure_falls_back_to_direct_pdf(mock_get):
+    url = "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf"
+    mock_get.side_effect = RuntimeError("offline")
+
+    manifest = mu.resolve_manifest_url(url, "biblioteca_digitale_lombarda")
+    canvas = manifest["sequences"][0]["canvases"][0]
+    service = canvas["images"][0]["resource"]["service"]
+    assert service["@context"] == "bdl_direct_pdf"
+    assert service["pdf_url"] == url
 
 
 @patch("src.manifest_utils.requests.head")

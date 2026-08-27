@@ -325,7 +325,7 @@ def test_resolve_synthetic_manifest_download_for_bdt(monkeypatch):
 
 def test_resolve_synthetic_manifest_download_for_bdl(monkeypatch):
     monkeypatch.setattr(
-        "src.portal_adapters._build_bdl_pdf_manifest",
+        "src.portal_adapters._build_bdl_synthetic_manifest",
         lambda page_url: {"seeAlso": [{"@id": page_url, "format": "application/pdf"}]},
     )
 
@@ -469,3 +469,24 @@ def test_resolve_synthetic_manifest_download_for_internetculturale_estense(monke
     assert adapter.portal_label == "InternetCulturale"
     assert len(manifest["sequences"][0]["canvases"]) == 3
     assert filename == "manifest_smoke_titolo.json"
+
+
+def test_resolve_direct_image_download_for_bdl_uses_full_cantaloupe_resource():
+    image_url = "https://www.bdl.servizirl.it/cantaloupe/iiif/2/2443857/full/full/0/default.jpg"
+    canvas = {
+        "images": [{
+            "resource": {
+                "@id": image_url,
+                "service": {"@id": "https://www.bdl.servizirl.it/cantaloupe/iiif/2/2443857"},
+            }
+        }]
+    }
+
+    adapter, resolved_url = resolve_direct_image_download(
+        "biblioteca_digitale_lombarda", canvas, canvas["images"][0]["resource"]["service"]["@id"]
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "BDL"
+    assert adapter.retry_attempts == 3
+    assert resolved_url == image_url

@@ -919,11 +919,78 @@ def _bdl_extract_pdf_item_id(page_url: str) -> str | None:
     return match.group(1) if match else None
 
 
-def _build_biblioteca_digitale_lombarda_manifest(page_url: str) -> str | None:
-    """Biblioteca Digitale Lombarda: solo endpoint PDF REST pubblico."""
+def _bdl_extract_item_id(page_url: str) -> str | None:
+    parsed = urlparse(page_url)
+    match = re.search(
+        r"/bdl/public/rest/(?:srv/item/(\d+)/pdf|json/item/(\d+)/bookreader/pages)\b",
+        parsed.path,
+        re.IGNORECASE,
+    )
+    return next((value for value in match.groups() if value), None) if match else None
+
+
+def _bdl_pages_url(page_url: str, item_id: str) -> str:
+    parsed = urlparse(page_url)
+    return f"{parsed.scheme}://{parsed.netloc}/bdl/public/rest/json/item/{item_id}/bookreader/pages"
+
+
+def _bdl_pdf_url(page_url: str, item_id: str) -> str:
+    parsed = urlparse(page_url)
+    return f"{parsed.scheme}://{parsed.netloc}/bdl/public/rest/srv/item/{item_id}/pdf"
+
+
+def _build_biblioteca_digitale_lombarda_manifest(page_url: str) -> dict | None:
+    """Costruisce il manifest BDL multipagina, con fallback al PDF REST."""
     if not _bdl_is_supported_url(page_url):
         return None
-    return page_url if _bdl_extract_pdf_item_id(page_url) else None
+    return build_biblioteca_digitale_lombarda_synthetic_manifest(page_url)
+
+
+def build_biblioteca_digitale_lombarda_synthetic_manifest(page_url: str) -> dict | None:
+    """Legge le pagine BookReader BDL e le espone come canvas IIIF v2."""
+    if not _bdl_is_supported_url(page_url):
+        return None
+    item_id = _bdl_extract_item_id(page_url)
+    if not item_id:
+        return None
+    pages_url = _bdl_pages_url(page_url, item_id)
+    pdf_url = _bdl_pdf_url(page_url, item_id)
+    parsed = urlparse(page_url)
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36", "Accept": "application/json", "Referer": f"{parsed.scheme}://{parsed.netloc}/"}
+    pages = None
+    try:
+        response = requests.get(pages_url, headers=headers, timeout=25)
+        if response.ok:
+            payload = response.json()
+            if isinstance(payload, list):
+                pages = payload
+    except Exception as exc:
+        logger.warning(f"[BDL] Errore endpoint BookReader {pages_url}: {exc}")
+
+    canvases = []
+    for index, page in enumerate(pages or [], start=1):
+        if not isinstance(page, dict) or page.get("idMediaServer") is None:
+            continue
+        media_id = str(page["idMediaServer"]).strip()
+        cantaloupe_base = str(page.get("cantaloupeUrl") or "").rstrip("/")
+        if not media_id or not cantaloupe_base:
+            continue
+        service_id = f"{cantaloupe_base}/iiif/2/{media_id}"
+        page_id = str(page.get("id") or index)
+        width = page.get("zoomWidth") or page.get("readerWidth")
+        height = page.get("zoomHeight") or page.get("readerHeight")
+        canvas = {"@id": f"synthetic://biblioteca_digitale_lombarda/{item_id}/canvas/{page_id}", "@type": "sc:Canvas", "label": f"Pagina {page_id}", "images": [{"@type": "oa:Annotation", "motivation": "sc:painting", "resource": {"@type": "dctypes:Image", "@id": f"{service_id}/full/full/0/default.jpg", "format": "image/jpeg", "service": {"@context": "http://iiif.io/api/image/2/context.json", "@id": service_id, "profile": "http://iiif.io/api/image/2/level2.json"}}}]}
+        if width:
+            canvas["width"] = int(width)
+        if height:
+            canvas["height"] = int(height)
+        canvases.append(canvas)
+
+    if not canvases:
+        logger.warning(f"[BDL] Nessuna pagina BookReader valida; fallback PDF REST per item {item_id}")
+        return build_biblioteca_digitale_lombarda_pdf_manifest(pdf_url)
+    logger.info(f"[BDL] Manifest sintetico multipagina: item {item_id}, {len(canvases)} canvas")
+    return _build_synthetic_v2_manifest(f"synthetic://biblioteca_digitale_lombarda/{item_id}", f"Biblioteca Digitale Lombarda - item {item_id}", canvases, metadata=[{"label": "Portale", "value": "Biblioteca Digitale Lombarda"}, {"label": "BookReader pages", "value": pages_url}], see_also=[{"@id": pdf_url, "format": "application/pdf"}])
 
 
 def build_biblioteca_digitale_lombarda_pdf_manifest(pdf_url: str) -> dict | None:
