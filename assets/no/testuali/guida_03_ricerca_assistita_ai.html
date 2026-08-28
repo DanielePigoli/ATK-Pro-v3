@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 03: Visualizzazione Immagini</title>
-    <meta name="description" content="ATK-Pro — Visualizzazione Immagini">
+    <title>📚 Modul 03: AI-assistert forskning</title>
+    <meta name="description" content="ATK-Pro — AI-assistert forskning">
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -13,14 +13,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -31,7 +31,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -41,12 +41,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -55,21 +55,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 3px solid #a67c52;
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -78,13 +78,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -97,12 +97,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             border: 2px solid #a67c52;
@@ -111,33 +111,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -145,39 +145,39 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +185,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +193,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +215,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +230,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +239,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +262,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             border: 1px solid #a67c52;
             padding: 12px 8px;
@@ -271,7 +271,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +281,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             border: 2px solid #a67c52;
@@ -297,15 +297,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -325,85 +325,107 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <header>
-        <h1>📚 Modulo 03: Visualizzazione Immagini</h1>
-    </header>
+    <div class="container">
+        <header>
+            <h1>📚 Modul 03: AI-assistert forskning</h1>
+        </header>
 
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_02_operazioni_base.html" class="nav-button">⬅️ Mod.02 — Operazioni di Base</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_04_visualizzazione_metadati.html" class="nav-button">Mod.04 — Visualizzazione Metadati JSON ➡️</a>
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_02_operazioni_base.html" class="nav-button">&#8592; Mod.02 &mdash; Grunnleggende funksjoner</a>
+            <a href="guida.html" class="nav-button">&#127968; Hovedindeks</a>
+            <a href="guida_04_visualizzazione_immagini.html" class="nav-button">Mod.04 &mdash; Bildevisning &#8594;</a>
         </div>
 
-    <div class="section">
-        <h2>&#128204; Panoramica</h2>
-        <p>Il <strong>Viewer Immagini</strong> di ATK-Pro &egrave; un visualizzatore integrato per l&apos;analisi di documenti genealogici digitalizzati. Si apre attraverso il menu <em>Strumenti</em> dell&apos;applicazione principale. Supporta JPEG, PNG e TIFF (inclusi file multi-pagina).</p>
-    </div>
-
-    <div class="section">
-        <h2>&#128194; Formati Supportati</h2>
-        <div class="section-box">
-            <table>
-                <thead><tr><th>Formato</th><th>Estensione</th><th>Note</th></tr></thead>
-                <tbody>
-                    <tr><td><strong>JPEG</strong></td><td>.jpg, .jpeg</td><td>Supporto completo</td></tr>
-                    <tr><td><strong>PNG</strong></td><td>.png</td><td>Supporto completo</td></tr>
-                    <tr><td><strong>TIFF</strong></td><td>.tif, .tiff</td><td>Supporto multi-pagina con navigazione dedicata</td></tr>
-                </tbody>
-            </table>
+        <div class="section">
+            <h2>&#128204; Oversikt</h2>
+            <p>Funksjonen <strong>AI-assistert forskning</strong> hjelper deg med å gjøre et genealogisk spørsmål om til en mer strukturert arbeidsplan: den foreslår portaler, forskningsspor, filtre og eksempler på søk som kan prøves manuelt i de tilgjengelige kildene.</p>
+            <p>Den åpnes fra menyen <strong>Tjenester -&gt; AI-assistert forskning</strong>. Den laster ikke ned dokumenter og erstatter ikke direkte bruk av portalene: den gir praktiske råd som må verifiseres, siteres og brukes med arkivfaglig skjønn.</p>
         </div>
-    </div>
 
-    <div class="section">
-        <h2>&#128421;&#65039; Interfaccia e Controlli</h2>
-        <div class="section-box">
-            <h3>&#128269; Zoom</h3>
+        <div class="section">
+            <h2>&#128269; Når funksjonen bør brukes</h2>
+            <div class="section-box">
+                <ul>
+                    <li>Når du tar utgangspunkt i etternavn, steder og tidsperioder, men ikke vet hvilke arkiver eller portaler du bør undersøke først.</li>
+                    <li>Når du vil planlegge et søk i flere land, for eksempel i forbindelse med italiensk utvandring til Amerika, Europa eller Oseania.</li>
+                    <li>Når du ønsker eksempler på søk og filtre som kan kopieres til institusjonelle portaler.</li>
+                    <li>Når du må sammenligne alternative strategier for fødsels-, dåps-, vielses- og dødsregistre samt kilder om verneplikt, innvandring eller statsborgerskap.</li>
+                </ul>
+            </div>
+            <div class="warning">
+                <p><strong>Merk:</strong> Resultater som genereres av en AI-modell, er arbeidshypoteser. De må alltid kontrolleres mot offisielle kilder og utgjør ikke genealogisk dokumentasjon.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128421;&#65039; Hovedfelt</h2>
+
+            <div class="section-box">
+                <h3>Søkeforespørsel</h3>
+                <p>Oppgi emne, sted, tidsperiode og kildetype. Et nyttig eksempel er: <code>Rossi, Bianchi a Firenze e Prato 1850-1900, battesimi e matrimoni</code>.</p>
+                <p>Jo mer konkret forespørselen er, desto mer nyttige blir rådene: unngå for generelle formuleringer, og oppgi alltid eventuelle migrasjoner, navnevarianter eller relevante historiske områder.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>AI-leverandør og valgfri modell</h3>
+                <p>Leverandørmenyen lar deg velge AI-tjenesten som skal brukes, blant dem som er konfigurert i programmet. Feltet for valgfri modell brukes bare hvis du vil angi en bestemt modell som støttes av den valgte leverandøren; ellers kan det stå tomt.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>Standardledetekst</h3>
+                <p>Funksjonen inneholder fire forhåndsdefinerte maler:</p>
+                <ul>
+                    <li><strong>Detaljert generell forskning</strong>, for en første bred kartlegging.</li>
+                    <li><strong>Detaljerte internasjonale strategier</strong>, nyttig for migrasjonsforløp og forskning utenfor Italia.</li>
+                    <li><strong>Detaljert søk etter bestemte dokumenter</strong>, når du leter etter en bestemt dokumenttype.</li>
+                    <li><strong>Avansert forskning med filtre</strong>, når du ønsker filtre, varianter og mer strukturerte søk.</li>
+                </ul>
+            </div>
+
+            <div class="section-box">
+                <h3>Flere leverandører</h3>
+                <p>Alternativet <strong>Behandle med alle tilgjengelige leverandører (flere leverandører)</strong> er aktivert som standard. Hvis flere nøkler finnes i nøkkelhvelvet, kan ATK-Pro spørre flere leverandører og sammenligne resultatene. Du kan deaktivere alternativet når du bare vil bruke den valgte leverandøren.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128221; Personlige notater</h2>
+            <p>Notatdelen gjør det mulig å lagre tilbakevendende instruksjoner som skal legges til forespørselen, for eksempel navnevarianter, historiske grenser, kjente sogn, arkiver som allerede er undersøkt, eller kriterier som skal utelukkes.</p>
+            <p>Du kan opprette et nytt notat, lagre det, hente det fra listen eller slette det. Det valgte notatet legges til den endelige ledeteksten som sendes til AI-leverandøren.</p>
+        </div>
+
+        <div class="section">
+            <h2>&#128190; Resultater og lagring</h2>
+            <div class="section-box">
+                <p>Trykk på <strong>FORESLÅ PORTALER OG SØK</strong> for å starte behandlingen. Mens arbeidet pågår, viser vinduet statusen til leverandøren og nøkkelplassen som brukes.</p>
+                <p>Resultatene kan grupperes etter portal, begrunnelse, eksempel på søk, tidsperiode, dokumenttype eller filtre/strategier. Etter genereringen kan du lagre resultatet i Markdown-format (.md), som ren tekst (.txt) eller i HTML-format (.html) med knappene <strong>LAGRE AI-RESULTATER</strong> og <strong>LAGRE HTML-RESULTAT</strong>.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>&#128273; Nøkkelhvelv</h2>
+            <p>Knappen <strong>ADMINISTRER NØKKELHVELV (CSV)</strong> åpner administrasjonen av nøklene til de konfigurerte leverandørene. Søkefunksjonen bruker bare leverandører som har en gyldig nøkkel eller en kompatibel lokal konfigurasjon.</p>
+        </div>
+
+        <div class="section">
+            <h2>&#9888;&#65039; Driftsbegrensninger</h2>
             <ul>
-                <li><strong>Rotella del mouse</strong>: Zoom incrementale (passo 15%) centrato sul cursore</li>
-                <li><strong>Pulsante &ldquo; + &rdquo;</strong>: Zoom avanti del 15%</li>
-                <li><strong>Pulsante &ldquo; &minus; &rdquo;</strong>: Zoom indietro del 15%</li>
-                <li><strong>Pulsante &ldquo;Adatta alla finestra&rdquo;</strong>: Ridimensiona l&apos;immagine per occupare l&apos;area disponibile (proporzionalmente)</li>
-                <li><strong>Pulsante &ldquo;1:1&rdquo;</strong>: Visualizzazione a risoluzione nativa (un pixel immagine = un pixel schermo)</li>
+                <li>Funksjonen omgår ikke innlogging, betalingsmurer, tekniske begrensninger eller portalenes bruksvilkår.</li>
+                <li>Forslagene må kontrolleres på den offisielle portalen før de brukes i dokumentert forskning.</li>
+                <li>Tilgjengeligheten av AI-leverandører og modeller kan endres over tid.</li>
+                <li>Ved sensitiv forskning bør du alltid bevare dokumentasjon på kildene som faktisk er brukt, og ikke bare AI-forslaget.</li>
             </ul>
-            <p style="margin-top:0.8rem;">Il livello di zoom corrente &egrave; sempre visibile nell&apos;indicatore percentuale tra i pulsanti + e &minus;. Il range va dal 5% all&apos;800%.</p>
         </div>
 
-        <div class="section-box">
-            <h3>&#9995;&#65039; Pan (Spostamento)</h3>
-            <p><strong>Click e trascinamento</strong>: Tieni premuto il tasto sinistro del mouse e trascina per spostare l&apos;immagine. Il cursore cambia in mano chiusa durante il trascinamento e in mano aperta al passaggio sull&apos;area dell&apos;immagine.</p>
+        <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_02_operazioni_base.html" class="nav-button">&#8592; Mod.02 &mdash; Grunnleggende funksjoner</a>
+            <a href="guida.html" class="nav-button">&#127968; Hovedindeks</a>
+            <a href="guida_04_visualizzazione_immagini.html" class="nav-button">Mod.04 &mdash; Bildevisning &#8594;</a>
         </div>
 
-        <div class="section-box">
-            <h3>&#128197; TIFF Multi-Pagina</h3>
-            <p>Per i file TIFF contenenti pi&ugrave; fotogrammi, compare una barra di navigazione aggiuntiva nella toolbar:</p>
-            <ul>
-                <li><strong>Campo numerico (spinbox)</strong>: Inserisci il numero della pagina desiderata; il viewer carica immediatamente il fotogramma corrispondente</li>
-                <li><strong>Indicatore &ldquo;/ N&rdquo;</strong>: Mostra il numero totale di pagine accanto al campo numerico</li>
-            </ul>
-            <p style="margin-top:0.8rem;"><em>Nota:</em> I registri del Portale Antenati sono spesso distribuiti come TIFF multi-pagina; ogni fotogramma corrisponde a una pagina del registro.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>&#128203; Pannello Metadati Sidecar (Pannello Destro)</h3>
-            <p>Se nella stessa cartella dell&apos;immagine esiste un file JSON con lo stesso nome base (es. <code>documento.jpg</code> &rarr; cerca <code>documento.json</code>), il pannello destro visualizza i metadati in forma di tabella.</p>
-            <ul>
-                <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello destro per ampliare l&apos;area di visualizzazione dell&apos;immagine</li>
-                <li><strong>Pulsante &ldquo;&#9658; Mostra metadati&rdquo;</strong>: Ripristina il pannello metadati</li>
-            </ul>
-            <p style="margin-top:0.8rem;">Se non viene trovato alcun sidecar JSON, il pannello destro mostra <em>&ldquo;Nessun sidecar JSON trovato&rdquo;</em>.</p>
-        </div>
+        <footer>
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
     </div>
-
-     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_02_operazioni_base.html" class="nav-button">⬅️ Mod.02 — Operazioni di Base</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_04_visualizzazione_metadati.html" class="nav-button">Mod.04 — Visualizzazione Metadati JSON ➡️</a>
-        </div>
-
-    <footer>
-        <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-    </footer>
-</div>
 </body>
 </html>
