@@ -18,3 +18,11 @@ def test_norwegian_guide_uses_current_v3_module_set():
     assert "guida_03_ricerca_assistita_ai.html" in modules
     assert "guida_09_supporto_faq.html" in modules
     assert "guida_03_visualizzazione_immagini.html" not in modules
+
+def test_swedish_guide_uses_current_v3_module_set():
+    modules = documents.expected_guide_modules(Path("assets/sv"))
+
+    assert modules == documents.ITALIAN_GUIDE_MODULES
+    assert "guida_03_ricerca_assistita_ai.html" in modules
+    assert "guida_09_supporto_faq.html" in modules
+    assert "guida_03_visualizzazione_immagini.html" not in modules
