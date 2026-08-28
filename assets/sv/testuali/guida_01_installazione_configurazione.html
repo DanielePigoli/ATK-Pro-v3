@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 01: Installazione, Avvio e Interfaccia</title>
+    <title>📚 Modul 01: Installation, start och användargränssnitt</title>
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -326,267 +326,277 @@
 <body>
     <div class="container">
         <header>
-            <h1>1. Installazione, Avvio e Interfaccia</h1>
+            <h1>1. Installation, start och användargränssnitt</h1>
         </header>
 
     <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_02_operazioni_base.html" class="nav-button">Mod.02 &mdash; Operazioni di Base &#8594;</a>
+            <a href="guida.html" class="nav-button">&#127968; Huvudindex</a>
+            <a href="guida_02_operazioni_base.html" class="nav-button">Mod.02 &mdash; Grundfunktioner &#8594;</a>
         </div>
         <div class="section-box">
-            <h3>1. INSTALLAZIONE E REQUISITI</h3>
+            <h3>1. INSTALLATION OCH KRAV</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>SISTEMA OPERATIVO</h4>
+            <h4>OPERATIVSYSTEM</h4>
             <ul>
-                <li><strong>Windows:</strong> Windows 10 o successivo (64-bit) — Professional, Home, Server</li>
-                <li><strong>Linux:</strong> Ubuntu 20.04+ o distribuzioni compatibili (pacchetto .deb o archivio .tar.gz)</li>
-                <li><strong>macOS:</strong> macOS 11 Big Sur o successivo — distribuzione .dmg (test su hardware reale in corso)</li>
-                <li>64-bit obbligatorio su tutte le piattaforme</li>
-                <li>Almeno 2 GB di RAM disponibili (4 GB consigliati per elaborazione batch)</li>
-                <li>1 GB di spazio libero su disco</li>
+                <li><strong>Windows:</strong> Windows 10 eller senare (64-bitars) — Professional, Home, Server</li>
+                <li><strong>Linux:</strong> Ubuntu 20.04+ eller kompatibla distributioner (.deb-paket eller .tar.gz-arkiv)</li>
+                <li><strong>macOS:</strong> macOS 11 Big Sur eller senare — .dmg-distribution (testning på fysisk hårdvara pågår)</li>
+                <li>64-bitars krävs på alla plattformar</li>
+                <li>Minst 2 GB ledigt RAM-minne (4 GB rekommenderas för batchbearbetning)</li>
+                <li>1 GB ledigt diskutrymme</li>
             </ul>
-            <h4>INSTALLAZIONE</h4>
+            <h4>INSTALLATION</h4>
             <p><strong>🪟 Windows</strong></p>
             <ol>
-                <li>Scarica <code>ATK-Pro-Setup-vx.x.x.exe</code> dalla pagina Release ufficiale</li>
-                <li>Fai doppio click sul file installer</li>
-                <li>Seleziona "Esegui con privilegi di amministratore", se richiesto</li>
-                <li>Segui la procedura guidata (Next → Next → Install)</li>
-                <li>Durante l'installazione verrà richiesta la selezione della lingua (20 disponibili)</li>
-                <li>Al termine, spunta "Avvia ATK-Pro" per avviare il programma</li>
-                <li>Accetta eventuali avvisi di Windows Firewall/Defender</li>
+                <li>Ladda ner <code>ATK-Pro-Setup-vx.x.x.exe</code> från den officiella versionssidan</li>
+                <li>Dubbelklicka på installationsfilen</li>
+                <li>Välj "Kör med administratörsbehörighet" om du uppmanas</li>
+                <li>Följ installationsguiden (Nästa → Nästa → Installera)</li>
+                <li>Under installationen kommer du att bli ombedd att välja språk (20 tillgängliga)</li>
+                <li>När installationen är klar, markera "Starta ATK-Pro" för att starta programmet</li>
+                <li>Acceptera eventuella varningar från Windows-brandväggen/Defender</li>
             </ol>
             <p><strong>🐧 Linux</strong></p>
             <ol>
-                <li>Scarica <code>ATK-Pro-vx.x.x.deb</code> (Debian/Ubuntu) o <code>.tar.gz</code> dalla pagina Release</li>
-                <li><strong>Pacchetto .deb:</strong> <code>sudo dpkg -i ATK-Pro-vx.x.x.deb</code> oppure doppio click in Nautilus/Files</li>
-                <li><strong>Archivio .tar.gz:</strong> estrai e avvia <code>./ATK-Pro</code> dalla cartella estratta</li>
-                <li>La lingua viene selezionata al primo avvio e salvata nel file di configurazione utente</li>
+                <li>Ladda ner <code>ATK-Pro-vx.x.x.deb</code> (Debian/Ubuntu) eller <code>.tar.gz</code> från den officiella versionssidan</li>
+                <li><strong>.deb-paket:</strong> <code>sudo dpkg -i ATK-Pro-vx.x.x.deb</code> eller dubbelklicka i Nautilus/Files</li>
+                <li><strong>.tar.gz Arkiv:</strong> packa upp och starta <code>./ATK-Pro</code> från den extraherade mappen</li>
+                <li>Språket väljs vid första uppstart och sparas i användarens konfigurationsfil</li>
             </ol>
             <p><strong>🍎 macOS</strong></p>
             <ol>
-                <li>Scarica <code>ATK-Pro-vx.x.x.dmg</code> dalla pagina Release</li>
-                <li>Apri il file .dmg e trascina ATK-Pro nella cartella Applicazioni</li>
-                <li>Al primo avvio: clic destro → Apri (necessario per applicazioni non notarizzate)</li>
-                <li>La lingua viene selezionata al primo avvio e salvata nel file di configurazione utente</li>
+                <li>Ladda ner <code>ATK-Pro-vx.x.x.dmg</code> från den officiella versionssidan</li>
+                <li>Öppna .dmg-filen och dra ATK-Pro till mappen Program</li>
+                <li>Vid första start: högerklicka och välj Öppna (krävs för program som inte är attesterade)</li>
+                <li>Språket väljs vid första uppstart och sparas i användarens konfigurationsfil</li>
             </ol>
-            <h4>POSIZIONI DI DEFAULT</h4>
+            <h4>Standardplaceringar</h4>
             <p><strong>🪟 Windows</strong></p>
             <ul>
-                <li>Programma: <code>C:\Program Files\ATK-Pro\</code></li>
-                <li>Output utente: <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\</code></li>
-                <li>Input (opzionale): <code>C:\Users\[TuoNome]\Documents\ATK-Pro\input\</code></li>
+                <li>&#128193; Program: <code>C:\Program Files\ATK-Pro\</code></li>
+                <li>Användarutdata: <code>C:\Users\[DittNamn]\Documents\ATK-Pro\output\</code></li>
+                <li>Indata (valfritt): <code>C:\Users\[DittNamn]\Documents\ATK-Pro\input\</code></li>
             </ul>
             <p><strong>🐧 Linux</strong></p>
             <ul>
-                <li>Programma: <code>/opt/ATK-Pro/</code> (deb) oppure cartella estratta (.tar.gz)</li>
-                <li>Output utente: <code>~/Documents/ATK-Pro/output/</code></li>
-                <li>Input (opzionale): <code>~/Documents/ATK-Pro/input/</code></li>
+                <li>&#128193; Program: <code>/opt/ATK-Pro/</code> (deb) eller uppackad mapp (.tar.gz)</li>
+                <li>Användarutdata: <code>~/Documents/ATK-Pro/output/</code></li>
+                <li>Indata (valfritt): <code>~/Documents/ATK-Pro/input/</code></li>
             </ul>
             <p><strong>🍎 macOS</strong></p>
             <ul>
-                <li>Programma: <code>/Applications/ATK-Pro.app</code></li>
-                <li>Output utente: <code>~/Documents/ATK-Pro/output/</code></li>
-                <li>Input (opzionale): <code>~/Documents/ATK-Pro/input/</code></li>
+                <li>&#128193; Program: <code>/Applications/ATK-Pro.app</code></li>
+                <li>Användarutdata: <code>~/Documents/ATK-Pro/output/</code></li>
+                <li>Indata (valfritt): <code>~/Documents/ATK-Pro/input/</code></li>
             </ul>
-            <h4>REQUISITI DI RETE</h4>
+            <h4>NÄTVERKSKRAV</h4>
             <ul>
-                <li>Connessione Internet stabile (obbligatoria per accedere a IIIF Manifests)</li>
-                <li>Firewall: Consenti connessioni HTTPS in uscita (porta 443)</li>
-                <li>Proxy aziendale: Se in ambiente corporate, configura le credenziali proxy nel menu</li>
+                <li>Stabil internetanslutning (krävs för åtkomst till IIIF-manifester)</li>
+                <li>Brandvägg: Tillåt utgående HTTPS-anslutningar (port 443)</li>
+                <li>Företagsproxy: ATK-Pro har ingen intern meny för proxyinloggningsinformation. Konfigurera proxyn i operativsystemet eller nätverksmiljön och låt administratören bekräfta att HTTPS-anslutningar till portalerna är tillåtna.</li>
             </ul>
             </div>
             <div class="section-box">
-            <h3>2. PRIMO AVVIO E CONFIGURAZIONE</h3>
+            <h3>2. FÖRSTA START OCH KONFIGURATION</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>PRIMO AVVIO</h4>
-            <h3>1. Clicca su icona ATK-Pro dal Desktop o Menu Start</h3>
-            <h3>2. Se è la prima volta, il programma crea le cartelle utente automaticamente</h3>
-            <h4>SELEZIONE LINGUA</h4>
-            <p><strong>Le lingue disponibili sono:</strong></p>
+            <h4>FÖRSTA START</h4>
+            <h3>1. Klicka på ATK-Pro-ikonen på skrivbordet eller i Start-menyn</h3>
+            <h3>2. Om detta är första gången kommer programmet automatiskt att skapa användarmapparna</h3>
+            <h4>SPRÅKVAL</h4>
+            <p><strong>De tillgängliga språken är:</strong></p>
             <ul style="display: flex; flex-direction: column; flex-wrap: wrap; gap: 8px; list-style: none; padding-left: 0;">
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">IT</span>Italiano (Italiano): Fondamentale per i cittadini residenti e i nuovi espatriati.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EN</span>English (Inglese): Lingua ponte per USA, Canada, Australia e Regno Unito.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ES</span>Español (Spagnolo): Copre tutti i paesi ispanici delle Americhe, le Filippine e la Spagna (meta preferita dai giovani italiani nel 2024-2025).</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">FR</span>Français (Francese): Per le storiche e vaste comunità in Francia e Belgio.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DE</span>Deutsch (Tedesco): Per la Germania (quasi 900.000 residenti italiani) e la Svizzera.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PT</span>Português (Portoghese): Indispensabile per il Brasile (bacino di oltre 30 milioni di discendenti).</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RU</span>Русский (Russo): Per coprire le comunità e i discendenti nelle ex repubbliche sovietiche e nei Balcani.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">AR</span> العربية (Arabo, RTL): Per le comunità in Nord Africa (Egitto, Tunisia, Marocco) e per i discendenti nei paesi del Golfo.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NL</span>Nederlands (Olandese): Fondamentale per i Paesi Bassi, hub in fortissima crescita per i laureati italiani nel 2025.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">HE</span> עברית (Ebraico, RTL): Per la significativa e attiva comunità di italiani in Israele.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">JA</span>日本語 (Giapponese): Per la comunità di professionisti e italiani residenti in Giappone.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">SV</span>Svenska (Svedese): La Svezia è la principale destinazione scandinava per gli italiani nel 2025.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ZH</span>中文 (Cinese): Per i residenti e gli operatori economici in Cina.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RO</span>Română (Rumeno): Per la grande comunità di imprenditori e residenti italiani in Romania.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EL</span>Ελληνικά (Greco): Per i legami storici e i residenti stabili nelle isole e nelle città greche.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PL</span>Polski (Polacco): Per gli italiani residenti in Polonia (hub logistico e industriale).</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DA</span>Dansk (Danese): Per i ricercatori e i creativi italiani in Danimarca.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NO</span>Norsk (Norvegese): Per la comunità legata al settore oil&gas e tecnologico.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">TR</span>Türkçe (Turco): Per la storica comunità dei "Levantini" e i residenti a Istanbul.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">VI</span>Tiếng Việt (Vietnamita): Per la crescente comunità di business nel sud-est asiatico.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">IT</span>Italiano (italienska): Viktigt för permanentboende och nyligen invandrade.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EN</span>Engelska: Fungerar som det gemensamma språket för USA, Kanada, Australien och Storbritannien.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ES</span>Español (spanska): Täcker alla spansktalande länder i Amerika, Filippinerna och Spanien (den föredragna destinationen bland unga italienare 2024-2025).</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">FR</span>Français (franska): För de historiska och stora samhällena i Frankrike och Belgien.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DE</span>Deutsch (tyska): För Tyskland (nästan 900 000 italienska permanentboende) och Schweiz.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PT</span>Português (portugisiska): Viktigt för Brasilien (över 30 miljoner ättlingar).</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RU</span>Русский (ryska): För att täcka samhällen och ättlingar till de före detta sovjetrepublikerna och Balkan.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">AR</span> العربية (arabiska, RTL): För samhällen i Nordafrika (Egypten, Tunisien, Marocko) och ättlingar i Gulfstaterna.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NL</span>Nederlands (nederländska): Viktigt för Nederländerna, som 2025 är ett snabbt växande nav för italienska akademiker.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">HE</span> עברית (hebreiska, RTL): För den betydande och aktiva italienska gemenskapen i Israel.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">JA</span>日本語 (japanska): För gemenskapen av italienska yrkesverksamma och permanenta invånare i Japan.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">SV</span>Svenska (svenska): Sverige är den viktigaste skandinaviska destinationen för italienare 2025.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ZH</span>中文 (kinesiska): För permanent bosatta och företagare i Kina.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RO</span>Română (rumänska): Till det stora samhället av italienska entreprenörer och permanenta invånare i Rumänien.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EL</span>Ελληνικά (grekiska): För de historiska förbindelserna och permanenta invånarna på de grekiska öarna och i de grekiska städerna.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PL</span>Polski (polska): För italienare som bor i Polen (logistik- och industricentrum).</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DA</span>Danska (danska): För italienska forskare och kreativa i Danmark.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NO</span>Norsk (norska): För samhället med anknytning till olje- och gasindustrin och tekniksektorn.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">TR</span>Türkçe (turkiska): Till det historiska samhället "Levantini" och permanenta invånare i Istanbul.</li>
+                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">VI</span>Tiếng Việt (vietnamesisk): För det växande näringslivet i Sydostasien.</li>
             </ul>
-            <p>con le quali, in base ai dati disponibili a fine 2025, si stima di poter coprire circa il 98% dei discendenti da italiani e delle comunità italiane o italofone sparse per il mondo.</p>
+            <p>Dessa språk beräknas, baserat på tillgängliga data i slutet av 2025, täcka cirka 98 % av ättlingar till italienare och italienska eller italiensktalande samhällen över hela världen.</p>
             <ul>
-                <li>Su <strong>Windows</strong>: la lingua viene scelta durante l'installer e memorizzata nel Registro di Windows</li>
-                <li>Su <strong>Linux/macOS</strong>: la lingua viene selezionata al primo avvio e salvata nel file di configurazione utente</li>
-                <li>In entrambi i casi viene caricata automaticamente a ogni avvio</li>
-                <li>Può essere cambiata in qualsiasi momento tramite Menu → Impostazioni → Cambia lingua</li>
-                <li>Il programma richiede un riavvio per applicare la nuova lingua selezionata</li>
+                <li>På <strong>Windows</strong>: språket väljs under installationen och lagras i Windows-registret</li>
+                <li>På <strong>Linux/macOS</strong>: språket väljs vid första start och sparas i användarens konfigurationsfil</li>
+                <li>I båda fallen laddas den automatiskt vid varje start</li>
+                <li>Det kan ändras när som helst via Meny → Inställningar → Ändra språk</li>
+                <li>Programmet måste startas om innan det nyvalda språket används</li>
             </ul>
-            <h4>📂 CONFIGURAZIONE CARTELLE</h4>
-            <p>Alla prima esecuzione, il programma crea automaticamente le seguenti cartelle:</p>
+            <h4>📂 MAPPKONFIGURATION</h4>
+            <p>Vid första körningen skapar programmet automatiskt följande mappar:</p>
             <ul>
-                <li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\</code></li>
-                <li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\doc\</code> (default documenti)</li>
-                <li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\reg\</code> (default registri)</li>
-                <li><strong>Linux/macOS:</strong> analoghe sotto <code>~/Documents/ATK-Pro/output/</code></li>
-                <li>Cartella <code>input\</code> analoga (opzionale, per input file)</li>
+                <li><strong>Windows:</strong> <code>C:\Users\[DittNamn]\Documents\ATK-Pro\output\</code></li>
+                <li><strong>Windows:</strong> <code>C:\Users\[DittNamn]\Documents\ATK-Pro\output\doc\</code> (standarddokumentmapp)</li>
+                <li><strong>Windows:</strong> <code>C:\Users\[DittNamn]\Documents\ATK-Pro\output\reg\</code> (standardregistermapp)</li>
+                <li><strong>Linux/macOS:</strong> motsvarande nedan <code>~/Documents/ATK-Pro/output/</code></li>
+                <li>Motsvarande mapp <code>input\</code> (valfritt, för indatafiler)</li>
             </ul>
-            <p>Durante l'elaborazione vengono create cartelle temporanee per i tile scaricati (<code>tiles_canvas_X/</code>) e, se richiesto il PDF, file temporanei per la sua generazione.
+            <p>Under bearbetningen skapas tillfälliga mappar för de nedladdade tiles (<code>tiles_canvas_X/</code>) och, om PDF väljs, temporära filer för dess generering.
             </p>
-            <p>Tutte le cartelle e i file temporanei vengono eliminati automaticamente al termine dell'elaborazione.
+            <p>Alla temporära mappar och filer raderas automatiskt när bearbetningen är klar.
             </p>
-            <p>Rimangono solo i file finali elaborati (immagini nei formati scelti, PDF, manifest e metadati).
+            <p>Endast de färdiga filerna bevaras (bilder i valda format, PDF, manifest och metadata).
             </p>
-            <p>Per modificare le cartelle di output usa Menu → Impostazioni → "Seleziona cartelle output". Le scelte vengono memorizzate e ripristinate automaticamente alla sessione successiva.</p>
+            <p>Använd Meny → Inställningar → "Välj utdatamappar" för att ändra utdatamappar. Valen sparas och återställs automatiskt i nästa session.</p>
+            <h4>⚙️ RESURSPROFIL</h4>
+            <p>Kommandot <strong>Inställningar → Resursprofil</strong> styr parallelliseringen som används under nedladdning, bildrekonstruktion och PDF-generering:</p>
+            <ul>
+                <li><strong>Lätt:</strong> begränsar samtidiga processer och minnestoppar; lämplig för mindre kraftfulla datorer eller mycket långa behandlingar.</li>
+                <li><strong>Balanserad:</strong> standardkompromiss mellan hastighet och stabilitet, lämplig för de flesta fall.</li>
+                <li><strong>Snabb:</strong> använder mer resurser för att minska bearbetningstiden; välj den här profilen endast på tillräckligt kraftfulla datorer.</li>
+            </ul>
+            <p>Profilen ändrar inte kvaliteten, rättigheterna eller antalet hämtade dokument. Eventuella specifika försiktighetsgränser för portalen fortsätter att ha företräde.</p>
             </div>
             <div class="section-box">
-            <h3>3. INTERFACCIA PRINCIPALE</h3>
+            <h3>3. HUVUDANVÄNDARGRÄNSSNITT</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>LAYOUT DELLA FINESTRA</h4>
-            <p>La finestra principale di Antenati Toolkit Pro ha una struttura semplice e intuitiva.</p>
+            <h4>FÖNSTERLAYOUT</h4>
+            <p>Huvudfönstret i ATK-Pro har en enkel och intuitiv struktur.</p>
             <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window1.webp" alt="Finestra principale ATK-Pro" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+                <img src="images/window1.webp" alt="ATK-Pro-hovedvindue" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
             </div>
-            <h4>📝 LEGENDA TESTATA:</h4>
+            <h4>📝 FÖRKLARING TILL TITELRADEN:</h4>
             <ul>
-                <li>[🔲] Icona del programma (Antenati Toolkit Pro logo)</li>
-                <li>"ATK-Pro" Titolo della finestra</li>
-                <li>[_] Riduci a icona (minimizza la finestra)</li>
-                <li>[□] Espandi/Collassa (massimizza o ripristina la finestra)</li>
-                <li>[✕] Chiudi (termina il programma con banner di supporto)</li>
+                <li>[🔲] Programikon (Antenati Toolkit Pro-logotyp)</li>
+                <li>"ATK-Pro" Fönstertitel</li>
+                <li>[_] Minimera (minimera fönstret)</li>
+                <li>[□] Maximera/Återställ (maximera eller återställ fönstret)</li>
+                <li>[✕] Stäng (avslutar programmet efter att stödbannern har visats)</li>
             </ul>
             <!-- Frase sul motto latino spostata in fondo alla descrizione -->
             <p style="margin-top: 10px; color: #5a3e2b;">
-                In calce è riportato il motto latino “Qui ante nos venerunt, in memoria nostra vivunt”, a ricordare l’importanza delle radici e della memoria collettiva.
+                Det latinska mottot "Qui ante nos venerunt, in memoria nostra vivunt" visas längst ner som en påminnelse om vikten av rötter och kollektivt minne.
             </p>
-            <h4>BARRA DEI MENU</h4>
-            <p>Nella parte superiore della finestra, sotto la testata:</p>
+            <h4>MENYRAD</h4>
+            <p>Överst i fönstret, under namnlisten:</p>
             <p>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[File input]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Output]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Servizi]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Documenti]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Impostazioni]</span>
+                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Indatafil]</span>
+                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Utdata]</span>
+                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Tjänster]</span>
+                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Dokument]</span>
+                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Inställningar]</span>
             </p>
-            <p>Ogni menu contiene pulsanti e opzioni specifiche (vedi sezione successiva).</p>
-            <h4>MENU DISPONIBILI</h4>
-            <h3>1. FILE INPUT</h3>
-            <p><strong>Gestisce il caricamento dei record IIIF:</strong></p>
-            <pre class="file-structure">├─ Esempio input
-│  └─ Visualizza il file di esempio (mostra formato coppie: modalità D/R + URL)
-├─ Apri input
-│  └─ Seleziona un file .txt con i tuoi record IIIF
-│     (Deve contenere coppie: modalità D/R su riga 1, URL su riga 2)
-└─ Modifica input
-   └─ Modifica il file input attualmente caricato
-      (Aggiungi/rimuovi record, cambia URL, salva modifiche)</pre>
-            <h3>2. OUTPUT</h3>
-            <p><strong>Gestisce elaborazione e output:</strong></p>
-            <pre class="file-structure">├─ Elabora
-│  └─ Avvia il download, la ricostruzione e il salvataggio delle immagini
-│     (Mostra finestra di progresso in tempo reale)
-├─ Apri cartella output
-│  └─ Apre in Esplora Risorse la cartella con i file elaborati
-└─ Visualizza elaborazioni precedenti
-   └─ Lista dei record già elaborati</pre>
-            <h3>3. SERVIZI</h3>
-            <p><strong>Elenco dei servizi integrati:</strong></p>
-            <pre class="file-structure">├─ Visualizzazione Immagini
-│  └─ Viewer immagini scaricate e/o PDF generati
-├─ Visualizzazione Metadati JSON
-│  └─ JSON originali e metadati (genealogici, tecnici, EXIF)
-├─ OCR Avanzato
-│  └─ Testi manoscritti ottocenteschi, latino ecclesiastico, tardo-medievali
-├─ Traduzione OCR
-│  └─ Traduzione automatica testi estratti nelle lingue selezionate
-└─ Esportazione GEDCOM
+            <p>Varje meny innehåller specifika knappar och inställningar (se nästa avsnitt).</p>
+            <h4>TILLGÄNGLIGA MENYER</h4>
+            <h3>1. INDATAFIL</h3>
+            <p><strong>Hanterar inläsning av IIIF-poster:</strong></p>
+            <pre class="file-structure">├─ Exempel på inmatning
+│ └─ Visa exempelfilen (visar formatet med par: D/R Mode + URL)
+├─ Öppna ingång
+│ └─ Välj en .txt-fil med dina IIIF-poster
+│ (Måste innehålla par: D/R-läge på rad 1, URL på rad 2)
+└─ Redigera inmatning
+   └─ Redigera den för närvarande laddade indatafilen
+      (Lägg till/ta bort poster, Ändra URL, Spara ändringar)</pre>
+            <h3>2. UTDATA</h3>
+            <p><strong>Hanterar bearbetning och utdata:</strong></p>
+            <pre class="file-structure">├─ Process
+│ └─ Startar nedladdning, rekonstruktion och lagring av bilder
+│ (Visar ett statusfönster i realtid)
+├─ Öppna utdatamappen
+│ └─ Öppnar mappen med de bearbetade filerna i Utforskaren
+└─ Visa tidigare behandlingar
+   └─ Lista över redan behandlade poster</pre>
+            <h3>3. TJÄNSTER</h3>
+            <p><strong>Lista över integrerade tjänster:</strong></p>
+            <pre class="file-structure">├─ AI Assisterad sökning
+│ └─ Föreslår portaler, forskningsspår och släktforskningsfrågor som ska verifieras
+├─ Bildvisning
+│ └_─ Visar nedladdade bilder och/eller genererade PDF-filer
+├─ Visar JSON-metadata
+│ └─ Original JSON och metadata (genealogisk, teknisk, EXIF)
+├─ Avancerad OCR
+│ └_─ Handskrivna texter från 1800-talet, kyrkolatin, senmedeltida texter
+├─ OCR-översättning
+│ └_─ Automatisk översättning av extraherade texter till de valda språken
+└─ GEDCOM Export
    └─ GEDCOM, Gramps, Family Tree Maker, Ancestry, MyHeritage, WikiTree, etc.</pre>
-            <h3>4. DOCUMENTI</h3>
-            <p><strong>Accesso a risorse e documentazione:</strong></p>
-            <pre class="file-structure">├─ Disclaimer - Clausole legali e termini d'uso
-├─ Presentazione autore - Background dell'autore del progetto
-├─ Presentazione progetto - Storia, motivazioni, roadmap di ATK-Pro
-├─ Guida - Questo documento (guida operativa completa)
-└─ Informazioni - Versione, copyright, email di contatto</pre>
-            <h3>5. IMPOSTAZIONI</h3>
-            <p><strong>Configurazione generale del programma:</strong></p>
-            <pre class="file-structure">├─ Cambia lingua
-│  └─ Seleziona la lingua dell'interfaccia (richiede riavvio)
-├─ Seleziona formati immagine
-│  └─ Scegli tra PNG, JPG, TIFF e PDF (almeno 1 obbligatorio)
-│     PDF può essere selezionato da solo o insieme ai formati immagine
-│     La scelta viene memorizzata e pre-selezionata automaticamente alla sessione successiva
-├─ Seleziona cartelle output
-│  └─ Apre prima la scelta della modalità cartelle, poi le finestre di selezione:
-│     • Cartella unica per tutti    → una sola cartella per documenti e registri
-│     • Cartelle separate doc/reg   → una cartella per tutti i doc, una per tutti i reg
-│     • Cartella per ogni record    → una cartella distinta per ciascun record
-│     La modalità e le cartelle vengono memorizzate e ripristinate alla sessione successiva
-├─ Esporta configurazione
-│  └─ Salva le impostazioni attuali in un file
-├─ Importa configurazione
-│  └─ Carica un file di impostazioni precedentemente salvato (ripristina tutte le preferenze e percorsi)
-├─ Verifica aggiornamenti
-│  └─ Controlla la disponibilità di nuove versioni del programma (funzione in sviluppo)
-└─ Chiudi
-    └─ Termina il programma (mostra banner di supporto PayPal.me)</pre>
+            <h3>4. DOKUMENT</h3>
+            <p><strong>Tillgång till resurser och dokumentation:</strong></p>
+            <pre class="file-structure">├─ Friskrivningsklausul - Lagliga bestämmelser och användarvillkor
+├─ Presentation av författaren - Bakgrund om projektets författare
+├─ Presentation av projektet - ATK-Pros historia, motivation och färdplan
+├─ Guide - Huvudindex för den modulära guiden
+└─ Information - Version, upphovsrätt, kontakt e-post</pre>
+            <h3>5. INSTÄLLNINGAR</h3>
+            <p><strong>Allmän konfiguration av programmet:</strong></p>
+            <pre class="file-structure">├─ Byt språk
+│ └─ Välj språk för användargränssnittet (kräver omstart)
+├─ Välj bildformat
+│ └_─ Välj mellan PNG, JPG, TIFF och PDF (minst 1 krävs)
+│ PDF kan väljas separat eller tillsammans med bildformaten
+│ Valet sparas och förvals automatiskt i nästa session
+├─ Välj utdatamappar
+│ └─ Öppnar först val av mappläge och sedan mappvalsfönster:
+│ • En mapp för allt → en enda mapp för dokument och poster
+│ • Separata mappar doc./reg.   → en mapp för alla dokument, en för alla reg.
+│ • En mapp per post → en separat mapp för varje post
+│ Status och mappar sparas och återställs i nästa session
+├─ Exportera konfiguration
+│ └─ Sparar de aktuella inställningarna i en fil
+├─ Importera konfiguration
+│ └─ Laddar en tidigare sparad inställningsfil (återställer alla inställningar och sökvägar)
+├─ Sök efter uppdateringar
+│ └_─ Söker efter nya versioner av programmet
+└─ Stäng
+    └─ Avsluta programmet (visar PayPal.me-supportbannern)</pre>
             </div>
             <div class="section-box">
-            <h3>7. LOCALIZZAZIONE MULTILINGUE</h3>
+            <h3>4. FLERPRÅKLIG LOKALISERING</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>LINGUE SUPPORTATE</h4>
-            <p>ATK-Pro è disponibile in 20 lingue:</p>
+            <h4>SPRÅK SOM STÖDS</h4>
+            <p>ATK-Pro är tillgänglig på 20 språk:</p>
             <ul style="list-style: none; padding-left: 0;">
-                <li>1. Italiano (IT - Italiano)</li>
-                <li>2. English (EN - Inglese)</li>
-                <li>3. Español (ES - Spagnolo)</li>
-                <li>4. Français (FR - Francese)</li>
-                <li>5. Deutsch (DE - Tedesco)</li>
-                <li>6. Português (PT - Portoghese)</li>
-                <li>7. Русский (RU - Russo)</li>
-                <li>8. العربية (AR - Arabo, RTL)</li>
-                <li>9. Nederlands (NL - Olandese)</li>
-                <li>10. עברית (HE - Ebraico, RTL)</li>
-                <li>11. 日本語 (JA - Giapponese)</li>
-                <li>12. Svenska (SV - Svedese)</li>
-                <li>13. 中文 (ZH - Cinese)</li>
-                <li>14. Română (RO - Rumeno)</li>
-                <li>15. Ελληνικά (EL - Greco)</li>
-                <li>16. Polski (PL - Polacco)</li>
-                <li>17. Dansk (DA - Danese)</li>
-                <li>18. Norsk (NO - Norvegese)</li>
-                <li>19. Türkçe (TR - Turco)</li>
-                <li>20. Tiếng Việt (VI - Vietnamita)</li>
+                <li>1. Italiano (IT - italienska)</li>
+                <li>2. English (EN - engelska)</li>
+                <li>3. Español (ES - spanska)</li>
+                <li>4. Français (FR - franska)</li>
+                <li>5. Deutsch (DE - Tyska)</li>
+                <li>6. Português (PT - portugisiska)</li>
+                <li>7. Русский (RU - ryska)</li>
+                <li>8. العربية (AR - arabiska, RTL)</li>
+                <li>9. Nederlands (NL - nederländska)</li>
+                <li>10. עברית (HE - hebreiska, RTL)</li>
+                <li>11. 日本語 (JA - japanska)</li>
+                <li>12. Svenska (SV - svenska)</li>
+                <li>13. 中文 (ZH - kinesiska)</li>
+                <li>14. Română (RO - rumänska)</li>
+                <li>15. Ελληνικά (EL - grekiska)</li>
+                <li>16. Polski (PL - polska)</li>
+                <li>17. Danska (DA - danska)</li>
+                <li>18. Norska (NO - norska)</li>
+                <li>19. Türkçe (TR - turkiska)</li>
+                <li>20. Tiếng Việt (VI – vietnamesiska)</li>
             </ul>
-            <h4>CAMBIO LINGUA</h4>
-            <p>La lingua può essere cambiata in qualsiasi momento tramite Menu → Impostazioni → Cambia lingua.</p>
-            <p>Il programma richiede un riavvio per applicare la nuova lingua.</p>
-            <p>Al riavvio, il programma carica automaticamente la nuova lingua selezionata.</p>
-            <h4>TESTI LOCALIZZATI</h4>
-            <p>Con il cambio lingua vengono tradotti:</p>
+            <h4>BYT SPRÅK</h4>
+            <p>Språket kan ändras när som helst via Meny → Inställningar → Ändra språk.</p>
+            <p>Programmet måste startas om innan det nya språket används.</p>
+            <p>Vid omstart laddar programmet automatiskt det nyvalda språket.</p>
+            <h4>LOKALISERADE TEXTER</h4>
+            <p>När språket ändras översätts följande:</p>
             <ul>
-                <li>Menu e pulsanti</li>
-                <li>Messaggi di avanzamento</li>
-                <li>Dialoghi di errore/avviso</li>
-                <li>Documenti nel menu Documenti</li>
+                <li>Menyer och knappar</li>
+                <li>Statusmeddelanden</li>
+                <li>Fel/varningsdialoger</li>
+                <li>Dokument i menyn Dokument</li>
             </ul>
-            <h4>NOTA SU FONT E LAYOUT</h4>
+            <h4>NOTERA OM TECKENSNITT OCH LAYOUT</h4>
             <ul>
-                <li>Lingue RTL (Arabo, Ebreo) cambiano layout (menu/controlli allineati a destra)</li>
-                <li>Font UTF-8 multi-lingue garantisce corretta visualizzazione</li>
-                <li>Se vedi caratteri corrotti su Windows, aggiorna a Windows 10+ (issue rara)</li>
+                <li>RTL-språk (arabiska, hebreiska) ändrar layouten (menyer/kontroller är högerjusterade)</li>
+                <li>UTF-8-typsnitt med flerspråkigt stöd säkerställer korrekt visning</li>
+                <li>Om du ser skadade tecken i Windows, uppdatera till Windows 10+ (sällsynt problem)</li>
             </ul>
             </div>
             
@@ -594,8 +604,8 @@
                 </div>
         
     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_02_operazioni_base.html" class="nav-button">Mod.02 &mdash; Operazioni di Base &#8594;</a>
+            <a href="guida.html" class="nav-button">&#127968; Huvudindex</a>
+            <a href="guida_02_operazioni_base.html" class="nav-button">Mod.02 &mdash; Grundfunktioner &#8594;</a>
         </div>
 
     <footer style="text-align: center;">

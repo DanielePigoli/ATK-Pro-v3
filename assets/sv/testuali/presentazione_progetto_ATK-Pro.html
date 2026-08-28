@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="sv" dir="ltr">
+
+<html dir="ltr" lang="sv">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projektet - Antenati Toolkit Pro</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Projektet - Antenati Toolkit Pro</title>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -325,153 +326,180 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>&#128640; ATK-Pro-projektet</h1>
-            <h2>Antenati Toolkit Pro</h2>
-        </header>
-
-        <div class="section">
-            <div class="meta-info">
-                <div>
-                    <p><strong>&#128197; Uppdatering</strong><br>1 mars 2026</p>
-                    <p><strong>✍️ Redigerad av</strong><br> Daniele Pigoli</p>
+<div class="container">
+<header>
+<h1>🚀 ATK-Pro-projektet</h1>
+<h2>Antenati Toolkit Pro</h2>
+</header>
+<div class="section">
+<div class="meta-info">
+<div>
+<p><strong>📅 Uppdatering</strong><br/>2. augusti 2026</p>
+<p><strong>✍️ Förberedd av</strong><br/>Daniele Pigoli</p>
+</div>
+<div>
+<p><strong>📂 Plats</strong><br/>/assets/[språk]/testuali/</p>
+<p><strong>📌 Version</strong><br/>v3.0.0 – teknisk RC</p>
+</div>
+</div>
+<h3>📖 Bakgrund och förutsättningar</h3>
+<p>ATK-Pro har sitt ursprung i arbetet med <strong>Portale Antenati</strong>, som fortfarande är en primär källa för italiensk släktforskning. Med version <strong>v3.0.0</strong> tar projektet dock ett större steg: Från ett verktyg centrerat på nedladdning och rekonstruktion av IIIF-bilder, förvandlas det till en <strong>arbetsyta för släktforskning och arkivforskning över portaler</strong>, utvecklad för italienska och italienskspråkiga källor samt huvudvägarna för den italienska diasporan.</p>
+<p>Nutida släktforskning är inte begränsad till en portal. Dokument och släktspår finns i nationella arkiv, digitala bibliotek, regionala portaler, kyrkliga samlingar, internationella IIIF-plattformar och resurser kopplade till migrationsvägar mot Europa, Amerika och Oceanien. ATK-Pro hanterar denna komplexitet noggrant genom att endast integrera källor som är tekniskt tillgängliga och kompatibla med dokumenterade juridiska begränsningar och användningsvillkor.</p>
+<p>De tekniska behov som projektet växte fram ur är fortfarande centrala:</p>
+<ul>
+<li>att ladda ned och rekonstruera bilder av hög kvalitet när portalen visar kompatibla manifest eller brickor;</li>
+<li>att arbeta offline med dokument, register, bilder, metadata och PDF-filer organiserade lokalt;</li>
+<li>att skilja mellan portaler som kan stödjas fullt ut, källor som bör användas med försiktighet och resurser som inte bör utökas;</li>
+<li>att integrera AI-assistans utan att ersätta forskarens kritiska omdöme.</li>
+</ul>
+<div class="highlight-box">
+<strong>✨ Vändpunkten v3.0.0:</strong> ATK-Pro är inte längre bara ett nedladdnings- och rekonstruktionsverktyg för Portale Antenati. Det är en <strong>assisterad forskningsarbetsplats</strong> som förenar dokumentportaler, lokalt bevarande, OCR, översättning, släktforskningsanalys, GEDCOM-export och AI-assisterad forskning, med hänsyn till källornas åtkomstregler.
+            </div>
+<h3>🎯 Huvudmål</h3>
+<p>ATK-Pro är ett arkiv- och släktforskningsinitiativ skapat för att erbjuda forskare och släktforskningsentusiaster ett specialiserat verktyg, nu inriktat på ett mer komplett arbetsflöde:</p>
+<div class="feature-grid">
+<div class="feature-item">
+<strong>📥 Skaffa digitala källor</strong><br/>Bilder och register från kompatibla offentliga portaler med prioritet för det italienska och italiensktalande området
                 </div>
-                <div>
-                    <p><strong>&#128194; Placering</strong><br>/assets/[tunga]/testuali/</p>
-                    <p><strong>&#128204; Version</strong><br>v2.0 - Slutlig version</p>
+<div class="feature-item">
+<strong>🔧 Rekonstruera och bevara</strong><br/>Brickor och bilder rekonstruerade som välordnade lokala filer i format som lämpar sig för forskning, export och personligt bevarande
                 </div>
-            </div>
-
-            <h3>&#128214; Bakgrund och f&#246;ruts&#228;ttningar</h3>
-            <p><strong>Antenati</strong> Portal &#228;r en extraordin&#228;r resurs f&#246;r italiensk sl&#228;ktforskning och tillhandah&#229;ller miljontals bilder av historiska register och arkivdokument i <strong>IIIF</strong>-format (International Image Interoperability Framework). Men, direkt nedladdning via webbl&#228;saren erbjuder endast versioner av l&#229;g kvalitet (PNG som kan visas men inte &#228;r l&#228;mpliga f&#246;r arkivbruk).</p>
-            
-            <p>H&#246;gkvalitativa bilder f&#246;rblir endast tillg&#228;ngliga via IIIF API i kakelformat, vilket g&#246;r det problematiskt f&#246;r den vanliga anv&#228;ndaren:</p>
-            <ul>
-                <li>Ladda ner kompletta dokumentsamlingar utan beroende av kontinuerlig internetanslutning</li>
-                <li>Manuell rekonstruktion av IIIF-brickor till h&#246;guppl&#246;sta helbilder</li>
-                <li>Arbeta offline med dokument bearbetade i professionella format (f&#246;rlustfri TIFF, PDF)</li>
-                <li>Hantera strukturerade och genealogiska metadata tillsammans med bilder</li>
-            </ul>
-
-            <div class="highlight-box"> <strong>✨ ATK-Pro-l&#246;sning:</strong> Ett konkret svar p&#229; dessa behov. Det &#228;r inte ett generiskt visualiseringsverktyg, utan en <strong>specialiserad arkivl&#246;sning</strong> som g&#246;r det m&#246;jligt f&#246;r forskare och entusiaster att automatiskt ladda ner h&#246;guppl&#246;sta IIIF-brickor, rekonstruera dem till kompletta bilder och lokalt &#229;terskapa digitaliserade dokument med bibeh&#229;llen arkivkvalitet. </div>
-
-            <h3>&#127919; Huvudm&#229;l</h3>
-            <p>ATK-Pro &#228;r ett arkiv- och sl&#228;ktforskningsinitiativ som skapats f&#246;r att erbjuda forskare och entusiaster inom familjehistoria ett specialiserat verktyg:</p>
-            
-            <div class="feature-grid">
-                <div class="feature-item"> <strong>&#128229; Ladda ner och bearbeta</strong><br>Bilder fr&#229;n digitala IIIF-arkiv via ett intuitivt grafiskt gr&#228;nssnitt </div>
-                <div class="feature-item"> <strong>&#128295; &#197;terst&#228;ll automatiskt</strong><br>Brickor i kompletta bilder med bibeh&#229;llen arkivkvalitet </div>
-                <div class="feature-item"> <strong>&#128190; Exportera i flera format</strong><br>PNG, JPG, TIFF och PDF per dokument/register </div>
-                <div class="feature-item"> <strong>&#127757; Global tillg&#228;nglighet</strong><br>Fullst&#228;ndigt flerspr&#229;kigt gr&#228;nssnitt (20 spr&#229;k) </div>
-                <div class="feature-item"> <strong>&#128230; Flerplattformsdistribution</strong><br>Windows (.exe), Linux (.deb / .tar.gz), macOS (.dmg – test på riktig hårdvara pågår) </div>
-                <div class="feature-item"> <strong>&#128300; Arkivfokus</strong><br>TIFF f&#246;rlustfri, strukturerade metadata, digital bevarande </div>
-            </div>
-
-            <h3>&#127959;️ Metodik och arkitektur</h3>
-            <p>ATK-Pro anv&#228;nder en mjukvaruutvecklingsmetodik som &#228;r inriktad p&#229; slutanv&#228;ndaren, och kombinerar tre pelare:</p>
-            
-            <h4>&#128308; Arkivvetenskapens grunder</h4>
-            <ul>
-                <li>Stratifierat tillv&#228;gag&#229;ngss&#228;tt med uppdelning i projektfaser</li>
-                <li>Strukturerad dokumentation av varje utvecklingsfas</li>
-                <li>Fokus p&#229; digital bevarande och arkivkvalitet</li>
-            </ul>
-
-            <h4>&#128309; Teknisk arkitektur</h4>
-            <ul>
-                <li><strong>Backend:</strong> Python 3.12+ med specialiserade moduler (IIIF-nedladdning, brickrekonstruktion, PDF-konvertering)</li>
-                <li><strong>Frontend:</strong> Qt 6 f&#246;r plattformsoberoende grafiskt gr&#228;nssnitt och inbyggd lokalisering</li>
-                <li><strong>Paketering:</strong> PyInstaller f&#246;r distribution som frist&#229;ende <code>.exe</code>-fil f&#246;r Windows</li>
-            </ul>
-
-            <h4>&#128994; Utvecklingscykel</h4>
-            <ul>
-                <li><strong>v1.x (2025):</strong> Prototyp och metodologisk forskning med arkivvetenskapliga grunder</li>
-                <li><strong>v2.0 (2025-2026):</strong> F&#246;rsta stabila releasen med flerspr&#229;kigt GUI och fullt st&#246;d f&#246;r Antenati Portal</li>
-                <li><strong>v2.1+ (2026+):</strong> OCR av historiska texter, genealogisk export, API-integration</li>
-            </ul>
-
-            <h3>&#128200; Projektets utveckling</h3>
-            <p>ATK-Pro f&#246;ddes som ett personligt initiativ 2025 f&#246;r att l&#246;sa ett konkret problem: att l&#229;ta genealogiska forskare <strong>ladda ner och hantera lokalt</strong> samlingar av IIIF-dokument fr&#229;n Antenati Portal <strong>i h&#246;g uppl&#246;sning och arkivkvalitet</strong>.</p>
-            
-            <p>Bilderna som finns tillg&#228;ngliga f&#246;r direkt nedladdning fr&#229;n portalen &#228;r av l&#228;gre kvalitet och ol&#228;mpliga f&#246;r professionell arkivering. ATK-Pro f&#229;r &#229;tkomst till h&#246;guppl&#246;sta IIIF-brickor, rekonstruerar dem till kompletta helhetsbilder och m&#246;jligg&#246;r offlinearbete med dokument i rent arkivformat (f&#246;rlustfritt TIFF) utan beroende av internetuppkoppling.</p>
-
-            <h4>&#128197; Huvudsteg</h4>
-            <ul class="two-col">
-                <li><strong>2025 (v1.x):</strong> Initial utveckling, metodologisk forskning, prototyp i ren Python</li>
-                <li><strong>2025 (v2.0):</strong> &#214;verg&#229;ng till Qt GUI, fullst&#228;ndigt flerspr&#229;kigt st&#246;d, professionell k&#246;rbar distribution</li>
-                <li><strong>2026+:</strong> OCR-expansion, genealogi, Antenati API-integration</li>
-            </ul>
-
-            <h3>✨ Funktioner v2.0</h3>
-            
-            <h4>&#128295; K&#228;rnfunktionalitet</h4>
-            <ul>
-                <li>✅ Automatisk nedladdning av bilder fr&#229;n IIIF manifest 2.0 och 2.1</li>
-                <li>✅ &#197;teruppbyggnad av brickor med optimerad kompression</li>
-                <li>✅ Export PNG, JPG, TIFF</li>
-                <li>✅ PDF-generering f&#246;r fullst&#228;ndiga register</li>
-                <li>✅ St&#246;d f&#246;r enskilda dokument (D) och flersidiga register (R)</li>
-                <li>✅ Strukturerade metadata (genealogiska, tekniska, EXIF)</li>
-            </ul>
-
-            <h4>&#128101; Anv&#228;ndarupplevelse</h4>
-            <ul>
-                <li>✅ Intuitivt Qt-gr&#228;nssnitt med kontextmenyer</li>
-                <li>✅ Fullst&#228;ndig lokalisering (20 spr&#229;k, RTL f&#246;r arabiska/hebreiska)</li>
-                <li>✅ Realtidsframstegsf&#228;lt under bearbetning</li>
-                <li>✅ Robust felhantering med diagnostik</li>
-                <li>✅ Integrerad och flerspr&#229;kig kontextuell guide</li>
-            </ul>
-
-            <h3>&#128194; Projektstruktur</h3>
-            <ul>
-                <li><code>/src/</code> → Python-moduler (nedladdning, rekonstruktion, konvertering)</li>
-                <li><code>/assets/[tunga]/testuali/</code> → Fullst&#228;ndig lokalisering (guide, friskrivning, presentationer)</li>
-                <li><code>/scripts/</code> → Verktyg (&#246;vers&#228;ttning, manifestparsning)</li>
-                <li><code>/docs/</code> → Teknisk dokumentation och f&#228;rdplan</li>
-                <li><code>ATK-Pro-Setup-v2.0.exe</code> → Windows installationsprogram med flera spr&#229;k</li>
-            </ul>
-
-            <h3>&#127891; Mottagare</h3>
-            <div class="two-col">
-                <ul>
-                    <li><strong>Genealogiska och historiska forskare</strong> som arbetar med Antenati Portal</li>
-                    <li><strong>Arkivarier och bibliotekarier</strong> som hanterar IIIF-digitala samlingar</li>
-                    <li><strong>Lokala historiker</strong> intresserade av digitalisering</li>
-                </ul>
-                <ul>
-                    <li><strong>Internationella sl&#228;ktforskningsgemenskaper</strong> som beh&#246;ver flerspr&#229;kiga verktyg</li>
-                    <li><strong>Windows-anv&#228;ndare</strong> som vill arbeta med historiska bilder offline</li>
-                    <li><strong>Entusiaster av digital arkivering</strong> intresserade av strukturerad konsultation</li>
-                </ul>
-            </div>
-
-            <h3>&#127775; Projektfilosofi</h3>
-            <div class="feature-grid">
-                <div class="feature-item"> <strong>&#128214; Frist&#229;ende programvara</strong><br>Gratis verktyg utvecklat p&#229; amat&#246;rniv&#229;, som st&#246;ds av frivilliga donationer </div>
-                <div class="feature-item"> <strong>&#129309; Community-driven</strong><br>Anv&#228;ndarfeedback styr utvecklingsprioriteringar </div>
-                <div class="feature-item"> <strong>&#128202; Arkivkvalitetsfokus</strong><br>F&#246;rlustfri TIFF, strukturerade metadata, digital bevarande </div>
-                <div class="feature-item"> <strong>&#127757; Modersm&#229;l i flera spr&#229;k</strong><br>Inte bara &#246;vers&#228;ttning, utan lokaliserad UI-design f&#246;r varje spr&#229;k </div>
-                <div class="feature-item"> <strong>&#128300; Personligt initiativ</strong><br>Kontinuerligt forsknings- och utvecklingsprojekt baserat p&#229; verkliga behov </div>
-                <div class="feature-item"> <strong>&#128218; Levande dokument</strong><br>F&#246;rem&#229;l f&#246;r successiv komplettering med anv&#228;ndarfeedback </div>
-            </div>
-
-            <h3>&#128203; Versionsstatus</h3>
-            <div class="highlight-box">
-                <p><strong>&#127881; Sl&#228;pp:</strong> 1 mars 2026</p>
-                <p><strong>✅ Status:</strong> Stabil och redo f&#246;r global distribution (20 spr&#229;k)</p>
-                <p><strong>&#128231; Support:</strong> antenati.toolkit.pro@gmail.com</p>
-                <p><strong>&#128157; Donationer:</strong> PayPal.me f&#246;r att st&#246;dja framtida utveckling</p>
-                <p><strong>&#128221; Dokument:</strong> Levande presentation, f&#246;rem&#229;l f&#246;r gradvis integration med anv&#228;ndarfeedback</p>
-            </div>
-        </div>
-
-        <footer>
-            <p><strong>&#169; 2026 Antenati Toolkit Pro</strong></p>
-            <p>antenati.toolkit.pro@gmail.com</p>
-        </footer>
-    </div>
+<div class="feature-item">
+<strong>🧭 Vägled forskningen</strong><br/>AI-assisterad forskning för att fastställa ledtrådar, platser, namnvarianter och källor att kontrollera
+                </div>
+<div class="feature-item">
+<strong>🧠 Stöd läsningen</strong><br/>Avancerad OCR, OCR-översättning och släktforskningsanalys med hjälp av användarkonfigurerbara leverantörer
+                </div>
+<div class="feature-item">
+<strong>🌍 Arbeta på flera språk</strong><br/>Användargränssnitt lokaliserat till 20 språk, valt för att täcka uppskattningsvis 98 % av italienare och italiensktalande i världen och för att stödja forskning om den italienska diasporan
+                </div>
+<div class="feature-item">
+<strong>⚖️ Arbeta försiktigt</strong><br/>Uteslutning av stängda eller kommersiella portaler och portaler med inloggning, betalvägg eller ej godkända tekniska begränsningar
+                </div>
+</div>
+<h3>🏗️ Metod och arkitektur</h3>
+<p>ATK-Pro använder en metod för mjukvaruutveckling fokuserad på slutanvändaren och kombinerar tre pelare:</p>
+<h4>🔴 Arkivmässig grund</h4>
+<ul>
+<li>Stegvis tillvägagångssätt indelat i projektfaser</li>
+<li>Strukturerad dokumentation av varje utvecklingsfas</li>
+<li>Fokus på filkvalitet, lokal organisation, metadata och bevarande av arbetskopior</li>
+</ul>
+<h4>🔵 Teknisk arkitektur</h4>
+<ul>
+<li><strong>Backend:</strong> Python 3.12+ med specialiserade moduler för manifest, brickor, bilder, PDF, OCR, översättning och släktforskningsanalys</li>
+<li><strong>Frontend:</strong> Qt 6 för ett plattformsoberoende grafiskt användargränssnitt och inbyggd lokalisering</li>
+<li><strong>Portaler:</strong> centralt register med grupper, prioriteringar, användningsvarningar, hänvisare, teknisk familj och nedladdningspolicy</li>
+<li><strong>AI-tjänster:</strong> assisterade dialogrutor med användarkonfigurerbara leverantörer och lokal hantering av autentiseringsuppgifter i en separat användarfil som ska skyddas och inte delas</li>
+<li><strong>Paket:</strong> PyInstaller för Windows (.exe), Linux (.deb / .tar.gz) och macOS (.dmg - testning på fysisk hårdvara pågår)</li>
+</ul>
+<h4> 🟢 Utvecklingscykel</h4>
+<ul>
+<li><strong>v1.x (2025):</strong> Prototyp- och metodforskning med arkivmässig grund</li>
+<li><strong>v2.0–v2.2.1 (2025–2026):</strong> Konsolidering av det flerspråkiga användargränssnittet, Portale Antenati-stöd och första offentliga versioner</li>
+<li><strong>v3.0.0 (2026):</strong> Fullständig lokalisering av användargränssnitt, centralt portalregister, AI-assisterade funktioner, avancerad OCR, OCR-översättning och släktforskningsanalys med GEDCOM-export</li>
+</ul>
+<h3>📈 Projektets utveckling</h3>
+<p>ATK-Pro skapades 2025 för att lösa ett specifikt problem: för att göra det möjligt för släktforskare att <strong>ladda ned och hantera lokalt</strong> IIIF-dokument från Portale Antenati i hög upplösning och arkivkvalitet.</p>
+<p>v3.0.0 bevarar denna tekniska kärna men placerar den i en bredare ram: forskning över portaler, dokumentation av användningsvillkor, utvärdering av nya italienska och internationella källor, stöd för italienska migrationsvägar och AI-tjänster som praktisk hjälp att läsa, översätta, jämföra och organisera dokumentation.</p>
+<h4>📅 Viktigaste milstolpar</h4>
+<ul class="two-col">
+<li><strong>2025 (v1.x):</strong> Initial utveckling, metodologisk forskning, prototyp i ren Python</li>
+<li><strong>2025–2026 (v2.x):</strong> Övergång till Qt-användargränssnitt, full flerspråkighet och de första körbara distributionerna för användare</li>
+<li><strong>2026 (v3.0.0):</strong> Övergång till en multiportalplattform, tekniskt register, juridisk policy, val av kandidatkälla, AI-assisterad forskning, OCR, översättning, släktforskningsanalys och GEDCOM-export</li>
+</ul>
+<h3>✨ Funktioner i v3.0</h3>
+<h4>🔧 Huvudfunktioner</h4>
+<ul>
+<li> ✅ Nedladdning och rekonstruktion från IIIF Presentation API 2 och 3 manifester samt via specifika adaptrar för tekniskt stödda portaler</li>
+<li> ✅ Rekonstruktion av brickor med optimerad komprimering</li>
+<li> ✅ PNG-, JPG- och TIFF-export</li>
+<li> ✅ Generering av PDF för kompletta register</li>
+<li> ✅ Stöd för enstaka dokument (D) och flersidiga register (R)</li>
+<li> ✅ Strukturerade metadata (släktforskningsanalyssk, teknisk, EXIF)</li>
+<li> ✅ Centralt portalregister med grupper, användningsvarningar, hänvisare, tekniska familjer och nedladdningspolicy</li>
+<li> ✅ AI-assisterad forskning för släktforskningsplanering, sökstrategier och dokumentärspår</li>
+<li> ✅ Avancerad OCR, OCR-översättning och släktforskningsanalyssk analys med GEDCOM-export</li>
+</ul>
+<h4>🧭 Portaler och forskningsområde</h4>
+<ul>
+<li> ✅ Första prioritet för det italienska och italiensktalande området</li>
+<li> ✅ Fokus på utländska källor som är relevanta för italiensk emigration och historiska herravälden, inklusive sydamerikanska, nordamerikanska, europeiska och österrikisk-habsburgska territorier</li>
+<li> ✅ Endast integration av offentliga portaler som kan nås utan tekniska förbikopplingar och som har verifierbara användningsvillkor</li>
+<li> ✅ Tydlig åtskillnad mellan redan stödda portaler, kandidater för bedömning, källor endast för konsultation och portaler som inte bör utökas</li>
+</ul>
+<h4>🧠 AI-assisterade tjänster</h4>
+<ul>
+<li> ✅ AI-assisterad forskning för att formulera frågor, hypoteser, namnvarianter, platser och sökprioriteringar</li>
+<li> ✅ Avancerad OCR på bilder och dokument med specialiserade prompter och mänsklig kontroll över resultatet</li>
+<li> ✅ OCR-översättning för att arbeta med historiska eller administrativa texter på olika språk</li>
+<li> ✅ Släktforskningsanalys med framställning av sammanfattningar, strukturerad data och GEDCOM-export när dokumentationen tillåter det</li>
+<li> ✅ Externa leverantörer som användaren kan konfigurera: ATK-Pro ersätter inte villkoren för de enskilda AI-tjänsterna och garanterar inte tillgänglighet, priser eller specifika modeller</li>
+</ul>
+<h4>👥 Användarupplevelse</h4>
+<ul>
+<li> ✅ Intuitivt Qt-gränssnitt med kontextkänsliga menyer</li>
+<li> ✅ Fullständig lokalisering (20 språk, RTL för arabiska/hebreiska)</li>
+<li> ✅ Statusrad i realtid under bearbetning</li>
+<li> ✅ Robust felhantering med diagnostik</li>
+<li> ✅ Integrerad kontextguide med den italienska guiden justerad till v3-baslinjen</li>
+</ul>
+<h3>📂 Projektstruktur</h3>
+<ul>
+<li><code>/src/</code> → Python-moduler (portaler, nedladdning, rekonstruktion, OCR, översättning, analys och användargränssnitt)</li>
+<li><code>/assets/[språk]/testuali/</code> → Fullständig lokalisering (guide, ansvarsfriskrivning, presentationer)</li>
+<li><code>/docs_generali/</code> → Teknisk dokumentation, portalpolicy, färdplan och utvärderingsmatriser</li>
+<li><code>/tests/</code> → Automatiserad verifieringssvit och testplan</li>
+<li><code>build/</code> och distributionspaket → Windows, Linux och macOS-byggen enligt plattformsteststatus</li>
+</ul>
+<h3>🎓 Mottagare</h3>
+<div class="two-col">
+<ul>
+<li><strong>Släktforskare och historiska forskare</strong> som arbetar med italienska och italienskspråkiga källor samt källor kopplade till diasporan</li>
+<li><strong>Arkivarier och bibliotekarier</strong> som hanterar digitala IIIF-samlingar</li>
+<li><strong>Lokalhistoriker</strong> med intresse för digitalisering, metadata och distribuerade källor</li>
+</ul>
+<ul>
+<li><strong>Internationella släktforskningsanalysska gemenskaper</strong> som följer italienska familjer i emigrationsländer</li>
+<li><strong>Windows-användare</strong> som vill arbeta med historiska bilder offline</li>
+<li><strong>Entusiaster för digital arkivering</strong> med intresse för strukturerad sökning och assisterade verktyg</li>
+</ul>
+</div>
+<h3>🌟 Projektfilosofi</h3>
+<div class="feature-grid">
+<div class="feature-item">
+<strong>📖 Fri programvara</strong><br/>Originalkod distribuerad under GNU AGPL v3 eller senare; originaldokumentation enligt CC BY-NC-SA 4.0; fri användning och enbart frivilliga donationer
+                </div>
+<div class="feature-item">
+<strong>🤝 Gemenskapsdriven</strong><br/>Användarfeedback driver utvecklingsprioriteringar
+                </div>
+<div class="feature-item">
+<strong>📊 Fokus på arkivkvalitet</strong><br/>Förlustfri TIFF, strukturerad metadata och digitalt bevarande
+                </div>
+<div class="feature-item">
+<strong>🌍 Inbyggd flerspråkighet</strong><br/>Användargränssnitt på 20 språk med beräknad täckning av cirka 98 % av italienare och italiensktalande i världen; den italienska guiden är källan till efterföljande lokaliseringar
+                </div>
+<div class="feature-item">
+<strong>⚖️ Juridisk försiktighet</strong><br/>Ingen integration av stängda eller kommersiella portaler eller portaler med inloggning, betalvägg eller ej godkända begränsningar
+                </div>
+<div class="feature-item">
+<strong>📚 Levande dokument</strong><br/>Utvecklas kontinuerligt baserat på användarfeedback och källkontroll
+                </div>
+</div>
+<h3>📋 Versionsstatus</h3>
+<div class="highlight-box">
+<p><strong>🎉 Release:</strong> v3.0.0 i teknisk RC-fas</p>
+<p><strong> ✅ Status:</strong> Lokala automatiska kontroller godkända; den italienska guiden och den juridiska dokumentationen är uppdaterad; Windows-, Linux- och macOS-paket måste återskapas och kontrolleras på kandidatartefakterna, och macOS-validering på fysisk hårdvara saknas fortfarande; dokumentlokaliseringarna måste uppdateras efter godkännandet av de italienska texterna</p>
+<p><strong>🧭 Omfattning i v3:</strong> kompatibla offentliga portaler, AI-assisterade tjänster, AI-assisterad forskning, OCR, översättning, släktforskningsanalys och GEDCOM</p>
+<p><strong>📧 Support:</strong> antenati.toolkit.pro@gmail.com</p>
+<p><strong>💝 Donationer:</strong> Frivilliga donationer via PayPal.me, helt frivilliga och inte relevanta för åtkomst eller användning av programvaran</p>
+<p><strong>📝 Dokument:</strong> Dokumentet uppdateras tillsammans med publiceringen och kan senare revideras på ett dokumenterat sätt</p>
+</div>
+</div>
+<footer>
+<p><strong>© 2026 Antenati Toolkit Pro </strong></p>
+<p>antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
 </body>
 </html>

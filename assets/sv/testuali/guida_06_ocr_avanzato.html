@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="sv" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Modul 06: Avancerad OCR</title>
+    <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+        <h1>📚 Modul 06: Avancerad OCR</h1>
+        </header>
+
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_05_visualizzazione_metadati.html" class="nav-button">&#8592; Mod.05 &mdash; Visning av JSON-metadata</a>
+            <a href="guida.html" class="nav-button">&#127968; Huvudindex</a>
+            <a href="guida_07_traduzione.html" class="nav-button">Mod.07 &mdash; Översättning &#8594;</a>
+        </div>
+
+    <div class="section">
+        <h2>&#128204; Översikt</h2>
+        <p>Modulen <strong>Avancerad OCR (diplomatisk transkription)</strong> extraherar text från bilder och PDF-dokument med hjälp av multimodala modeller, specialiserade OCR-modeller och HTR-tjänster. Den har utvecklats specifikt för historiska dokument: manuskript, notarier, kyrkböcker och arkivbrev på italienska, latin eller historiska dialekter.</p>
+        <p>Till skillnad från traditionella OCR-motorer (t.ex. Tesseract) kan modulen tolka handstilen i dokumentets sammanhang och känna igen förkortningar och återkommande fraser. TEI-P5-utgången återger de transkriberade raderna och, när de känns igen, sidbrytningar, tillägg och oläsliga passager; den återger inte den ursprungliga grafiska layouten helt.</p>
+        <p>Den öppnas från menyn <em>Tjänster &rarr; Avancerad OCR</em> i huvudprogrammet.</p>
+    </div>
+
+    <div class="section">
+        <h2>&#128421;&#65039; Användargränssnitt — steg-för-steg-instruktioner</h2>
+
+        <div class="section-box">
+            <h3>&#128194; Steg 1 — Filval</h3>
+            <p>Klicka på <strong>&ldquo;Välj filer (bilder/PDF)&rdquo;</strong> för att öppna filväljaren. Du kan välja flera filer samtidigt genom att hålla ned <kbd>Ctrl</kbd> eller <kbd>Shift</kbd>.</p>
+            <p><strong>Accepterade format:</strong></p>
+            <ul>
+                <li><strong>Bilder</strong>: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tiff</code>, <code>.tif</code></li>
+                <li><strong>PDF</strong>: alla PDF-dokument (skannade eller digitala)</li>
+            </ul>
+            <p style="margin-top:0.8rem;">Antalet valda filer visas bredvid etiketten. Varje fil bearbetas separat och genererar sina egna utdatafiler.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#129302; Steg 2 — Val av AI-leverantör och API-nyckel</h3>
+            <p>Välj leverantör från rullgardinsmenyn <strong>&ldquo;Välj AI-leverantör&rdquo;</strong>:</p>
+            <table>
+                <thead><tr><th>Leverantör</th><th>Tjänsttyp</th><th>Inloggningsuppgifter</th><th>Praktiska anteckningar</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Fjärrtjänster</td><td>Leverantörens API-nyckel</td><td>Modeller och tillgänglighet beror på kontot och leverantörens aktuella villkor.</td></tr>
+                    <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Kompatibla fjärrslutpunkter</td><td>Leverantörens API-nyckel</td><td>Välj en modell som kan bearbeta bilder; inte alla textmodeller stöder visuell OCR.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Fjärrslutpunkt endast för text i aktuell konfiguration</td><td>Leverantörens API-nyckel</td><td>Den är inte lämplig för visuell OCR förrän en slutpunkt och en modell som stöder bilder har konfigurerats.</td></tr>
+                    <tr><td><strong>KramarFace</strong></td><td>Remote Inference API</td><td>HuggingFace Token</td><td>Kompatibilitet och resultat beror på den konfigurerade modellen.</td></tr>
+                    <tr><td><strong>Transkribera buss</strong></td><td>Fjärr-HTR-tjänst</td><td><code>email:password</code> eller bärartoken</td><td>Kräver ett konto och minst en tillgänglig samling.</td></tr>
+                    <tr><td><strong>Ollama</strong></td><td>Lokal tjänst</td><td>Ingen extern API-nyckel</td><td>Kräver att Ollama är igång och en kompatibel visuell modell installerad lokalt.</td></tr>
+                </tbody>
+            </table>
+            <p style="margin-top:0.8rem;">Fältet <strong>&ldquo;Åsidosättande modell (tillval)&rdquo;</strong> tillåter att standardmodellen ersätts. Använd den endast om du känner till modellens exakta modell-ID och visuella kompatibilitet. För Tvillingarna visas inte fältet.</p>
+            <p>Du kan ange inloggningsuppgifterna i det relevanta fältet eller öppna <strong>Nyckelvalvet</strong>. AI-nycklar lagras lokalt i CSV-nyckelvalvet <code>api_keys.csv</code>: detta är inte den operativsystemsskyddade nyckelringen. Användarprofilskydd, säkerhetskopiering och återkallelse av nycklar förblir användarens ansvar.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#128196; Steg 3 — Utdataformat</h3>
+            <p>Välj ett eller flera utdataformat (alla tre är valda som standard):</p>
+            <ul>
+                <li><strong>Oformaterad text (.txt)</strong>: Enkel transkription med maximal kompatibilitet. Lämplig för vidare bearbetning (översättning, indexering).</li>
+                <li><strong>Word-dokument (.docx)</strong>: Formaterad text som kan redigeras i Microsoft Word eller LibreOffice.</li>
+                <li><strong>XML TEI (.xml)</strong>: TEI-P5-format för att återge transkriptionen med beskrivande rubrik, linjer och igenkända markörer för sidor, tillägg och oläslig text.</li>
+            </ul>
+            <p style="margin-top:0.8rem;">Filerna sparas i målmappen du väljer när OCR-processen startas.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#128221; Steg 4 — Ytterligare instruktioner (valfritt men rekommenderat)</h3>
+            <p>Fältet <strong>&ldquo;Ytterligare instruktioner för AI&rdquo;</strong> tillåter anpassning av modellens beteende för varje arbetssession:</p>
+            <ul>
+                <li>Ange dialekten eller språkvarianten av texten</li>
+                <li>Lista återkommande förkortningar och deras betydelser</li>
+                <li>Ange om frimärken, marginalnoter eller frimärken ska ignoreras</li>
+                <li>Begär att vissa formuleringar bevaras</li>
+            </ul>
+            <p style="margin-top:0.8rem;"><strong>Praktiska exempel:</strong></p>
+            <ul>
+                <li><em>&ldquo;Månadsnamnen är skrivna på siciliansk dialekt från 1800-talet. Rätta dem inte.&rdquo;</em></li>
+                <li><em>&ldquo;Ignorera stämplarna i marginalen och anteckningarna med röd penna.&rdquo;</em></li>
+                <li><em>&ldquo;Förkortningen 'f.' kan betyda 'son/dotter till'; 'fu' och 'q.' indikerar att den namngivna personen redan var död.&rdquo;</em></li>
+            </ul>
+            <p style="margin-top:0.8rem;"><strong>Instruktionsarkiv:</strong> ofta använda instruktioner kan sparas med knappen <strong>&ldquo;+&rdquo;</strong> och hämtas från &ldquo;Sparade instruktioner&rdquo; rullgardinsmenyn i senare sessioner.</p>
+            <p>Lagrade instruktioner kan läggas till, byta namn på eller raderas. Den ena <strong>vald dokumenttyp</strong> bestämmer den grundläggande prompten: Förutom de angivna typerna kan du skapa, ändra eller ta bort anpassade dokumentprofiler.</p>
+        </div>
+
+        <div class="section-box">
+        <h3>&#127919; Assisterad kalibrering och diagnostik (tillval)</h3>
+        <p>Assisterad kalibrering bearbetar den övre delen av den först valda filen, visar resultatet för korrigering och använder den godkända texten som referens för hela behandlingen. Det är användbart att kontrollera leverantör, modell, dokumenttyp och instruktioner innan du startar en stor batch.</p>
+            <p>Diagnostikalternativet lagrar ytterligare teknisk information om behandlingen. Aktivera den när du behöver analysera ett fel eller skicka information till supporten; kontrollera innehållet innan du delar eftersom det kan innehålla data om dokumentet eller begäran.</p>
+        </div>
+
+        <div class="section-box">
+        <h3>&#127891; Steg 5 — Referenstranskription (få bilder, valfritt)</h3>
+        <p>Fältet <strong>&ldquo;Referensavskrift&rdquo;</strong> ger modellen ett kontextuellt exempel på en korrekt transkription som används i begäran. Den tränar, modifierar eller uppdaterar inte modellen.</p>
+            <p><strong>Hur man använder det:</strong></p>
+            <ol>
+                <li>Transkriberar manuellt och korrekt första sidan (eller första raderna) i registret</li>
+                <li>Klistra in den transkriberade texten i fältet &ldquo;Referenstranskription&rdquo;</li>
+                <li>Starta OCR: Modellen använder transkriptionen som en guide för resten av dokumentet</li>
+            </ol>
+            <p style="margin-top:0.8rem;"><strong>Resultat:</strong> kan förbättra noggrannheten, särskilt med svår kursiv handstil, ovanliga förkortningar eller lokala dialektformer; effekten beror på leverantör, modell och dokumentkvalitet.<br>
+            Fältet &ldquo;Rensa text&rdquo; (&#10006;) rensar transkriptet och återställer standardtillståndet.</p>
+        </div>
+
+        <div class="section-box">
+        <h3>&#128269; Steg 6 — Interaktiv granskning (valfritt)</h3>
+            <p>Mark <strong>&ldquo;Aktivera fönster för interaktiv granskning&rdquo;</strong> för att aktivera ett interaktivt läge som öppnas efter varje behandling:</p>
+            <ul>
+                <li><strong>Vänster panel</strong>: originalbild med zoom (mushjul) och panorering</li>
+                <li><strong>Höger panel</strong>: extraherad OCR-text som fritt kan redigeras</li>
+                <li><strong>Knapp &ldquo;Godkänn och generera filer&rdquo;</strong>: sparar den granskade texten i de valda formaten</li>
+                <li><strong>Knapp &ldquo;Hoppa över sida &rdquo;</strong>: kasserar den aktuella behandlingen och fortsätter till nästa sida</li>
+            </ul>
+            <p style="margin-top:0.8rem;">Användbar för kontinuerlig kontroll av OCR-kvalitet och fixeringsfel före slutförvaring. För stora serier rekommenderas att inaktivera interaktiv granskning och korrigera texten efteråt.</p>
+        </div>
+
+        <div class="section-box">
+            <h3>&#9654;&#65039; Steg 7 — Starta OCR</h3>
+        <p>Klicka på <strong>&ldquo;Starta OCR&rdquo;</strong>. Du kommer att bli ombedd att välja målmappen för utdatafilerna.</p>
+        <p>Statusfältet visar förloppet (aktuell fil / totalt antal filer). Behandlingen sker i en separat tråd så att användargränssnittet förblir lyhört under behandlingen.</p>
+            <p>Under seriell bearbetning uppdaterar ATK-Pro en fortlöpande fil <code>*_trascrizione_parziale.txt</code> med tillhörande metadata. Om bearbetningen avbryts, behåll dessa filer för att återställa det arbete som redan har transkriberats; betrakta dem inte som slutliga utdata förrän serien har slutförts och granskats.</p>
+            <p>När processen är klar bekräftar en dialogruta att den är klar eller visar eventuella fel.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#128273; Så här får du API-nycklar</h2>
+
+        <div class="section-box">
+            <h3>Konton, nycklar, modeller och kostnader</h3>
+            <p>Få endast inloggningsuppgifter från den valda leverantörens officiella konsol och dela dem inte i inmatningsfiler, transkriptioner eller supportförfrågningar. Gränssnitt, modeller, kvoter, geografisk tillgänglighet och priser kan ändras utan uppdatering av ATK-Pro.</p>
+            <p>Innan någon omfattande bearbetning ska du alltid granska dokumentationen och faktureringssidan för ditt konto. ATK-Pro garanterar inte gratisprenumerationer, minimikvoter eller fortsatt tillgång till en viss modell.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>&#128161; Råd för bästa resultat</h2>
+        <div class="section-box">
+            <ul>
+                <li><strong>Bildkvalitet</strong>: Skarpa bilder vid 300+ DPI ger betydligt bättre resultat. Undvik JPEG-filer med kraftig komprimering (artefakter).</li>
+                <li><strong>Använd alltid de extra instruktionerna</strong>: Även några få rader i sammanhanget ökar avsevärt noggrannheten för dokument på dialekt eller med ovanlig handstil.</li>
+                <li><strong>Första sidan för referens</strong>: Transkribera första sidan manuellt och använd fältet &ldquo;Reference Transcription&rdquo;; förbättringen på efterföljande sidor är ofta betydande.</li>
+                <li><strong>Testserie</strong>: För stora serier (100+ bilder) bör du först testa 5-10 filer med interaktiv granskning aktiverad innan du fortsätter med hela serien.</li>
+                <li><strong>TEI XML</strong>: Välj XML TEI-format om du vill deponera utskriften i akademiska digitala arkiv eller dela den med andra forskare.</li>
+                <li><strong>Spara instruktionerna</strong>: Varje arkivserie har sina egna egenskaper. Håll en separat uppsättning instruktioner för varje register eller arkivfond du arbetar med.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_05_visualizzazione_metadati.html" class="nav-button">&#8592; Mod.05 &mdash; Visning av JSON-metadata</a>
+            <a href="guida.html" class="nav-button">&#127968; Huvudindex</a>
+            <a href="guida_07_traduzione.html" class="nav-button">Mod.07 &mdash; Översättning &#8594;</a>
+        </div>
+
+        <footer style="text-align: center;">
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
+    </div>
+    </div>
+</body>
+</html>

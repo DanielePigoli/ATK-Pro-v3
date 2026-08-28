@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 02: Operazioni di base</title>
+    <title>📚 Modul 02: Grundläggande funktioner</title>
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -327,444 +327,479 @@
 <body>
     <div class="container">
         <header>
-            <h1>📚 Modulo 02: Operazioni di base</h1>
+            <h1>📚 Modul 02: Grundläggande funktioner</h1>
         </header>
 
     <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
+            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installation, start och användargränssnitt</a>
+            <a href="guida.html" class="nav-button">&#127968; Huvudindex</a>
+            <a href="guida_03_ricerca_assistita_ai.html" class="nav-button">Mod.03 &mdash; AI-assisterad forskning &#8594;</a>
         </div>
         <div class="section-box">
-            <h3>4. CARICAMENTO RECORD IIIF - FORMATI DI INPUT</h3>
+            <h3>1. LÄSA IN POSTER – INDATAFORMAT</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📥 STRUTTURA DELL'INPUT</h4>
-            <p>ATK-Pro accetta file di input con un formato specifico basato su COPPIE: Per OGNI record da elaborare, fornisci:</p>
-            <h3>1. RIGA 1: Modalità + Nome (facoltativo)</h3>
+            <h4>📥 INDATASTRUKTUR OCH PORTALER SOM STÖDS</h4>
+            <p>ATK-Pro accepterar indatafiler i ett specifikt format baserat på PAIR: För VARJE post som ska behandlas, ange State + URL.</p>
+            <p><strong>Portaler som stöds:</strong> kopiera och klistra in den offentliga webbadressen till sidan, visningsprogrammet, manifestet eller kompatibel PDF. ATK-Pro känner igen portalen och tillämpar relevant teknisk och försiktig metod.</p>
+            <p><strong>Stöds</strong> indikerar verifierad teknisk kompatibilitet, inte en obegränsad nedladdningsbehörighet. Resursen ska vara allmänt tillgänglig och användaren måste följa rättigheter, licenser, användarvillkor och begränsningar för den enskilda portalen. ATK-Pro kringgår inte inloggning, institutionell åtkomst, betalväggar eller markörer <code>nodownload</code>.</p>
+            <p>Antenati (Italien), Gallica (Frankrike), DigiVatLib (Vatikanstaten), Bodleian Libraries (Oxford), Europeana IIIF, Matricula Online, Findbuch (Sydtyrolen), e-codices/e-rara/e-manuscripta (Schweiz), Heidelberg UB, Internet Culturale/Estense, Brixiana, Memooria, BNC Roma, BNCF Teca, Museo Galileo och Internet Archive.</p>
+            <h4>🇮🇹 ITALIENSKA PORTALER SOM LAGTS TILL I V3</h4>
+            <table>
+                <thead>
+                    <tr><th>Portal</th><th>Ingång och tillstånd</th><th>Driftsbegränsningar</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Biblioteca Digitale Siena</td><td>IIIF Viewer-sida; <code>D</code> eller <code>R</code></td><td>För <code>R</code> krävs ett uttryckligt intervall; kontrollera rättigheterna till objektet.</td></tr>
+                    <tr><td>Biblioteca Digitale Trentina</td><td>Offentlig sida; bilder eller direkt PDF</td><td>För register och sekvenser måste ett intervall användas. Om endast PDF-filen utan intervall önskas kommer ATK-Pro att använda den officiella PDF-filen när den är tillgänglig.</td></tr>
+                    <tr><td>Biblioteca Digitale Lombarda</td><td>Offentlig REST-PDF eller BookReader-endpoint; <code>D</code> eller <code>R</code></td><td>Rekonstruerar hela flersidiga sekvensen från Cantaloupe IIIF-canvaser och försöker endast tillfälligt otillgängliga sidor igen. Om BookReader inte returnerar giltiga canvaser, används den direkta REST-PDF-filen.</td></tr>
+                    <tr><td>Rovereto Digital Library</td><td>Entitetssida eller URL till elementets API; <code>D</code> eller <code>R</code></td><td>Laddar bara ned offentliga bitströmmar som känns igen som sidor; för <code>R</code> ett intervall krävs.</td></tr>
+                    <tr><td>BUB Digital</td><td>BUB-sida med parametern <code>manifest=</code> eller BUB IIIF-manifest</td><td>Endast offentliga resurser; för <code>R</code> ett intervall krävs och licensen för varje objekt måste kontrolleras.</td></tr>
+                    <tr><td>FICLIT Digital Library</td><td>Omeka S-objektsida eller FICLIT IIIF-manifest</td><td>Endast offentliga föremål; för <code>R</code> ett intervall krävs. Bilderna hämtas från canvasens direkta resurs.</td></tr>
+                    <tr><td>Archivio Storico UniBO</td><td>Offentligt IIIF-manifest för det enskilda elementet; <code>D</code> eller <code>R</code></td><td>Samlingar accepteras inte som indata. För <code>R</code> ett uttryckligt intervall krävs och rättigheterna till varje objekt måste kontrolleras.</td></tr>
+                    <tr><td>PHAIDRA Università di Padova</td><td>Den offentliga sidan för objektet eller dess officiella IIIF-manifest; <code>D</code> eller <code>R</code></td><td>Endast offentliga objekt. För <code>R</code> krävs ett intervall; kontrollera rättighetsmeddelandet eller licensen som är associerad med objektet.</td></tr>
+                    <tr><td>DOGE Università di Genova</td><td>Objektets offentliga sida; <code>D</code> eller <code>R</code></td><td>Exkluderade är originalresurser eller markerade resurser <code>nodownload</code>; för <code>R</code> ett intervall krävs.</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Obs:</strong> BEIC, Ambrosiana och OrienTales ingår inte i nedladdningsprogrammet: inga stabila publika slutpunkter hittades, eller så kräver de undersökta posterna institutionell åtkomst. Archivi Nazionali, SAN, SIAS, SIUSA, BeWeB och källor från Ticino, Graubünden och grundarna förblir källor till information och manuell konsultation.</p>
+            <h3>1. RAD 1: Läge + namn (valfritt)</h3>
             <ul>
-                <li>D = Documento singolo (una singola immagine/pagina)</li>
-                <li>R = Registro (collezione completa di pagine/documenti)</li>
+                <li>D = Enstaka dokument (en bild/en sida)</li>
+                <li>R = Register (komplett samling av sidor/dokument)</li>
             </ul>
-            <h3>2. RIGA 2: URL del Manifest IIIF</h3>
-            <p><strong>Esempio di file input.txt corretto:</strong></p>
-            <pre class="file-structure"># Commenti iniziano con #
+            <h3>2. RAD 2: Postens eller resursens offentliga URL</h3>
+            <p><strong>Exempel på en korrekt input.txt-fil:</strong></p>
+            <pre class="file-structure"># Kommentarer börjar med #
 
-RECORD 1 (coppia di righe):
-D - Lettera Importante
+POST 1 (radpar):
+D - Viktigt brev
 https://biblioteca.example.org/iiif/doc123/manifest.json
 
-RECORD 2 (coppia di righe):
-R - Registro Amministrativo 1920-1925
+POST 2 (par rader):
+R - Förvaltningsregistret 1920-1925
 https://archives.example.org/iiif/reg456/manifest.json
 
-RECORD 3 (coppia di righe):
-D - Fotografia Singola
+POST 3 (radpar):
+D - Enstaka fotografi
 https://collections.example.org/iiif/foto789/manifest.json</pre>
-            <h4>📝 REGOLE FORMATO INPUT:</h4>
+            <h4>📝 REGLER FÖR INDATAFORMAT:</h4>
             <ul>
-                <li>Righe vuote: ignorate (puoi usarle per leggibilità)</li>
-                <li>Righe con #: ignorate come commenti</li>
-                <li>Modalità D o R: sono obbligatorie (maiuscole)</li>
-                <li>Nome file: facoltativo dopo modalità (es. "D - Nome" o solo "D")</li>
-                <li>URL: deve iniziare con http:// o https://</li>
-                <li>Coppie: modalità + URL devono stare su righe consecutive</li>
+                <li>Tomma rader: ignoreras (du kan använda dem för bättre läsbarhet)</li>
+                <li>Rader med #: ignoreras som kommentarer</li>
+                <li>Läge D/d eller R/r: är obligatoriskt; stora och små bokstäver behandlas på samma sätt</li>
+                <li>Filnamn: valfritt efter läge (t.ex. endast "D - Namn" eller "D")</li>
+                <li>URL: måste börja med http:// eller https://</li>
+                <li>Par: läge + URL måste finnas på två på varandra följande rader</li>
             </ul>
-            <h4>⚙️ COME CARICARE L'INPUT - 3 OPZIONI DAL MENU:</h4>
-            <p>OPZIONE 1: Visualizza Esempio Input ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Esempio input"</h3>
-            <h3>2. Si apre una finestra che mostra il file di esempio localizzato</h3>
-            <h3>3. Puoi copiare il contenuto come template per il tuo file input</h3>
-            <h3>4. File di esempio: assets/[lingua]/testuali/input_link_base.txt</h3>
-            <p>OPZIONE 2: Apri File Input Pronto ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Apri input"</h3>
-            <h3>2. Si apre un dialog di selezione file</h3>
-            <h3>3. Scegli il tuo file input.txt (deve rispettare il formato coppie)</h3>
-            <h3>4. ATK-Pro carica automaticamente e legge tutti i record</h3>
-            <h3>5. Visualizza numero di record caricati e pronti per l'elaborazione</h3>
-            <p>OPZIONE 3: Modifica Input Già Caricato ──────────────────────────────────────────</p>
-            <h3>1. Dopo aver caricato un file input (OPZIONE 2)</h3>
-            <h3>2. Clicca Menu → "File input" → "Modifica input"</h3>
-            <h3>3. Si apre un editor di testo con il file attualmente caricato</h3>
-            <h3>4. Modifica le coppie (aggiungi, rimuovi, cambia URL)</h3>
-            <h3>5. Clicca "Salva" per aggiornare i record in elaborazione</h3>
-            <h3>6. Il programma reinterpreta il file aggiornato</h3>
-            <h4>📌 DIFFERENZA TRA D E R:</h4>
+            <h4>⚙️ SÅ LÄSER DU IN INDATA – 3 ALTERNATIV FRÅN MENYN:</h4>
+            <p>ALTERNATIV 1: Visa indataexempel ──────────────────────────────────────</p>
+            <h3>1. Klicka på Meny → "Indatafil" → "Indataexempel"</h3>
+            <h3>2. Ett fönster öppnas som visar den lokaliserade exempelfilen</h3>
+            <h3>3. Du kan kopiera innehållet och använda det som en mall för din indatafil</h3>
+            <h3>4. Exempelfil: assets/[språk]/testuali/input_link_base.txt</h3>
+            <p><strong>Anmärkning om filnamnet:</strong> den distribuerade filen heter <code>input_link_base.txt</code>. Namnet har normaliserats i v3 för att undvika referenser till tidigare versioner; formatet förblir kompatibelt med inläsning av IIIF-poster.</p>
+            <p>ALTERNATIV 2: Öppna en färdig indatafil ──────────────────────────────────────</p>
+            <h3>1. Klicka på Meny → "Indatafil" → "Öppna indata"</h3>
+            <h3>2. En dialogruta för filval öppnas</h3>
+            <h3>3. Välj din input.txt-fil (den måste följa parformatet)</h3>
+            <h3>4. ATK-Pro läser automatiskt in filen och läser alla poster</h3>
+            <h3>5. Visar antalet inlästa poster som är redo för bearbetning</h3>
+            <p>ALTERNATIV 3: Redigera redan inlästa indata ──────────────────────────────────────────</p>
+            <h3>1. Efter att ha läst in en indatafil (ALTERNATIV 2)</h3>
+            <h3>2. Klicka på Meny → "Indatafil" → "Redigera indata"</h3>
+            <h3>3. En textredigerare öppnas med den för närvarande inlästa filen</h3>
+            <h3>4. Redigera paren (lägg till, ta bort eller ändra URL)</h3>
+            <h3>5. Klicka på "Spara" för att uppdatera de poster som ska bearbetas</h3>
+            <h3>6. Programmet omtolkar den uppdaterade filen</h3>
+            <h4>📌 SKILLNADEN MELLAN D OCH R:</h4>
             <ul>
-                <li>D (Documento): Gestisce una singola immagine/pagina
+                <li>D (Dokument): Hanterar en enda bild/en sida
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: file singolo per il documento</li>
-                <li style="margin-top: 12px;">R (Registro): Gestisce collezioni multi-pagina
+                <li style="list-style: none; margin-left: 20px;">→ Utdata: en enda fil för dokumentet</li>
+                <li style="margin-top: 12px;">R (Register): Hanterar samlingar med flera sidor
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: cartella con pagine organizzate + PDF (se richiesto dall'utente)</li>
+                <li style="list-style: none; margin-left: 20px;">→ Utdata: mapp med organiserade sidor + PDF (om användaren vill ha det)</li>
             </ul>
-            <h4>✅ VALIDAZIONE RECORD</h4>
-            <p>Dopo il caricamento, il programma verifica:</p>
+            <h4>✅ VALIDERING AV REKORD</h4>
+            <p>Efter laddning kontrollerar programmet:</p>
             <ul>
-                <li>✓ URL accessibile e raggiungibile</li>
-                <li>✓ Formato IIIF valido (questa versione+)</li>
-                <li>✓ Numero immagini e canvas disponibili</li>
-                <li>✓ Metadata (titolo, autore, data)</li>
+                <li>✓ Att webbadressen är tillgänglig och kan nås</li>
+                <li>✓ Kompatibel resurs: IIIF v2/v3-manifest, sida som stöds, bild eller direkt PDF beroende på portalen</li>
+                <li>✓ Antal tillgängliga bilder och dukar</li>
+                <li>✓ Metadata (titel, författare, datum)</li>
             </ul>
-            <h4>❌ ERRORI COMUNI</h4>
+            <h4>❌ VANLIGA FEL</h4>
             <ul>
-                <li>"URL non valido": Controlla copia/incolla URL</li>
-                <li>"Manifest non trovato (404)": URL è scaduto o sbagliato</li>
-                <li>"Formato IIIF non supportato": Il server non usa IIIF standard</li>
-                <li>"Timeout connessione": Connessione Internet lenta/assente</li>
+                <li>"Ogiltig URL": Kontrollera den kopierade/klistrade webbadressen</li>
+                <li>"Manifest hittades inte (404)": URL har löpt ut eller är felaktig</li>
+                <li>"IIIF-format stöds inte": Servern använder inte standard IIIF</li>
+                <li>"Timeout för anslutning": Internetanslutningen är långsam eller saknas</li>
             </ul>
-            <h4>💾 SALVATAGGIO RECORD</h4>
-            <p>Dopo il caricamento del manifest, il programma salva automaticamente i metadati IIIF. DOVE: Nella cartella output che scegli (vedi Sezione 5, PASSO 2) <strong>STRUTTURA CARTELLE DOPO CARICAMENTO (prima dell'elaborazione):</strong></p>
+            <h4>💾 SPARA POSTER</h4>
+            <p>Efter att ha laddat manifestet sparar programmet automatiskt IIIF-metadata. VAR: I önskad utdatamapp (se avsnitt 2, STEG 2) <strong>MAPPSTRUKTUR EFTER LADNING (före bearbetning):</strong></p>
 <pre class="file-structure">[cartella_output]/
- ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale (livello principale)
- └─ [nome]/                            ← Sottocartella SOLO per metadati
-    ├─ [nome]_genealogico.json        ← Metadati genealogici estratti
-    └─ [nome]_tecnico.json            ← Metadati tecnici (canvas ID, numero pagine)</pre>
-<p> DOPO L'ELABORAZIONE (quando clicchi Menu → Output → Elabora): Nel livello principale vengono aggiunti i file elaborati:</p>
+ ├─ manifest_[ID]_[nome].json ← Original IIIF-manifest (översta nivå)
+ └─ [nome]/ ← Undermapp ENDAST för metadata
+    ├─ [nome]_genealogico.json ← Extraherade genealogiska metadata
+    └─ [nome]_tecnico.json ← Teknisk metadata (canvas ID, antal sidor)</pre>
+<p> EFTER BEHANDLING (när du klickar på Meny → Utdata → Process): På den översta nivån läggs de bearbetade filerna till:</p>
 <pre class="file-structure">[cartella_output]/
- ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
- ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite dai tile IIIF (una per pagina)
- ├─ [nome]_canvas_2.jpg/.png/.tif       (formato dipende da quello selezionato)
- ├─ [nome]_canvas_N.jpg/.png/.tif       (N = numero totale di pagine/canvas)
- ├─ [nome].json                        ← Sidecar JSON per ogni immagine (metadati EXIF)
- └─ [nome].pdf                         ← PDF completo (vedi spiegazione sotto)</pre>
+ ├─ manifest_[ID]_[nome].json ← Original IIIF-manifest
+ ├─ [nome]_canvas_1.jpg/.png/.tif ← Bilder rekonstruerade från IIIF-brickor (en per sida)
+ ├─ [nome]_canvas_2.jpg/.png/.tif (format beror på valt)
+ ├─ [nome]_canvas_N.jpg/.png/.tif (N = totalt antal sidor/canvas)
+ ├─ [nome].json ← JSON sidovagn för varje bild (EXIF-metadata)
+ └─ [nome].pdf ← Komplett PDF (se förklaring nedan)</pre>
 
-<p>I metadati rimangono nella sottocartella [nome]/ come salvati al caricamento.</p>
-<p><strong>NOTA IMPORTANTE: Organizzazione file</strong></p>
+<p>Metadata finns kvar i undermappen [nome]/ eftersom den sparades vid laddning.</p>
+<p><strong>VIKTIG ANMÄRKNING: Filorganisation</strong></p>
             <ul>
-                <li>Manifest IIIF: livello principale della cartella output</li>
-                <li>Immagini (canvas), PDF, Sidecar JSON: livello principale della cartella output</li>
-                <li>SOLO metadati tecnici e genealogici: salvati in sottocartella [nome]/</li>
-                <li>Le cartelle temporanee (tiles_canvas_X/) vengono eliminate automaticamente al termine</li>
-                <li>Questa struttura consente di gestire più record nella stessa cartella senza confusione</li>
+                <li>IIIF-manifest: toppnivå i utdatakatalog</li>
+                <li>Bilder (canvas), PDF, JSON sidovagn: översta nivån i utdatamappen</li>
+                <li>ENDAST teknisk och genealogisk metadata: lagras i undermappen [nome]/</li>
+                <li>Tillfälliga mappar (tiles_canvas_X/) raderas automatiskt när bearbetningen är klar</li>
+                <li>Denna struktur tillåter hantering av flera poster i samma katalog utan förvirring</li>
             </ul>
-<p><strong>Esempio:</strong> Se elabori "Registro1", troverai:</p>
+<p><strong>Exempel:</strong> Om du bearbetar "Registro1" hittar du:</p>
             <ul>
-                <li>manifest_[ID1]_Registro1.json (livello principale)</li>
-                <li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (livello principale)</li>
-                <li>Registro1.pdf (livello principale)</li>
-                <li>Registro1/ (sottocartella SOLO con metadati genealogico e tecnico)</li>
+                <li>manifest_[ID1]_Registro1.json (översta nivå)</li>
+                <li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (översta nivå)</li>
+                <li>Registro1.pdf (översta nivå)</li>
+                <li>Registro1/ (undermapp ENDAST med genealogisk och teknisk metadata)</li>
             </ul>
             </div>
             <div class="section-box">
-            <h3>5. ELABORAZIONE E DOWNLOAD IMMAGINI</h3>
+            <h3>2. BEHANDLING OCH NEDLADDNING AV BILDER</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>🎯 FLUSSO DI ELABORAZIONE</h4>
-            <p>Il workflow di elaborazione prevede 3 passi:</p>
-            <h4>PASSO 1: SELEZIONA FORMATI IMMAGINE</h4>
+            <h4>🎯 ARBETSFLÖDE</h4>
+            <p>Bearbetningsarbetsflödet består av tre steg:</p>
+            <h4>STEG 1: VÄLJ BILDFORMAT</h4>
             <p>─────────────────────────────────────</p>
-            <h3>1. Carica un file input (File input → Apri input): la finestra formati si apre automaticamente</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona formati immagine"</h3>
-            <h3>3. Si apre una finestra di dialogo con 3 opzioni:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Formato senza perdita (lossless), migliore qualità, file più grandi</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Formato compresso (lossy), buon compromesso qualità/dimensione</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Formato archiviale, massima qualità, file molto grandi</p>
-            <p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Documento PDF</strong></p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Genera un PDF completo con tutte le pagine del registro o documento, in aggiunta ai formati immagine selezionati (o come unico output se nessun formato immagine è selezionato)</p>
-            <h3>4. Seleziona almeno un formato immagine o PDF (puoi sceglierne più di uno)</h3>
-            <h3>5. Clicca "Conferma"</h3>
-            <p>✅ <strong>I formati scelti vengono memorizzati</strong> e pre-selezionati automaticamente alla prossima apertura del programma.</p>
-            <h4>📝 CONSIGLI:</h4>
+            <h3>1. Ladda en indatafil (Indatafil → Öppna inmatning): formatfönstret öppnas automatiskt</h3>
+            <h3>2. Alternativt: Klicka på Meny → "Inställningar" → "Välj bildformat"</h3>
+            <h3>3. En dialogruta öppnas med 3 alternativ:</h3>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Förlustfritt format, bästa kvalitet, större filer</p>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Komprimerat format (förlustig), bra kompromiss mellan kvalitet och filstorlek</p>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Arkivformat, högsta kvalitet, mycket stora filer</p>
+            <p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>PDF-dokument</strong></p>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Genererar en komplett PDF med alla sidor i registret eller dokumentet utöver de valda bildformaten (eller som enda utdata om inget bildformat är valt)</p>
+            <h3>4. Välj minst ett bildformat eller PDF (du kan välja fler)</h3>
+            <h3>5. Klicka på "Bekräfta"</h3>
+            <p>✅ <strong>De valda formaten sparas</strong> och är automatiskt förvald nästa gång programmet öppnas.</p>
+            <h4>📝 REKOMMENDATIONER:</h4>
             <ul>
-                <li>Per preview/consultazione: JPG (veloce da aprire, minore spazio)</li>
-                <li>Per archivio conservativo: PNG (lossless, compromesso di spazio) o TIFF (massima qualità)</li>
-                <li>Per entrambi: seleziona sia PNG che TIFF</li>
-                <li>Per PDF: seleziona PDF insieme a uno o più formati immagine, oppure seleziona solo PDF per generare esclusivamente il documento PDF senza file immagine separati</li>
+                <li>För förhandsvisning/konsultation: JPG (snabb att öppna, mindre utrymmesförbrukning)</li>
+                <li>För bevarande arkiv: PNG (förlustfri, bra utrymme kompromiss) eller TIFF (högsta kvalitet)</li>
+                <li>För båda ändamålen: välj både PNG och TIFF</li>
+                <li>För PDF: välj PDF tillsammans med ett eller flera bildformat, eller välj endast PDF för att generera endast PDF-dokumentet utan separata bildfiler</li>
             </ul>
-            <h4>PASSO 2: SELEZIONA CARTELLE OUTPUT</h4>
+            <h4>STEG 2: VÄLJ UTDATAMAPP</h4>
             <p>──────────────────────────────────────</p>
-            <h3>1. La finestra cartelle si apre automaticamente dopo la scelta dei formati (quando carichi un file input)</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona cartelle output"</h3>
-            <h3>3. Scegli la MODALITÀ di organizzazione delle cartelle:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella unica per tutti</span> → un'unica cartella per tutti i record (doc e registri)</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartelle separate doc/reg</span> → una cartella per tutti i documenti, una per tutti i registri</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella per ogni record</span> → una cartella distinta per ciascun record nel file input</p>
-            <h3>4. Dopo la scelta della modalità, seleziona le cartelle richieste (1, 2 o N finestre di dialog)</h3>
-            <h3>5. Al termine mostra il riepilogo delle cartelle scelte</h3>
-            <p>✅ <strong>Modalità e cartelle vengono memorizzate</strong>. Alla prossima apertura di un file input, vengono ripristinate automaticamente se compatibili con il numero di record.</p>
-            <p>⚠️ Se il nuovo file input ha un numero diverso di Documenti/Registri rispetto alle cartelle salvate, viene mostrato un avviso e la selezione viene azzerata per richiedere nuove cartelle.</p>
-            <h4>📌 RIEPILOGO MODALITÀ:</h4>
+            <h3>1. Mappfönstret öppnas automatiskt efter val av format (när en indatafil laddas)</h3>
+            <h3>2. Alternativt: Klicka på Meny → "Inställningar" → "Välj utdatamappar"</h3>
+            <h3>3. Välj LÄGE för att organisera mappar:</h3>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ En gemensam mapp för alla</span> → en gemensam mapp för alla poster (dokument och register)</p>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Separata mappar för doc./reg.</span> → en mapp för alla dokument och en för alla register</p>
+            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ En mapp för varje post</span> → en separat mapp för varje post i inmatningsfilen</p>
+            <h3>4. När läget är valt, välj önskade mappar (1, 2 eller N dialogrutor)</h3>
+            <h3>5. Slutligen visas en översikt över de valda mapparna</h3>
+            <p>✅ <strong>Status och mappar sparas</strong>. Nästa gång en indatafil öppnas återställs de automatiskt om de är kompatibla med antalet poster.</p>
+            <p>⚠️ Om den nya indatafilen har ett annat antal dokument/register än de sparade mapparna, visas en varning och valet återställs för att tillåta att nya mappar kan väljas.</p>
+            <p>🛡️ <strong>Förhandskontroll av sökväg:</strong> innan mappar eller filer skapas kontrollerar ATK-Pro de planerade namnen och sökvägarna. Namn som är inkompatibla med Windows och segment som är för långa blockerar endast den berörda posten; kompatibilitetsvarningar visas i den slutliga sammanfattningen.</p>
+            <p>☁️ <strong>OneDrive/SharePoint antas inte vara standarddestinationen.</strong> De associerade begränsningarna tillämpas endast när den valda mappen faktiskt är under en OneDrive-rot. På andra vägar behandlas Windows historiska gräns på 260 tecken som en varning och inte som en automatisk blockering.</p>
+            <h4>📌 ÖVERSIKT ÖVER VILLKOR:</h4>
             <ul>
-                <li><strong>Cartella unica:</strong> Semplice, tutto in un posto. Adatto per elaborazioni veloci o test</li>
-                <li><strong>Separate doc/reg:</strong> Organizzazione per tipo. Default: <code>output/doc/</code> e <code>output/reg/</code></li>
-                <li><strong>Per ogni record:</strong> Massima flessibilità. Puoi usare drive diversi, NAS, cartelle personalizzate</li>
+                <li><strong>Delad mapp:</strong> Enkelt, allt på ett ställe. Lämplig för snabba behandlingar eller tester</li>
+                <li><strong>Separat dokument/reg.:</strong> Organisation efter typ. Standard: <code>output/doc/</code> och <code>output/reg/</code></li>
+                <li><strong>För varje post:</strong> Maximal flexibilitet. Du kan använda olika enheter, NAS och anpassade mappar</li>
             </ul>
-            <h4>PASSO 3: AVVIA ELABORAZIONE</h4>
+            <h4>STEG 3: STARTA BEHANDLING</h4>
             <p>─────────────────────────────</p>
-            <h3>1. Clicca Menu → "Output" → "Elabora"</h3>
-            <h3>2. Verifica che:</h3>
-            <p>✓ Almeno 1 formato immagine selezionato</p>
-            <p>✓ Almeno 1 record caricato</p>
-            <p><strong>Se mancano questi requisiti, appare messaggio di errore:</strong></p>
-            <p>❌ "Nessun formato selezionato" → Vai a PASSO 1</p>
-            <p>❌ "Nessun record caricato" → Vai a Caricamento Input (Sezione 4)</p>
-            <h4>📺 FINESTRA DI ELABORAZIONE</h4>
-            <p>Non appena clicchi "Elabora", si apre una finestra modale con: </p>
+            <h3>1. Klicka på Meny → "Utdata" → "Bearbeta"</h3>
+            <h3>2. Kontrollera att:</h3>
+            <p>✓ Minst 1 bildformat har valts</p>
+            <p>✓ Minst 1 post har laddats</p>
+            <p><strong>Om dessa krav inte är uppfyllda visas ett felmeddelande:</strong></p>
+            <p>❌ "Inget format valt" → Gå till STEG 1</p>
+            <p>❌ "Ingen post laddad" → Gå till Loading Input (avsnitt 1)</p>
+            <h4>📺 BEHANDLINGSFÖNSTER</h4>
+            <p>Så snart du klickar på "Bearbeta" öppnas ett modalt fönster med: </p>
             <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window2.webp" alt="Finestra elaborazione in corso" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+                <img src="images/window2.webp" alt="Behandling i gang" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
             </div>
-            <h4>📊 ELEMENTI VISIBILI:</h4>
-            <p>1️⃣ TITOLO FINESTRA: "Elaborazione in corso"</p>
+            <h4>📊 SYNLIGA ELEMENT:</h4>
+            <p>1️⃣ FÖNSTERTITEL: "Bearbetning pågår"</p>
             <ul>
-                <li>Rimane in primo piano finché l'elaborazione non termina</li>
-                <li>Non puoi interagire con il resto della GUI</li>
+                <li>Förblir i förgrunden tills bearbetningen är klar</li>
+                <li>Du kan inte interagera med resten av GUI</li>
             </ul>
-            <p>2️⃣ ETICHETTA PROGRESSO: "Elaborazione record: 2/5 — Nome File"</p>
+            <p>2️⃣ PROGRESS LABEL: "Bearbetningspost: 2/5 — Filnamn"</p>
             <ul>
-                <li>Mostra: record attualmente elaborato (2) su totale (5)</li>
-                <li>Mostra anche il nome del file/registro in elaborazione</li>
-                <li>Si aggiorna in tempo reale man mano che processa i record</li>
-                <li>Es: "Elaborazione record: 1/3 — Registro Matrimoni 1850"</li>
+                <li>Visar: posten som för närvarande bearbetas (2), av det totala antalet (5)</li>
+                <li>Visar även namnet på filen/registret som bearbetas</li>
+                <li>Uppdateringar i realtid när poster bearbetas</li>
+                <li>T.ex.: "Bearbetning av post: 1/3 — Vigselbok 1850"</li>
             </ul>
-            <p>3️⃣ BARRA DI PROGRESSO: Avanzamento visuale</p>
+            <p>3️⃣ FRAMSTEGSLINJE: Visuella framsteg</p>
             <ul>
-                <li>Formato numerico: "2/5" (numero attuale / totale)</li>
-                <li>Barra colore che avanza da sinistra a destra</li>
-                <li>Raggiunge il 100% (massima larghezza) quando completo</li>
-                <li>NON mostra percentuale, solo numero</li>
+                <li>Numeriskt format: "2/5" (nuvarande antal / totalt antal)</li>
+                <li>Färgad stapel som rör sig från vänster till höger</li>
+                <li>När 100 % (maximal bredd) när bearbetningen är klar</li>
+                <li>Visar INTE procent, endast siffra</li>
             </ul>
-            <p>4️⃣ PULSANTE [ANNULLA]</p>
+            <p>4️⃣ KNAPP [AVBRYT]</p>
             <ul>
-                <li>Cliccabile durante elaborazione</li>
-                <li>Chiude la finestra di progresso</li>
-                <li>⚠️ L'elaborazione continua in background (non interrompe il download)</li>
-                <li>I file scaricati rimangono nella cartella output selezionata</li>
+                <li>Kan klickas under bearbetning</li>
+                <li>Begär att avbryta hela batchen och stänger förloppsfönstret</li>
+                <li>Stoppet är kooperativt: det kan invänta slutförandet av den individuella nätverksbegäran som redan pågår</li>
+                <li>Ingen utdata från den avbrutna sessionen publiceras i den valda mappen; befintliga filer förblir oförändrade</li>
             </ul>
-            <h4>🔄 DURANTE L'ELABORAZIONE</h4>
-            <p><strong>Il programma in background:</strong></p>
-            <pre class="file-structure">├─ Scarica immagini dai server IIIF
-├─ Legge manifest per canvas ID
-├─ Ricostruisce tile in immagini complete
-├─ Converte nei formati selezionati (PNG, JPG, TIFF)
-└─ Salva nelle cartelle scelte</pre>
-            <p><strong>La GUI mostra progress in tempo reale:</strong></p>
+            <h4>🔄 UNDER BEHANDLING</h4>
+            <p><strong>Programmet fungerar i bakgrunden:</strong></p>
+            <pre class="file-structure">├─ Ladda ner bilder från IIIF-servrar
+├─ Läsmanifest för canvas-ID
+├─ Rekonstruerar brickor till kompletta bilder
+├─ Konverterar till de valda formaten (PNG, JPG, TIFF)
+└─ Sparar i de valda mapparna</pre>
+            <p><strong>Det grafiska användargränssnittet visar framsteg i realtid:</strong></p>
             <ul>
-                <li>Ogni 2-3 secondi aggiorna numero record</li>
-                <li>Nessun blocco: interfaccia rimane reattiva</li>
-                <li>Puoi annullare in qualsiasi momento</li>
+                <li>Uppdaterar antalet poster var 2-3 sekund</li>
+                <li>Ingen blockering: UI förblir responsivt</li>
+                <li>Du kan avbryta när som helst</li>
             </ul>
-            <h4>⚠️ COMPORTAMENTO SE CLICCHI ANNULLA:</h4>
-            <h3>1. Elaborazione si ferma subito</h3>
-            <h3>2. File parziali vengono rimossi</h3>
-            <h3>3. Finestra si chiude</h3>
-            <h3>4. Puoi ricominciare da Menu → Output → Elabora</h3>
-            <h4>📋 PDF — GENERAZIONE AUTOMATICA DURANTE L'ELABORAZIONE</h4>
-            <p>Se hai selezionato <strong>PDF</strong> nella maschera di scelta formati (PASSO 1), il PDF viene generato automaticamente al termine del download di ogni registro o documento, senza nessuna finestra di conferma aggiuntiva.</p>
-            <h4>📌 COMPORTAMENTO:</h4>
+            <h4>⚠️ VAD HÄNDER OM DU KLICKAR AVBRYT:</h4>
+            <h3>1. Ett samarbetsstopp av hela partiet begärs</h3>
+            <h3>2. Alla temporära utdatafiler som skapats av den avbrutna batchen raderas</h3>
+            <h3>3. Filer som redan fanns i utdatamapparna innan start förblir oförändrade</h3>
+            <h3>4. Du kan börja om från Meny → Utdata → Bearbeta</h3>
+            <h4>📋 PDF — AUTOMATISK GENERERING VID BEHANDLING</h4>
+            <p>Om du har valt <strong>PDF</strong> i formatvalsdialogrutan (STEG 1), skapas PDF-filen automatiskt när nedladdningen av varje post eller dokument är klar, utan ytterligare bekräftelsefönster.</p>
+            <h4>📌 FUNKTION:</h4>
             <ul>
-                <li>✅ <strong>PDF selezionato nella maschera formati:</strong> il PDF viene generato automaticamente al termine del download; non viene chiesta nessuna conferma aggiuntiva</li>
-                <li>❌ <strong>PDF non selezionato:</strong> solo le immagini nei formati scelti, nessun PDF</li>
+                <li>✅ <strong>PDF vald i dialogrutan för val av format:</strong> PDF-filen genereras automatiskt när nedladdningen är klar; ingen ytterligare bekräftelse begärs</li>
+                <li>❌ <strong>PDF inte vald:</strong> endast bilder i de valda formaten, ingen PDF</li>
             </ul>
-            <p>Caratteristiche del PDF generato:</p>
+            <p>Egenskaper för den genererade PDF-filen:</p>
             <ul>
-                <li>Nome file: <code>[nome].pdf</code>, senza suffissi aggiuntivi (es. <code>Registro Matrimoni 1920.pdf</code>)</li>
-                <li>Salvato nella cartella output scelta, allo stesso livello delle immagini</li>
-                <li>Pagine in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N)</li>
-                <li>Se un canvas non è scaricabile, viene inserita una pagina <em>placeholder</em> localizzata con link diretto al canvas originale su Antenati</li>
-                <li>Nessun file temporaneo rimane nella cartella output al termine della generazione</li>
+                <li>Filnamn: <code>[nome].pdf</code>, utan ytterligare suffix (t.ex <code>Registro Matrimoni 1920.pdf</code>)</li>
+                <li>Lagras i den valda utdatamappen på samma nivå som bilderna</li>
+                <li>Sidor i stigande numerisk ordning (duk 1 → duk 2 → … → duk N)</li>
+                <li>Om en duk inte kan laddas ner, infogas en <em>platshållare</em> ligger med direktlänk till originalduk på Antenati</li>
+                <li>Inga temporära filer finns kvar i utdatamappen efter att genereringen är klar</li>
             </ul>
-            <h4>⚠️ COSA NON FARE DURANTE ELABORAZIONE:</h4>
+            <h4>⚠️ VAD DU INTE BÖR GÖRA UNDER BEHANDLINGEN:</h4>
             <ul>
-                <li>❌ Non chiudere il programma (perde file parziali)</li>
-                <li>❌ Non staccare disco esterno (errore salvataggio)</li>
-                <li>❌ Non spegnere PC/laptop</li>
-                <li>❌ Non staccare internet (arresta download)</li>
+                <li>❌ Stäng inte programmet (delfiler går förlorade)</li>
+                <li>❌ Avmontera inte en extern disk (misslyckande att spara)</li>
+                <li>❌ Stäng inte av PC/bärbar dator</li>
+                <li>❌ Koppla inte från internetanslutningen (nedladdningen slutar)</li>
             </ul>
-            <h4>✅ COSA PUOI FARE:</h4>
+            <h4>✅ VAD DU KAN GÖRA:</h4>
             <ul>
-                <li>✓ Aspettare che finisca (è la procedura normale)</li>
-                <li>✓ Cliccare Annulla se urgente</li>
-                <li>✓ Usare il PC per altre cose normalmente (minimizza solo la finestra)</li>
+                <li>✓ Vänta tills processen är klar (detta är den normala proceduren)</li>
+                <li>✓ Klicka på Avbryt om det behövs</li>
+                <li>✓ Använd datorn normalt för andra saker (minimera bara fönstret)</li>
             </ul>
-            <h4>🎉 FINE ELABORAZIONE</h4>
-            <p>Quando tutti i record sono stati elaborati:</p>
-            <h3>1. La finestra di progresso si chiude automaticamente</h3>
-            <h3>2. Appare un messaggio: "Operazione completata"</h3>
-            <h3>3. Clicca OK per chiudere il messaggio</h3>
-            <h3>4. La finestra di progresso scompare completamente</h3>
-            <p>Dopo:</p>
+            <h4>🎉 BEHANDLING AVSLUTAD</h4>
+            <p>När alla poster har bearbetats:</p>
+            <h3>1. Förloppsfönstret stängs automatiskt</h3>
+            <h3>2. Ett meddelande visas: "Åtgärd slutförd"</h3>
+            <h3>3. Klicka på OK för att stänga meddelandet</h3>
+            <h3>4. Förloppsfönstret försvinner helt</h3>
+            <p>Sedan:</p>
             <ul>
-                <li>Visualizza file output nelle cartelle che hai selezionato al PASSO 2</li>
-                <li>Ogni documento/registro ha propria sottocartella all'interno della cartella da te scelta</li>
-                <li>Immagini sono pronte per uso (visualizzazione, stampa, archiviazione, PDF)</li>
+                <li>Visa utdatafilerna i de mappar du valde i STEG 2</li>
+                <li>Varje dokument/register har sin egen undermapp i den mapp du valt</li>
+                <li>Bilderna är redo att användas (visa, skriv ut, arkivera, PDF)</li>
             </ul>
-            <h4>✅ OUTPUT GENERATO:</h4>
-            <p>Per ogni record elaborato troverai:</p>
+            <h4>✅ GENERERAD UTDATA:</h4>
+            <p>För varje bearbetad artikel hittar du:</p>
             <ul>
-                <li>Immagini nei formati selezionati (PNG, JPG, TIFF)</li>
-                <li>manifest_[ID]_[nome].json → Manifest IIIF originale con metadati strutturati</li>
-                <li>[nome]_genealogico.json → Metadati genealogici (date, luoghi, nomi, comuni, province)</li>
-                <li>[nome]_tecnico.json → Metadati tecnici (numero canvas, lista canvas ID, diritti, file generati)</li>
-                <li>[nome].json → Sidecar JSON per ogni immagine (metadati EXIF embedded)</li>
+                <li>Bilder i de valda formaten (PNG, JPG, TIFF)</li>
+                <li>manifest_[ID]_[nome].json → Original IIIF-manifest med strukturerad metadata</li>
+                <li>[nome]_genealogico.json → Genealogisk metadata (datum, platser, namn, kommuner, provinser)</li>
+                <li>[nome]_tecnico.json → Teknisk metadata (antal canvas, lista över canvas-ID, rättigheter, genererade filer)</li>
+                <li>[nome].json → JSON sidovagn för varje bild (inbäddad EXIF-metadata)</li>
             </ul>
-            <h4>📝 NOTA SUI NOMI FILE:</h4>
+            <h4>📝 NOTERA OM FILNAMN:</h4>
             <ul>
-                <li>Il [nome] base viene preso direttamente dal file input.txt (riga utente)</li>
-                <li>Se scrivi nel file input "Registro Matrimoni 1920", i file saranno:
+                <li>Basnamnet [nome] tas direkt från filen input.txt (användarens rad)</li>
+                <li>Om du skriver "Registro Matrimoni 1920" i indatafilen blir filerna:
                     <ul>
-                        <li>Registro Matrimoni 1920_canvas_1.jpg</li>
+                        <li>Registro Matrimonio 1920_canvas_1.jpg</li>
                         <li>Registro Matrimoni 1920_genealogico.json</li>
                         <li>Registro Matrimoni 1920_tecnico.json</li>
                     </ul>
                 </li>
-                <li>I suffissi JSON rimangono in EN (_genealogico, _tecnico) per compatibilità</li>
-                <li>Puoi usare nomi in qualunque lingua nel file input (IT, EN, misto)</li>
+                <li>JSON-suffix finns kvar på EN (_genealogico,_tecnico) av kompatibilitetsskäl</li>
+                <li>Du kan använda namn på vilket språk som helst i inmatningsfilen (IT, EN, blandad)</li>
             </ul>
             </div>
             <div class="section-box">
-            <h3>6. PDF PER REGISTRI E DOCUMENTI</h3>
+            <h3>3. PDF FÖR REGISTER OCH DOKUMENT</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>COME ATTIVARE LA GENERAZIONE PDF</h4>
-            <p>La generazione del PDF si attiva selezionando la casella <strong>PDF</strong> nella maschera di scelta formati (Menu → Impostazioni → "Seleziona formati immagine").</p>
-            <p>Puoi combinare PDF con uno o più formati immagine (es. PDF + PNG), oppure selezionare solo PDF per ottenere esclusivamente il documento senza file immagine separati.</p>
-            <h4>📄 CARATTERISTICHE DEL PDF GENERATO</h4>
+            <h4>HUR MAN AKTIVERAR PDF-GENERERING</h4>
+            <p>PDF-generering aktiveras genom att markera rutan <strong>PDF</strong> i dialogrutan Formatval (→Menyalternativ → "Välj bildformat").</p>
+            <p>Du kan kombinera PDF med ett eller flera bildformat (t.ex. PDF + PNG) eller bara välja PDF för att få dokumentet utan separata bildfiler.</p>
+            <h4>📄 EGENSKAPER FÖR DEN GENERERADE PDF-FILEN</h4>
             <ul>
-                <li><strong>Nome file:</strong> il PDF è denominato semplicemente <code>[nome].pdf</code>, senza suffissi aggiuntivi — ad esempio <code>Registro Matrimoni 1920.pdf</code></li>
-                <li><strong>Posizione:</strong> salvato nella cartella output scelta, allo stesso livello delle immagini: <code>[cartella_scelta]\[nome].pdf</code></li>
-                <li><strong>Ordine pagine:</strong> le pagine sono sempre in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N), indipendentemente dall'ordine in cui i tile vengono scaricati</li>
-                <li><strong>Pagine placeholder:</strong> se un canvas non è disponibile (errore di rete o risorsa temporaneamente non raggiungibile), al suo posto viene inserita automaticamente una pagina <em>placeholder</em> localizzata nella lingua selezionata. La pagina placeholder contiene:
+                <li><strong>Filnamn:</strong> PDF-filen heter helt enkelt <code>[nome].pdf</code>, utan ytterligare suffix — till exempel <code>Registro Matrimoni 1920.pdf</code></li>
+                <li><strong>Placering:</strong> sparas i den valda utdatamappen på samma nivå som bilderna: <code>[cartella_scelta]\[nome].pdf</code></li>
+                <li><strong>Sidordning:</strong> sidorna är alltid i stigande numerisk ordning (canvas 1 → canvas 2 → … → canvas N), oavsett i vilken ordning tiles laddas ned</li>
+                <li><strong>Platshållarsidor:</strong> om en canvas inte är tillgänglig (nätverksfel eller en tillfälligt otillgänglig resurs) infogas automatiskt en <em>platshållare</em> på det valda språket. Platshållarsidan innehåller:
                     <ul>
-                        <li>Un testo di avviso localizzato (es. "Immagine non disponibile")</li>
-                        <li>Il link diretto al canvas originale su Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>), così da poter consultare la fonte in modo semplice</li>
+                        <li>En lokaliserad varningstext (t.ex. "Bild ej tillgänglig")</li>
+                        <li>Direktlänken till den ursprungliga canvasen på Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>), så att källan lätt kan konsulteras</li>
                     </ul>
-                    In questo modo viene sempre generato il PDF, con tutte le informazioni necessarie a completarlo in caso di immagini non scaricate.
+                    På detta sätt genereras alltid PDF-filen med all information som behövs för att komplettera den om några bilder inte kunde laddas ned.
                 </li>
-                <li><strong>Pulizia automatica:</strong> i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine del processo. Nella cartella output rimangono solo le immagini nei formati scelti, il PDF finale, i manifest e i metadati</li>
+                <li><strong>Automatisk rensning:</strong> de temporära filerna som används för PDF-generering raderas automatiskt när processen är klar. I utdatamappen finns bara bilderna i de valda formaten, den slutliga PDF-filen, manifesten och metadata kvar</li>
             </ul>
-            <h4>🚫 Se PDF non è selezionato:</h4>
+            <h4>🚫 Om PDF inte är valt:</h4>
             <ul>
-                <li>Solo le immagini vengono scaricate nei formati selezionati</li>
-                <li>Nessun PDF generato</li>
+                <li>Endast bilderna laddas ner i de valda formaten</li>
+                <li>Ingen PDF genereras</li>
             </ul>
             </div>
             <div class="section">
-        <h2>&#128204; FUNZIONALIT&#192; DISPONIBILI E PIANIFICATE</h2>
-        <p>Il menu &ldquo;Servizi&rdquo; contiene 5 funzioni: 4 gi&agrave; disponibili, 1 pianificata per versioni future.</p>
+        <h2>4. &#128204; TILLGÄNGLIGA FUNKTIONER</h2>
+        <p>Menyn &ldquo;Tjänster&rdquo; innehåller de operativa funktionerna i v3: AI-assisterad sökning, bildvisning, JSON-metadatavisning, avancerad OCR, OCR-översättning och GEDCOM-export.</p>
 
         
 
         <div class="section-box">
-            <h3>1&#65039;&#8419; VISUALIZZAZIONE IMMAGINI &#9989;</h3>
-            <p>Viewer integrato per immagini genealogiche:</p>
+            <h3>1&#65039;&#8419; AI-ASSISTERAD FORSKNING &#9989;</h3>
+            <p>Assistent för att bygga genealogiska sökstrategier:</p>
             <ul>
-                <li>Formati supportati: JPG, PNG, TIFF (inclusi TIFF multi-pagina con navigazione avanti/indietro)</li>
-                <li>Zoom con rotella del mouse e pulsanti dedicati</li>
-                <li>Pan con trascinamento del mouse</li>
-                <li>Modalit&agrave; &ldquo;Adatta alla finestra&rdquo; e &ldquo;1:1 pixel&rdquo;</li>
-                <li>Sidecar JSON affiancato all&apos;immagine (EXIF e metadati tecnici)</li>
+                <li>Konverterar efternamn, platser, punkter och mål till sökspår</li>
+                <li>Föreslår portaler, filter och exempelfrågor att kontrollera manuellt</li>
+                <li>Stöder italienska, italienskspråkiga, migrationsrelaterade och internationella scenarier</li>
+                <li>Möjliggör personliga anteckningar, jämförelse mellan flera leverantörer och sparande av resultat</li>
             </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_03_visualizzazione_immagini.html">Vedi Guida Visualizzazione Immagini</a></p>
+            <p><strong>Status:</strong> &#9989; Tillgänglig &ndash;
+            <a href="guida_03_ricerca_assistita_ai.html">Se den AI-assisterade sökguiden</a></p>
         </div>
 
         <div class="section-box">
-            <h3>2&#65039;&#8419; VISUALIZZAZIONE METADATI JSON &#9989;</h3>
-            <p>Viewer ad albero per metadati strutturati:</p>
+            <h3>2&#65039;&#8419; BILDVISNING &#9989;</h3>
+            <p>Integrerad visningsprogram för genealogiska bilder:</p>
             <ul>
-                <li>Apertura diretta di file <code>_genealogico.json</code> e <code>_tecnico.json</code></li>
-                <li>Visualizzazione ad albero espandibile</li>
-                <li>Sezioni: dati genealogici, metadati tecnici, EXIF dalle immagini</li>
-                <li>Anteprima immagine abbinata affiancata al pannello metadati</li>
+                <li>Format som stöds: JPG, PNG, TIFF (inklusive flersidiga TIFF-filer med navigering framåt/bakåt)</li>
+                <li>Zooma med mushjulet och dedikerade knappar</li>
+                <li>Panorera genom att dra med musen</li>
+                <li>Lägena &ldquo;Anpassa till fönster&rdquo; och &ldquo;1:1 pixel&rdquo;</li>
+                <li>JSON sidovagn visas bredvid bilden (EXIF och teknisk metadata)</li>
             </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_04_visualizzazione_metadati.html">Vedi Guida Visualizzazione Metadati JSON</a></p>
+            <p><strong>Status:</strong> &#9989; Tillgänglig &ndash;
+            <a href="guida_04_visualizzazione_immagini.html">Se instruktionerna för bildvisning</a></p>
         </div>
 
         <div class="section-box">
-            <h3>3&#65039;&#8419; OCR AVANZATO &#9989;</h3>
-            <p>Trattamento OCR avanzato tramite LLM Vision:</p>
+            <h3>3&#65039;&#8419; VISAR JSON METADATA &#9989;</h3>
+            <p>Trädvy för strukturerad metadata:</p>
             <ul>
-                <li>Estrazione testo da documenti antichi (inclusi manoscritti in italiano ottocentesco e latino)</li>
-                <li>Mantenimento della struttura e dei riferimenti del layout (TEI XML)</li>
-                <li>Riconoscimento e pulizia automatica dei dati strutturati (es. tabelle, ruoli)</li>
-                <li>Estrazione di entit&agrave; (nomi, date, relazioni) in formato JSON navigabile</li>
+                <li>Direktöppning av filer <code>_genealogico.json</code> och <code>_tecnico.json</code></li>
+                <li>Expanderbar trädvy</li>
+                <li>Avsnitt: genealogisk data, teknisk metadata, EXIF från bilder</li>
+                <li>Förhandsgranskning av den associerade bilden bredvid metadatapanelen</li>
             </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_05_ocr_avanzato.html">Vedi Guida OCR Avanzato</a></p>
+            <p><strong>Status:</strong> &#9989; Tillgänglig &ndash;
+            <a href="guida_05_visualizzazione_metadati.html">Se guiden för att visa JSON-metadata</a></p>
         </div>
 
         <div class="section-box">
-            <h3>4&#65039;&#8419; TRADUZIONE &#9989;</h3>
-            <p>Traduzione contestuale dei testi estratti:</p>
+            <h3>4&#65039;&#8419; AVANCERAD OCR &#9989;</h3>
+            <p>Avancerad OCR-behandling via LLM Vision:</p>
             <ul>
-                <li>Traduzione automatica in 20 lingue supportate</li>
-                <li>Gestione della formattazione e del layout originale</li>
-                <li>Possibilit&agrave; di alternare il testo originale e il testo tradotto</li>
+                <li>Textutdrag från historiska dokument (inklusive manuskript på italienska från 1800-talet och latin)</li>
+                <li>Bevara struktur- och layoutreferenser (TEI XML)</li>
+                <li>Automatisk igenkänning och rensning av strukturerad data (t.ex. tabeller, roller)</li>
+                <li>Extrahering av entiteter (namn, datum, relationer) i navigerbart JSON-format</li>
             </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_06_traduzione.html">Vedi Guida Traduzione</a></p>
+            <p><strong>Status:</strong> &#9989; Tillgänglig &ndash;
+            <a href="guida_06_ocr_avanzato.html">Se instruktionerna för avancerad OCR</a></p>
         </div>
 
         <div class="section-box">
-            <h3>5&#65039;&#8419; ESPORTAZIONE GEDCOM</h3>
-            <p>Esportazione in formati genealogici:</p>
+            <h3>5&#65039;&#8419; OCR-ÖVERSÄTTNING &#9989;</h3>
+            <p>Kontextbaserad översättning av extraherade eller transkriberade texter:</p>
             <ul>
-                <li>GEDCOM (standard genealogico internazionale)</li>
-                <li>Interoperabilit&agrave; con software genealogici: Ancestry, Family Historian, Family Tree Maker,
-                Findmypast, FamilySearch, Geni, Geneanet, Gramps, Legacy Family Tree, MyHeritage,
-                Reunion (macOS), RootsMagic, WikiTree</li>
+                <li>Översättning av OCR-texter, manuella transkriptioner och TXT-filer</li>
+                <li>Användning av dokumenttyper, ordlista och sammanhang</li>
+                <li>Konfigurerbar AI-leverantör, valfri modell och nyckellåda</li>
+                <li>Utdata som TXT eller redigerbar DOCX</li>
             </ul>
-            <p style="font-style:italic;color:#7a5c3b;margin-top:0.6rem;">
-            &#128204; <em>Nota: L&apos;elencazione dei software &egrave; puramente indicativa e non
-            vincolante allo sviluppo dell&apos;interoperabilit&agrave; con ciascuna piattaforma.</em></p>
-            <p style="margin-top:0.6rem;"><strong>Status:</strong> &#128302; Pianificata &ndash;
-            <a href="guida_07_esportazione_gedcom.html">Vedi Guida GEDCOM</a></p>
+            <p><strong>Status:</strong> &#9989; Tillgänglig &ndash;
+            <a href="guida_07_traduzione.html">Se instruktionerna för OCR-översättning</a></p>
+        </div>
+
+        <div class="section-box">
+            <h3>6&#65039;&#8419; GEDCOM-EXPORT &#9989;</h3>
+            <p>Assisterad genealogisk analys och GEDCOM-export:</p>
+            <ul>
+                <li>Universell ingång med metoden Auto-Discovery, Vision IA eller Refinery LLM</li>
+                <li>Möjlighet att utöka en befintlig GEDCOM- eller CSV-bas</li>
+                <li>Paleografiska anteckningar och dokumenttyper för att kontrollera utdraget</li>
+                <li>Genererar en fil <code>genealogia_*.ged</code> ska kontrolleras före användning</li>
+            </ul>
+            <p style="margin-top:0.6rem;"><strong>Status:</strong> &#9989; Tillgänglig &ndash;
+            <a href="guida_08_esportazione_gedcom.html">Se GEDCOM-guiden</a></p>
         </div>
     </div>
             <div class="section-box">
-            <h3>9. CARTELLE E FILE OUTPUT</h3>
+            <h3>5. UTMATNINGSMAPPAR OCH FILER</h3>
             <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📂 STRUTTURA OUTPUT</h4>
-            <p>Quando elabori un record IIIF, ATK-Pro salva i file nella cartella che hai scelto nel PASSO 2 (Seleziona cartella output).</p>
-            <h4>STRUTTURA ORGANIZZATA PER RECORD:</h4>
+            <h4>📂 UTDATASTRUKTUR</h4>
+            <p>När du bearbetar en IIIF-post sparar ATK-Pro filerna i den mapp du valde i STEG 2 (Välj utmatningsmapp).</p>
+            <h4>STRUKTUR ORGANISERAD PER POST:</h4>
             <pre class="file-structure">[cartella_output]/
-├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
-├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite (una per pagina)
+├─ manifest_[ID]_[nome].json ← Original IIIF-manifest
+├─ [nome]_canvas_1.jpg/.png/.tif ← Rekonstruerade bilder (en per sida)
 ├─ [nome]_canvas_2.jpg/.png/.tif
-├─ [nome]_canvas_N.jpg/.png/.tif     ← (N = numero totale pagine/canvas)
-├─ [nome].json                       ← Sidecar JSON per ogni immagine (EXIF)
-├─ [nome].pdf                        ← PDF completo (solo se richiesto)
-└─ [nome]/                           ← Sottocartella SOLO per metadati
-   ├─ [nome]_genealogico.json        ← Metadati genealogici
-   └─ [nome]_tecnico.json            ← Metadati tecnici</pre>
-            <h4>MULTI-RECORD NELLA STESSA CARTELLA:</h4>
-            <p>Se elabori 3 record nella stessa cartella, la struttura diventa:</p>
+├─ [nome]_canvas_N.jpg/.png/.tif ← (N = totalt antal sidor/duk)
+├─ [nome].json ← JSON sidovagn för varje bild (EXIF)
+├─ [nome].pdf ← Komplett PDF (endast om så önskas)
+└─ [nome]/ ← Undermapp ENDAST för metadata
+   ├─ [nome]_genealogico.json ← Genealogisk metadata
+   └─ [nome]_tecnico.json ← Teknisk metadata</pre>
+            <h4>FLERA REKORD I SAMMA MAPP:</h4>
+            <p>Om du bearbetar 3 poster i samma mapp blir strukturen:</p>
             <pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID1]_Registro1.json
 ├─ Registro1_canvas_1.jpg
 ├─ Registro1_canvas_2.jpg
-├─ Registro1.json (sidecar)
+├─ Registro1.json (sidovagn)
 ├─ Registro1.pdf
 ├─ Registro1/
-│  ├─ Registro1_genealogico.json
-│  └─ Registro1_tecnico.json
+│ ├─ Registro1_genealogico.json
+│ └─ Registro1_tecnico.json
 ├─ manifest_[ID2]_Documento2.json
 ├─ Documento2_canvas_1.jpg
-├─ Documento2.json (sidecar)
+├─ Documento2.json (sidovagn)
 ├─ Documento2.pdf
 ├─ Documento2/
-│  ├─ Documento2_genealogico.json
-│  └─ Documento2_tecnico.json
+│ ├─ Documento2_genealogico.json
+│ └_─ Documento2_tecnico.json
 ├─ manifest_[ID3]_Registro3.json
 ├─ Registro3_canvas_1.jpg
 ├─ Registro3_canvas_2.jpg
-├─ Registro3.json (sidecar)
+├─ Registro3.json (sidovagn)
 ├─ Registro3.pdf
 └─ Registro3/
     ├─ Registro3_genealogico.json
     └─ Registro3_tecnico.json</pre>
-            <h4>📌 NOTE SULLA STRUTTURA:</h4>
+            <h4>📌 STRUKTURANMÄRKNINGAR:</h4>
             <ul>
-                <li>Manifest IIIF, Immagini, PDF, Sidecar JSON: nel livello principale</li>
-                <li>SOLO metadati tecnici e genealogici: in sottocartelle [nome]/ (uno per record)</li>
-                <li>Le cartelle temporanee (<code>tiles_canvas_X/</code>) e i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine dell'elaborazione: nella cartella output non rimane nessun file di lavoro intermedio</li>
-                <li>Questa organizzazione consente di gestire molteplici record nella stessa cartella senza confusione tra file</li>
+                <li>IIIF-manifest, bilder, PDF, JSON sidovagn: på huvudnivån</li>
+                <li>ENDAST teknisk och genealogisk metadata: i undermapparna [nome]/ (en per post)</li>
+                <li>De tillfälliga mapparna (<code>tiles_canvas_X/</code>) och de temporära filerna som används för PDF-genereringen raderas automatiskt när bearbetningen är klar: inga mellanliggande arbetsfiler finns kvar i utdatamappen</li>
+                <li>Denna organisation tillåter hantering av flera poster i samma mapp utan förvirring mellan filerna</li>
             </ul>
-            <h4>📋 CONVENZIONE DI DENOMINAZIONE:</h4>
+            <h4>📋 NAMNINGSKONVENTION:</h4>
             <ul>
                 <li>Manifest: manifest_[ID]_[nome].json</li>
-                <li>Immagini: [nome]_canvas_1, [nome]_canvas_2, ... [nome]_canvas_N</li>
-                <li>JSON metadati: [nome]_genealogico.json, [nome]_tecnico.json</li>
-                <li>JSON immagini: [nome].json (per ogni canvas)</li>
+                <li>Bilder: [nome]_canvas_1, [nome]_canvas_2, ... [nome]_canvas_N</li>
+                <li>Metadata JSON: [nome]_genealogico.json, [nome]_tecnico.json</li>
+                <li>Bild JSON: [nome].json (för varje duk)</li>
                 <li>PDF: [nome].pdf</li>
             </ul>
             </div>
@@ -773,9 +808,9 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
                 </div>
         
     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
+            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installation, start och användargränssnitt</a>
+            <a href="guida.html" class="nav-button">&#127968; Huvudindex</a>
+            <a href="guida_03_ricerca_assistita_ai.html" class="nav-button">Mod.03 &mdash; AI-assisterad forskning &#8594;</a>
         </div>
 
     <footer style="text-align: center;">

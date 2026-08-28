@@ -1,23 +1,131 @@
-📋 Juridisk friskrivning
+📋 JURIDISK ANSVARSFRISKRIVNING
 Antenati Toolkit Pro
 
 ATK-Pro – Antenati Toolkit Pro
-Juridisk friskrivning og etisk brug
+Juridisk ansvarsfriskrivning, användningsvillkor och etisk skyldighet
 
-ATK-Pro-projektet er udviklet til arkiv-, slægts- og konsulentformål.
-Alt indhold, medmindre andet er angivet, distribueres under Creative Commons BY-NC-SA 4.0-licens.
-Direkte kommerciel brug, redistribuering uden kildehenvisning eller ikke-sporbar ændring af originalt indhold er forbudt.
-ATK-Pro redistribuerer ikke noget indhold fra Antenati-portalen (antenati.cultura.gov.it) og har ikke til hensigt at replikere dens grænseflade, struktur eller organisation.
-Alle, der installerer eller bruger ATK-Pro, forpligter sig til at handle i fuld overensstemmelse med de juridiske meddelelser og brugsvilkår defineret af Kulturministeriet, tilgængelige på følgende adresse:
+1. PROJEKTETS ART OCH SYFTE
+
+ATK-Pro är en programvara som utvecklas oberoende för arkiv, släktforskningsanalysska, dokumentära, studie- och referensändamål.
+
+Programvaran underlättar åtkomst till och lokal bearbetning av resurser som användaren har laglig åtkomst till via Portale Antenati och andra tekniskt stödda arkiv- eller dokumentportaler.
+
+ATK-Pro är inte en officiell tjänst från det italienska kulturministeriet, Portale Antenati, statsarkivet eller andra eventuellt stödda institutioner och portaler. Referenser, länkar eller funktioner relaterade till tjänster från tredje part innebär inte anslutning, rekommendation, sponsring eller ett allmänt tillstånd att återanvända deras respektive innehåll.
+
+2. KODLICENS
+
+Den ursprungliga källkoden för ATK-Pro distribueras under GNU Affero General Public License, version 3 eller, efter licenstagarens val, någon senare version, förutom filer eller delar som uttryckligen identifierats som tredjepartskomponenter.
+
+Källkoden som motsvarar den distribuerade versionen görs tillgänglig i projektets officiella repository. Information om källkodsåtkomst och en kopia av licensen ingår i utgåvans artefakter.
+
+Kodlicensen anges i filen LICENSE.
+
+3. LICENS TILL DOKUMENTATIONEN
+
+Originaldokumentationen, inklusive guider, presentationer och redaktionellt innehåll, distribueras under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0), om inte annat anges.
+
+Licensen för dokumentationen anges i filen LICENSE-DOCUMENTATION.
+
+4. NAMN, LOGO OCH KÄNNETECKEN
+
+Namnet "ATK-Pro", logotypen och de kännetecknen för den grafiska identiteten är inte licensierade för tillverkning eller marknadsföring av härledda produkter och förblir reserverade till rättighetsinnehavaren.
+
+Rent beskrivande användning är fortfarande tillåten för att identifiera det ursprungliga projektet, ange kompatibilitet eller uppfylla krav på erkännande.
+
+De tillhörande villkoren anges i filen TRADEMARKS.
+
+5. TREDJE PARTSKOMPONENTER
+
+Programvaruberoenden, typsnitt och andra tredjepartskomponenter behåller sina respektive licenser, upphovsrättsmeddelanden och eventuella ytterligare villkor som anges i filen THIRD-PARTY-NOTICES.
+
+Licenserna för ATK-Pros originalkod och dokumentation ersätter eller modifierar inte licenserna för tredjepartskomponenter.
+
+6. EXTERNA RESURSER OCH PORTALER
+
+ATK-Pro vidaredistribuerar eller licensierar inte dokument, bilder, metadata eller andra resurser från Portale Antenati eller andra externa portaler.
+
+Dessa resurser förblir föremål för de rättigheter, licenser, åtkomstvillkor och regler för återanvändning som fastställts av respektive rättighetsinnehavare.
+
+Användaren måste kontrollera villkoren som gäller för den enskilda resursen och, när det gäller Portale Antenati, även läsa den juridiska informationen som publiceras på:
+
 https://antenati.cultura.gov.it/note-legali/
-Dokumenterne, der er inkluderet i konsulentnoden, udgør ikke en officiel kilde og har ingen certificerende eller juridisk værdi.
-Grænsefladen og værktøjerne udviklet i projektet er beregnet til at lette selvstændig konsultation af slægtsbrugere i lokale miljøer, uden forbindelse eller støtte fra eksterne tjenester.
-Eventuelle henvisninger til offentlige organer, arkiver eller historisk dokumentation er kun beregnet til studie-, analyse- og kontekstformål.
-Hver fil i ATK-Pro-strukturen (i .txt, .md, .html eller .pdf-format) er udarbejdet med deklarativt, arkiv- eller demonstrationsformål.
-Katalogstrukturer, operationelle scripts og slægtsnotater leveres som prototyper, uden nogen garanti for funktionalitet eller ekstern validering.
-Projektets forfatter fraskriver sig ethvert ansvar for forkert brug, fejltolkning eller uautoriseret ændring af de inkluderede dokumenter og værktøjer.
-Konsulentnoden skal forstås som et arkiv med begrænset cirkulation, kun beregnet til studieformål og ikke til offentlig eller systematisk distribution.
-Denne erklæring er en integreret del af projektets dokumentationsarkitektur.
+
+Angivelsen av en portal som tekniskt stödd utgör inte en förklaring om lagligheten av någon åtgärd som tekniskt kan utföras på portalens resurser.
+
+7. ANVÄNDNING AV RESURSER
+
+ATK-Pro är avsedd för riktade och individuella åtgärder avseende ett specifikt dokument, en specifik arkivenhet eller ett specifikt register som användaren har laglig tillgång till.
+
+Programvaran är inte avsedd för massiv eller urskillningslös insamling av innehåll, systematisk nedladdning av hela samlingar eller kringgående av autentisering, prenumerationer, tillfälliga åtkomstkort, betalväggar, markeringar som förbjuder nedladdning, tekniska skyddsåtgärder eller begränsningar som fastställts av portaloperatörerna.
+
+ATK-Pro garanterar inte att en resurs som kan nås tekniskt också kan laddas ner, reproduceras, modifieras eller omdistribueras fritt.
+
+Användaren förblir ansvarig för valet av resurser, omfattningen av de åtgärder som utförs och överensstämmelse med tillämplig lagstiftning, inklusive regler om upphovsrätt, skydd av personuppgifter, sekretess, tillgång till arkiv och avtalsvillkor för de tjänster som används.
+
+8. FUNKTIONER FÖR ARTIFICELL INTELLIGENS OCH FJÄRRTJÄNSTER
+
+Alla funktioner för transkription, igenkänning, översättning eller analys med hjälp av artificiell intelligens aktiveras uteslutande av användaren.
+
+När en fjärrleverantör väljs kan de data som krävs för åtgärden, inklusive bilder, texter, instruktioner eller metadata, överföras till den valda leverantörens system. Behandlingen sker i enlighet med leverantörens avtalsvillkor och integritetsinformation.
+
+ATK-Pro kontrollerar inte fjärrtjänsternas lagring, bearbetning eller eventuella användning av data. Innan överföringen måste användaren kontrollera att materialet lagligt kan överföras och att det inte innehåller personliga, konfidentiella eller på annat sätt skyddad information som är inkompatibel med den valda tjänsten.
+
+API-nycklar och eventuella kostnader som tas ut av externa leverantörer är användarens ansvar. ATK-Pro garanterar inte tillgänglighet, kontinuitet, prissättning, prestanda eller fortsatt existens för tredjepartsmodeller och tjänster.
+
+9. RESULTATENS TILLFÖRLITLIGHET
+
+Transkriptioner, översättningar, släktforskningsanalysska data, metadata och andra resultat som genereras eller bearbetas av programvaran kan innehålla fel, utelämnanden, feltolkningar eller information som inte kan verifieras.
+
+Särskilt resultat som produceras av OCR eller artificiell intelligens får inte betraktas som autentiska kopior, certifikat, professionell rådgivning eller ersättning för kontroll mot originalkällorna.
+
+Användaren måste kontrollera alla betydande resultat genom att jämföra dem med originaldokumentet och eventuella officiella källor.
+
+10. DATALAGRING OCH SÄKERHET
+
+Användaren är ansvarig för lagringen av dokument, transkriptioner, konfigurationer, åtkomstnycklar och annan data som bearbetas genom programvaran.
+
+Innan några betydande åtgärder utförs bör separata säkerhetskopior skapas. Författaren garanterar inte återställning av data som har raderats, skrivits över, skadats, blivit ofullständiga eller sparats felaktigt.
+
+Användaren måste skydda sina autentiseringsuppgifter och API-nycklar och får inte dela dem via filer, diagnostiska loggar eller osäkra kanaler.
+
+11. INGA GARANTIER
+
+I den utsträckning som tillämplig lag tillåter tillhandahålls ATK-Pro, den tillhörande koden och dokumentationen i befintligt skick och i den form de tillhandahålls, utan uttryckliga eller underförstådda garantier.
+
+Bland annat ges ingen garanti för felfri drift, oavbruten drift, kompatibilitet med alla system, permanent tillgänglighet av externa portaler och tjänster, lämplighet för ett visst ändamål, korrekta resultat eller bevarande av data.
+
+Garantiundantagen som härrör från tillämpliga licenser förblir i kraft och ersätts inte av denna ansvarsfriskrivning.
+
+12. BEGRÄNSNING AV ANSVAR
+
+I den utsträckning det är tillåtet enligt gällande lag är författaren och eventuella bidragsgivare inte ansvariga för några skador, förluster, kostnader eller konsekvenser som uppstår till följd av installationen, användningen eller oförmågan att använda ATK-Pro.
+
+Detta inkluderar till exempel förlust eller ändring av data, felaktiga resultat, otillgängliga externa portaler eller tjänster, kostnader för API:er eller anslutningar, brott mot tredje parts villkor och användning av resurser utan nödvändiga tillstånd.
+
+Ingenting i denna ansvarsfriskrivning utesluter eller begränsar ansvar som inte kan uteslutas eller begränsas enligt tillämplig lag.
+
+13. ANVÄNDARANSVAR
+
+Genom att installera eller använda ATK-Pro förklarar användaren sig ha förstått att:
+
+- programvaran är ett tekniskt verktyg och inte en tillåtelse att komma åt, ladda ner eller återanvända tredjepartsresurser;
+- Användaren måste kontrollera de rättigheter och villkor som gäller för varje resurs;
+- Användaren måste kontrollera tillförlitligheten hos de resultat som produceras;
+- användaren måste skydda personliga uppgifter, referenser och API-nycklar;
+- användaren måste använda programvaran i enlighet med lagen och andras rättigheter;
+- användaren förblir ansvarig för de åtgärder som användaren väljer att utföra.
+
+14. GRATIS DISTRIBUTION OCH DONATIONER
+
+ATK-Pro distribueras gratis.
+
+Alla donationer är helt frivilliga, utgör inte betalning för en licens, en tjänst eller tillgång till ytterligare funktioner och påverkar inte på något sätt installationen eller användningen av programvaran.
+
+15. LICENSERNAS OCH TILLÄMPLIG LAGS FÖRETRÄDE
+
+Denna ansvarsfriskrivning kompletterar informationen som ges till användaren, men ändrar eller ersätter inte villkoren i licenserna som gäller koden, dokumentationen eller tredjepartskomponenter.
+
+Vid motstridighet har texten i den relevanta licensen och obligatoriska bestämmelser i tillämplig lag företräde.
 
 © 2026 Antenati Toolkit Pro
 antenati.toolkit.pro@gmail.com
