@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>&#128302; Modulo 07: Esportazione GEDCOM</title>
+    <title>&#128302; Modul 08: GEDCOM-eksport</title>
     <style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
@@ -12,14 +12,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -30,7 +30,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -40,12 +40,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -54,21 +54,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 3px solid #a67c52;
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -77,13 +77,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -96,12 +96,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             border: 2px solid #a67c52;
@@ -110,33 +110,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -144,40 +144,40 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
             border: 2px solid #a67c52;
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +185,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +193,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +215,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +230,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +239,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +262,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             border: 1px solid #a67c52;
             padding: 12px 8px;
@@ -271,7 +271,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +281,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             border: 2px solid #a67c52;
@@ -297,15 +297,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -328,75 +328,92 @@
 <body>
     <div class="container">
         <header>
-            <h1>&#128302; Modulo 07: Esportazione GEDCOM</h1>
-            <p style="text-align:center;margin-top:0.5rem;">
-                <span style="background:#7a5c3b;color:white;padding:4px 14px;
-                border-radius:20px;font-size:.9em;">
-                &#128302; Pianificato per versioni future</span>
-            </p>
+            <h1>&#128302; Modul 08: GEDCOM-eksport</h1>
         </header>
 
         <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_06_traduzione.html" class="nav-button">&#8592; Mod.06 &mdash; Traduzione</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_08_supporto_faq.html" class="nav-button">Mod.08 &mdash; Documentazione, Supporto e FAQ &#8594;</a>
+            <a href="guida_07_traduzione.html" class="nav-button">&#8592; Mod.07 &mdash; OCR-oversettelse</a>
+            <a href="guida.html" class="nav-button">&#127968; Hovedindeks</a>
+            <a href="guida_09_supporto_faq.html" class="nav-button">Mod.09 &mdash; Dokumentasjon, støtte og vanlige spørsmål &#8594;</a>
         </div>
 
         <div class="section">
-            <h2>&#128204; Panoramica</h2>
-            <p>Il modulo <strong>Esportazione GEDCOM</strong> &egrave; in fase di pianificazione. Permetter&agrave; di esportare le relazioni familiari estratte dai documenti genealogici elaborati da ATK-Pro nel formato <strong>GEDCOM</strong> (GEnealogical Data COMmunication), lo standard internazionale per l&apos;interscambio di dati genealogici.</p>
-            <p>Una volta sviluppato, il modulo si occuper&agrave; di aggregare le entit&agrave; estratte dall&apos;OCR (nomi, date, relazioni di parentela) e di strutturarle in un file GEDCOM compatibile con i principali software genealogici.</p>
+            <h2>&#128204; Oversikt</h2>
+            <p>Modulen <strong>GEDCOM-eksport</strong> i v3 er et miljø for assistert slektsforskningsanalyse. Den behandler valgte tekster, bilder eller dokumenter, bruker en AI-leverandør som er konfigurert i ATK-Pro, og genererer en fil i formatet <code>.ged</code> sammen med to supplerende CSV-filer.</p>
+            <p>Den åpnes fra menyen <em>Tjenester &rarr; GEDCOM-eksport</em>. Det offentlige navnet viser fortsatt til GEDCOM-formatet, men det faktiske arbeidet omfatter også uttrekk av slektsdata, bruk av paleografiske notater, eventuell utvidelse av en eksisterende database og håndtering av AI-nøkler.</p>
+            <p>Resultatet må kontrolleres før det importeres i et slektsforskningsprogram. AI kan hjelpe med å strukturere data og relasjoner, men erstatter ikke en kritisk lesning av kildene.</p>
         </div>
 
         <div class="section">
-            <h2>&#127795;&#65039; Interoperabilit&agrave; Pianificata</h2>
+            <h2>&#128421;&#65039; Brukergrensesnitt</h2>
             <div class="section-box">
-                <h3>Software Genealogici Compatibili (Obiettivo)</h3>
-                <p>L&apos;obiettivo &egrave; garantire la compatibilit&agrave; con i principali software e piattaforme genealogici:</p>
+                <h3>1. Metode og universelt inndataformat</h3>
+                <p>I den første delen kan du velge en metodeangivelse og filene som skal analyseres. Valgene <strong>Auto-Discovery</strong>, <strong>Vision IA</strong> og <strong>Refinery LLM</strong> lagres som en innstilling, men aktiverer ikke tre separate behandlingsløp i den nåværende versjonen. Den faktiske behandlingen avhenger hovedsakelig av filtypen.</p>
                 <ul>
-                    <li>Ancestry</li>
-                    <li>Family Historian</li>
-                    <li>Family Tree Maker</li>
-                    <li>Findmypast</li>
-                    <li>FamilySearch</li>
-                    <li>Geni</li>
-                    <li>Geneanet</li>
-                    <li>Gramps (open source)</li>
-                    <li>Legacy Family Tree</li>
-                    <li>MyHeritage</li>
-                    <li>Reunion (macOS)</li>
-                    <li>RootsMagic</li>
-                    <li>WikiTree</li>
+                    <li><strong>TXT og DOCX</strong>: leses gjennom den dedikerte tekstbehandlingen og settes inn i ledeteksten som transkripsjoner.</li>
+                    <li><strong>Andre inndata</strong>: sendes til den valgte leverandøren i henhold til det tilgjengelige uttrekksløpet.</li>
+                    <li><strong>Formater som kan velges</strong>: <code>.pdf</code>, <code>.docx</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.webp</code>, <code>.tiff</code>, <code>.tif</code>, <code>.bmp</code>, <code>.txt</code>, <code>.json</code> og <code>.csv</code>.</li>
                 </ul>
-                <p style="margin-top:0.8rem;font-style:italic;color:#7a5c3b;">
-                &#128204; <em>Nota: L&apos;elencazione &egrave; puramente indicativa e non vincolante allo sviluppo
-                dell&apos;interoperabilit&agrave; con ciascuna piattaforma o software.</em></p>
+            </div>
+
+            <div class="section-box">
+                <h3>2. Utvid en eksisterende database</h3>
+                <p>Knappen <strong>LAST INN DATABASE</strong> lar deg angi en eksisterende slektsdatabase i GEDCOM- eller CSV-format. Hvis du ikke laster inn noe, oppretter modulen et nytt arbeid. Når du laster inn en database, lagres resultatet automatisk i mappen som inneholder databasen, selv om du tidligere har valgt et annet mål.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>3. Database med paleografiske notater</h3>
+                <p>Denne delen knytter slektsforskningsarbeidet til dokumenttyper og praktiske notater. Du kan velge dokumenttype, hente et lagret notat, opprette et nytt eller redigere eller slette det.</p>
+                <p>Notatene brukes til å forklare modellen forkortelser, lokale formuleringer, dokumentets språk, slektskapsregler, usikre lesninger eller uttrekkskriterier.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>4. Målmappe</h3>
+                <p>Velg mappen der resultatet skal lagres. Hvis en eksisterende database er lastet inn, brukes databasens mappe i stedet. Modulen genererer en fil med navnet <code>genealogia_*.ged</code> i GEDCOM 5.5.1-format og to supplerende filer med samme grunnnavn: <code>*_REVISIONE.csv</code> og <code>*_REGISTRO_ORIGINALE.csv</code>.</p>
+            </div>
+
+            <div class="section-box">
+                <h3>5. AI-motor og nøkkelhvelv</h3>
+                <ul>
+                    <li><strong>Leverandør</strong>: Velg AI-tjenesten blant de konfigurerte tjenestene, for eksempel Claude, OpenAI, Gemini, Mistral, xAI, DeepSeek, Groq, HuggingFace eller Ollama.</li>
+                    <li><strong>Overstyr modell</strong>: Valgfritt felt for å angi en bestemt modell som den valgte leverandøren støtter. Feltet skjules når leverandøren er Gemini.</li>
+                    <li><strong>ADMINISTRER NØKKELHVELV (CSV)</strong>: åpner CSV-filen for nøkkelhvelvet direkte.</li>
+                    <li><strong>START FULLSTENDIG UTTREKK</strong>: starter analysen og genereringen av GEDCOM-filen.</li>
+                </ul>
+                <p>Du kan opprette og fjerne egendefinerte dokumenttyper. For de innebygde typene kan du overstyre ledeteksten, men ikke slette typen.</p>
             </div>
         </div>
 
         <div class="section">
-            <h2>&#9881;&#65039; Funzionalit&agrave; Previste</h2>
-            <div class="section-box">
-                <p>&#9888;&#65039; <strong>Nota:</strong> Le funzionalit&agrave; descritte di seguito rappresentano
-                una <strong>bozza ipotetica</strong> delle possibili integrazioni future. Non vi &egrave; ancora
-                alcun riscontro di fattibilit&agrave; tecnica n&eacute; alcun impegno di sviluppo. Le specifiche
-                potranno variare o essere abbandonate in qualsiasi momento.</p>
-            </div>
+            <h2>&#128221; Anbefalt arbeidsflyt</h2>
+            <ol>
+                <li>Forbered lesbare inndata: transkripsjoner, bilder eller filer som allerede er organisert etter dokument.</li>
+                <li>Velg metodeangivelsen som passer best til materialet, og husk at den i den nåværende versjonen ikke velger et separat behandlingsløp.</li>
+                <li>Hvis du fortsetter et eksisterende arbeid, laster du inn GEDCOM- eller CSV-databasen.</li>
+                <li>Velg dokumenttypen og legg til et konkret paleografisk notat.</li>
+                <li>Velg målmappe, leverandør og nøkkel.</li>
+                <li>Start det fullstendige uttrekket.</li>
+                <li>Kontroller den genererte filen i formatet <code>.ged</code> før den importeres i andre programmer.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>&#9888;&#65039; Advarsler</h2>
             <div class="section-box">
                 <ul>
-                    <li>Estrazione automatica di entit&agrave; (nomi, date, relazioni) dai testi OCR tramite LLM</li>
-                    <li>Linkage ed entity extraction tra registri multipli analizzati in blocco</li>
-                    <li>Generazione di file <code>.ged</code> conformi allo standard GEDCOM 5.5.1 e GEDCOM 7.0</li>
-                    <li>Verifica e deduplicazione automatica degli individui identificati</li>
-                    <li>Esportazione con metadati delle fonti (riferimento al documento originale, pagina, data)</li>
+                    <li>Den genererte GEDCOM-filen er et arbeidsgrunnlag, ikke et endelig bevis.</li>
+                    <li>Familierelasjoner, datoer, steder og navn må kontrolleres mot originalkildene.</li>
+                    <li>Feil i OCR, transkripsjon eller tolkning kan bli videreført til slektsfilen.</li>
+                    <li>Før GEDCOM-filen importeres i eksterne programmer, bør du lagre en kopi av originalfilen og kontrollere om det finnes duplikater.</li>
+                    <li>Ikke send fortrolige eller begrensede dokumenter til eksterne leverandører før du har kontrollert bruksvilkår, personvern og tillatelser.</li>
                 </ul>
             </div>
         </div>
 
         <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_06_traduzione.html" class="nav-button">&#8592; Mod.06 &mdash; Traduzione</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_08_supporto_faq.html" class="nav-button">Mod.08 &mdash; Documentazione, Supporto e FAQ &#8594;</a>
+            <a href="guida_07_traduzione.html" class="nav-button">&#8592; Mod.07 &mdash; OCR-oversettelse</a>
+            <a href="guida.html" class="nav-button">&#127968; Hovedindeks</a>
+            <a href="guida_09_supporto_faq.html" class="nav-button">Mod.09 &mdash; Dokumentasjon, støtte og vanlige spørsmål &#8594;</a>
         </div>
 
         <footer style="text-align: center;">

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="no" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>&#128218; Modul 09: Dokumentasjon, støtte, feilsøking og vanlige spørsmål</title>
+    <style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>&#128218; Modul 09: Dokumentasjon, støtte, feilsøking og vanlige spørsmål</h1>
+        </header>
+
+        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">&#8592; Mod.08 &mdash; GEDCOM-eksport</a>
+            <a href="guida.html" class="nav-button">&#127968; Hovedindeks</a>
+        </div>
+        <div class="section-box">
+            <h3>1. Menyen Dokumenter: ressurser og støtte</h3>
+            <p>────────────────────────────────────────────────────────────────────────────────</p>
+            <h4>TILGJENGELIGE DOKUMENTER</h4>
+            <p>I menyen <strong>Dokumenter</strong> finner du fem alternativer for å åpne programmets informasjonsressurser.</p>
+            <p><strong>📌 Merk:</strong> Dokumentene følger med installasjonen og kan leses uten internettilkobling.</p>
+            <h4>1️⃣ ANSVARSFRASKRIVELSE (juridiske vilkår)</h4>
+            <ul>
+                <li>Åpner den offisielle juridiske ansvarsfraskrivelsen som følger med programmet.</li>
+                <li>Inneholder: ansvarsbegrensninger, bruksvilkår og programvarelisenser</li>
+                <li>Bør leses før intensiv bruk</li>
+                <li>Kan bli oppdatert sammen med en ny programversjon; når den juridiske revisjonenen endres, kreves en nytt samtykke.</li>
+            </ul>
+            <h4>2️⃣ PRESENTASJON AV FORFATTEREN</h4>
+            <ul>
+                <li>Åpner: presentazione_autore.html</li>
+                <li>Inneholder: kort biografi om forfatteren samt arkivfaglig og digital erfaring</li>
+                <li>Gir innsikt i prosjektets bakgrunn</li>
+            </ul>
+            <h4>3️⃣ PRESENTASJON AV PROSJEKTET</h4>
+            <ul>
+                <li>Åpner: presentazione_progetto_ATK-Pro.html</li>
+                <li>Inneholder:
+                    <ul>
+                        <li>Hovedformål: arbeidsflate for slekts- og arkivforskning på tvers av portaler</li>
+                        <li>Portalpolicy: Bruk av kompatible offentlige kilder uten å omgå innlogging, betalingsmurer eller tekniske begrensninger</li>
+                        <li>Omfang i v3: portalregister, AI-assistert forskning, OCR, OCR-oversettelse, slektsanalyse og GEDCOM-eksport</li>
+                        <li>Målgruppe: slektsforskere, arkivforskere samt italienske og italienskspråklige fellesskap i hele verden</li>
+                        <li>Flerspråklig: 20 støttede språk (IT, EN, ES, PT, FR, DE, AR, HE, NL, RU, JA, SV, ZH, RO, EL, PL, DA, NO, TR, VI)</li>
+                    </ul>
+                </li>
+                <li>Et levende dokument som fortløpende bygges ut</li>
+            </ul>
+            <h4>4️⃣ VEILEDNING (hovedindeks)</h4>
+            <ul>
+                <li>Åpner: guida.html</li>
+                <li>Inneholder: modulindeks for den italienske v3-veiledningen</li>
+                <li>Herfra åpnes de praktiske delene om installasjon, grunnleggende handlinger, bildevisning, metadata, OCR, oversettelse, GEDCOM, støtte og AI-assistert forskning</li>
+            </ul>
+            <h4>5️⃣ INFORMASJON</h4>
+            <ul>
+                <li>Viser et vindu med tre linjer:
+                    <ul>
+                        <li>1. ATK-Pro vx.x.x (versjonsnummer)</li>
+                        <li>2. ©2026 Daniele Pigoli (opphavsrett og forfatter)</li>
+                        <li>3. E-post til støtte (for feilrapporter og forslag)</li>
+                    </ul>
+                </li>
+                <li>Bruk e-post til offisielle henvendelser</li>
+                <li>Versjonen oppdateres automatisk</li>
+            </ul>
+            <h4>🌐 Språktilgjengelighet</h4>
+            <ul>
+                <li>Presentasjonen av forfatteren, prosjektpresentasjonen og veiledningen åpnes på det valgte språket, når de er tilgjengelige.</li>
+                <li>Den praktiske ansvarsfraskrivelsen bruker den offisielle italienske juridiske revisjonenen.</li>
+                <li>Hvis en lokalisert ressurs ikke finnes, vises en tilsvarende melding.</li>
+                <li>Den engelske versjonen brukes som reserve for eksempeldatafilen.</li>
+            </ul>
+            <h4>💬 SLIK KONTAKTER DU BRUKERSTØTTE</h4>
+            <p>E-post: antenati.toolkit.pro@gmail.com</p>
+            <ul>
+                <li>Feilrapportering: Beskriv problemet, og legg ved skjermbilde/log</li>
+                <li>Forslag: Foreslå nye funksjoner eller forbedringer</li>
+                <li>Tekniske spørsmål: Be om en forklaring av funksjonen</li>
+                <li>Forslag til utviklingsprioriteringer: Foreslå forbedringer, offentlige portaler som bør vurderes eller funksjoner som bør finpusses.
+                    <ul>
+                        <li>Forslagene vurderes, men utviklingen avhenger av at ATK-Pro drives og vedlikeholdes på hobbybasis og ikke av et profesjonelt programvareselskap.</li>
+                        <li>Implementeringstiden avhenger av begrenset tid og begrensede ressurser.</li>
+                    </ul>
+                </li>
+            </ul>
+            </div>
+            <div class="section-box">
+            <h3>2. Avslutte programmet og støtte prosjektet</h3>
+            <p>────────────────────────────────────────────────────────────────────────────────</p>
+            <h4>🔴 SLIK AVSLUTTER DU ATK-PRO</h4>
+            <p>Du kan avslutte programmet på en av måtene, systemet støtter:</p>
+            <ol>
+                <li>Velg <strong>Innstillinger &rarr; Avslutt</strong>;</li>
+                <li>Bruk lukkeknappen på tittellinjen;</li>
+                <li>Bruk standardhurtigtasten i Windows <strong>Alt+F4</strong>.</li>
+            </ol>
+            <p>Ved avslutning vises det valgfrie vinduet <strong>Støtt prosjektet</strong>.</p>
+            <h4>💰 VINDUET «STØTT PROSJEKTET»</h4>
+            <p>Når du har valgt en av de tre avslutningsmåter, åpnes et vindu med:</p>
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="images/window4.webp" alt="Vinduet Støtt prosjektet" style="max-width: 600px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+            </div>
+            <h4>🎯 Hva du kan gjøre i dette vinduet</h4>
+            <p>👉 ALTERNATIV 1: Klikk på BANNERET (hvor som helst på bildet)</p>
+            <ul>
+                <li>Nettleseren åpner den offisielle PayPal.me-siden</li>
+                <li>Du kan selv velge donasjonsbeløpet (helt valgfritt)</li>
+                <li>Betaling via PayPal (med eller uten konto, avhengig av landet)</li>
+                <li>Ingen forpliktelse: Du kan også velge ikke å donere</li>
+            </ul>
+            <p>📱 ALTERNATIV 2: Skann QR-koden</p>
+            <ol>
+                <li>Åpne kameraet på smarttelefonen.</li>
+                <li>Rett kameraet mot QR-koden i banneret.</li>
+                <li>Kontroller den foreslåtte adressen i nettleseren før du fortsetter.</li>
+            </ol>
+            <p>⏹️ ALTERNATIV 3: Klikk på knappen «Avslutt»</p>
+            <ul>
+                <li>Lukker banneret</li>
+                <li>Avslutter programmet helt</li>
+                <li>Ingen forpliktelse: Du kan avslutte uten å donere</li>
+            </ul>
+            <h4>📌 VIKTIGE MERKNADER:</h4>
+            <p>✓ Donasjoner er HELT FRIVILLIGE</p>
+            <p>✓ Programmet fungerer på samme måte med eller uten donasjon</p>
+            <p>✓ Ingen sporing og ingen funksjonsbegrensninger</p>
+            <p>✓ Banneret åpner den PayPal-adressen som prosjektet har konfigurert; kontroller alltid målet, nettleseren viser</p>
+            <p>✓ Du kan støtte prosjektet når du ønsker det</p>
+            <h4>💡 HVA DONASJONENE BRUKES TIL:</h4>
+            <p>De støtter den videre utviklingen av ATK-Pro:</p>
+            <ul>
+                <li>Distribusjon, infrastruktur og tjenester knyttet til prosjektet</li>
+                <li>Avhengigheter og programvarekomponenter</li>
+                <li>Tid til utvikling, testing, dokumentasjon og vedlikehold av kommende versjoner</li>
+                <li>Testserver for IIIF-validering</li>
+                <li>Dokumentasjon og vedlikehold</li>
+            </ul>
+            <h4>🙏 ALTERNATIVER TIL DONASJONER:</h4>
+            <p>Hvis du ikke kan donere, men gjerne vil støtte, kan du:</p>
+            <ul>
+                <li>Dele ATK-Pro på sosiale medier</li>
+                <li>Fortelle om innovative bruksområder eller interessante eksempler</li>
+            </ul>
+            </div>
+            <div class="section-box">
+            <h3>3. Feilsøking og vanlige spørsmål</h3>
+            <p>────────────────────────────────────────────────────────────────────────────────</p>
+            <h4>❓ VANLIGE SPØRSMÅL</h4>
+            <h4>🔵 S: Fryser programmet når manifestet lastes inn?</h4>
+            <p><strong>Svar:</strong> Det skyldes vanligvis timeout på nettverket. Kontroller:</p>
+            <ol>
+                <li>Kontroller internettilkoblingen ved å åpne en pålitelig side i nettleseren.</li>
+                <li>Åpne IIIF-URL-en i nettleseren, og kopier den på nytt fra adresselinjen.</li>
+                <li>Kontroller at firewall eller sikkerhetsprogramvare tillater ATK-Pro-tilkoblinger.</li>
+                <li>Hvis nettverket bruker en proxy, skal du kontrollere operativsystemets nettverksinnstillinger.</li>
+            </ol>
+            <p>Hvis problemet fortsetter, kan du prøve en annen URL for å teste IIIF-tilkoblingen</p>
+            <h4>🔵 S: Hva betyr "File not found (404)"?</h4>
+            <p><strong>Svar:</strong> Manifestets URL kan ikke nås. Mulige årsaker:</p>
+            <ul>
+                <li>URL-en er utløpt (arkivet er ikke oppdatert)</li>
+                <li>Arkivet er frakoblet</li>
+                <li>Feil URL-parametre (feil manifest-id)</li>
+            </ul>
+            <p>Løsning: Kontroller URL-en i nettleseren før du limer den inn i ATK-Pro</p>
+            <h4>🔵 S: Er nedlastingen svært langsom eller avbrytes den?</h4>
+            <p><strong>Svar:</strong> Prøv følgende:</p>
+            <ol>
+                <li>Kontroller Wi-Fi-nettverkets stabilitet, eller bruk en kablet tilkobling hvis det er mulig.</li>
+                <li>Prøv en annen offentlig IIIF-URL for å avgjøre om forsinkelsen skyldes serveren.</li>
+                <li>Reduser belastningen ved å velge ressursprofilen <strong>Lett</strong>.</li>
+                <li>Hvis problemet bare gjelder én portal, skal du vente og prøve på nytt: Fjerntjenesten kan være overbelastet eller midlertidig utilgjengelig.</li>
+            </ol>
+            <h4>🔵 S: Bilderekonstruksjonen er langsom — hvordan kan den gjøres raskere?</h4>
+            <p><strong>Svar:</strong> Hastigheten avhenger særlig av IIIF-serverens svartid, bildestørrelsen, forbindelsen og datamaskinens tilgjengelige ressurser.</p>
+            <ul>
+                <li>Bruk profilen <strong>Lett</strong> for å redusere ressursbruken, eller <strong>Rask</strong> bare på egnede systemer.</li>
+                <li>Behandle poster med færre sider om gangen, hvis minnet eller nettverket er belastet.</li>
+                <li>Husk at noen portaler krever sekvensiell tilgang uansett den valgte profilen.</li>
+            </ul>
+            <h4>🔵 S: Er PDF-utdatafilen skadet eller kan det ikke åpnes?</h4>
+            <p><strong>Svar:</strong> Prøv følgende:</p>
+            <ol>
+                <li>Lagre en kopi til feilsøking, og fjern eller gi den ufullstendige PDF-filen et nytt navn ufullstendige PDF-filen.</li>
+                <li>Last inn posten på nytt fra <strong>Inndatafil &rarr; Åpne inndata</strong> og generer PDF-en på nytt.</li>
+                <li>Kontroller at målet er skrivbart og har tilstrekkelig ledig plass til behandlingen.</li>
+                <li>Kontroller de enkelte genererte bildene for å avgjøre om problemet bare gjelder PDF-en.</li>
+            </ol>
+            <h4>🔵 S: Hvordan bruker jeg TIFF-filer til arkivering?</h4>
+            <p><strong>Svar:</strong> TIFF er et tapsfritt format som er egnet til bevaring:</p>
+            <ol>
+                <li>Velg TIFF blant bildeformatene.</li>
+                <li>ATK-Pro lagrer TIFF-filer med tapsfri LZW-komprimering.</li>
+                <li>Lagre en kopi på et separat medie, og kontroller regelmessig sikkerhetskopiens integritet.</li>
+                <li>Langtidsbevaring avhenger også av medier, kopier og integritetskontroller, ikke bare av formatet.</li>
+            </ol>
+            <h4>🔵 S: Kan jeg behandle flere poster samtidig (parallelt)?</h4>
+            <p><strong>Svar:</strong> Poster i en batch behandles sekvensielt. Innenfor en enkelt post kan sider og fliser behandles parallelt avhengig av portalen og ressursprofil.</p>
+            <ol>
+                <li>Forbered en inndatafil med alle støttede poster etter hverandre.</li>
+                <li>Velg den fra <strong>Inndatafil &rarr; Åpne inndata</strong>.</li>
+                <li>Start én gang via <strong>Utdata &rarr; Behandle</strong>.</li>
+                <li>ATK-Pro fortsetter automatisk med de påfølgende postene.</li>
+            </ol>
+            <p>Eksempel: Hvis inputtet inneholder fem poster, behandler ATK-Pro automatisk:</p>
+            <ul>
+                <li>Post 1 (nedlasting + rekonstruksjon)</li>
+                <li>Post 2 (nedlasting + rekonstruksjon)</li>
+                <li>... frem til post 5</li>
+            </ul>
+            <p>Resultatene lagres i de konfigurerte mappene; behandlingen skal ikke startes på nytt manuelt for hver post.</p>
+            <h4>🔵 S: Hvor lagres filene helt nøyaktig?</h4>
+            <p><strong>Svar:</strong> Standardbane:</p>
+            <ul>
+                <li><strong>Standardinstallasjon:</strong> mappen <code>ATK-Pro/output</code> i brukerens Dokumenter.</li>
+                <li><strong>Portabel modus:</strong> mappen <code>output</code> ved siden av den kjørbare fil.</li>
+            </ul>
+            <p>Målet kan endres via <strong>Innstillinger &rarr; Velg utdatamappe</strong>. Standardmappene opprettes automatisk, når det er mulig.</p>
+            <h4>🔵 S: Hvorfor advarer ATK-Pro om eller blokkerer en utdatabane?</h4>
+            <p><strong>Svar:</strong> Før som opprettes filer, kontrollerer ATK-Pro den lengste forventede banen for posten. Den endelige oversikt skiller mellom to situationer:</p>
+            <ul>
+                <li><strong>Blokkerende feil:</strong> Navnet inneholder ugyldige tegn, bruker et reservert Windows-navn, slutter med et mellomrom eller punktum, eller et segment overskrider den støttede grensen. Bare den berørte posten stoppes, og dens arbeidsmappe opprettes ikke.</li>
+                <li><strong>Kompatibilitetsadvarsel:</strong> Stien ligger nær en forsiktig grense eller kan gi problemer i eldre Windows-programmer. Behandlingen kan fortsette, men en kortere målmappe anbefales.</li>
+            </ul>
+            <p>Profilen <strong>OneDrive/SharePoint</strong> brukes bare når den valgte mappen faktisk ligger under en <code>OneDrive</code> eller <code>OneDrive - Organizzazione</code>. Ved feil skal du forkorte postens navn eller velge en målmappe nærmere stasjonens rot; allerede opprettede filer fra andre behandlinger trenger ikke gis nytt navn eller flyttes.</p>
+            <h4>🔵 S: Kan jeg flytte utdatafiler etter behandlingen?</h4>
+            <p><strong>Svar:</strong> Ja, de endelige filene kan flyttes etter behandlingen.</p>
+            <p>Etter fullføring:</p>
+            <ol>
+                <li>Flytt postens mappe til den nye målet.</li>
+                <li>Den endelige PDF er selvstendig; behold også bilder og metadata, hvis de inngår i arbeidsarkiv.</li>
+                <li>Hvis posten senere skal behandles på nytt, skal du beholde manifestet og de andre kildefiler.</li>
+            </ol>
+            <h4>🔵 S: Hva gjør jeg ved plutselige programkrasj?</h4>
+            <p><strong>Svar:</strong> Hvis programmet krasjer:</p>
+            <ol>
+                <li>Kontroller <code>atkpro.log</code> eller, hvis utvidet diagnostikk er aktivert, <code>atkpro_debug.log</code>. Plasseringen avhenger av installasjonstypen: Se ved siden av den kjørbare fil eller i programmets arbeidsmappe.</li>
+                <li>Kopier feilmeldingen, eller ta et skjermbilde.</li>
+                <li>Start programmet på nytt, og gjenta handlingen.</li>
+                <li>Hvis feilen gjentar seg, kan du prøve en annen IIIF-post for å skille mellom et generelt problem og et manifestspesifikt problem.</li>
+            </ol>
+            <h4>⚠️ VANLIGE FEIL OG LØSNINGER</h4>
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                <thead style="background-color: #f0f0f0;">
+                    <tr>
+                        <th style="text-align: left;">Feil</th>
+                        <th style="text-align: left;">Årsag</th>
+                        <th style="text-align: left;">Løsning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>"Network timeout"</td>
+                        <td>IIIF-serveren er langsom/frakoblet</td>
+                        <td>Prøv igjen med en annen URL</td>
+                    </tr>
+                    <tr>
+                        <td>"Invalid IIIF format"</td>
+                        <td>URL-en er ikke et IIIF-manifest</td>
+                        <td>Kontroller URL-en i nettleseren</td>
+                    </tr>
+                    <tr>
+                        <td>"Disk space full"</td>
+                        <td>Utilstrekkelig diskplass</td>
+                        <td>Frigjør plass på stasjonen</td>
+                    </tr>
+                    <tr>
+                        <td>"Permission denied"</td>
+                        <td>Beskyttet/skrivebeskyttet mappe</td>
+                        <td>Velg en mappe som tilhører din bruker, og kontroller at den er skrivbar; unngå systemmapper og beskyttede mapper.</td>
+                    </tr>
+                    <tr>
+                        <td>"URL not found (404)"</td>
+                        <td>IIIF-manifestet er utløpt</td>
+                        <td>Kontroller ID-en på portalen</td>
+                    </tr>
+                    <tr>
+                        <td>"Window not responding"</td>
+                        <td>Langsom/tung behandling</td>
+                        <td>Vent, eller klikk på Avbryt</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4>🔵 S: Portalen gjenkjennes, men nedlastingen avvises. Hvorfor?</h4>
+            <p><strong>Svar:</strong> Teknisk kompatibilitet opphever ikke tilgangsvilkårene. ATK-Pro avviser eller begrenser ressurser som krever innlogging eller tilknyttet tilgang, ikke tilbyr et stabilt offentlig endepunkt, er merket <code>nodownload</code> eller ikke har rettigheter som er forenlige med den ønskede handlingen. Åpne objektets offentlige side, kontroller lisensen og bruksvilkår, og prøv bare med den støttede offisielle URL-en.</p>
+            <h4>🔵 S: Kan jeg gjenopprette en avbrutt OCR-batch?</h4>
+            <p><strong>Svar:</strong> Kontroller filen i den valgte OCR-mappen <code>*_trascrizione_parziale.txt</code> og de tilhørende metadata. De inneholder arbeidet som er lagret fortløpende, og skal kontrolleres og fullføres, før det anses som endelig.</p>
+            <h4>🆘 BRUKERSTØTTE OG KONTAKT</h4>
+            <p>Hvis problemet fortsetter etter løsningsforsøk:</p>
+            <ol>
+                <li>Les prosjektpresentasjonen og denne veiledningen fra menyen <strong>Dokumenter</strong>.</li>
+                <li>Hvis problemet fortsatt ikke er løst, skal du skrive til <strong>antenati.toolkit.pro@gmail.com</strong> og ta med:</li>
+            </ol>
+            <ul>
+                <li>ATK-Pro-versjon (menyen Dokumenter → Informasjon)</li>
+                <li>Operativsystem og versjon (f.eks. Windows 10/11, Ubuntu 22.04, macOS 13)</li>
+                <li>Den IIIF-URL-en som forårsaker problemet</li>
+                <li>Skjermbilde av feilen (hvis den vises)</li>
+            </ul>
+        </div>
+
+        <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+            <a href="guida_08_esportazione_gedcom.html" class="nav-button">&#8592; Mod.08 &mdash; GEDCOM-eksport</a>
+            <a href="guida.html" class="nav-button">&#127968; Hovedindeks</a>
+        </div>
+
+        <footer style="text-align: center;">
+            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+        </footer>
+    </div>
+</body>
+</html>
