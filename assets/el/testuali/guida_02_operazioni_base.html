@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="el" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 02: Operazioni di base</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Ενότητα 02: Βασικές λειτουργίες</title>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -325,29 +326,49 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📚 Modulo 02: Operazioni di base</h1>
-        </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-        <div class="section-box">
-            <h3>4. CARICAMENTO RECORD IIIF - FORMATI DI INPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📥 STRUTTURA DELL'INPUT</h4>
-            <p>ATK-Pro accetta file di input con un formato specifico basato su COPPIE: Per OGNI record da elaborare, fornisci:</p>
-            <h3>1. RIGA 1: Modalità + Nome (facoltativo)</h3>
-            <ul>
-                <li>D = Documento singolo (una singola immagine/pagina)</li>
-                <li>R = Registro (collezione completa di pagine/documenti)</li>
-            </ul>
-            <h3>2. RIGA 2: URL del Manifest IIIF</h3>
-            <p><strong>Esempio di file input.txt corretto:</strong></p>
-            <pre class="file-structure"># Commenti iniziano con #
+<div class="container">
+<header>
+<h1>📚 Ενότητα 02: Βασικές λειτουργίες</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">← Mod.01 — Εγκατάσταση, εκκίνηση και διεπαφή</a>
+<a class="nav-button" href="guida.html">🏠 Κύριο Ευρετήριο</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 — Αναζήτηση υποβοηθούμενη από AI →</a>
+</div>
+<div class="section-box">
+<h3>1. ΦΟΡΤΩΣΗ ΕΓΓΡΑΦΩΝ - ΜΟΡΦΕΣ ΕΙΣΟΔΟΥ</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>📥 ΔΟΜΗ ΕΙΣΟΔΟΥ ΚΑΙ ΥΠΟΣΤΗΡΙΖΟΜΕΝΕΣ ΠΥΛΕΣ</h4>
+<p>Το ATK-Pro δέχεται αρχεία εισόδου με συγκεκριμένη μορφή με βάση τα ΖΕΥΓΑ: Για ΚΑΘΕ εγγραφή προς επεξεργασία, δώστε Mode + URL.</p>
+<p><strong>Υποστηριζόμενες πύλες:</strong> αντιγράψτε και επικολλήστε το δημόσιο URL της σελίδας, του προγράμματος προβολής, του μανιφέστου ή του συμβατού PDF. Το ATK-Pro αναγνωρίζει την πύλη και εφαρμόζει τη σχετική τεχνική και προληπτική μέθοδο.</p>
+<p><strong>Υποστηρίζεται</strong> υποδεικνύει επαληθευμένη τεχνική συμβατότητα, όχι αδιάκριτη εξουσιοδότηση λήψης. Ο πόρος πρέπει να είναι δημόσια προσβάσιμος και ο χρήστης πρέπει να σέβεται τα δικαιώματα, τις άδειες, τους όρους χρήσης και τα όρια της μεμονωμένης πύλης. Το ATK-Pro δεν παρακάμπτει τις συνδέσεις, τις συνδέσεις θυγατρικών, τα paywalls ή τους δείκτες <code>nodownload</code>.</p>
+<p>Antenati (Ιταλία), Gallica (Γαλλία), DigiVatLib (Βατικανό), Bodleian Libraries (Οξφόρδη), Europeana IIIF, Matricula Online, Findbuch (Südtirol), e-codices/e-rara/e-manuscripta (Ελβετία, Ιντερνέτ), Hei Culturale/Estense, Brixiana, Memooria, BNC Rome, BNCF Teca, Museo Galileo και Αρχείο Διαδικτύου.</p>
+<h4>🇮🇹 ΙΤΑΛΙΚΕΣ ΠΥΛΕΣ ΠΡΟΣΤΕΘΗΚΑΝ ΣΤΟ V3</h4>
+<table>
+<thead>
+<tr><th>Πύλη</th><th>Είσοδοι και τρόποι λειτουργίας</th><th>Λειτουργικά όρια</th></tr>
+</thead>
+<tbody>
+<tr><td>Ψηφιακή βιβλιοθήκη της Σιένα</td><td>Σελίδα προβολής IIIF; <code>D</code> ή <code>R</code></td><td>Για <code>R</code> απαιτείται ρητή εμβέλεια. ελέγξτε τα δικαιώματα του αντικειμένου.</td></tr>
+<tr><td>Ψηφιακή βιβλιοθήκη Trentina</td><td>Δημόσια σελίδα. εικόνες ή απευθείας PDF</td><td>Για καταχωρητές και ακολουθίες χρησιμοποιήστε ένα εύρος. Εάν απαιτείται μόνο το PDF χωρίς εμβέλεια, το ATK-Pro χρησιμοποιεί το επίσημο PDF όταν είναι διαθέσιμο.</td></tr>
+<tr><td>Biblioteca Digitale Lombarda</td><td>PDF δημόσιο τελικό σημείο REST ή τελικό σημείο BookReader. <code>D</code> ή <code>R</code></td><td>Δημιουργεί εκ νέου ολόκληρη την ακολουθία πολλών σελίδων από τους καμβάδες Cantaloupe IIIF και επαναλαμβάνει μόνο τις προσωρινά μη διαθέσιμες σελίδες. Εάν το BookReader δεν επιστρέφει έγκυρους καμβάδες, χρησιμοποιήστε το άμεσο PDF REST.</td></tr>
+<tr><td>Ψηφιακή βιβλιοθήκη Rovereto</td><td>Σελίδα οντότητας ή URL API του αντικειμένου. <code>D</code> ή <code>R</code></td><td>Λήψη μόνο δημόσιων bitstreams που αναγνωρίζονται ως σελίδες. για <code>R</code> απαιτείται εύρος.</td></tr>
+<tr><td>BUB Digital</td><td>Σελίδα BUB με παράμετρο <code>manifest=</code> ή δήλωση IIIF BUB</td><td>Μόνο δημόσιοι πόροι. για <code>R</code> απαιτείται εύρος και η άδεια χρήσης του μεμονωμένου αντικειμένου πρέπει να επαληθευτεί.</td></tr>
+<tr><td>Ψηφιακή Βιβλιοθήκη FICLIT</td><td>Omeka S o Σελίδα στοιχείου δήλωσης IIIF FICLIT</td><td>Μόνο δημόσια αντικείμενα. για <code>R</code> απαιτείται εύρος. Οι εικόνες λαμβάνονται από το στοιχείο άμεσου καμβά.</td></tr>
+<tr><td>Ιστορικό Αρχείο UniBO</td><td>Δημόσια δήλωση IIIF του μεμονωμένου στοιχείου. <code>D</code> ή <code>R</code></td><td>Καμία συλλογή δεν γίνεται αποδεκτή ως είσοδος. Για <code>R</code> Απαιτείται ρητή περιοχή και τα δικαιώματα του μεμονωμένου στοιχείου πρέπει να επαληθευτούν.</td></tr>
+<tr><td>Πανεπιστήμιο PHAIDRA της Πάδοβας</td><td>Δημόσια σελίδα του αντικειμένου ή της επίσημης δήλωσης του IIIF. <code>D</code> ή <code>R</code></td><td>Μόνο δημόσια αντικείμενα. Για <code>R</code> απαιτείται εύρος. Ελέγξτε τη σημείωση δικαιωμάτων ή την άδεια χρήσης που σχετίζεται με το αντικείμενο.</td></tr>
+<tr><td>Πανεπιστήμιο DOGE της Γένοβας</td><td>Δημόσια σελίδα του αντικειμένου. <code>D</code> ή <code>R</code></td><td>Χρησιμοποιήστε αποκλειστικά τους δημόσιους πόρους που έχουν δηλωθεί ότι μπορούν να ληφθούν από την πύλη. Εξαιρούνται οι αρχικοί ή επισημασμένοι πόροι <code>nodownload</code>; για <code>R</code> απαιτείται εύρος.</td></tr>
+</tbody>
+</table>
+<p><strong>Σημείωση:</strong> Τα BEIC, Ambrosiana και OrienTales δεν περιλαμβάνονται στο πρόγραμμα λήψης: δεν έχουν εντοπιστεί σταθερά δημόσια τελικά σημεία ή οι εγγραφές που εξετάστηκαν απαιτούν πρόσβαση συνεργάτη. Τα Εθνικά Αρχεία, SAN, SIAS, SIUSA, BeWeB και οι πηγές του Ticino, του Graubünden και της επισκοπής παραμένουν πηγές προσανατολισμού και μη αυτόματης διαβούλευσης.</p>
+<h3>1. ΣΕΙΡΑ 1: Λειτουργία + Όνομα (προαιρετικό)</h3>
+<ul>
+<li>D = Μεμονωμένο έγγραφο (μια μεμονωμένη εικόνα/pagina)</li>
+<li>R = Μητρώο (πλήρης συλλογή σελίδων/documenti)</li>
+</ul>
+<h3>2. ΣΕΙΡΑ 2: Δημόσιο URL της εγγραφής ή του πόρου</h3>
+<p><strong>Παράδειγμα σωστού αρχείου input.txt:</strong></p>
+<pre class="file-structure"># Commenti iniziano con #
 
 RECORD 1 (coppia di righe):
 D - Lettera Importante
@@ -360,66 +381,67 @@ https://archives.example.org/iiif/reg456/manifest.json
 RECORD 3 (coppia di righe):
 D - Fotografia Singola
 https://collections.example.org/iiif/foto789/manifest.json</pre>
-            <h4>📝 REGOLE FORMATO INPUT:</h4>
-            <ul>
-                <li>Righe vuote: ignorate (puoi usarle per leggibilità)</li>
-                <li>Righe con #: ignorate come commenti</li>
-                <li>Modalità D o R: sono obbligatorie (maiuscole)</li>
-                <li>Nome file: facoltativo dopo modalità (es. "D - Nome" o solo "D")</li>
-                <li>URL: deve iniziare con http:// o https://</li>
-                <li>Coppie: modalità + URL devono stare su righe consecutive</li>
-            </ul>
-            <h4>⚙️ COME CARICARE L'INPUT - 3 OPZIONI DAL MENU:</h4>
-            <p>OPZIONE 1: Visualizza Esempio Input ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Esempio input"</h3>
-            <h3>2. Si apre una finestra che mostra il file di esempio localizzato</h3>
-            <h3>3. Puoi copiare il contenuto come template per il tuo file input</h3>
-            <h3>4. File di esempio: assets/[lingua]/testuali/input_link_base.txt</h3>
-            <p>OPZIONE 2: Apri File Input Pronto ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Apri input"</h3>
-            <h3>2. Si apre un dialog di selezione file</h3>
-            <h3>3. Scegli il tuo file input.txt (deve rispettare il formato coppie)</h3>
-            <h3>4. ATK-Pro carica automaticamente e legge tutti i record</h3>
-            <h3>5. Visualizza numero di record caricati e pronti per l'elaborazione</h3>
-            <p>OPZIONE 3: Modifica Input Già Caricato ──────────────────────────────────────────</p>
-            <h3>1. Dopo aver caricato un file input (OPZIONE 2)</h3>
-            <h3>2. Clicca Menu → "File input" → "Modifica input"</h3>
-            <h3>3. Si apre un editor di testo con il file attualmente caricato</h3>
-            <h3>4. Modifica le coppie (aggiungi, rimuovi, cambia URL)</h3>
-            <h3>5. Clicca "Salva" per aggiornare i record in elaborazione</h3>
-            <h3>6. Il programma reinterpreta il file aggiornato</h3>
-            <h4>📌 DIFFERENZA TRA D E R:</h4>
-            <ul>
-                <li>D (Documento): Gestisce una singola immagine/pagina
+<h4>📝 ΚΑΝΟΝΕΣ ΜΟΡΦΗΣ ΕΙΣΑΓΩΓΗΣ:</h4>
+<ul>
+<li>Κενές γραμμές: αγνοήθηκαν (μπορείτε να τις χρησιμοποιήσετε για αναγνωσιμότητα)</li>
+<li>Γραμμές με #: Αγνοήθηκαν ως σχόλια</li>
+<li>Οι λειτουργίες D/d ή R/r: είναι υποχρεωτικές. κεφαλαία και πεζά είναι ισοδύναμα</li>
+<li>Όνομα αρχείου: προαιρετική μετά τη λειτουργία (π.χ. "D - Όνομα" ή απλώς "D")</li>
+<li>URL: Πρέπει να ξεκινήσει με http:// ή https://</li>
+<li>Ζεύγη: η λειτουργία + URL πρέπει να είναι σε διαδοχικές γραμμές</li>
+</ul>
+<h4>⚙️ ΠΩΣ ΝΑ ΦΟΡΤΩΣΕΤΕ ΤΗΝ ΕΙΣΟΔΟ - 3 ΕΠΙΛΟΓΕΣ ΑΠΟ ΤΟ ΜΕΝΟΥ:</h4>
+<p>ΕΠΙΛΟΓΗ 1: Προβολή παραδείγματος εισαγωγής ──────────────────</p>
+<h3>1. Κάντε κλικ στο Μενού → "Αρχείο εισαγωγής" → "Παράδειγμα εισαγωγής"</h3>
+<h3>2. Ανοίγει ένα παράθυρο που δείχνει το τοπικό δείγμα αρχείου</h3>
+<h3>3. Μπορείτε να αντιγράψετε το περιεχόμενο ως πρότυπο για το αρχείο εισόδου σας</h3>
+<h3>4. Παράδειγμα αρχείου: assets/[lingua]/testuali/input_link_base.txt</h3>
+<p><strong>Σημείωση για το όνομα αρχείου:</strong> καλείται το κατανεμημένο αρχείο <code>input_link_base.txt</code>. Το όνομα έχει κανονικοποιηθεί στο v3 για να αποφευχθούν οι αναφορές σε προηγούμενες εκδόσεις. η μορφή παραμένει αυτή που είναι συμβατή με τη φόρτωση εγγραφών IIIF.</p>
+<p>ΕΠΙΛΟΓΗ 2: Ανοίξτε το αρχείο έτοιμου εισόδου ──────────────────</p>
+<h3>1. Κάντε κλικ στο Μενού → "Αρχείο Εισόδου" → "Άνοιγμα Εισόδου"</h3>
+<h3>2. Ανοίγει ένα παράθυρο διαλόγου επιλογής αρχείου</h3>
+<h3>3. Επιλέξτε το αρχείο σας input.txt (πρέπει να τηρεί τη μορφή των ζευγών)</h3>
+<h3>4. Το ATK-Pro φορτώνει αυτόματα και διαβάζει όλες τις εγγραφές</h3>
+<h3>5. Δείτε τον αριθμό των εγγραφών που έχουν φορτωθεί και είναι έτοιμες για επεξεργασία</h3>
+<p>ΕΠΙΛΟΓΗ 3: Επεξεργασία εισαγωγής έχει ήδη φορτωθεί ───────────────────── ─────────────────────</p>
+<h3>1. Μετά τη φόρτωση ενός αρχείου εισόδου (ΕΠΙΛΟΓΗ 2)</h3>
+<h3>2. Κάντε κλικ στο Menu → "Input File" → "Edit Input"</h3>
+<h3>3. Ανοίγει ένα πρόγραμμα επεξεργασίας κειμένου με το τρέχον φορτωμένο αρχείο</h3>
+<h3>4. Επεξεργασία ζευγαριών (προσθήκη, αφαίρεση, αλλαγή URL)</h3>
+<h3>5. Κάντε κλικ στο "Αποθήκευση" για να ενημερώσετε τις εγγραφές που υποβάλλονται σε επεξεργασία</h3>
+<h3>6. Το πρόγραμμα επανερμηνεύει το ενημερωμένο αρχείο</h3>
+<h4>📌 ΔΙΑΦΟΡΑ ΜΕΤΑΞΥ D ΚΑΙ R:</h4>
+<ul>
+<li>D (Έγγραφο): Διαχειρίζεται μια μεμονωμένη εικόνα/pagina
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: file singolo per il documento</li>
-                <li style="margin-top: 12px;">R (Registro): Gestisce collezioni multi-pagina
+<li style="list-style: none; margin-left: 20px;">→ Έξοδος: Ένα αρχείο για το έγγραφο</li>
+<li style="margin-top: 12px;">R (Μητρώο): Διαχειρίζεται συλλογές πολλών σελίδων
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: cartella con pagine organizzate + PDF (se richiesto dall'utente)</li>
-            </ul>
-            <h4>✅ VALIDAZIONE RECORD</h4>
-            <p>Dopo il caricamento, il programma verifica:</p>
-            <ul>
-                <li>✓ URL accessibile e raggiungibile</li>
-                <li>✓ Formato IIIF valido (questa versione+)</li>
-                <li>✓ Numero immagini e canvas disponibili</li>
-                <li>✓ Metadata (titolo, autore, data)</li>
-            </ul>
-            <h4>❌ ERRORI COMUNI</h4>
-            <ul>
-                <li>"URL non valido": Controlla copia/incolla URL</li>
-                <li>"Manifest non trovato (404)": URL è scaduto o sbagliato</li>
-                <li>"Formato IIIF non supportato": Il server non usa IIIF standard</li>
-                <li>"Timeout connessione": Connessione Internet lenta/assente</li>
-            </ul>
-            <h4>💾 SALVATAGGIO RECORD</h4>
-            <p>Dopo il caricamento del manifest, il programma salva automaticamente i metadati IIIF. DOVE: Nella cartella output che scegli (vedi Sezione 5, PASSO 2) <strong>STRUTTURA CARTELLE DOPO CARICAMENTO (prima dell'elaborazione):</strong></p>
+<li style="list-style: none; margin-left: 20px;">→ Έξοδος: φάκελος με οργανωμένες σελίδες + PDF (εάν ζητηθεί από τον χρήστη)</li>
+</ul>
+<h4>✅ ΕΠΙΚΥΡΩΣΗ ΡΕΚΟΡ</h4>
+<p>Μετά τη φόρτωση, το πρόγραμμα ελέγχει:</p>
+<ul>
+<li>✓ URL προσβάσιμο και προσβάσιμο</li>
+<li>✓ Συμβατός πόρος: manifest IIIF v2/v3, υποστηριζόμενη σελίδα, εικόνα ή απευθείας PDF σύμφωνα με την πύλη</li>
+<li>✓ Αριθμός διαθέσιμων εικόνων και καμβάδων</li>
+<li>✓ Μεταδεδομένα (τίτλος, συγγραφέας, ημερομηνία)</li>
+</ul>
+<h4>❌ ΣΥΝΗΘΗ ΛΑΘΗ</h4>
+<ul>
+<li>"URL μη έγκυρο": Ελέγξτε το copy/incolla URL</li>
+<li>"Το μανιφέστο δεν βρέθηκε (404)": Το URL έχει λήξει ή είναι λάθος</li>
+<li>"Η μορφή IIIF δεν υποστηρίζεται": Ο διακομιστής δεν χρησιμοποιεί τυπικό IIIF</li>
+<li>"Λήξη χρόνου σύνδεσης": Αργή σύνδεση στο Διαδίκτυο/assente</li>
+</ul>
+<h4>💾 ΑΠΟΘΗΚΕΥΣΗ ΕΓΓΡΑΦΩΝ</h4>
+<p>Μετά τη φόρτωση της δήλωσης, το πρόγραμμα αποθηκεύει αυτόματα τα μεταδεδομένα IIIF. ΠΟΥ: Στο φάκελο εξόδου που επιλέγετε (δείτε Ενότητα 2, ΒΗΜΑ 2) <strong>ΔΟΜΗ ΦΑΚΕΛΟΥ ΜΕΤΑ ΤΗ ΦΟΡΤΩΣΗ (πριν από την επεξεργασία):</strong></p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale (livello principale)
  └─ [nome]/                            ← Sottocartella SOLO per metadati
     ├─ [nome]_genealogico.json        ← Metadati genealogici estratti
     └─ [nome]_tecnico.json            ← Metadati tecnici (canvas ID, numero pagine)</pre>
-<p> DOPO L'ELABORAZIONE (quando clicchi Menu → Output → Elabora): Nel livello principale vengono aggiunti i file elaborati:</p>
+<p> ΜΕΤΑ ΤΗΝ ΕΠΕΞΕΡΓΑΣΙΑ (όταν κάνετε κλικ στο Μενού → Έξοδος → Διεργασία): Τα επεξεργασμένα αρχεία προστίθενται στο κύριο επίπεδο:</p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
  ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite dai tile IIIF (una per pagina)
@@ -427,296 +449,300 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
  ├─ [nome]_canvas_N.jpg/.png/.tif       (N = numero totale di pagine/canvas)
  ├─ [nome].json                        ← Sidecar JSON per ogni immagine (metadati EXIF)
  └─ [nome].pdf                         ← PDF completo (vedi spiegazione sotto)</pre>
-
-<p>I metadati rimangono nella sottocartella [nome]/ come salvati al caricamento.</p>
-<p><strong>NOTA IMPORTANTE: Organizzazione file</strong></p>
-            <ul>
-                <li>Manifest IIIF: livello principale della cartella output</li>
-                <li>Immagini (canvas), PDF, Sidecar JSON: livello principale della cartella output</li>
-                <li>SOLO metadati tecnici e genealogici: salvati in sottocartella [nome]/</li>
-                <li>Le cartelle temporanee (tiles_canvas_X/) vengono eliminate automaticamente al termine</li>
-                <li>Questa struttura consente di gestire più record nella stessa cartella senza confusione</li>
-            </ul>
-<p><strong>Esempio:</strong> Se elabori "Registro1", troverai:</p>
-            <ul>
-                <li>manifest_[ID1]_Registro1.json (livello principale)</li>
-                <li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (livello principale)</li>
-                <li>Registro1.pdf (livello principale)</li>
-                <li>Registro1/ (sottocartella SOLO con metadati genealogico e tecnico)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>5. ELABORAZIONE E DOWNLOAD IMMAGINI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>🎯 FLUSSO DI ELABORAZIONE</h4>
-            <p>Il workflow di elaborazione prevede 3 passi:</p>
-            <h4>PASSO 1: SELEZIONA FORMATI IMMAGINE</h4>
-            <p>─────────────────────────────────────</p>
-            <h3>1. Carica un file input (File input → Apri input): la finestra formati si apre automaticamente</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona formati immagine"</h3>
-            <h3>3. Si apre una finestra di dialogo con 3 opzioni:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Formato senza perdita (lossless), migliore qualità, file più grandi</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Formato compresso (lossy), buon compromesso qualità/dimensione</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Formato archiviale, massima qualità, file molto grandi</p>
-            <p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Documento PDF</strong></p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Genera un PDF completo con tutte le pagine del registro o documento, in aggiunta ai formati immagine selezionati (o come unico output se nessun formato immagine è selezionato)</p>
-            <h3>4. Seleziona almeno un formato immagine o PDF (puoi sceglierne più di uno)</h3>
-            <h3>5. Clicca "Conferma"</h3>
-            <p>✅ <strong>I formati scelti vengono memorizzati</strong> e pre-selezionati automaticamente alla prossima apertura del programma.</p>
-            <h4>📝 CONSIGLI:</h4>
-            <ul>
-                <li>Per preview/consultazione: JPG (veloce da aprire, minore spazio)</li>
-                <li>Per archivio conservativo: PNG (lossless, compromesso di spazio) o TIFF (massima qualità)</li>
-                <li>Per entrambi: seleziona sia PNG che TIFF</li>
-                <li>Per PDF: seleziona PDF insieme a uno o più formati immagine, oppure seleziona solo PDF per generare esclusivamente il documento PDF senza file immagine separati</li>
-            </ul>
-            <h4>PASSO 2: SELEZIONA CARTELLE OUTPUT</h4>
-            <p>──────────────────────────────────────</p>
-            <h3>1. La finestra cartelle si apre automaticamente dopo la scelta dei formati (quando carichi un file input)</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona cartelle output"</h3>
-            <h3>3. Scegli la MODALITÀ di organizzazione delle cartelle:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella unica per tutti</span> → un'unica cartella per tutti i record (doc e registri)</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartelle separate doc/reg</span> → una cartella per tutti i documenti, una per tutti i registri</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella per ogni record</span> → una cartella distinta per ciascun record nel file input</p>
-            <h3>4. Dopo la scelta della modalità, seleziona le cartelle richieste (1, 2 o N finestre di dialog)</h3>
-            <h3>5. Al termine mostra il riepilogo delle cartelle scelte</h3>
-            <p>✅ <strong>Modalità e cartelle vengono memorizzate</strong>. Alla prossima apertura di un file input, vengono ripristinate automaticamente se compatibili con il numero di record.</p>
-            <p>⚠️ Se il nuovo file input ha un numero diverso di Documenti/Registri rispetto alle cartelle salvate, viene mostrato un avviso e la selezione viene azzerata per richiedere nuove cartelle.</p>
-            <h4>📌 RIEPILOGO MODALITÀ:</h4>
-            <ul>
-                <li><strong>Cartella unica:</strong> Semplice, tutto in un posto. Adatto per elaborazioni veloci o test</li>
-                <li><strong>Separate doc/reg:</strong> Organizzazione per tipo. Default: <code>output/doc/</code> e <code>output/reg/</code></li>
-                <li><strong>Per ogni record:</strong> Massima flessibilità. Puoi usare drive diversi, NAS, cartelle personalizzate</li>
-            </ul>
-            <h4>PASSO 3: AVVIA ELABORAZIONE</h4>
-            <p>─────────────────────────────</p>
-            <h3>1. Clicca Menu → "Output" → "Elabora"</h3>
-            <h3>2. Verifica che:</h3>
-            <p>✓ Almeno 1 formato immagine selezionato</p>
-            <p>✓ Almeno 1 record caricato</p>
-            <p><strong>Se mancano questi requisiti, appare messaggio di errore:</strong></p>
-            <p>❌ "Nessun formato selezionato" → Vai a PASSO 1</p>
-            <p>❌ "Nessun record caricato" → Vai a Caricamento Input (Sezione 4)</p>
-            <h4>📺 FINESTRA DI ELABORAZIONE</h4>
-            <p>Non appena clicchi "Elabora", si apre una finestra modale con: </p>
-            <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window2.webp" alt="Finestra elaborazione in corso" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
-            </div>
-            <h4>📊 ELEMENTI VISIBILI:</h4>
-            <p>1️⃣ TITOLO FINESTRA: "Elaborazione in corso"</p>
-            <ul>
-                <li>Rimane in primo piano finché l'elaborazione non termina</li>
-                <li>Non puoi interagire con il resto della GUI</li>
-            </ul>
-            <p>2️⃣ ETICHETTA PROGRESSO: "Elaborazione record: 2/5 — Nome File"</p>
-            <ul>
-                <li>Mostra: record attualmente elaborato (2) su totale (5)</li>
-                <li>Mostra anche il nome del file/registro in elaborazione</li>
-                <li>Si aggiorna in tempo reale man mano che processa i record</li>
-                <li>Es: "Elaborazione record: 1/3 — Registro Matrimoni 1850"</li>
-            </ul>
-            <p>3️⃣ BARRA DI PROGRESSO: Avanzamento visuale</p>
-            <ul>
-                <li>Formato numerico: "2/5" (numero attuale / totale)</li>
-                <li>Barra colore che avanza da sinistra a destra</li>
-                <li>Raggiunge il 100% (massima larghezza) quando completo</li>
-                <li>NON mostra percentuale, solo numero</li>
-            </ul>
-            <p>4️⃣ PULSANTE [ANNULLA]</p>
-            <ul>
-                <li>Cliccabile durante elaborazione</li>
-                <li>Chiude la finestra di progresso</li>
-                <li>⚠️ L'elaborazione continua in background (non interrompe il download)</li>
-                <li>I file scaricati rimangono nella cartella output selezionata</li>
-            </ul>
-            <h4>🔄 DURANTE L'ELABORAZIONE</h4>
-            <p><strong>Il programma in background:</strong></p>
-            <pre class="file-structure">├─ Scarica immagini dai server IIIF
+<p>Τα μεταδεδομένα παραμένουν στον [όνομα]/ υποφάκελο όπως αποθηκεύτηκαν κατά τη μεταφόρτωση.</p>
+<p><strong>ΣΗΜΑΝΤΙΚΗ ΣΗΜΕΙΩΣΗ: Οργάνωση αρχείων</strong></p>
+<ul>
+<li>Manifest IIIF: επίπεδο ρίζας του φακέλου εξόδου</li>
+<li>Εικόνες (καμβάς), PDF, Sidecar JSON: επίπεδο ρίζας του φακέλου εξόδου</li>
+<li>ΜΟΝΟ τεχνικά και γενεαλογικά μεταδεδομένα: αποθηκεύονται στον υποφάκελο [όνομα]/</li>
+<li>Οι προσωρινοί φάκελοι (tiles_canvas_X/) διαγράφονται αυτόματα όταν τελειώσουν</li>
+<li>Αυτή η δομή σάς επιτρέπει να διαχειρίζεστε πολλές εγγραφές στον ίδιο φάκελο χωρίς σύγχυση</li>
+</ul>
+<p><strong>Παράδειγμα:</strong> Εάν επεξεργαστείτε το "Register1", θα βρείτε:</p>
+<ul>
+<li>manifest_[ID1]_Registro1.json (ανώτατο επίπεδο)</li>
+<li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (κύριο επίπεδο)</li>
+<li>Registro1.pdf (κύριο επίπεδο)</li>
+<li>Registro1/ (υποφάκελος ΜΟΝΟ με γενεαλογικά και τεχνικά μεταδεδομένα)</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. ΕΠΕΞΕΡΓΑΣΙΑ ΚΑΙ ΛΗΨΗ ΕΙΚΟΝΩΝ</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>🎯 ΡΟΗ ΕΠΕΞΕΡΓΑΣΙΑΣ</h4>
+<p>Η ροή εργασιών επεξεργασίας περιλαμβάνει 3 βήματα:</p>
+<h4>ΒΗΜΑ 1: ΕΠΙΛΟΓΗ ΜΟΡΦΩΝ ΕΙΚΟΝΑΣ</h4>
+<p>──────────────────</p>
+<h3>1. Φόρτωση αρχείου εισόδου (Αρχείο εισόδου → Άνοιγμα εισόδου): το παράθυρο μορφών ανοίγει αυτόματα</h3>
+<h3>2. Εναλλακτικά: Κάντε κλικ στο Μενού → "Ρυθμίσεις" → "Επιλογή μορφών εικόνας"</h3>
+<h3>3. Ανοίγει ένα παράθυρο διαλόγου με 3 επιλογές:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Μορφή χωρίς απώλειες, καλύτερη ποιότητα, μεγαλύτερα αρχεία</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Συμπιεσμένη μορφή (απώλεια), καλής ποιότητας συμβιβασμός/dimensione</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Μορφή αρχειοθέτησης, υψηλότερης ποιότητας, πολύ μεγάλα αρχεία</p>
+<p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Έγγραφο PDF</strong></p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Δημιουργήστε ένα πλήρες PDF με όλες τις σελίδες του αρχείου καταγραφής ή του εγγράφου, επιπλέον των επιλεγμένων μορφών εικόνας (ή ως η μόνη έξοδος εάν δεν έχει επιλεγεί μορφή εικόνας)</p>
+<h3>4. Επιλέξτε τουλάχιστον μία μορφή εικόνας ή PDF (μπορείτε να επιλέξετε περισσότερες από μία)</h3>
+<h3>5. Κάντε κλικ στο "Επιβεβαίωση"</h3>
+<p>✅ <strong>Οι επιλεγμένες μορφές αποθηκεύονται</strong> και προεπιλέγεται αυτόματα την επόμενη φορά που θα ανοίξετε το πρόγραμμα.</p>
+<h4>📝 ΣΥΜΒΟΥΛΕΣ:</h4>
+<ul>
+<li>Για προεπισκόπηση/consultazione: JPG (γρήγορο άνοιγμα, λιγότερος χώρος)</li>
+<li>Για συντηρητικό αρχείο: PNG (χωρίς απώλειες, συμβιβασμός χώρου) ή TIFF (μέγιστη ποιότητα)</li>
+<li>Και για τα δύο: επιλέξτε PNG και TIFF</li>
+<li>Για PDF: Επιλέξτε PDF μαζί με μία ή περισσότερες μορφές εικόνας ή επιλέξτε PDF μόνο για να δημιουργήσετε μόνο το έγγραφο PDF χωρίς ξεχωριστά αρχεία εικόνας</li>
+</ul>
+<h4>ΒΗΜΑ 2: ΕΠΙΛΟΓΗ ΦΑΚΕΛΩΝ ΕΞΟΔΟΥ</h4>
+<p>──────────────────</p>
+<h3>1. Το παράθυρο φακέλου ανοίγει αυτόματα αφού επιλέξετε μορφές (όταν φορτώνετε ένα αρχείο εισόδου)</h3>
+<h3>2. Εναλλακτικά: Κάντε κλικ στο Μενού → "Ρυθμίσεις" → "Επιλογή φακέλων εξόδου"</h3>
+<h3>3. Επιλέξτε τη λειτουργία οργάνωσης φακέλων:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Ενιαίος φάκελος για όλους</span> → ένας μόνο φάκελος για όλες τις εγγραφές (έγγραφο και μητρώα)</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Ξεχωριστοί φάκελοι doc/reg</span> → ένας φάκελος για όλα τα έγγραφα, ένας για όλα τα μητρώα</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Φάκελος για κάθε εγγραφή</span> → έναν ξεχωριστό φάκελο για κάθε εγγραφή στο αρχείο εισόδου</p>
+<h3>4. Αφού επιλέξετε τη λειτουργία, επιλέξτε τους απαιτούμενους φακέλους (1, 2 ή N παράθυρα διαλόγου)</h3>
+<h3>5. Στο τέλος εμφανίζει τη σύνοψη των επιλεγμένων φακέλων</h3>
+<p>✅ <strong>Οι λειτουργίες και οι φάκελοι αποθηκεύονται</strong>. Την επόμενη φορά που ανοίγει ένα αρχείο εισόδου, αποκαθίσταται αυτόματα εάν είναι συμβατό με τον αριθμό των εγγραφών.</p>
+<p>⚠️ Εάν το νέο αρχείο εισαγωγής έχει διαφορετικό αριθμό Documents/Registri από τους αποθηκευμένους φακέλους, εμφανίζεται μια προειδοποίηση και η επιλογή επαναφέρεται για να ζητηθούν νέοι φάκελοι.</p>
+<p>🛡️ <strong>Προληπτικός έλεγχος διαδρομών:</strong> Πριν δημιουργήσετε φακέλους ή αρχεία, το ATK-Pro ελέγχει τα αναμενόμενα ονόματα και διαδρομές. Τα ονόματα που δεν είναι συμβατά με το Windows και τα υπερβολικά μεγάλα τμήματα αποκλείουν μόνο την επηρεαζόμενη εγγραφή. Οι προειδοποιήσεις συμβατότητας εμφανίζονται στην τελική περίληψη.</p>
+<p>☁️ <strong>Το OneDrive/SharePoint δεν θεωρείται ως ο προεπιλεγμένος προορισμός.</strong> Τα όριά του εφαρμόζονται μόνο όταν ο επιλεγμένος φάκελος βρίσκεται στην πραγματικότητα κάτω από μια ρίζα OneDrive. Στις υπόλοιπες διαδρομές, το ιστορικό όριο Windows των 260 χαρακτήρων αντιμετωπίζεται ως προληπτική προειδοποίηση και όχι ως αυτόματο μπλοκ.</p>
+<h4>📌 ΣΥΝΟΨΗ ΛΕΙΤΟΥΡΓΙΑΣ:</h4>
+<ul>
+<li><strong>Ενιαίος φάκελος:</strong> Απλά, όλα σε ένα μέρος. Κατάλληλο για γρήγορη επεξεργασία ή δοκιμή</li>
+<li><strong>Ξεχωριστό doc/reg:</strong> Οργάνωση ανά τύπο. Προεπιλογές: <code>output/doc/</code> ε <code>output/reg/</code></li>
+<li><strong>Για κάθε εγγραφή:</strong> Μέγιστη ευελιξία. Μπορείτε να χρησιμοποιήσετε διαφορετικές μονάδες δίσκου, NAS, προσαρμοσμένους φακέλους</li>
+</ul>
+<h4>ΒΗΜΑ 3: ΞΕΚΙΝΗΣΤΕ ΤΗΝ ΕΠΕΞΕΡΓΑΣΙΑ</h4>
+<p>───────────────────────</p>
+<h3>1. Κάντε κλικ στο Μενού → "Έξοδος" → "Διαδικασία"</h3>
+<h3>2. Ελέγξτε ότι:</h3>
+<p>✓ Επιλέχθηκε τουλάχιστον 1 μορφή εικόνας</p>
+<p>✓ Μεταφορτώθηκε τουλάχιστον 1 εγγραφή</p>
+<p><strong>Εάν λείπουν αυτές οι απαιτήσεις, εμφανίζεται ένα μήνυμα σφάλματος:</strong></p>
+<p>❌ "Δεν έχει επιλεγεί μορφή" → Μεταβείτε στο ΒΗΜΑ 1</p>
+<p>❌ "Δεν έχουν φορτωθεί εγγραφές" → Μεταβείτε στη Φόρτωση εισόδου (Ενότητα 1)</p>
+<h4>📺 ΠΑΡΑΘΥΡΟ ΕΠΕΞΕΡΓΑΣΙΑΣ</h4>
+<p>Μόλις κάνετε κλικ στο "Επεξεργασία", ανοίγει ένα παράθυρο με τα εξής: </p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="Παράθυρο επεξεργασίας" src="images/window2.webp" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>📊 ΟΡΑΤΑ ΣΤΟΙΧΕΙΑ:</h4>
+<p>1️⃣ ΤΙΤΛΟΣ ΠΑΡΑΘΥΡΟΥ: "Επεξεργασία"</p>
+<ul>
+<li>Παραμένει στο προσκήνιο μέχρι να ολοκληρωθεί η επεξεργασία</li>
+<li>Δεν μπορείτε να αλληλεπιδράσετε με το υπόλοιπο GUI</li>
+</ul>
+<p>2️⃣ ΕΤΙΚΕΤΑ ΠΡΟΟΔΟΥ: "Επεξεργασία εγγραφών: 2/5 — Όνομα αρχείου"</p>
+<ul>
+<li>Εμφάνιση: τρέχουσα επεξεργασμένη εγγραφή (2) από το σύνολο (5)</li>
+<li>Εμφανίζει επίσης το όνομα του αρχείου /registro που υποβάλλεται σε επεξεργασία</li>
+<li>Ενημερώνεται σε πραγματικό χρόνο καθώς επεξεργάζεται εγγραφές</li>
+<li>Π.χ.: "Επεξεργασία αρχείων: 1/3 — Μητρώο γάμου 1850"</li>
+</ul>
+<p>3️⃣ BAR PROGRESS: Οπτική πρόοδος</p>
+<ul>
+<li>Μορφή αριθμού: "2/5" (τρέχων / συνολικός αριθμός)</li>
+<li>Η χρωματική γραμμή προχωρά από αριστερά προς τα δεξιά</li>
+<li>Φτάνει στο 100% (μέγιστο πλάτος) όταν είναι γεμάτο</li>
+<li>ΔΕΝ δείχνει ποσοστό, μόνο αριθμό</li>
+</ul>
+<p>4️⃣ ΚΟΥΜΠΙ [ΑΚΥΡΩΣΗ]</p>
+<ul>
+<li>Δυνατότητα κλικ κατά την επεξεργασία</li>
+<li>Σας ζητά να ακυρωθεί ολόκληρη η παρτίδα και κλείνει το παράθυρο προόδου</li>
+<li>Ο τερματισμός είναι συνεργάσιμος: μπορεί να περιμένει την ολοκλήρωση του μεμονωμένου αιτήματος δικτύου που βρίσκεται ήδη σε εξέλιξη</li>
+<li>Κανένα αποτέλεσμα από την ακυρωμένη συνεδρία δεν δημοσιεύεται στον επιλεγμένο φάκελο. τα προϋπάρχοντα αρχεία παραμένουν αμετάβλητα</li>
+</ul>
+<h4>🔄 ΚΑΤΑ ΤΗΝ ΕΠΕΞΕΡΓΑΣΙΑ</h4>
+<p><strong>Το πρόγραμμα παρασκηνίου:</strong></p>
+<pre class="file-structure">├─ Scarica immagini dai server IIIF
 ├─ Legge manifest per canvas ID
 ├─ Ricostruisce tile in immagini complete
 ├─ Converte nei formati selezionati (PNG, JPG, TIFF)
 └─ Salva nelle cartelle scelte</pre>
-            <p><strong>La GUI mostra progress in tempo reale:</strong></p>
-            <ul>
-                <li>Ogni 2-3 secondi aggiorna numero record</li>
-                <li>Nessun blocco: interfaccia rimane reattiva</li>
-                <li>Puoi annullare in qualsiasi momento</li>
-            </ul>
-            <h4>⚠️ COMPORTAMENTO SE CLICCHI ANNULLA:</h4>
-            <h3>1. Elaborazione si ferma subito</h3>
-            <h3>2. File parziali vengono rimossi</h3>
-            <h3>3. Finestra si chiude</h3>
-            <h3>4. Puoi ricominciare da Menu → Output → Elabora</h3>
-            <h4>📋 PDF — GENERAZIONE AUTOMATICA DURANTE L'ELABORAZIONE</h4>
-            <p>Se hai selezionato <strong>PDF</strong> nella maschera di scelta formati (PASSO 1), il PDF viene generato automaticamente al termine del download di ogni registro o documento, senza nessuna finestra di conferma aggiuntiva.</p>
-            <h4>📌 COMPORTAMENTO:</h4>
-            <ul>
-                <li>✅ <strong>PDF selezionato nella maschera formati:</strong> il PDF viene generato automaticamente al termine del download; non viene chiesta nessuna conferma aggiuntiva</li>
-                <li>❌ <strong>PDF non selezionato:</strong> solo le immagini nei formati scelti, nessun PDF</li>
-            </ul>
-            <p>Caratteristiche del PDF generato:</p>
-            <ul>
-                <li>Nome file: <code>[nome].pdf</code>, senza suffissi aggiuntivi (es. <code>Registro Matrimoni 1920.pdf</code>)</li>
-                <li>Salvato nella cartella output scelta, allo stesso livello delle immagini</li>
-                <li>Pagine in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N)</li>
-                <li>Se un canvas non è scaricabile, viene inserita una pagina <em>placeholder</em> localizzata con link diretto al canvas originale su Antenati</li>
-                <li>Nessun file temporaneo rimane nella cartella output al termine della generazione</li>
-            </ul>
-            <h4>⚠️ COSA NON FARE DURANTE ELABORAZIONE:</h4>
-            <ul>
-                <li>❌ Non chiudere il programma (perde file parziali)</li>
-                <li>❌ Non staccare disco esterno (errore salvataggio)</li>
-                <li>❌ Non spegnere PC/laptop</li>
-                <li>❌ Non staccare internet (arresta download)</li>
-            </ul>
-            <h4>✅ COSA PUOI FARE:</h4>
-            <ul>
-                <li>✓ Aspettare che finisca (è la procedura normale)</li>
-                <li>✓ Cliccare Annulla se urgente</li>
-                <li>✓ Usare il PC per altre cose normalmente (minimizza solo la finestra)</li>
-            </ul>
-            <h4>🎉 FINE ELABORAZIONE</h4>
-            <p>Quando tutti i record sono stati elaborati:</p>
-            <h3>1. La finestra di progresso si chiude automaticamente</h3>
-            <h3>2. Appare un messaggio: "Operazione completata"</h3>
-            <h3>3. Clicca OK per chiudere il messaggio</h3>
-            <h3>4. La finestra di progresso scompare completamente</h3>
-            <p>Dopo:</p>
-            <ul>
-                <li>Visualizza file output nelle cartelle che hai selezionato al PASSO 2</li>
-                <li>Ogni documento/registro ha propria sottocartella all'interno della cartella da te scelta</li>
-                <li>Immagini sono pronte per uso (visualizzazione, stampa, archiviazione, PDF)</li>
-            </ul>
-            <h4>✅ OUTPUT GENERATO:</h4>
-            <p>Per ogni record elaborato troverai:</p>
-            <ul>
-                <li>Immagini nei formati selezionati (PNG, JPG, TIFF)</li>
-                <li>manifest_[ID]_[nome].json → Manifest IIIF originale con metadati strutturati</li>
-                <li>[nome]_genealogico.json → Metadati genealogici (date, luoghi, nomi, comuni, province)</li>
-                <li>[nome]_tecnico.json → Metadati tecnici (numero canvas, lista canvas ID, diritti, file generati)</li>
-                <li>[nome].json → Sidecar JSON per ogni immagine (metadati EXIF embedded)</li>
-            </ul>
-            <h4>📝 NOTA SUI NOMI FILE:</h4>
-            <ul>
-                <li>Il [nome] base viene preso direttamente dal file input.txt (riga utente)</li>
-                <li>Se scrivi nel file input "Registro Matrimoni 1920", i file saranno:
+<p><strong>Το GUI δείχνει την πρόοδο σε πραγματικό χρόνο:</strong></p>
+<ul>
+<li>Κάθε 2-3 δευτερόλεπτα ενημερώνεται ο αριθμός ρεκόρ</li>
+<li>Χωρίς παγώσεις: η διεπαφή παραμένει αποκριτική</li>
+<li>Μπορείτε να ακυρώσετε ανά πάσα στιγμή</li>
+</ul>
+<h4>⚠️ ΣΥΜΠΕΡΙΦΟΡΑ ΑΝ ΚΑΝΕΤΕ ΚΛΙΚ ΑΚΥΡΩΣΗ:</h4>
+<h3>1. Ζητείται συνεργατική διακοπή λειτουργίας ολόκληρης της παρτίδας</h3>
+<h3>2. Όλη η προσωρινή παραγωγή που παράγεται από την ακυρωμένη παρτίδα διαγράφεται</h3>
+<h3>3. Τα αρχεία που υπάρχουν ήδη στους φακέλους εξόδου πριν από την εκκίνηση παραμένουν αμετάβλητα</h3>
+<h3>4. Μπορείτε να ξεκινήσετε ξανά από το Μενού → Έξοδος → Διαδικασία</h3>
+<h4>📋 PDF — ΑΥΤΟΜΑΤΗ ΠΑΡΑΓΩΓΗ ΚΑΤΑ ΤΗΝ ΕΠΕΞΕΡΓΑΣΙΑ</h4>
+<p>Εάν έχετε επιλέξει <strong>PDF</strong> στη μάσκα επιλογής μορφής (ΒΗΜΑ 1), το PDF δημιουργείται αυτόματα στο τέλος της λήψης κάθε μητρώου ή εγγράφου, χωρίς πρόσθετο παράθυρο επιβεβαίωσης.</p>
+<h4>📌 ΣΥΜΠΕΡΙΦΟΡΑ:</h4>
+<ul>
+<li>✅ <strong>PDF επιλεγμένο στη μάσκα μορφής:</strong> το PDF δημιουργείται αυτόματα στο τέλος της λήψης. δεν ζητείται πρόσθετη επιβεβαίωση</li>
+<li>❌ <strong>PDF δεν έχει επιλεγεί:</strong> μόνο εικόνες στις επιλεγμένες μορφές, όχι PDF</li>
+</ul>
+<p>Χαρακτηριστικά του παραγόμενου PDF:</p>
+<ul>
+<li>Όνομα αρχείου: <code>[nome].pdf</code>, χωρίς πρόσθετα επιθήματα (π.χ. <code>Registro Matrimoni 1920.pdf</code>)</li>
+<li>Αποθηκεύεται στον επιλεγμένο φάκελο εξόδου, στο ίδιο επίπεδο με τις εικόνες</li>
+<li>Σελίδες σε αύξουσα αριθμητική σειρά (καμβάς 1 → καμβάς 2 → … → καμβάς N)</li>
+<li>Εάν δεν υπάρχει δυνατότητα λήψης ενός καμβά, εισάγεται μια σελίδα <em>κράτησης θέσης</em> εντοπισμένο με απευθείας σύνδεσμο στον αρχικό καμβά στο Ancestors</li>
+<li>Δεν παραμένουν προσωρινά αρχεία στο φάκελο εξόδου μετά την ολοκλήρωση της δημιουργίας</li>
+</ul>
+<h4>⚠️ ΤΙ ΝΑ ΜΗΝ ΚΑΝΕΤΕ ΚΑΤΑ ΤΗΝ ΕΠΕΞΕΡΓΑΣΙΑ:</h4>
+<ul>
+<li>❌ Μην κλείσετε το πρόγραμμα (χάνει μερικά αρχεία)</li>
+<li>❌ Μην αφαιρείτε τον εξωτερικό δίσκο (σφάλμα αποθήκευσης)</li>
+<li>❌ Μην απενεργοποιείτε το PC/laptop</li>
+<li>❌ Μην αποσυνδέετε το διαδίκτυο (διακοπή λήψης)</li>
+</ul>
+<h4>✅ ΤΙ ΜΠΟΡΕΙΤΕ ΝΑ ΚΑΝΕΤΕ:</h4>
+<ul>
+<li>✓ Περιμένετε να τελειώσει (αυτή είναι κανονική διαδικασία)</li>
+<li>✓ Κάντε κλικ στην Ακύρωση εάν είναι επείγον</li>
+<li>✓ Χρησιμοποιήστε τον υπολογιστή για άλλα πράγματα κανονικά (απλώς ελαχιστοποιήστε το παράθυρο)</li>
+</ul>
+<h4>🎉 ΤΕΛΟΣ ΕΠΕΞΕΡΓΑΣΙΑΣ</h4>
+<p>Όταν έχουν υποβληθεί σε επεξεργασία όλες οι εγγραφές:</p>
+<h3>1. Το παράθυρο προόδου κλείνει αυτόματα</h3>
+<h3>2. Εμφανίζεται ένα μήνυμα: "Η λειτουργία ολοκληρώθηκε"</h3>
+<h3>3. Κάντε κλικ στο OK για να κλείσετε το μήνυμα</h3>
+<h3>4. Το παράθυρο προόδου εξαφανίζεται εντελώς</h3>
+<p>Μετά από:</p>
+<ul>
+<li>Προβάλετε τα αρχεία εξόδου στους φακέλους που επιλέξατε στο ΒΗΜΑ 2</li>
+<li>Κάθε έγγραφο/registro έχει τον δικό του υποφάκελο μέσα στο φάκελο που επιλέξατε</li>
+<li>Οι εικόνες είναι έτοιμες για χρήση (προβολή, εκτύπωση, αρχειοθέτηση, PDF)</li>
+</ul>
+<h4>✅ ΠΑΡΑΓΩΓΗ ΕΞΟΔΟΣ:</h4>
+<p>Για κάθε επεξεργασμένη εγγραφή θα βρείτε:</p>
+<ul>
+<li>Εικόνες σε επιλεγμένες μορφές (PNG, JPG, TIFF)</li>
+<li>manifest_[ID]_[όνομα].json → Πρωτότυπο Manifest IIIF με δομημένα μεταδεδομένα</li>
+<li>[όνομα]_genealogico.json → Γενεαλογικά μεταδεδομένα (ημερομηνίες, τόποι, ονόματα, δήμοι, επαρχίες)</li>
+<li>[όνομα]_tecnico.json → Τεχνικά μεταδεδομένα (αριθμός καμβά, λίστα αναγνωριστικών καμβά, δικαιώματα, αρχεία που δημιουργούνται)</li>
+<li>[όνομα].json → Sidecar JSON για κάθε εικόνα (ενσωματωμένα μεταδεδομένα EXIF)</li>
+</ul>
+<h4>📝 ΣΗΜΕΙΩΣΗ ΓΙΑ ΤΑ ΟΝΟΜΑΤΑ ΑΡΧΕΙΩΝ:</h4>
+<ul>
+<li>Η βάση [όνομα] λαμβάνεται απευθείας από το αρχείο input.txt (γραμμή χρήστη)</li>
+<li>Εάν γράψετε στο αρχείο εισόδου "Marriage Registry 1920", τα αρχεία θα είναι:
                     <ul>
-                        <li>Registro Matrimoni 1920_canvas_1.jpg</li>
-                        <li>Registro Matrimoni 1920_genealogico.json</li>
-                        <li>Registro Matrimoni 1920_tecnico.json</li>
-                    </ul>
-                </li>
-                <li>I suffissi JSON rimangono in EN (_genealogico, _tecnico) per compatibilità</li>
-                <li>Puoi usare nomi in qualunque lingua nel file input (IT, EN, misto)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>6. PDF PER REGISTRI E DOCUMENTI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>COME ATTIVARE LA GENERAZIONE PDF</h4>
-            <p>La generazione del PDF si attiva selezionando la casella <strong>PDF</strong> nella maschera di scelta formati (Menu → Impostazioni → "Seleziona formati immagine").</p>
-            <p>Puoi combinare PDF con uno o più formati immagine (es. PDF + PNG), oppure selezionare solo PDF per ottenere esclusivamente il documento senza file immagine separati.</p>
-            <h4>📄 CARATTERISTICHE DEL PDF GENERATO</h4>
-            <ul>
-                <li><strong>Nome file:</strong> il PDF è denominato semplicemente <code>[nome].pdf</code>, senza suffissi aggiuntivi — ad esempio <code>Registro Matrimoni 1920.pdf</code></li>
-                <li><strong>Posizione:</strong> salvato nella cartella output scelta, allo stesso livello delle immagini: <code>[cartella_scelta]\[nome].pdf</code></li>
-                <li><strong>Ordine pagine:</strong> le pagine sono sempre in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N), indipendentemente dall'ordine in cui i tile vengono scaricati</li>
-                <li><strong>Pagine placeholder:</strong> se un canvas non è disponibile (errore di rete o risorsa temporaneamente non raggiungibile), al suo posto viene inserita automaticamente una pagina <em>placeholder</em> localizzata nella lingua selezionata. La pagina placeholder contiene:
+<li>Ληξιαρχείο Γάμων 1920_canvas_1.jpg</li>
+<li>Ληξιαρχείο Γάμων 1920_genealogico.json</li>
+<li>Ληξιαρχείο Γάμων 1920_tecnico.json</li>
+</ul>
+</li>
+<li>Τα επιθήματα JSON παραμένουν στο EN (_genealogical, _technical) για συμβατότητα</li>
+<li>Μπορείτε να χρησιμοποιήσετε ονόματα σε οποιαδήποτε γλώσσα στο αρχείο εισόδου (IT, EN, μικτή)</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3. PDF ΓΙΑ ΑΡΧΕΙΑ ΚΑΙ ΕΓΓΡΑΦΑ</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>ΠΩΣ ΝΑ ΕΝΕΡΓΟΠΟΙΗΣΕΤΕ ΤΗ ΓΕΝΙΑ PDF</h4>
+<p>Η δημιουργία του PDF ενεργοποιείται επιλέγοντας το πλαίσιο <strong>PDF</strong> στη μάσκα επιλογής μορφής (Μενού → Ρυθμίσεις → "Επιλογή μορφών εικόνας").</p>
+<p>Μπορείτε να συνδυάσετε το PDF με μία ή περισσότερες μορφές εικόνας (π.χ. PDF + PNG) ή να επιλέξετε μόνο PDF για να αποκτήσετε αποκλειστικά το έγγραφο χωρίς ξεχωριστά αρχεία εικόνας.</p>
+<h4>📄 ΧΑΡΑΚΤΗΡΙΣΤΙΚΑ ΤΟΥ ΔΗΜΙΟΥΡΓΗΜΕΝΟΥ PDF</h4>
+<ul>
+<li><strong>Όνομα αρχείου:</strong> το PDF ονομάζεται απλά <code>[nome].pdf</code>, χωρίς πρόσθετα επιθήματα — π.χ <code>Registro Matrimoni 1920.pdf</code></li>
+<li><strong>Τοποθεσία:</strong> αποθηκεύεται στον επιλεγμένο φάκελο εξόδου, στο ίδιο επίπεδο με τις εικόνες: <code>[cartella_scelta]\[nome].pdf</code></li>
+<li><strong>Σειρά σελίδας:</strong> οι σελίδες είναι πάντα σε αύξουσα αριθμητική σειρά (καμβάς 1 → καμβάς 2 → … → καμβάς N), ανεξάρτητα από τη σειρά λήψης των πλακιδίων</li>
+<li><strong>Σελίδες κράτησης θέσης:</strong> εάν ένας καμβάς δεν είναι διαθέσιμος (σφάλμα δικτύου ή πόρος προσωρινά μη προσβάσιμος), μια σελίδα εισάγεται αυτόματα στη θέση της <em>κράτησης θέσης</em> εντοπισμένο στην επιλεγμένη γλώσσα. Η σελίδα κράτησης θέσης περιέχει:
                     <ul>
-                        <li>Un testo di avviso localizzato (es. "Immagine non disponibile")</li>
-                        <li>Il link diretto al canvas originale su Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>), così da poter consultare la fonte in modo semplice</li>
-                    </ul>
-                    In questo modo viene sempre generato il PDF, con tutte le informazioni necessarie a completarlo in caso di immagini non scaricate.
+<li>Ένα τοπικό κείμενο προειδοποίησης (π.χ. "Η εικόνα δεν είναι διαθέσιμη")</li>
+<li>Ο άμεσος σύνδεσμος στον αρχικό καμβά στους Προγόνους (<code>https://antenati.cultura.gov.it/ark:/…</code>), ώστε να μπορείτε να συμβουλευτείτε την πηγή εύκολα</li>
+</ul>
+                    Με αυτόν τον τρόπο δημιουργείται πάντα το PDF, με όλες τις απαραίτητες πληροφορίες για την ολοκλήρωσή του σε περίπτωση μη λήψης εικόνων.
                 </li>
-                <li><strong>Pulizia automatica:</strong> i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine del processo. Nella cartella output rimangono solo le immagini nei formati scelti, il PDF finale, i manifest e i metadati</li>
-            </ul>
-            <h4>🚫 Se PDF non è selezionato:</h4>
-            <ul>
-                <li>Solo le immagini vengono scaricate nei formati selezionati</li>
-                <li>Nessun PDF generato</li>
-            </ul>
-            </div>
-            <div class="section">
-        <h2>&#128204; FUNZIONALIT&#192; DISPONIBILI E PIANIFICATE</h2>
-        <p>Il menu &ldquo;Servizi&rdquo; contiene 5 funzioni: 4 gi&agrave; disponibili, 1 pianificata per versioni future.</p>
-
-        
-
-        <div class="section-box">
-            <h3>1&#65039;&#8419; VISUALIZZAZIONE IMMAGINI &#9989;</h3>
-            <p>Viewer integrato per immagini genealogiche:</p>
-            <ul>
-                <li>Formati supportati: JPG, PNG, TIFF (inclusi TIFF multi-pagina con navigazione avanti/indietro)</li>
-                <li>Zoom con rotella del mouse e pulsanti dedicati</li>
-                <li>Pan con trascinamento del mouse</li>
-                <li>Modalit&agrave; &ldquo;Adatta alla finestra&rdquo; e &ldquo;1:1 pixel&rdquo;</li>
-                <li>Sidecar JSON affiancato all&apos;immagine (EXIF e metadati tecnici)</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_03_visualizzazione_immagini.html">Vedi Guida Visualizzazione Immagini</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>2&#65039;&#8419; VISUALIZZAZIONE METADATI JSON &#9989;</h3>
-            <p>Viewer ad albero per metadati strutturati:</p>
-            <ul>
-                <li>Apertura diretta di file <code>_genealogico.json</code> e <code>_tecnico.json</code></li>
-                <li>Visualizzazione ad albero espandibile</li>
-                <li>Sezioni: dati genealogici, metadati tecnici, EXIF dalle immagini</li>
-                <li>Anteprima immagine abbinata affiancata al pannello metadati</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_04_visualizzazione_metadati.html">Vedi Guida Visualizzazione Metadati JSON</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>3&#65039;&#8419; OCR AVANZATO &#9989;</h3>
-            <p>Trattamento OCR avanzato tramite LLM Vision:</p>
-            <ul>
-                <li>Estrazione testo da documenti antichi (inclusi manoscritti in italiano ottocentesco e latino)</li>
-                <li>Mantenimento della struttura e dei riferimenti del layout (TEI XML)</li>
-                <li>Riconoscimento e pulizia automatica dei dati strutturati (es. tabelle, ruoli)</li>
-                <li>Estrazione di entit&agrave; (nomi, date, relazioni) in formato JSON navigabile</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_05_ocr_avanzato.html">Vedi Guida OCR Avanzato</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>4&#65039;&#8419; TRADUZIONE &#9989;</h3>
-            <p>Traduzione contestuale dei testi estratti:</p>
-            <ul>
-                <li>Traduzione automatica in 20 lingue supportate</li>
-                <li>Gestione della formattazione e del layout originale</li>
-                <li>Possibilit&agrave; di alternare il testo originale e il testo tradotto</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_06_traduzione.html">Vedi Guida Traduzione</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>5&#65039;&#8419; ESPORTAZIONE GEDCOM</h3>
-            <p>Esportazione in formati genealogici:</p>
-            <ul>
-                <li>GEDCOM (standard genealogico internazionale)</li>
-                <li>Interoperabilit&agrave; con software genealogici: Ancestry, Family Historian, Family Tree Maker,
-                Findmypast, FamilySearch, Geni, Geneanet, Gramps, Legacy Family Tree, MyHeritage,
-                Reunion (macOS), RootsMagic, WikiTree</li>
-            </ul>
-            <p style="font-style:italic;color:#7a5c3b;margin-top:0.6rem;">
-            &#128204; <em>Nota: L&apos;elencazione dei software &egrave; puramente indicativa e non
-            vincolante allo sviluppo dell&apos;interoperabilit&agrave; con ciascuna piattaforma.</em></p>
-            <p style="margin-top:0.6rem;"><strong>Status:</strong> &#128302; Pianificata &ndash;
-            <a href="guida_07_esportazione_gedcom.html">Vedi Guida GEDCOM</a></p>
-        </div>
-    </div>
-            <div class="section-box">
-            <h3>9. CARTELLE E FILE OUTPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📂 STRUTTURA OUTPUT</h4>
-            <p>Quando elabori un record IIIF, ATK-Pro salva i file nella cartella che hai scelto nel PASSO 2 (Seleziona cartella output).</p>
-            <h4>STRUTTURA ORGANIZZATA PER RECORD:</h4>
-            <pre class="file-structure">[cartella_output]/
+<li><strong>Αυτόματος καθαρισμός:</strong> τα προσωρινά αρχεία που χρησιμοποιούνται για τη δημιουργία του PDF διαγράφονται αυτόματα στο τέλος της διαδικασίας. Μόνο οι εικόνες στις επιλεγμένες μορφές, το τελικό PDF, οι δηλώσεις και τα μεταδεδομένα παραμένουν στο φάκελο εξόδου</li>
+</ul>
+<h4>🚫 Εάν δεν έχει επιλεγεί το PDF:</h4>
+<ul>
+<li>Γίνεται λήψη μόνο εικόνων στις επιλεγμένες μορφές</li>
+<li>Δεν δημιουργήθηκε PDF</li>
+</ul>
+</div>
+<div class="section">
+<h2>4. 📌 ΔΙΑΘΕΣΙΜΕΣ ΧΑΡΑΚΤΗΡΙΣΤΙΚΕΣ</h2>
+<p>Το μενού "Υπηρεσίες" περιέχει τις λειτουργικές λειτουργίες του v3: αναζήτηση με τη βοήθεια AI, προβολή εικόνων, προβολή μεταδεδομένων JSON, OCR Advanced, Μετάφραση OCR και Εξαγωγή GEDCOM.</p>
+<div class="section-box">
+<h3>1️⃣ ΑΝΑΖΗΤΗΣΗ ΜΕ ΒΟΗΘΗΣΗ AI ✅</h3>
+<p>Βοηθός για τον καθορισμό στρατηγικών γενεαλογικής έρευνας:</p>
+<ul>
+<li>Μετατρέψτε τα επώνυμα, τους τόπους, τις περιόδους και τους στόχους σε ερευνητικούς δυνητικούς πελάτες</li>
+<li>Προτείνει πύλες, φίλτρα και παραδείγματα ερωτημάτων για μη αυτόματο έλεγχο</li>
+<li>Υποστηρίζει ιταλικά, ιταλόφωνα, μεταναστευτικά και διεθνή σενάρια</li>
+<li>Επιτρέπει προσωπικές σημειώσεις, σύγκριση πολλών παρόχων και αποθήκευση αποτελεσμάτων</li>
+</ul>
+<p><strong>Κατάσταση:</strong> ✅ Διαθέσιμο -
+            <a href="guida_03_ricerca_assistita_ai.html">Ανατρέξτε στον Οδηγό αναζήτησης με τη βοήθεια AI</a></p>
+</div>
+<div class="section-box">
+<h3>2️⃣ ΠΡΟΒΟΛΗ ΕΙΚΟΝΑΣ ✅</h3>
+<p>Ενσωματωμένο πρόγραμμα προβολής εικόνων γενεαλογίας:</p>
+<ul>
+<li>Υποστηριζόμενες μορφές: JPG, PNG, TIFF (συμπεριλαμβανομένης πολυσέλιδης πλοήγησης TIFF προς τα εμπρός /indietro)</li>
+<li>Ζουμ με τον τροχό του ποντικιού και τα ειδικά κουμπιά</li>
+<li>Μετακίνηση με σύρσιμο του ποντικιού</li>
+<li>Λειτουργίες "Fit to window" και "1:1 pixel".</li>
+<li>Sidecar JSON δίπλα δίπλα με εικόνα (EXIF και τεχνικά μεταδεδομένα)</li>
+</ul>
+<p><strong>Κατάσταση:</strong> ✅ Διαθέσιμο -
+            <a href="guida_04_visualizzazione_immagini.html">Δείτε τον Οδηγό προβολής εικόνων</a></p>
+</div>
+<div class="section-box">
+<h3>3️⃣ ΠΡΟΒΟΛΗ ΜΕΤΑΔΕΔΟΜΕΝΩΝ JSON ✅</h3>
+<p>Πρόγραμμα προβολής δέντρου για δομημένα μεταδεδομένα:</p>
+<ul>
+<li>Άμεσο άνοιγμα αρχείων <code>_genealogico.json</code> ε <code>_tecnico.json</code></li>
+<li>Επεκτάσιμη προβολή δέντρου</li>
+<li>Ενότητες: γενεαλογικά δεδομένα, τεχνικά μεταδεδομένα, EXIF από εικόνες</li>
+<li>Αντιστοιχισμένη προεπισκόπηση εικόνας δίπλα-δίπλα στον πίνακα μεταδεδομένων</li>
+</ul>
+<p><strong>Κατάσταση:</strong> ✅ Διαθέσιμο -
+            <a href="guida_05_visualizzazione_metadati.html">Δείτε τον Οδηγό προβολής μεταδεδομένων JSON</a></p>
+</div>
+<div class="section-box">
+<h3>4️⃣ OCR ADVANCED ✅</h3>
+<p>Προηγμένη θεραπεία OCR μέσω LLM Vision:</p>
+<ul>
+<li>Εξαγωγή κειμένου από αρχαία έγγραφα (συμπεριλαμβανομένων χειρογράφων στα ιταλικά και στα λατινικά του 19ου αιώνα)</li>
+<li>Διατήρηση της δομής της διάταξης και των αναφορών (TEI XML)</li>
+<li>Αυτόματη αναγνώριση και καθαρισμός δομημένων δεδομένων (π.χ. πίνακες, ρόλοι)</li>
+<li>Εξαγωγή οντοτήτων (ονόματα, ημερομηνίες, σχέσεις) σε πλοηγήσιμη μορφή JSON</li>
+</ul>
+<p><strong>Κατάσταση:</strong> ✅ Διαθέσιμο -
+            <a href="guida_06_ocr_avanzato.html">Δείτε τον Οδηγό για προχωρημένους OCR</a></p>
+</div>
+<div class="section-box">
+<h3>5️⃣ ΜΕΤΑΦΡΑΣΗ OCR ✅</h3>
+<p>Μετάφραση με βάση τα συμφραζόμενα εξαγόμενων ή μεταγραφόμενων κειμένων:</p>
+<ul>
+<li>Μετάφραση κειμένων OCR, μη αυτόματες μεταγραφές και αρχεία TXT</li>
+<li>Χρήση τύπων εγγράφων, γλωσσαρίου και περιβάλλοντος</li>
+<li>Ρυθμιζόμενος πάροχος AI, προαιρετικό πρότυπο και Key Vault</li>
+<li>Επεξεργάσιμη έξοδος TXT ή DOCX</li>
+</ul>
+<p><strong>Κατάσταση:</strong> ✅ Διαθέσιμο -
+            <a href="guida_07_traduzione.html">Δείτε τον Οδηγό μετάφρασης OCR</a></p>
+</div>
+<div class="section-box">
+<h3>6️⃣ ΕΞΑΓΩΓΗ GEDCOM ✅</h3>
+<p>Υποβοηθούμενη γενεαλογική ανάλυση και εξαγωγή GEDCOM:</p>
+<ul>
+<li>Καθολική είσοδος με τη μέθοδο Auto-Discovery, Vision AI ή Refinery LLM</li>
+<li>Δυνατότητα αύξησης μιας υπάρχουσας βάσης GEDCOM ή CSV</li>
+<li>Παλαιογραφικές σημειώσεις και τυπολογίες τεκμηρίωσης για την καθοδήγηση της εξαγωγής</li>
+<li>Δημιουργία αρχείου <code>genealogia_*.ged</code> να ελεγχθεί πριν από τη χρήση</li>
+</ul>
+<p style="margin-top:0.6rem;"><strong>Κατάσταση:</strong> ✅ Διαθέσιμο -
+            <a href="guida_08_esportazione_gedcom.html">Δείτε τον Οδηγό GEDCOM</a></p>
+</div>
+</div>
+<div class="section-box">
+<h3>5. ΦΑΚΕΛΟΙ ΚΑΙ ΑΡΧΕΙΑ ΕΞΟΔΟΥ</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>📂 ΔΟΜΗ ΕΞΟΔΟΥ</h4>
+<p>Όταν επεξεργάζεστε μια εγγραφή IIIF, το ATK-Pro αποθηκεύει τα αρχεία στο φάκελο που επιλέξατε στο ΒΗΜΑ 2 (Επιλογή φακέλου εξόδου).</p>
+<h4>ΔΟΜΗ ΟΡΓΑΝΩΜΕΝΗ ΑΠΟ ΚΑΤΑΓΡΑΦΗ:</h4>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
 ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite (una per pagina)
 ├─ [nome]_canvas_2.jpg/.png/.tif
@@ -726,9 +752,9 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ [nome]/                           ← Sottocartella SOLO per metadati
    ├─ [nome]_genealogico.json        ← Metadati genealogici
    └─ [nome]_tecnico.json            ← Metadati tecnici</pre>
-            <h4>MULTI-RECORD NELLA STESSA CARTELLA:</h4>
-            <p>Se elabori 3 record nella stessa cartella, la struttura diventa:</p>
-            <pre class="file-structure">[cartella_output]/
+<h4>ΠΟΛΥ ΕΓΓΡΑΦΗ ΣΤΟΝ ΙΔΙΟ ΦΑΚΕΛΟ:</h4>
+<p>Εάν επεξεργαστείτε 3 εγγραφές στον ίδιο φάκελο, η δομή γίνεται:</p>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID1]_Registro1.json
 ├─ Registro1_canvas_1.jpg
 ├─ Registro1_canvas_2.jpg
@@ -752,36 +778,32 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ Registro3/
     ├─ Registro3_genealogico.json
     └─ Registro3_tecnico.json</pre>
-            <h4>📌 NOTE SULLA STRUTTURA:</h4>
-            <ul>
-                <li>Manifest IIIF, Immagini, PDF, Sidecar JSON: nel livello principale</li>
-                <li>SOLO metadati tecnici e genealogici: in sottocartelle [nome]/ (uno per record)</li>
-                <li>Le cartelle temporanee (<code>tiles_canvas_X/</code>) e i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine dell'elaborazione: nella cartella output non rimane nessun file di lavoro intermedio</li>
-                <li>Questa organizzazione consente di gestire molteplici record nella stessa cartella senza confusione tra file</li>
-            </ul>
-            <h4>📋 CONVENZIONE DI DENOMINAZIONE:</h4>
-            <ul>
-                <li>Manifest: manifest_[ID]_[nome].json</li>
-                <li>Immagini: [nome]_canvas_1, [nome]_canvas_2, ... [nome]_canvas_N</li>
-                <li>JSON metadati: [nome]_genealogico.json, [nome]_tecnico.json</li>
-                <li>JSON immagini: [nome].json (per ogni canvas)</li>
-                <li>PDF: [nome].pdf</li>
-            </ul>
-            </div>
-            
-        
-                </div>
-        
-    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
+<h4>📌 ΣΗΜΕΙΩΣΕΙΣ ΓΙΑ ΤΗ ΔΟΜΗ:</h4>
+<ul>
+<li>Manifest IIIF, Εικόνες, PDF, Sidecar JSON: στο κύριο επίπεδο</li>
+<li>ΜΟΝΟ τεχνικά και γενεαλογικά μεταδεδομένα: σε [όνομα]/ υποφακέλους (ένας ανά εγγραφή)</li>
+<li>Προσωρινοί φάκελοι (<code>tiles_canvas_X/</code>) και τα προσωρινά αρχεία που χρησιμοποιούνται για τη δημιουργία του PDF διαγράφονται αυτόματα στο τέλος της επεξεργασίας: κανένα ενδιάμεσο αρχείο εργασίας δεν παραμένει στο φάκελο εξόδου</li>
+<li>Αυτή η οργάνωση σάς επιτρέπει να διαχειρίζεστε πολλές εγγραφές στον ίδιο φάκελο χωρίς σύγχυση αρχείων</li>
+</ul>
+<h4>📋 ΣΥΜΒΑΣΗ ΟΝΟΜΑΣΙΑΣ:</h4>
+<ul>
+<li>Μανιφέστο: manifest_[ID]_[όνομα].json</li>
+<li>Εικόνες: [name]_canvas_1, [name]_canvas_2, ... [name]_canvas_N</li>
+<li>JSON μεταδεδομένα: [όνομα]_genealogico.json, [όνομα]_tecnico.json</li>
+<li>Εικόνες JSON: [όνομα].json (για κάθε καμβά)</li>
+<li>PDF: [όνομα].pdf</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">← Mod.01 — Εγκατάσταση, εκκίνηση και διεπαφή</a>
+<a class="nav-button" href="guida.html">🏠 Κύριο Ευρετήριο</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 — Αναζήτηση υποβοηθούμενη από AI →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Ancestors Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
 
-    <footer style="text-align: center;">
-            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-        </footer>
-    </div>
-    </div>
+
 </body>
 </html>

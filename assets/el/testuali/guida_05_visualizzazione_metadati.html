@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="el" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 04: Visualizzazione Metadati JSON</title>
-    <meta name="description" content="ATK-Pro — Visualizzazione Metadati JSON">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Ενότητα 05: Προβολή μεταδεδομένων JSON</title>
+<meta content="ATK-Pro — Visualizzazione Metadati JSON" name="description"/>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -326,60 +327,53 @@
 </head>
 <body>
 <div class="container">
-    <header>
-        <h1>📚 Modulo 04: Visualizzazione Metadati JSON</h1>
-    </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_03_visualizzazione_immagini.html" class="nav-button">⬅️ Mod.03 — Visualizzazione Immagini</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_05_ocr_avanzato.html" class="nav-button">Mod.05 — Funzioni Avanzate OCR ➡️</a>
-        </div>
-
-    <div class="section">
-        <h2>&#128204; Panoramica</h2>
-        <p>Il <strong>Viewer Metadati JSON</strong> di ATK-Pro &egrave; dedicato alla visualizzazione dei file JSON generati durante l&apos;elaborazione dei documenti. Si apre dal menu <em>Strumenti</em> dell&apos;applicazione.</p>
-        <p>Il viewer apre qualsiasi file <code>.json</code>. Cerca automaticamente un&apos;immagine con lo stesso nome nella stessa cartella (estensioni: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tif</code>, <code>.tiff</code>) e, se la trova, la mostra nel pannello destro.</p>
-    </div>
-
-    <div class="section">
-        <h2>&#127795;&#65039; Interfaccia</h2>
-        <p>La finestra &egrave; divisa in due pannelli affiancati:</p>
-
-        <div class="section-box">
-            <h3>Pannello Sinistro &mdash; Tabella Metadati</h3>
-            <p>I dati del file JSON vengono visualizzati come una <strong>tabella a due colonne</strong>:</p>
-            <ul>
-                <li><strong>Campo</strong>: il nome della chiave JSON</li>
-                <li><strong>Valore metadato</strong>: il valore corrispondente</li>
-            </ul>
-            <p style="margin-top:0.8rem;">Vengono visualizzati solo i campi di <strong>primo livello</strong> del JSON. I campi il cui nome inizia con <code>_</code> (underscore) sono omessi perch&eacute; riservati all&apos;uso interno. Strutture annidate (oggetti o array) appaiono come rappresentazione testuale nella colonna Valore.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>Pannello Destro &mdash; Anteprima Immagine</h3>
-            <p>Se viene trovata un&apos;immagine abbinata, questa viene caricata con le stesse funzionalit&agrave; del Viewer Immagini (zoom con rotella, pulsanti +/&minus;, Adatta alla finestra, 1:1, pan con trascinamento).</p>
-            <p style="margin-top:0.8rem;">Se non viene trovata alcuna immagine abbinata, il pannello mostra <em>&ldquo;Nessuna immagine abbinata trovata&rdquo;</em>.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>Toggle Pannelli</h3>
-            <ul>
-                <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello sinistro con i metadati</li>
-                <li><strong>Pulsante &ldquo;&#9658; Mostra metadati&rdquo;</strong>: Ripristina il pannello metadati</li>
-            </ul>
-        </div>
-    </div>
-
-     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_03_visualizzazione_immagini.html" class="nav-button">⬅️ Mod.03 — Visualizzazione Immagini</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_05_ocr_avanzato.html" class="nav-button">Mod.05 — Funzioni Avanzate OCR ➡️</a>
-        </div>
-
-    <footer>
-        <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-    </footer>
+<header>
+<h1>📚 Ενότητα 05: Προβολή μεταδεδομένων JSON</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_04_visualizzazione_immagini.html">⬅️ Mod.04 — Προβολή εικόνας</a>
+<a class="nav-button" href="guida.html">🏠 Κύριο Ευρετήριο</a>
+<a class="nav-button" href="guida_06_ocr_avanzato.html">Mod.06 — Προηγμένες λειτουργίες OCR ➡️</a>
+</div>
+<div class="section">
+<h2>📌 Επισκόπηση</h2>
+<p>Το <strong>Πρόγραμμα προβολής μεταδεδομένων JSON</strong> του ATK-Pro είναι αφιερωμένο στην προβολή των αρχείων JSON που δημιουργούνται κατά την επεξεργασία εγγράφων. Ανοίγει από το μενού <em>Υπηρεσίες → Προβολή μεταδεδομένων JSON</em> της εφαρμογής.</p>
+<p>Το πρόγραμμα προβολής ανοίγει έγκυρα αρχεία αντικειμενικής δομής JSON, συμπεριλαμβανομένων των πλαϊνών καρτών που δημιουργούνται από το ATK-Pro. Αναζητά αυτόματα μια εικόνα με το ίδιο όνομα στον ίδιο φάκελο (επεκτάσεις: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tif</code>, <code>.tiff</code>) και, αν το βρει, το εμφανίζει στον δεξιό πίνακα.</p>
+<p>Εάν το αρχείο δεν περιέχει έγκυρο JSON ή δεν μπορεί να διαβαστεί, εμφανίζεται το μήνυμα <em>"Δεν είναι δυνατή η ανάγνωση του αρχείου JSON"</em>.</p>
+</div>
+<div class="section">
+<h2>🌳️ Διεπαφή</h2>
+<p>Το παράθυρο χωρίζεται σε δύο παράπλευρα πάνελ:</p>
+<div class="section-box">
+<h3>Αριστερό πλαίσιο — πίνακας μεταδεδομένων</h3>
+<p>Τα δεδομένα του αρχείου JSON εμφανίζονται ως α <strong>πίνακας δύο στηλών</strong>:</p>
+<ul>
+<li><strong>Πεδίο</strong>: Το όνομα κλειδιού JSON</li>
+<li><strong>Τιμή</strong>: η αντίστοιχη τιμή</li>
+</ul>
+<p style="margin-top:0.8rem;">Εμφανίζονται μόνο τα πεδία <strong>πρώτο επίπεδο</strong> του JSON. Πεδία των οποίων το όνομα αρχίζει με <code>_</code> (υπογράμμιση) παραλείπονται επειδή προορίζονται για εσωτερική χρήση. Οι ένθετες δομές, όπως αντικείμενα ή πίνακες, εμφανίζονται ως κείμενο στη στήλη Τιμή και όχι ως επεκτάσιμα επίπεδα.</p>
+</div>
+<div class="section-box">
+<h3>Δεξί πλαίσιο — προεπισκόπηση εικόνας</h3>
+<p>Εάν βρεθεί μια αντίστοιχη εικόνα, φορτώνεται με τις ίδιες δυνατότητες με το Image Viewer (ζουμ τροχού, +/−, κουμπιά προσαρμογής στο παράθυρο, 1:1, μετατόπιση).</p>
+<p style="margin-top:0.8rem;">Εάν δεν βρεθεί αντίστοιχη εικόνα, εμφανίζεται ο πίνακας <em>"Δεν βρέθηκαν αντίστοιχες εικόνες"</em>.</p>
+</div>
+<div class="section-box">
+<h3>Εμφάνιση και απόκρυψη του πίνακα</h3>
+<ul>
+<li><strong>Κουμπί "◄ Απόκρυψη μεταδεδομένων".</strong>: Αποκρύπτει το αριστερό πλαίσιο με μεταδεδομένα</li>
+<li><strong>Κουμπί «► Εμφάνιση μεταδεδομένων».</strong>: Επαναφέρει τον πίνακα μεταδεδομένων</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_04_visualizzazione_immagini.html">⬅️ Mod.04 — Προβολή εικόνας</a>
+<a class="nav-button" href="guida.html">🏠 Κύριο Ευρετήριο</a>
+<a class="nav-button" href="guida_06_ocr_avanzato.html">Mod.06 — Προηγμένες λειτουργίες OCR ➡️</a>
+</div>
+<footer>
+<p>© 2026 Ancestors Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
 </div>
 </body>
 </html>
