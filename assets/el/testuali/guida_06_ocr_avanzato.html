@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Ενότητα 06: OCR για προχωρημένους</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 Ενότητα 06: OCR για προχωρημένους</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">← Mod.05 — Εμφάνιση μεταδεδομένων JSON</a>
+<a class="nav-button" href="guida.html">🏠 Κύριο Ευρετήριο</a>
+<a class="nav-button" href="guida_07_traduzione.html">Mod.07 — Μετάφραση →</a>
+</div>
+<div class="section">
+<h2>📌 Επισκόπηση</h2>
+<p>Το έντυπο <strong>Προηγμένο OCR (Διπλωματική μεταγραφή)</strong> εξάγει κείμενο από εικόνες και έγγραφα PDF μέσω πολυτροπικών προτύπων, εξειδικευμένων προτύπων OCR και υπηρεσιών HTR. Έχει σχεδιαστεί ειδικά για ιστορικά έγγραφα: χειρόγραφα, συμβολαιογραφικές πράξεις, μητρώα ενορίας, αρχειακές επιστολές σε ιταλικά, λατινικά ή διάλεκτο του 19ου αιώνα.</p>
+<p>Σε αντίθεση με τους παραδοσιακούς κινητήρες OCR (Tesseract, κ.λπ.), η μονάδα μπορεί να ερμηνεύει το χειρόγραφο στο πλαίσιο του εγγράφου και να αναγνωρίζει επαναλαμβανόμενες συντομογραφίες και τύπους. Η έξοδος TEI-P5 αντιπροσωπεύει μεταγραμμένες γραμμές και, όταν αναγνωρίζονται, αλλαγές σελίδας, επεκτάσεις και δυσανάγνωστα αποσπάσματα. δεν αναπαράγει πλήρως την αρχική διάταξη γραφικών.</p>
+<p>Ανοίγει από το μενού <em>Υπηρεσίες → OCR Προηγμένες</em> της κύριας εφαρμογής.</p>
+</div>
+<div class="section">
+<h2>🖥️ Διεπαφή — οδηγός βήμα προς βήμα</h2>
+<div class="section-box">
+<h3>📂 Βήμα 1 — Επιλογή αρχείων</h3>
+<p>Κάντε κλικ <strong>«Επιλέξτε Αρχείο (Εικόνες/PDF)”</strong> για να ανοίξετε τον επιλογέα. Μπορείτε να επιλέξετε πολλά αρχεία ταυτόχρονα κρατώντας πατημένο <kbd>Ctrl</kbd> ή <kbd>Shift</kbd>.</p>
+<p><strong>Αποδεκτές μορφές:</strong></p>
+<ul>
+<li><strong>εικόνες</strong>: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tiff</code>, <code>.tif</code></li>
+<li><strong>PDF</strong>: οποιοδήποτε έγγραφο PDF (σαρωμένο ή εγγενές)</li>
+</ul>
+<p style="margin-top:0.8rem;">Ο αριθμός των επιλεγμένων αρχείων εμφανίζεται δίπλα στην ετικέτα. Κάθε αρχείο υποβάλλεται σε επεξεργασία ξεχωριστά και δημιουργεί τα δικά του αρχεία εξόδου.</p>
+</div>
+<div class="section-box">
+<h3>🤖 Βήμα 2 — Επιλογή παρόχου AI και κλειδιού API</h3>
+<p>Επιλέξτε τον πάροχο στο αναπτυσσόμενο μενού <strong>"Επιλογή παρόχου AI"</strong>:</p>
+<table>
+<thead><tr><th>Πάροχος</th><th>Είδος υπηρεσίας</th><th>Διαπιστευτήρια</th><th>Λειτουργικές σημειώσεις</th></tr></thead>
+<tbody>
+<tr><td><strong>Δίδυμοι, OpenAI, Κλοντ</strong></td><td>Απομακρυσμένες Υπηρεσίες</td><td>Κλειδί παρόχου API</td><td>Τα μοντέλα και η διαθεσιμότητα εξαρτώνται από τον λογαριασμό σας και τους τρέχοντες όρους του παρόχου.</td></tr>
+<tr><td><strong>Mistral, Groq, xAI</strong></td><td>Συμβατά απομακρυσμένα τελικά σημεία</td><td>Κλειδί παρόχου API</td><td>Επιλέξτε ένα μοντέλο με δυνατότητα επεξεργασίας εικόνων. Δεν υποστηρίζουν όλα τα μοντέλα κειμένου το οπτικό OCR.</td></tr>
+<tr><td><strong>DeepSeek</strong></td><td>Απομακρυσμένο τελικό σημείο μόνο κειμένου στην τρέχουσα διαμόρφωση</td><td>Κλειδί παρόχου API</td><td>Δεν είναι κατάλληλο για οπτικό OCR έως ότου διαμορφωθεί ένα τελικό σημείο και πρότυπο συμβατό με εικόνα.</td></tr>
+<tr><td><strong>Πρόσωπο αγκαλιάς</strong></td><td>Απομακρυσμένο συμπέρασμα API</td><td>Token HuggingFace</td><td>Η συμβατότητα και τα αποτελέσματα εξαρτώνται από το διαμορφωμένο μοντέλο.</td></tr>
+<tr><td><strong>Transkribus</strong></td><td>Απομακρυσμένη υπηρεσία HTR</td><td><code>email:password</code> ή διακριτικό φορέα</td><td>Απαιτεί έναν λογαριασμό και τουλάχιστον μία διαθέσιμη συλλογή.</td></tr>
+<tr><td><strong>Ollama</strong></td><td>Τοπική υπηρεσία</td><td>Δεν υπάρχει απομακρυσμένο κλειδί API</td><td>Απαιτεί ενεργό Ollama και ένα συμβατό οπτικό μοντέλο εγκατεστημένο τοπικά.</td></tr>
+</tbody>
+</table>
+<p style="margin-top:0.8rem;">Το χωράφι <strong>“Παράκαμψη μοντέλου (προαιρετικό)”</strong> σας επιτρέπει να αντικαταστήσετε το προεπιλεγμένο πρότυπο. Χρησιμοποιήστε το μόνο εάν γνωρίζετε το ακριβές αναγνωριστικό και την οπτική συμβατότητα του μοντέλου. Για τους Διδύμους αυτό το πεδίο δεν εμφανίζεται.</p>
+<p>Μπορείτε να εισαγάγετε τα διαπιστευτήρια στο ειδικό πεδίο ή να ανοίξετε το <strong>Χρηματοκιβώτιο</strong>. Τα κλειδιά AI αποθηκεύονται τοπικά στο θησαυροφυλάκιο CSV <code>api_keys.csv</code>: Αυτό δεν είναι το ασφαλές κλειδί του λειτουργικού συστήματος. Η προστασία του προφίλ χρήστη, η δημιουργία αντιγράφων ασφαλείας και η ανάκληση κλειδιών παραμένουν ευθύνη του χρήστη.</p>
+</div>
+<div class="section-box">
+<h3>📄 Βήμα 3 — Μορφές εξόδου</h3>
+<p>Επιλέξτε μία ή περισσότερες μορφές εξόδου (και οι τρεις επιλεγμένες από προεπιλογή):</p>
+<ul>
+<li><strong>Απλό κείμενο (.txt)</strong>: Επίπεδη μεταγραφή, μέγιστη συμβατότητα. Ιδανικό για μεταγενέστερη επεξεργασία (μετάφραση, ευρετηρίαση).</li>
+<li><strong>Έγγραφο Word (.docx)</strong>: Μορφοποιημένο κείμενο, επεξεργάσιμο με το Microsoft Word ή το LibreOffice.</li>
+<li><strong>XML TEI (.xml)</strong>: Μορφή TEI-P5 για την αναπαράσταση της μεταγραφής, με περιγραφική κεφαλίδα, γραμμές και αναγνωρισμένους δείκτες για σελίδες, επεκτάσεις και δυσανάγνωστο κείμενο.</li>
+</ul>
+<p style="margin-top:0.8rem;">Τα αρχεία αποθηκεύονται στον φάκελο προορισμού που θα επιλέξετε κατά την εκκίνηση του OCR.</p>
+</div>
+<div class="section-box">
+<h3>📝 Βήμα 4 — Πρόσθετες οδηγίες (προαιρετικό αλλά συνιστάται)</h3>
+<p>Το χωράφι <strong>"Πρόσθετες οδηγίες για AI"</strong> σας επιτρέπει να προσαρμόσετε τη συμπεριφορά του μοντέλου για κάθε περίοδο εργασίας:</p>
+<ul>
+<li>Υποδείξτε τη διάλεκτο ή τη γλωσσική παραλλαγή του κειμένου</li>
+<li>Αναφέρετε τις επαναλαμβανόμενες συντομογραφίες και τη σημασία τους</li>
+<li>Καθορίστε εάν θα αγνοηθούν γραμματόσημα, περιθωριακές σημειώσεις ή γραμματόσημα</li>
+<li>Ζητήστε διατήρηση συγκεκριμένων τύπων</li>
+</ul>
+<p style="margin-top:0.8rem;"><strong>Πρακτικά παραδείγματα:</strong></p>
+<ul>
+<li><em>"Τα ονόματα των μηνών είναι στη σικελική διάλεκτο του δέκατου ένατου αιώνα. Μην διορθώσετε."</em></li>
+<li><em>"Αγνοήστε τις σφραγίδες περιθωρίου και τους σχολιασμούς με κόκκινο μολύβι."</em></li>
+<li><em>«Η συντομογραφία «f.» μπορεί να σημαίνει 'son/a of'. 'fu' και 'q.' υποδεικνύουν ότι το πρόσωπο που αναφέρεται ήταν ήδη νεκρό.»</em></li>
+</ul>
+<p style="margin-top:0.8rem;"><strong>Αρχείο οδηγιών:</strong> Οι οδηγίες που χρησιμοποιούνται πιο συχνά μπορούν να αποθηκευτούν με το κουμπί <strong>"+"</strong> και ανακαλείται από το αναπτυσσόμενο μενού "Αποθηκευμένες οδηγίες" σε επόμενες συνεδρίες.</p>
+<p>Οι αποθηκευμένες οδηγίες μπορούν να προστεθούν, να μετονομαστούν ή να διαγραφούν. Το <strong>τύπος εγγράφου</strong> καθορίζει τη βασική προτροπή: εκτός από τους τύπους που περιλαμβάνονται, μπορείτε να δημιουργήσετε, να τροποποιήσετε ή να αφαιρέσετε προσαρμοσμένα προφίλ εγγράφων.</p>
+</div>
+<div class="section-box">
+<h3>🎯 Υποβοηθούμενη βαθμονόμηση και διάγνωση (προαιρετικά)</h3>
+<p>Ο Βοηθός βαθμονόμησης επεξεργάζεται το επάνω μέρος του πρώτου επιλεγμένου αρχείου, εμφανίζει το αποτέλεσμα για διόρθωση και χρησιμοποιεί το εγκεκριμένο κείμενο ως αναφορά για την πλήρη επεξεργασία. Είναι χρήσιμο για την επαλήθευση του παρόχου, του μοντέλου, του τύπου εγγράφου και των οδηγιών πριν από την έναρξη μιας εκτεταμένης παρτίδας.</p>
+<p>Η επιλογή διαγνωστικού ελέγχου αποθηκεύει πρόσθετες τεχνικές πληροφορίες σχετικά με την επεξεργασία. Ενεργοποιήστε το όταν πρέπει να αναλύσετε ένα σφάλμα ή να παρέχετε στοιχεία για υποστήριξη. Ελέγξτε το περιεχόμενο πριν το μοιραστείτε, γιατί μπορεί να περιλαμβάνει δεδομένα που σχετίζονται με το έγγραφο ή το αίτημα.</p>
+</div>
+<div class="section-box">
+<h3>🎓 Βήμα 5 — Μεταγραφή αναφοράς (λίγα στιγμιότυπα, προαιρετικά)</h3>
+<p>Το χωράφι <strong>«Μεταγραφή αναφοράς»</strong> παρέχει στο πρότυπο ένα συμφραζόμενο παράδειγμα σωστής μεταγραφής για χρήση στο αίτημα. Δεν εκπαιδεύει, τροποποιεί ή ενημερώνει το μοντέλο.</p>
+<p><strong>Πώς να το χρησιμοποιήσετε:</strong></p>
+<ol>
+<li>Μεταγράψτε χειροκίνητα και με ακρίβεια την πρώτη σελίδα (ή γραμμές) του μητρώου</li>
+<li>Επικολλήστε το μεταγραμμένο κείμενο στο πεδίο "Μεταγραφή αναφοράς".</li>
+<li>Εκκινήστε το OCR: το μοντέλο θα χρησιμοποιήσει αυτή τη μεταγραφή ως οδηγό σε όλο το υπόλοιπο έγγραφο</li>
+</ol>
+<p style="margin-top:0.8rem;"><strong>Αποτέλεσμα:</strong> μπορεί να βελτιώσει την ακρίβεια, ειδικά σε δύσκολη γραφή, ασυνήθιστες συντομογραφίες ή τοπικούς διαλεκτισμούς. το αποτέλεσμα εξαρτάται από τον πάροχο, το μοντέλο και την ποιότητα του εγγράφου.<br/>
+            Το πεδίο "Διαγραφή κειμένου" (✖) αδειάζει τη μεταγραφή και επαναφέρει την τυπική λειτουργία.</p>
+</div>
+<div class="section-box">
+<h3>🔍 Βήμα 6 — Διαδραστική κριτική (προαιρετικό)</h3>
+<p>Τικ <strong>"Ενεργοποίηση διαδραστικού παραθύρου αναθεώρησης"</strong> ενεργοποιεί μια διαδραστική λειτουργία που ανοίγει μετά από κάθε επεξεργασία:</p>
+<ul>
+<li><strong>Αριστερό πάνελ</strong>: Αρχική εικόνα με ζουμ (τροχός ποντικιού) και πανοραμική λήψη</li>
+<li><strong>Δεξιός πίνακας</strong>: εξαγωγή κειμένου OCR, ελεύθερα επεξεργάσιμο</li>
+<li><strong>Κουμπί "Έγκριση και δημιουργία αρχείου".</strong>: αποθηκεύστε το αναθεωρημένο κείμενο στις επιλεγμένες μορφές</li>
+<li><strong>Κουμπί "Παράλειψη σελίδας".</strong>: Απορρίψτε την τρέχουσα επεξεργασία και μεταβείτε στην επόμενη σελίδα</li>
+</ul>
+<p style="margin-top:0.8rem;">Χρήσιμο για τον έλεγχο της ποιότητας του OCR σε πραγματικό χρόνο και τη διόρθωση σφαλμάτων πριν από την οριστική αποθήκευση. Για μεγάλες παρτίδες είναι προτιμότερο να απενεργοποιήσετε τη διαδραστική αναθεώρηση και να διορθώσετε το κείμενο μετά.</p>
+</div>
+<div class="section-box">
+<h3>▶️ Βήμα 7 — Εκκινήστε το OCR</h3>
+<p>Κάντε κλικ <strong>"Έναρξη OCR"</strong>. Θα σας ζητηθεί ο φάκελος προορισμού για τα αρχεία εξόδου.</p>
+<p>Η γραμμή προόδου δείχνει την πρόοδο (τρέχον αρχείο / συνολικό αρχείο). Η επεξεργασία πραγματοποιείται σε ξεχωριστό νήμα: η διεπαφή παραμένει απόκριση κατά τη διάρκεια της επεξεργασίας.</p>
+<p>Κατά τη διάρκεια των παρτίδων, το ATK-Pro ενημερώνει μια προοδευτική μεταγραφή <code>*_trascrizione_parziale.txt</code> με τα σχετικά μεταδεδομένα. Εάν διακοπεί η επεξεργασία, διατηρήστε αυτά τα αρχεία για να ανακτήσετε ό,τι έχει ήδη μεταγραφεί. μην τα θεωρείτε τελική παραγωγή μέχρι να ολοκληρωθεί και να επανεξεταστεί η παρτίδα.</p>
+<p>Όταν ολοκληρωθεί, ένα παράθυρο διαλόγου θα επιβεβαιώσει την ολοκλήρωση ή θα αναφέρει τυχόν σφάλματα.</p>
+</div>
+</div>
+<div class="section">
+<h2>🔑 Πώς να αποκτήσετε κλειδιά API</h2>
+<div class="section-box">
+<h3>Λογαριασμοί, κλειδιά, μοντέλα και κόστη</h3>
+<p>Λάβετε διαπιστευτήρια μόνο από την επίσημη κονσόλα του παρόχου που έχετε επιλέξει και μην τα κοινοποιείτε σε αρχεία εισόδου, μεταγραφές ή αιτήματα υποστήριξης. Οι διεπαφές, τα μοντέλα, οι ποσοστώσεις, η γεωγραφική διαθεσιμότητα και οι τιμές ενδέχεται να αλλάξουν χωρίς ενημέρωση σε ATK-Pro.</p>
+<p>Ελέγχετε πάντα την τεκμηρίωση του λογαριασμού σας και τον πίνακα χρέωσης πριν από την εκτενή επεξεργασία. Το ATK-Pro δεν εγγυάται δωρεάν προγράμματα, ελάχιστες χρεώσεις ή τη μονιμότητα ενός συγκεκριμένου μοντέλου.</p>
+</div>
+</div>
+<div class="section">
+<h2>💡 Συμβουλές για βέλτιστα αποτελέσματα</h2>
+<div class="section-box">
+<ul>
+<li><strong>Ποιότητα εικόνας</strong>: Οι ευκρινείς εικόνες στα 300+ DPI παράγουν σημαντικά καλύτερα αποτελέσματα. Αποφύγετε το JPEG με υψηλή συμπίεση (τεχνουργήματα).</li>
+<li><strong>Χρησιμοποιείτε πάντα τις πρόσθετες οδηγίες</strong>: Ακόμη και λίγες γραμμές περιβάλλοντος αυξάνουν σημαντικά την ακρίβεια για έγγραφα σε διάλεκτο ή με ασυνήθιστη ορθογραφία.</li>
+<li><strong>Πρώτη σελίδα για αναφορά</strong>: Μεταγράψτε με μη αυτόματο τρόπο την πρώτη σελίδα και χρησιμοποιήστε το πεδίο "Μεταγραφή αναφοράς". η βελτίωση στις επόμενες σελίδες είναι συχνά αξιοσημείωτη.</li>
+<li><strong>Δοκιμαστικές παρτίδες</strong>: Για μεγάλες παρτίδες (100+ εικόνες), δοκιμάστε πρώτα 5-10 αρχεία με ενεργοποιημένη τη Διαδραστική αναθεώρηση πριν προχωρήσετε στην πλήρη παρτίδα.</li>
+<li><strong>TEI XML</strong>: Επιλέξτε τη μορφή XML TEI εάν σκοπεύετε να καταθέσετε το αντίγραφο σε ακαδημαϊκά ψηφιακά αρχεία ή να το μοιραστείτε με άλλους ερευνητές.</li>
+<li><strong>Αποθηκεύστε τις οδηγίες</strong>: Κάθε αρχειακή σειρά έχει τα δικά της χαρακτηριστικά. Αποθηκεύστε ένα συγκεκριμένο σύνολο οδηγιών για κάθε καθολικό ή αμοιβαίο κεφάλαιο που διαπραγματεύεστε.</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">← Mod.05 — Εμφάνιση μεταδεδομένων JSON</a>
+<a class="nav-button" href="guida.html">🏠 Κύριο Ευρετήριο</a>
+<a class="nav-button" href="guida_07_traduzione.html">Mod.07 — Μετάφραση →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Ancestors Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>
