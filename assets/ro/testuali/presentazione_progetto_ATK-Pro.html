@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ro" dir="ltr">
+
+<html dir="ltr" lang="ro">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proiectul - Antenati Toolkit Pro</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Proiectul - Antenati Toolkit Pro</title>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -325,153 +326,180 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>&#128640; Proiectul ATK-Pro</h1>
-            <h2>Antenati Toolkit Pro</h2>
-        </header>
-
-        <div class="section">
-            <div class="meta-info">
-                <div>
-                    <p><strong>&#128197; Actualizare</strong><br>1 martie 2026</p>
-                    <p><strong>✍️ Redactat de</strong><br>Daniele Pigoli</p>
+<div class="container">
+<header>
+<h1>🚀 Proiectul ATK-Pro</h1>
+<h2>Antenati Toolkit Pro</h2>
+</header>
+<div class="section">
+<div class="meta-info">
+<div>
+<p><strong>📅 Actualizare</strong><br/>2 august 2026</p>
+<p><strong>✍️ Scris de</strong><br/>Daniele Pigoli</p>
+</div>
+<div>
+<p><strong>📂 Plasare</strong><br/>/assets/[lingua]/testuali/</p>
+<p><strong>📌 Versiune</strong><br/>v3.0.0 - RC tehnică</p>
+</div>
+</div>
+<h3>📖 Context și premise</h3>
+<p>ATK-Pro s-a născut din munca pe <strong>portalul Antenati</strong>, care rămâne o sursă primară pentru cercetarea genealogică italiană. Cu versiune <strong>v3.0.0</strong>, cu toate acestea, proiectul face o tranziție mai amplă: de la un instrument centrat pe descărcarea și reconstrucția imaginilor IIIF devine un <strong>mediu de lucru genealogic și arhivistic multiportal</strong>, conceput pentru sursele italiene și italofone și pentru principalele direcții ale diasporei italiene.</p>
+<p>Cercetarea genealogică contemporană nu se limitează la un singur portal. Înregistrările și urmele de familie pot fi găsite în arhivele naționale, biblioteci digitale, portaluri regionale, colecții ecleziastice, platforme internaționale IIIF și resurse legate de rutele de migrație către Europa, America și Oceania. ATK-Pro abordează această complexitate cu un criteriu prudent: integrarea numai a surselor care sunt accesibile din punct de vedere tehnic și compatibile cu limitele legale și de utilizare documentate.</p>
+<p>Nevoile tehnice care au dat naștere proiectului rămân centrale:</p>
+<ul>
+<li>descărcarea și reconstruirea imaginilor de înaltă calitate atunci când portalul expune manifeste sau tile-uri compatibile;</li>
+<li>lucrați offline cu documente organizate local, registre, imagini, metadate și PDF;</li>
+<li>distincția între portaluri complet consolidate, surse care trebuie utilizate cu precauție și resurse care nu trebuie integrate;</li>
+<li>integrarea asistenței IA fără a înlocui raționamentul critic al cercetătorului.</li>
+</ul>
+<div class="highlight-box">
+<strong>✨ Revoluție v3.0.0:</strong> ATK-Pro nu mai este doar un program de descărcare/reconstrucție pentru portalul Antenati. Este unul <strong>stație de cercetare asistată</strong> care combină portaluri documentare, conservare locală, OCR, traducere, analiză genealogică, export GEDCOM și cercetare asistată AI, cu respectarea regulilor de acces ale surselor.
+            </div>
+<h3>🎯 Obiective principale</h3>
+<p>ATK-Pro este o inițiativă arhivistică și genealogică creată pentru a oferi cercetătorilor și pasionaților de istorie familială un instrument specializat, orientat acum către un flux de lucru mai complet:</p>
+<div class="feature-grid">
+<div class="feature-item">
+<strong>📥 Achiziționați surse digitale</strong><br/>Imagini și registre de pe portaluri publice compatibile, cu prioritate în zona de limbă italiană și italiană
                 </div>
-                <div>
-                    <p><strong>&#128194; Amplasare</strong><br>/assets/[limbă]/testuali/</p>
-                    <p><strong>&#128204; Versiune</strong><br>v2.0 - Lansare Finală</p>
+<div class="feature-item">
+<strong>🔧 Reconstruiți și conservați</strong><br/>Dale și imagini reconstruite în fișiere locale ordonate, cu formate potrivite pentru studiu, export și conservare personală
                 </div>
-            </div>
-
-            <h3>&#128214; Context și Premise</h3>
-            <p><strong>Portalul Antenati</strong> reprezintă o resursă extraordinară pentru cercetarea genealogică italiană, pun&#226;nd la dispoziție milioane de imagini ale registrelor istorice și documentelor de arhivă &#238;n format <strong>IIIF</strong> (International Image Interoperability Framework). Cu toate acestea, descărcarea directă prin browser oferă doar versiuni de calitate scăzută (PNG vizibile, dar nepotrivite pentru utilizare arhivistică).</p>
-            
-            <p>Imaginile de &#238;naltă rezoluție răm&#226;n accesibile doar prin API IIIF &#238;n format tile, ceea ce creează probleme pentru utilizatorul obișnuit:</p>
-            <ul>
-                <li>Descărcați colecții complete de documente fără dependență de conexiune continuă la internet</li>
-                <li>Reconstruirea manuală a plăcilor IIIF &#238;n imagini integrale de &#238;naltă calitate</li>
-                <li>Lucrați offline cu documente prelucrate &#238;n formate profesionale (TIFF fără pierderi, PDF)</li>
-                <li>Gestionarea metadatelor structurate și genealogice &#238;mpreună cu imaginile</li>
-            </ul>
-
-            <div class="highlight-box"> <strong>✨ Soluția ATK-Pro:</strong> Un răspuns concret la aceste nevoi. Nu este un instrument generic de vizualizare, ci o <strong>soluție arhivistică specializată</strong> care permite cercetătorilor și pasionaților să descarce automat fragmentele IIIF de &#238;naltă rezoluție, să le reconstruiască &#238;n imagini integrale și să regenereze local documente digitalizate, păstr&#226;nd calitatea arhivistică. </div>
-
-            <h3>&#127919; Obiective Principale</h3>
-            <p>ATK-Pro este o inițiativă arhivistică și genealogică creată pentru a oferi cercetătorilor și pasionaților de istorie de familie un instrument specializat:</p>
-            
-            <div class="feature-grid">
-                <div class="feature-item"> <strong>&#128229; Descărcare și Prelucrare</strong><br>Imagini din arhive digitale IIIF printr-o interfață grafică intuitivă </div>
-                <div class="feature-item"> <strong>&#128295; Reconstruire Automată</strong><br>Plăci &#238;n imagini complete, păstr&#226;nd calitatea arhivistică </div>
-                <div class="feature-item"> <strong>&#128190; Export &#238;n formate multiple</strong><br>PNG, JPG, TIFF și PDF pentru document/registru </div>
-                <div class="feature-item"> <strong>&#127757; Accesibilitate Globală</strong><br>Interfață multilingvă completă (20 de limbi) </div>
-                <div class="feature-item"> <strong>&#128230; Distribuție Multiplataformă</strong><br>Windows (.exe), Linux (.deb / .tar.gz), macOS (.dmg – test pe hardware real în curs) </div>
-                <div class="feature-item"> <strong>&#128300; Arhivistic Focus</strong><br>TIFF fără pierderi, metadate structurate, conservare digitală </div>
-            </div>
-
-            <h3>&#127959;️ Metodologie și Arhitectură</h3>
-            <p>ATK-Pro adoptă o metodologie de inginerie software orientată către utilizatorul final, combin&#226;nd trei piloni:</p>
-            
-            <h4>&#128308; Fundamente Arhivistice</h4>
-            <ul>
-                <li>Abordare stratificată cu &#238;mpărțire pe etape de proiectare</li>
-                <li>Documentație structurată a fiecărei etape de dezvoltare</li>
-                <li>Concentrare pe conservarea digitală și calitatea arhivistică</li>
-            </ul>
-
-            <h4>&#128309; Arhitectură Tehnică</h4>
-            <ul>
-                <li><strong>Backend:</strong> Python 3.12+ cu module specializate (descărcare IIIF, reconstrucție tile, conversie PDF)</li>
-                <li><strong>Frontend:</strong> Qt 6 pentru interfață grafică multiplatformă și localizare nativă</li>
-                <li><strong>Ambalare:</strong> PyInstaller pentru distribuție ca fișier <code>.exe</code> independent pentru Windows</li>
-            </ul>
-
-            <h4>&#128994; Ciclul de Dezvoltare</h4>
-            <ul>
-                <li><strong>v1.x (2025):</strong> Prototip și cercetare metodologică cu fundament arhivistic</li>
-                <li><strong>v2.0 (2025-2026):</strong> Prima lansare stabilă cu GUI multilingv și suport complet pentru Portalul Antenati</li>
-                <li><strong>v2.1+ (2026+):</strong> OCR pentru texte istorice, export genealogic, API de integrare</li>
-            </ul>
-
-            <h3>&#128200; Evoluția Proiectului</h3>
-            <p>ATK-Pro s-a născut ca o inițiativă personală &#238;n 2025 pentru a rezolva o problemă concretă: permiterea cercetătorilor genealogici să <strong>descarce și să gestioneze local</strong> colecții de documente IIIF de pe Portalul Antenati <strong>la rezoluție și calitate arhivistică &#238;naltă</strong>.</p>
-            
-            <p>Imaginile disponibile pentru descărcare directă de pe portal sunt de calitate inferioară și nu sunt potrivite pentru utilizare arhivistică profesională. ATK-Pro accesează dale IIIF de &#238;naltă rezoluție, le reconstruiește &#238;n imagini integrale complete și permite lucrul offline cu documente &#238;n format arhivistic pur (TIFF fără pierderi), fără dependență de conexiunea la internet.</p>
-
-            <h4>&#128197; Etape Principale</h4>
-            <ul class="two-col">
-                <li><strong>2025 (v1.x):</strong> Dezvoltare inițială, cercetare metodologică, prototip &#238;n Python pur</li>
-                <li><strong>2025 (v2.0):</strong> Trecere la GUI Qt, multilingvă completă, distribuție executabilă profesională</li>
-                <li><strong>2026+:</strong> Extindere OCR, genealogie, integrare API Antenati</li>
-            </ul>
-
-            <h3>✨ Caracteristici v2.0</h3>
-            
-            <h4>&#128295; Funcționalitate de bază</h4>
-            <ul>
-                <li>✅ Descărcare automată a imaginilor din manifestări IIIF 2.0 și 2.1</li>
-                <li>✅ Reconstrucție de dale cu compresie optimizată</li>
-                <li>✅ Export PNG, JPG, TIFF</li>
-                <li>✅ Generare PDF pentru registre complete</li>
-                <li>✅ Suport pentru Documente Individuale (D) și Registre Multi-pagină (R)</li>
-                <li>✅ Metadate structurate (genealogice, tehnice, EXIF)</li>
-            </ul>
-
-            <h4>&#128101; Experiența utilizatorului</h4>
-            <ul>
-                <li>✅ Interfață Qt intuitivă cu meniuri contextuale</li>
-                <li>✅ Localizare completă (20 de limbi, RTL pentru arabă/ebraică)</li>
-                <li>✅ Bară de progres &#238;n timp real &#238;n timpul procesării</li>
-                <li>✅ Gestionarea robustă a erorilor cu diagnosticare</li>
-                <li>✅ Ghid contextual integrat și multilingv</li>
-            </ul>
-
-            <h3>&#128194; Structura Proiectului</h3>
-            <ul>
-                <li><code>/src/</code> → Module Python (descărcare, reconstrucție, conversie)</li>
-                <li><code>/assets/[limbă]/testuali/</code> → Localizare completă (ghid, declinări de responsabilitate, prezentări)</li>
-                <li><code>/scripts/</code> → Utilități (traducere, parsare manifest)</li>
-                <li><code>/docs/</code> → Documentație tehnică și foaie de parcurs</li>
-                <li><code>ATK-Pro-Setup-v2.0.exe</code> → Instalator multilingv pentru Windows</li>
-            </ul>
-
-            <h3>&#127891; Destinatari</h3>
-            <div class="two-col">
-                <ul>
-                    <li><strong>Cercetători genealogici și istorici</strong> care lucrează cu Portalul Antenati</li>
-                    <li><strong>Arhivari și bibliotecari</strong> care gestionează colecții digitale IIIF</li>
-                    <li><strong>Studenți la istorie locală</strong> interesați de digitalizare</li>
-                </ul>
-                <ul>
-                    <li><strong>Comunități genealogice internaționale</strong> care necesită instrumente multilingve</li>
-                    <li><strong>Utilizatori Windows</strong> care doresc să lucreze cu imagini istorice offline</li>
-                    <li><strong>Pasionații de arhivistică digitală</strong> interesați de consultare structurată</li>
-                </ul>
-            </div>
-
-            <h3>&#127775; Filosofia Proiectului</h3>
-            <div class="feature-grid">
-                <div class="feature-item"> <strong>&#128214; Software Liber</strong><br>Instrument gratuit dezvoltat &#238;n mod amator, susținut de donații voluntare </div>
-                <div class="feature-item"> <strong>&#129309; Condus de comunitate</strong><br>Feedback-ul utilizatorilor ghidează prioritățile de dezvoltare </div>
-                <div class="feature-item"> <strong>&#128202; Focus Calitate Arhivistică</strong><br>TIFF fără pierderi, metadate structurate, conservare digitală </div>
-                <div class="feature-item"> <strong>&#127757; Multilingvă Nativă</strong><br>Nu simplă traducere, ci design de interfață localizat pentru fiecare limbă </div>
-                <div class="feature-item"> <strong>&#128300; Inițiativă Personală</strong><br>Proiect de cercetare și dezvoltare continuă bazat pe nevoi reale </div>
-                <div class="feature-item"> <strong>&#128218; Documentul viu</strong><br>Subiect la completare progresivă cu feedback de la utilizatori </div>
-            </div>
-
-            <h3>&#128203; Starea versiunii</h3>
-            <div class="highlight-box">
-                <p><strong>&#127881; Lansare:</strong> 1 martie 2026</p>
-                <p><strong>✅ Stare:</strong> Stabil și gata pentru distribuție globală (20 de limbi)</p>
-                <p><strong>&#128231; Suport:</strong> antenati.toolkit.pro@gmail.com</p>
-                <p><strong>&#128157; Donații:</strong> PayPal.me pentru a susține dezvoltarea viitoare</p>
-                <p><strong>&#128221; Document:</strong> Prezentare vie, supusă integrării progresive cu feedback de la utilizatori</p>
-            </div>
-        </div>
-
-        <footer>
-            <p><strong>&#169; 2026 Antenati Toolkit Pro</strong></p>
-            <p>antenati.toolkit.pro@gmail.com</p>
-        </footer>
-    </div>
+<div class="feature-item">
+<strong>🧭 Orientarea cercetării</strong><br/>Căutare asistată de IA pentru a seta piste, locuri, variante onomastice și surse de verificat
+                </div>
+<div class="feature-item">
+<strong>🧠 Susține lectura</strong><br/>Traducere avansată OCR, OCR și analiză genealogică asistată de furnizor configurabilă de utilizator
+                </div>
+<div class="feature-item">
+<strong>🌍 Lucrul în mai multe limbi</strong><br/>Interfață localizată în 20 de limbi, selectată pentru a oferi o acoperire estimată de aproximativ 98% dintre italienii și vorbitorii de italiană din lume și pentru a sprijini cercetările legate de diaspora italiană
+                </div>
+<div class="feature-item">
+<strong>⚖️ Operați cu prudență</strong><br/>Excluderea portalurilor comerciale închise, cu autentificări neautorizate, paywall-uri sau restricții tehnice
+                </div>
+</div>
+<h3>🏗️ Metodologie și arhitectură</h3>
+<p>ATK-Pro adoptă o metodologie de inginerie software orientată spre utilizatorul final, combinând trei piloni:</p>
+<h4>🔴 Fundamentele de arhivă</h4>
+<ul>
+<li>Abordare stratificată cu subdiviziune pe faze de proiectare</li>
+<li>Documentația structurată a fiecărei etape de dezvoltare</li>
+<li>Atenție acordată calității fișierelor, organizării locale, metadatelor și păstrării copiilor de lucru</li>
+</ul>
+<h4>🔵 Arhitectură tehnică</h4>
+<ul>
+<li><strong>Backend:</strong> Python 3.12+ cu module specializate pentru manifeste, tile-uri, imagini, PDF, OCR, traducere și analiză genealogică</li>
+<li><strong>Interfață:</strong> Qt 6 pentru interfață grafică multiplatformă și localizare nativă</li>
+<li><strong>Portaluri:</strong> registru central cu grupuri, priorități, notificări de utilizare, anteturi referer, familie tehnică și politică de descărcare</li>
+<li><strong>Servicii de IA:</strong> dialoguri asistate cu furnizori configurabili de către utilizator și gestionarea locală a acreditărilor într-un fișier utilizator dedicat, care trebuie protejat și nu partajat</li>
+<li><strong>Distribuție:</strong> PyInstaller pentru Windows (.exe), Linux (.deb / .tar.gz), macOS (.dmg – testare pe hardware real în curs)</li>
+</ul>
+<h4>🟢 Ciclul de dezvoltare</h4>
+<ul>
+<li><strong>v1.x (2025):</strong> prototip și cercetare metodologică pe baze arhivistice</li>
+<li><strong>v2.0-v2.2.1 (2025-2026):</strong> Consolidarea interfeței grafice multilingve, suport pentru portalul Antenati și primele versiuni publice</li>
+<li><strong>v3.0.0 (2026):</strong> Localizare completă a interfeței, registru central al portalului, funcții asistate de IA, traducere avansată OCR, OCR și analiză genealogică cu export GEDCOM</li>
+</ul>
+<h3>📈 Evoluția Proiectului</h3>
+<p>ATK-Pro s-a născut în 2025 pentru a rezolva o problemă concretă: pentru a permite cercetătorilor genealogici să <strong>descărcați și gestionați local</strong> Documente IIIF de pe portalul Antenati la rezoluție înaltă și calitate de arhivă.</p>
+<p>v3.0.0 păstrează acel nucleu tehnic, dar îl plasează într-un cadru mai larg: căutarea pe mai multe portaluri, documentarea condițiilor de utilizare, evaluarea noilor surse italiene și internaționale, suport pentru traseele migrației italiene și serviciile de IA ca ajutor operațional pentru citirea, traducerea, compararea și organizarea dovezilor.</p>
+<h4>📅 Etape principale</h4>
+<ul class="two-col">
+<li><strong>2025 (v1.x):</strong> Dezvoltare inițială, cercetare metodologică, prototip în Python pur</li>
+<li><strong>2025-2026 (v2.x):</strong> trecerea la interfața Qt multilingvă, primele distribuții executabile pentru utilizatori</li>
+<li><strong>2026 (v3.0.0):</strong> Trecerea la o platformă multi-portal cu registru tehnic, politici juridice, selecția surselor candidate, căutare asistată de IA, OCR, traducere, analiză genealogică și export GEDCOM</li>
+</ul>
+<h3>✨ Caracteristici v3.0</h3>
+<h4>🔧 Funcții principale</h4>
+<ul>
+<li>✅ Descărcare și reconstrucție din manifeste IIIF Presentation API 2 și 3, precum și prin adaptoare specifice pentru portaluri suportate tehnic</li>
+<li>✅ Reconstrucție din tile-uri cu compresie optimizată</li>
+<li>✅ Export în PNG, JPG și TIFF</li>
+<li>✅ Generare PDF pentru registre complete</li>
+<li>✅ Compatibilitate cu documente individuale (D) și registre multipagină (R)</li>
+<li>✅ Metadate structurate (genealogice, tehnice, EXIF)</li>
+<li>✅ Registru central al portalurilor cu grupuri, notificări de utilizare, anteturi referer, familii tehnice și politici de descărcare</li>
+<li>✅ Căutare asistată de IA pentru a stabili investigații genealogice, strategii de consultare și trasee documentare</li>
+<li>✅ OCR avansat, traducere OCR și analiză genealogică cu export GEDCOM</li>
+</ul>
+<h4>🧭 Portaluri și domeniu de cercetare</h4>
+<ul>
+<li>✅ Prioritate primordială pentru domeniul italian și italofon</li>
+<li>✅ Atenție la sursele străine relevante pentru emigrația italiană și dominațiile istorice, inclusiv zonele sud-americane, nord-americane, europene și austro-habsburgice</li>
+<li>✅ Integrarea exclusivă a portalurilor publice, care pot fi consultate fără ocoliri tehnice și compatibile cu condiții de utilizare verificabile</li>
+<li>✅ Gestionare separată pentru portalurile deja integrate, candidații de evaluat, sursele destinate numai consultării și portalurile care nu trebuie extinse</li>
+</ul>
+<h4>🧠 Servicii asistate de IA</h4>
+<ul>
+<li>✅ Căutare asistată de IA pentru a formula întrebări, ipoteze, variații de nume, locuri și priorități de consultare</li>
+<li>✅ OCR avansat pe imagini și documente, cu indicații specializate și control uman al rezultatului</li>
+<li>✅ Traducere OCR pentru a lucra pe texte istorice sau administrative în diferite limbi</li>
+<li>✅ Analiză genealogică cu producere de sinteză, date structurate și export GEDCOM atunci când dovezile o permit</li>
+<li>✅ Furnizori externi configurabili de către utilizator: ATK-Pro nu înlocuiește condițiile serviciilor individuale de IA și nu garantează disponibilitatea, costurile sau modelele specifice</li>
+</ul>
+<h4>👥 Experiența utilizatorului</h4>
+<ul>
+<li>✅ Interfață Qt intuitivă cu meniuri contextuale</li>
+<li>✅ Localizare completă (20 de limbi, RTL pentru arabă/ebraică)</li>
+<li>✅ Bara de progres în timp real în timpul procesării</li>
+<li>✅ Gestionarea robustă a erorilor cu diagnosticare</li>
+<li>✅ Ajutor contextual integrat, cu ghidul italian realiniat la baza v3</li>
+</ul>
+<h3>📂 Structura proiectului</h3>
+<ul>
+<li><code>/src/</code> → Module Python (portaluri, descărcare, reconstruire, OCR, traducere, analiză, interfață de utilizare)</li>
+<li><code>/assets/[lingua]/testuali/</code> → Localizare completă (ajutor, declinare a răspunderii, prezentări)</li>
+<li><code>/docs_generali/</code> → Documentație tehnică, politici portal, foi de parcurs și matrice de evaluare</li>
+<li><code>/tests/</code> → Suită de verificare automată și teste de foaie de parcurs</li>
+<li><code>build/</code> și pachete de implementare → build-uri Windows, Linux și macOS în funcție de starea verificărilor fiecărei platforme</li>
+</ul>
+<h3>🎓 Destinatari</h3>
+<div class="two-col">
+<ul>
+<li><strong>Cercetători genealogici și istorici</strong> care lucrează pe surse italiene, italofone și legate de diasporă</li>
+<li><strong>Arhiviști și bibliotecari</strong> care gestionează colecțiile digitale IIIF</li>
+<li><strong>Savanții de istorie locală</strong> interesat de digitizare, metadate și surse distribuite</li>
+</ul>
+<ul>
+<li><strong>Comunitățile genealogice internaționale</strong> care urmează familiile italiene în țările de emigrare</li>
+<li><strong>Utilizatori Windows</strong> care doresc să lucreze offline cu imagini istorice</li>
+<li><strong>Pasionați de arhivare digitală</strong> interesat de consultanță structurată și instrumente asistate</li>
+</ul>
+</div>
+<h3>🌟 Filosofia Proiectului</h3>
+<div class="feature-grid">
+<div class="feature-item">
+<strong>📖 Software gratuit</strong><br/>Cod original distribuit sub GNU AGPL v3 sau o versiune ulterioară; documentație originală sub CC BY-NC-SA 4.0; utilizare gratuită și donații exclusiv voluntare
+                </div>
+<div class="feature-item">
+<strong>🤝 Condus de comunitate</strong><br/>Feedbackul utilizatorilor determină prioritățile de dezvoltare
+                </div>
+<div class="feature-item">
+<strong>📊 Concentrați-vă pe calitatea arhivei</strong><br/>TIFF fără pierderi, metadate structurate, conservare digitală
+                </div>
+<div class="feature-item">
+<strong>🌍 Nativ multilingv</strong><br/>Interfață în 20 de limbi, cu o acoperire estimată la aproximativ 98% dintre italienii și vorbitorii de italiană din lume; Ghid italian ca sursă pentru localizări ulterioare
+                </div>
+<div class="feature-item">
+<strong>⚖️ Prudență legală</strong><br/>Fără integrare a portalurilor comerciale închise cu autentificări, pereți de plată sau restricții neautorizate
+                </div>
+<div class="feature-item">
+<strong>📚 Document de viață</strong><br/>Sub rezerva integrării progresive cu feedback-ul utilizatorilor și verificării surselor
+                </div>
+</div>
+<h3>📋 Starea versiunii</h3>
+<div class="highlight-box">
+<p><strong>🎉 Lansări:</strong> v3.0.0 în faza RC tehnică</p>
+<p><strong>✅ Stare:</strong> verificări automate locale finalizate cu succes; îndrumări și documentație juridică italiană actualizată; Pachetele Windows, Linux și macOS urmează să fie regenerate și verificate pe artefacte candidate, cu validarea macOS pe hardware real încă de finalizat; localizările documentelor să fie actualizate după aprobarea textelor italiene</p>
+<p><strong>🧭 Perimetrul v3:</strong> portaluri publice compatibile, servicii asistate de IA, cercetare asistată AI, OCR, traducere, analiză genealogică și GEDCOM</p>
+<p><strong>📧 Suport:</strong> antenati.toolkit.pro@gmail.com</p>
+<p><strong>💝 Donații:</strong> Donații libere prin PayPal.me, exclusiv voluntare și nu condiționează accesul sau utilizarea software-ului</p>
+<p><strong>📝 Document:</strong> Document actualizat odată cu lansarea și supus revizuirilor documentate ulterioare</p>
+</div>
+</div>
+<footer>
+<p><strong>© 2026 Antenati Toolkit Pro </strong></p>
+<p>antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
 </body>
 </html>

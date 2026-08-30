@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="ro">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Modulul 09: Documentație, asistență, depanare și întrebări frecvente</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 Modulul 09: Documentație, asistență, depanare și întrebări frecvente</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">← Mod.08 — Export GEDCOM</a>
+<a class="nav-button" href="guida.html">🏠 Cuprins principal</a>
+</div>
+<div class="section-box">
+<h3>1. Meniul Documente: Resurse și suport</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>DOCUMENTE DISPONIBILE</h4>
+<p>În meniu <strong>Documente</strong> veți găsi cinci opțiuni pentru accesarea resurselor de informații ale aplicației.</p>
+<p><strong>📌 Notă:</strong> documentele sunt incluse în instalare și pot fi consultate fără conexiune la internet.</p>
+<h4>1️⃣ DISCLAIMER (Clauze legale)</h4>
+<ul>
+<li>Deschide textul oficial de declinare juridică a răspunderii inclus în aplicație.</li>
+<li>Conține: Limitări de răspundere, termeni de utilizare, licențe software</li>
+<li>Important de citit înainte de utilizare intensivă</li>
+<li>Poate fi actualizat împreună cu o nouă versiune a aplicației; atunci când revizuirea legală se modifică, este necesară o nouă acceptare.</li>
+</ul>
+<h4>2️⃣ PREZENTAREA AUTORULUI</h4>
+<ul>
+<li>Se deschide: presentazione_autore.html</li>
+<li>Conține: scurtă biografie a autorului, experiență arhivistică și digitală</li>
+<li>Vă permite să înțelegeți fundalul proiectului</li>
+</ul>
+<h4>3️⃣ PREZENTAREA PROIECTULUI</h4>
+<ul>
+<li>Se deschide: presentazione_progetto_ATK-Pro.html</li>
+<li>Contine:
+                    <ul>
+<li>Obiective principale: banc de lucru genealogic și de arhivă multi-portal</li>
+<li>Politicile portalului: utilizarea surselor publice compatibile, fără a ocoli autentificarea, paywall-urile sau restricțiile tehnice</li>
+<li>Perimetrul v3: registru portal, căutare asistată de IA, OCR, traducere OCR, analiză genealogică și export GEDCOM</li>
+<li>Destinatari: cercetători genealogici, cercetători de arhivă, comunități italofone din întreaga lume</li>
+<li>Multilingv: 20 de limbi acceptate (IT, EN, ES, PT, FR, DE, AR, HE, NL, RU, JA, SV, ZH, RO, EL, PL, DA, NO, TR, VI)</li>
+</ul>
+</li>
+<li>Document viu, supus integrării progresive</li>
+</ul>
+<h4>4️⃣ GHID (Cuprins principal)</h4>
+<ul>
+<li>Se deschide: guida.html</li>
+<li>Conține: indexul modular al ghidului v3</li>
+<li>De aici puteți accesa secțiunile operaționale dedicate: instalare, operațiuni de bază, vizualizator, metadate, OCR, traducere, GEDCOM, asistență și căutare asistată de IA</li>
+</ul>
+<h4>5️⃣ INFORMAȚII</h4>
+<ul>
+<li>Afișează fereastra cu 3 rânduri:
+                    <ul>
+<li>1. ATK-Pro vx.x.x (numărul versiunii)</li>
+<li>2. ©2026 Daniele Pigoli (drept de autor și autor)</li>
+<li>3. Adresă de e-mail pentru asistență (pentru rapoarte/sugestii)</li>
+</ul>
+</li>
+<li>Utilizați e-mailul pentru contactele oficiale</li>
+<li>Afișează automat versiunea curentă</li>
+</ul>
+<h4>🌐 Disponibilitate lingvistică</h4>
+<ul>
+<li>Prezentarea autorului, prezentarea proiectului și ghidul sunt deschise în limba selectată, atunci când sunt disponibile.</li>
+<li>Disclaimerul operațional folosește revizuirea legală oficială italiană.</li>
+<li>Dacă o resursă localizată nu este disponibilă, este afișat mesajul corespunzător.</li>
+<li>Exemplul de fișier de intrare folosește limba engleză ca alternativă.</li>
+</ul>
+<h4>💬 CUM SĂ CONTACTEȚI SUPORTUL</h4>
+<p>E-mail: antenati.toolkit.pro@gmail.com</p>
+<ul>
+<li>Pentru a raporta erori: descrieți problema și atașați o captură de ecran sau jurnalul relevant</li>
+<li>Pentru sugestii: sugerați noi funcții sau îmbunătățiri</li>
+<li>Pentru întrebări tehnice: solicitați clarificări despre funcționare</li>
+<li>Pentru a propune priorități de dezvoltare: sugerați îmbunătățiri, portaluri publice evaluabile sau funcții de rafinat.
+                    <ul>
+<li>Propunerile vor fi evaluate, dar dezvoltarea este condiționată de faptul că ATK-Pro este gestionat și întreținut la nivel amator, nu de o companie software profesionistă.</li>
+<li>Timpul de implementare depinde de disponibilitate și resurse limitate.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. Închiderea programului și susținerea proiectului</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>🔴 CUM SE ÎNCHIDE ATK-PRO</h4>
+<p>Puteți închide programul într-una dintre modalitățile gestionate de sistem:</p>
+<ol>
+<li>selectați <strong>Setări → Închide</strong>;</li>
+<li>utilizați butonul de închidere din bara de titlu;</li>
+<li>pe Windows, utilizați comanda rapidă standard <strong>Alt+F4</strong>.</li>
+</ol>
+<p>Fereastra opțională este afișată în timpul închiderii <strong>Susține proiectul</strong>.</p>
+<h4>💰 FEREASTRA „SUSȚINE PROIECTUL”</h4>
+<p>După alegerea uneia dintre cele 3 metode de închidere, se deschide o fereastră cu:</p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="Finestra sostieni il progetto" src="images/window4.webp" style="max-width: 600px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>🎯 Ce poți face în această fereastră</h4>
+<p>👉 OPȚIUNEA 1: Faceți clic pe BANNER (orice parte a imaginii)</p>
+<ul>
+<li>Browserul se deschide cu pagina PayPal.me oficială a proiectului</li>
+<li>Puteți alege suma donației (aleasă în mod liber)</li>
+<li>Plata prin PayPal (cu sau fără cont, în funcție de țară)</li>
+<li>Fără constrângeri: poți decide și să nu donezi</li>
+</ul>
+<p>📱 OPȚIUNEA 2: Scanează codul QR</p>
+<ol>
+<li>Deschideți camera smartphone-ului.</li>
+<li>Încadrați codul QR al bannerului.</li>
+<li>Verificați adresa propusă în browser înainte de a continua.</li>
+</ol>
+<p>⏹️ OPȚIUNEA 3: Faceți clic pe butonul „Închide”.</p>
+<ul>
+<li>Închide bannerul</li>
+<li>Închideți complet programul</li>
+<li>Fără obligații: puteți închide fără a dona</li>
+</ul>
+<h4>📌 NOTE IMPORTANTE:</h4>
+<p>✓ Donațiile sunt TOTAL OPȚIONALE</p>
+<p>✓ Programul funcționează identic cu sau fără donație</p>
+<p>✓ Fără urmărire și fără limitări ale funcțiilor</p>
+<p>✓ Bannerul deschide adresa PayPal configurată de proiect; verificați întotdeauna destinația afișată de browser</p>
+<p>✓ Puteți susține proiectul oricând doriți</p>
+<h4>💡 PENTRU CE SUNT FOLOSITE DONAȚIILE:</h4>
+<p>Ele sprijină dezvoltarea viitoare a ATK-Pro:</p>
+<ul>
+<li>Distribuție, infrastructură și servicii aferente proiectului</li>
+<li>Dependențe și componente software</li>
+<li>Timp pentru dezvoltarea, testarea, documentarea și întreținerea versiunilor viitoare</li>
+<li>Server de testare pentru validare IIIF</li>
+<li>Documentație și întreținere</li>
+</ul>
+<h4>🙏 ALTERNATIVA LA DONAȚII:</h4>
+<p>Dacă nu puteți dona, dar doriți să ajutați, puteți:</p>
+<ul>
+<li>Distribuiți ATK-Pro pe rețelele sociale</li>
+<li>Raportați utilizări inovatoare sau studii de caz interesante</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3. Depanare și întrebări frecvente</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>❓ ÎNTREBĂRI FRECVENTE</h4>
+<h4>🔵 P: Se blochează programul la încărcarea manifestului?</h4>
+<p><strong>A:</strong> De obicei, cauza este expirarea conexiunii de rețea. Verificați:</p>
+<ol>
+<li>Verificați dacă conexiunea dvs. la internet funcționează deschizând o pagină de încredere în browser.</li>
+<li>Deschideți adresa URL IIIF în browser și copiați-o din nou din bara de adrese.</li>
+<li>Verificați dacă firewall-ul sau software-ul de securitate permite conexiuni ATK-Pro.</li>
+<li>Dacă utilizați o rețea proxy, verificați configurația rețelei sistemului de operare.</li>
+</ol>
+<p>Dacă problema persistă, încercați cu o adresă URL diferită pentru a testa conexiunea IIIF</p>
+<h4>🔵 P: „Fișierul nu a fost găsit (404)” - ce înseamnă asta?</h4>
+<p><strong>A:</strong> Adresa URL a manifestului nu este accesibilă. Cauze:</p>
+<ul>
+<li>Adresa URL a expirat (portalul a fost actualizat)</li>
+<li>Arhiva este temporar indisponibilă</li>
+<li>Parametri URL incorecți (ID de manifest greșit)</li>
+</ul>
+<p>Soluție: Verificați adresa URL în browser înainte de a lipi în ATK-Pro</p>
+<h4>🔵 P: Descărcarea foarte lentă sau întreruptă?</h4>
+<p><strong>A:</strong> Încercați:</p>
+<ol>
+<li>Verificați stabilitatea rețelei dvs. Wi-Fi sau utilizați o conexiune prin cablu, dacă este disponibilă.</li>
+<li>Încercați o altă adresă URL publică IIIF pentru a vedea dacă încetinirea este legată de server.</li>
+<li>Reduceți sarcina alegând profilul de resurse <strong>Ușor</strong>.</li>
+<li>Dacă problema afectează doar un portal, așteptați și încercați din nou: serviciul de la distanță poate fi aglomerat sau temporar indisponibil.</li>
+</ol>
+<h4>🔵 P: Reconstrucția imaginilor este lentă — cum poate fi accelerată?</h4>
+<p><strong>A:</strong> Viteza depinde în principal de răspunsul serverului IIIF, de dimensiunea imaginilor, de conexiune și de resursele disponibile pe computer.</p>
+<ul>
+<li>Utilizați profilul <strong>Ușor</strong> pentru a reduce consumul de resurse sau <strong>Rapid</strong> numai pe sisteme adecvate.</li>
+<li>Procesați registre cu mai puține pagini simultan dacă memoria sau rețeaua sunt sub presiune.</li>
+<li>Rețineți că unele portaluri necesită acces secvenţial, indiferent de profilul ales.</li>
+</ul>
+<h4>🔵 P: Ieșirea PDF este coruptă sau nu se deschide?</h4>
+<p><strong>A:</strong> Încercați:</p>
+<ol>
+<li>Păstrați o copie pentru diagnosticare, apoi eliminați sau redenumiți PDF incomplet.</li>
+<li>Reîncărcați înregistrarea de la <strong>Fișier de intrare → Deschide input</strong> și regenerează PDF.</li>
+<li>Verificați dacă destinația poate fi scrisă și are spațiu suficient pentru procesare.</li>
+<li>Verificați imaginile individuale generate pentru a înțelege dacă problema afectează numai PDF.</li>
+</ol>
+<h4>🔵 P: Cum folosesc fișierele TIFF pentru arhivare?</h4>
+<p><strong>A:</strong> TIFF este format fără pierderi, perfect pentru stocare:</p>
+<ol>
+<li>Selectați TIFF dintre formatele de imagine.</li>
+<li>ATK-Pro salvează TIFF cu compresie fără pierderi LZW.</li>
+<li>Păstrați o copie pe suporturi separate și verificați periodic integritatea copiei de rezervă.</li>
+<li>Conservarea în timp depinde și de suporturi, copii și verificări de integritate, nu doar de format.</li>
+</ol>
+<h4>🔵 P: Pot procesa mai multe înregistrări în același timp (în paralel)?</h4>
+<p><strong>A:</strong> Înregistrările dintr-un lot sunt procesate secvenţial. În cadrul unei singure înregistrări, paginile și tile-urile pot fi procesate în paralel în funcție de portal și profilul de resurse.</p>
+<ol>
+<li>Pregătiți un fișier de intrare cu toate înregistrările acceptate, una după alta.</li>
+<li>Selectați-l din <strong>Fișier de intrare → Deschide input</strong>.</li>
+<li>Începe o singură dată <strong>Ieșire → Proces</strong>.</li>
+<li>ATK-Pro continuă automat cu înregistrările ulterioare.</li>
+</ol>
+<p>Exemplu: Dacă intrarea conține 5 înregistrări, ATK-Pro procesează automat:</p>
+<ul>
+<li>Înregistrarea 1 (descărcare + reconstrucție)</li>
+<li>Înregistrarea 2 (descărcare + reconstrucție)</li>
+<li>... până la Înregistrarea 5</li>
+</ul>
+<p>Rezultatele sunt salvate în folderele configurate; nu trebuie să reporniți manual procesarea pentru fiecare înregistrare.</p>
+<h4>🔵 P: Fișierele sunt salvate exact unde?</h4>
+<p><strong>A:</strong> Calea implicită:</p>
+<ul>
+<li><strong>Instalare standard:</strong> folder <code>ATK-Pro/output</code> în documentele dvs.</li>
+<li><strong>Modul portabil:</strong> folder <code>output</code> lângă executabil.</li>
+</ul>
+<p>Puteți schimba destinația de la <strong>Setări → Selectați folderul de ieșire</strong>. Folderele implicite sunt create automat ori de câte ori este posibil.</p>
+<h4>🔵 P: De ce ATK-Pro raportează sau blochează o cale de ieșire?</h4>
+<p><strong>A:</strong> Înainte de a crea fișiere, ATK-Pro verifică cea mai lungă cale așteptată pentru înregistrare. Rezumatul final distinge două situații:</p>
+<ul>
+<li><strong>Eroare de blocare:</strong> numele conține caractere ilegale, folosește un nume rezervat Windows, se termină cu un spațiu sau punct sau un segment depășește limita acceptată. Numai înregistrarea afectată este oprită și dosarul de lucru aferent nu este creat.</li>
+<li><strong>Notă de compatibilitate:</strong> calea este aproape de un prag conservator sau poate crea dificultăți cu aplicațiile Windows mai vechi. Procesarea poate continua, dar cel mai bine este să alegeți o destinație mai scurtă.</li>
+</ul>
+<p>Profilul <strong>OneDrive/SharePoint</strong> se aplică numai atunci când folderul selectat se află de fapt sub o rădăcină <code>OneDrive</code> sau <code>OneDrive - Organizzazione</code>. Dacă apare o eroare, scurtați numele înregistrării sau alegeți un folder de destinație mai aproape de rădăcina unității; nu este necesar să redenumiți sau să mutați fișierele deja produse de alte procese.</p>
+<h4>🔵 P: Pot muta fișierele de ieșire după procesare?</h4>
+<p><strong>A:</strong> Da, fișierele finale pot fi mutate după procesare.</p>
+<p>După finalizare:</p>
+<ol>
+<li>Mutați folderul de înregistrare la noua destinație.</li>
+<li>PDF-ul final este autonom; păstrați, de asemenea, imaginile și metadatele dacă fac parte din arhiva dvs. de lucru.</li>
+<li>Dacă intenționați să reluați înregistrarea, păstrați manifestul și alte fișiere sursă.</li>
+</ol>
+<h4>🔵 P: Blocări bruște — ce trebuie făcut?</h4>
+<p><strong>A:</strong> Dacă programul se blochează:</p>
+<ol>
+<li>Verificați <code>atkpro.log</code> sau, cu diagnosticarea extinsă activă, <code>atkpro_debug.log</code>. Locația depinde de tipul de instalare: căutați lângă executabil sau în directorul de lucru al aplicației.</li>
+<li>Copiați mesajul de eroare sau faceți o captură de ecran.</li>
+<li>Reporniți programul și repetați operația.</li>
+<li>Dacă eroarea reapare, încercați o altă înregistrare IIIF pentru a distinge o problemă generală de una specifică manifestului.</li>
+</ol>
+<h4>⚠️ ERORI FRECVENTE ȘI SOLUȚII</h4>
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+<thead style="background-color: #f0f0f0;">
+<tr>
+<th style="text-align: left;">Eroare</th>
+<th style="text-align: left;">Cauza</th>
+<th style="text-align: left;">Soluție</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>„Expirarea conexiunii”</td>
+<td>Server IIIF lent/offline</td>
+<td>Încercați din nou cu o adresă URL diferită</td>
+</tr>
+<tr>
+<td>„Format IIIF nevalid”</td>
+<td>Adresa URL nu indică un manifest IIIF</td>
+<td>Verificați adresa URL în browser</td>
+</tr>
+<tr>
+<td>„Spațiu pe disc plin”</td>
+<td>Spațiu insuficient pe disc</td>
+<td>Eliberați spațiu pe unitate</td>
+</tr>
+<tr>
+<td>„Permisiune refuzată”</td>
+<td>Dosar protejat/numai citire</td>
+<td>Alegeți un folder aparținând utilizatorului dvs. și verificați dacă acesta poate fi scris; Evitați folderele de sistem sau protejate.</td>
+</tr>
+<tr>
+<td>„Adresa URL nu a fost găsită (404)”</td>
+<td>Manifestul IIIF a expirat</td>
+<td>Verificați ID-ul pe portal</td>
+</tr>
+<tr>
+<td>„Fereastra nu răspunde”</td>
+<td>Procesare lentă/grea</td>
+<td>Așteptați sau faceți clic pe Anulare</td>
+</tr>
+</tbody>
+</table>
+<h4>🔵 P: Portalul este recunoscut, dar descărcarea este respinsă. De ce?</h4>
+<p><strong>A:</strong> Compatibilitatea tehnică nu elimină condițiile de acces. ATK-Pro respinge sau restricționează resursele care necesită autentificare sau acces instituțional, nu expun un endpoint public stabil, sunt marcate <code>nodownload</code> sau nu au drepturi sau licențe compatibile cu operațiunea solicitată. Deschideți pagina publică a obiectului, verificați licența și termenii de utilizare și testați numai cu adresa URL oficială acceptată.</p>
+<h4>🔵 P: Pot recupera un lot OCR întrerupt?</h4>
+<p><strong>A:</strong> Verificați folderul ales pentru OCR pentru fișier <code>*_trascrizione_parziale.txt</code> și metadate aferente. Acestea conțin lucrarea salvată progresiv, care trebuie verificată și finalizată înainte de a fi considerată definitivă.</p>
+<h4>🆘 SUPORT ȘI CONTACTE</h4>
+<p>Dacă problema persistă după încercarea de soluții:</p>
+<ol>
+<li>Consultați prezentarea proiectului și acest ghid din meniu <strong>Documente</strong>.</li>
+<li>Dacă problema rămâne nerezolvată, scrieți la <strong>antenati.toolkit.pro@gmail.com</strong> inclusiv:</li>
+</ol>
+<ul>
+<li>Versiunea ATK-Pro (meniul Documente → Informații)</li>
+<li>Sistem de operare și versiune (de exemplu, Windows 10/11, Ubuntu 22.04, macOS 13)</li>
+<li>Adresa URL IIIF care provoacă problema</li>
+<li>Captură de ecran a erorii (dacă este afișată)</li>
+</ul>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">← Mod.08 — Export GEDCOM</a>
+<a class="nav-button" href="guida.html">🏠 Cuprins principal</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>

@@ -1,23 +1,131 @@
-📋 Disclaimer Legal
+📋 LEGAL DISCLAIMER
 Antenati Toolkit Pro
 
 ATK-Pro – Antenati Toolkit Pro
-Disclaimer legal e compromisso ético de uso
+Declinare de responsabilitate juridică, condiții de utilizare și angajament etic
 
-O projeto ATK-Pro foi concebido para fins arquivísticos, genealógicos e de consulta.
-Todo o conteúdo, salvo indicação em contrário, é distribuído sob licença Creative Commons BY-NC-SA 4.0.
-É proibido o uso comercial direto, a redistribuição sem atribuição ou a modificação não rastreada do conteúdo original.
-ATK-Pro não redistribui nenhum conteúdo proveniente do Portal Antenati (antenati.cultura.gov.it) nem pretende replicar sua interface, estrutura ou organização.
-Quem instala ou utiliza o ATK-Pro compromete-se a agir em plena conformidade com as notas legais e os termos de uso definidos pelo Ministério da Cultura, disponíveis no seguinte endereço:
+1. NATURA ŞI SCOPUL PROIECTULUI
+
+ATK-Pro este un software dezvoltat independent în scopuri arhivistice, genealogice, documentare, de studiu și de consultare.
+
+Software-ul facilitează accesul și procesarea locală a resurselor accesibile în mod legitim utilizatorului prin portalul Antenati și alte portaluri arhivistice sau documentare compatibile tehnic.
+
+ATK-Pro nu este un serviciu oficial al Ministerului Culturii, portalului Antenati, Arhivelor de Stat sau altor organisme și portaluri care pot fi compatibile tehnic. Prezența referințelor, legăturilor sau funcțiilor referitoare la serviciile terților nu implică afiliere, aprobare, sponsorizare sau autorizare generală de reutilizare a conținutului respectiv.
+
+2. COD LICENŢĂ
+
+Codul sursă original al ATK-Pro, cu excepția fișierelor sau porțiunilor identificate în mod expres ca componente terțe, este distribuit sub Licența publică generală GNU Affero, versiunea 3 sau, la alegerea dvs., orice versiune ulterioară.
+
+Codul sursă corespunzător versiunii distribuite este pus la dispoziție în repository-ul oficial al proiectului. Instrucțiunile de acces la codul sursă și o copie a licenței însoțesc artefactele de lansare.
+
+Licența de cod este indicată în fișierul LICENȚĂ.
+
+3. LICENȚĂ DE DOCUMENTARE
+
+Documentația originală, inclusiv ghidurile, prezentările și conținutul editorial, este licențiată conform Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0), dacă nu se indică altfel.
+
+Licența de documentare este indicată în dosarul LICENȚĂ-DOCUMENTAȚIE.
+
+4. NUME, LOGO ȘI ELEMENTE DISTINCTIVE
+
+Numele „ATK-Pro”, sigla și elementele distinctive ale identității grafice nu sunt licențiate pentru crearea sau promovarea produselor derivate și rămân rezervate proprietarului.
+
+Utilizarea lor pur descriptivă pentru a identifica proiectul original, a indica compatibilitatea sau a îndeplini obligațiile de atribuire rămâne permisă.
+
+Condițiile relevante sunt indicate în dosarul MARCILOR COMERCIALE.
+
+5. COMPONENTE DE LA TERȚI PĂRȚI
+
+Dependența de software terță parte, fonturile și alte componente își păstrează licențele respective, notificările privind drepturile de autor și orice termeni suplimentari, prevăzuți în fișierul NOTIFICARI DE LA TERȚI PĂRȚI.
+
+Licențele atribuite codului și documentației originale ATK-Pro nu înlocuiesc sau modifică licențele componentelor terțe.
+
+6. RESURSE EXTERNE ŞI PORTALE
+
+ATK-Pro nu redistribuie și nu licențiază documente, imagini, metadate sau alte resurse din Portalul Antenati sau alte portaluri externe.
+
+Aceste resurse rămân supuse drepturilor, licențelor, condițiilor de acces și regulilor de reutilizare stabilite de titularii respectivi.
+
+Utilizatorul este obligat să verifice condițiile aplicabile resursei individuale și, în ceea ce privește portalul Antenati, să consulte și notele legale publicate la adresa:
+
 https://antenati.cultura.gov.it/note-legali/
-Os documentos incluídos no nó consultivo não constituem uma fonte oficial nem têm valor certificativo ou legal.
-A interface e as ferramentas desenvolvidas no projeto têm como objetivo facilitar a consulta autônoma por parte dos usuários genealógicos em ambientes locais, sem conexão ou suporte de serviços externos.
-Qualquer referência a órgãos, arquivos públicos ou documentação histórica deve ser entendida exclusivamente para fins de estudo, análise e contextualização.
-Cada arquivo presente na estrutura do ATK-Pro (em formato .txt, .md, .html ou .pdf) foi redigido com intenção declarativa, arquivística ou demonstrativa.
-As estruturas de diretórios, os scripts operacionais e as notas genealógicas são fornecidos em forma de protótipo, sem qualquer garantia de funcionalidade ou validação externa.
-O autor do projeto declina toda responsabilidade pelo uso indevido, interpretação errada ou modificação não autorizada dos documentos e ferramentas incluídos.
-O nó consultivo deve ser entendido como um arquivo de circulação limitada, destinado exclusivamente a fins de estudo e não à divulgação pública ou sistemática.
-A presente declaração faz parte integrante da arquitetura documental do projeto.
+
+Indicarea unui portal drept compatibil tehnic nu constituie o declarație privind legalitatea oricărei operațiuni care poate fi efectuată pe resursele sale.
+
+7. MODUL DE UTILIZARE A RESURSELOR
+
+ATK-Pro este destinat operațiunilor specifice și punctuale, cu referire la documentul unic, unitatea arhivistică individuală sau registrul unic accesibil în mod legitim utilizatorului.
+
+Software-ul nu este destinat colectării masive sau nediscriminate de conținut, descărcării sistematice a colecțiilor întregi sau eludării autentificării, abonamentelor, permiselor temporare, sistemelor cu plată, marcajelor de interzicere a descărcării, măsurilor tehnice de protecție sau limitărilor stabilite de operatorii portalului.
+
+ATK-Pro nu garantează că o resursă accesibilă din punct de vedere tehnic este, de asemenea, descărcabilă, reproductibilă, modificabilă sau redistribuibilă în mod liber.
+
+Utilizatorul rămâne responsabil pentru alegerea resurselor, amploarea operațiunilor desfășurate și respectarea legislației aplicabile, inclusiv a prevederilor privind drepturile de autor, protecția datelor cu caracter personal, confidențialitatea, accesul la arhive și condițiile contractuale ale serviciilor utilizate.
+
+8. FUNCȚII DE INTELIGENȚĂ ARTIFICIALĂ ȘI SERVICII DE LA DISTANȚĂ
+
+Orice funcții de transcriere, recunoaștere, traducere sau analiză asistate de inteligență artificială sunt activate exclusiv de utilizator.
+
+Atunci când este selectat un furnizor de la distanță, datele necesare operațiunii, inclusiv imagini, text, instrucțiuni sau metadate, pot fi transmise sistemelor furnizorului ales. Prelucrarea are loc conform condițiilor contractuale și politicilor de confidențialitate stabilite de furnizorul respectiv.
+
+ATK-Pro nu controlează stocarea, prelucrarea sau posibila utilizare a datelor efectuate de serviciile de la distanță. Înainte de a trimite, utilizatorul trebuie să verifice că materialul poate fi transmis în mod legitim și că nu conține date personale, confidențiale sau protejate în alt mod, incompatibile cu serviciul selectat.
+
+Cheile API și orice costuri aplicate de furnizorii externi rămân în responsabilitatea utilizatorului. ATK-Pro nu garantează disponibilitatea, continuitatea, prețurile, performanța sau permanența modelelor și serviciilor terților.
+
+9. FIABILITATEA REZULTATELOR
+
+Transcrierile, traducerile, datele genealogice, metadatele și alte rezultate generate sau procesate de software pot conține erori, omisiuni, interpretări greșite sau informații neverificabile.
+
+În special, rezultatele produse folosind OCR sau inteligența artificială nu trebuie considerate copii autentice, certificări, opinii profesionale sau înlocuitori pentru consultarea surselor originale.
+
+Utilizatorul trebuie să verifice fiecare rezultat semnificativ comparându-l cu documentul original și cu orice sursă oficială.
+
+10. CONSERVAREA ȘI SECURITATEA DATELOR
+
+Utilizatorul este responsabil pentru păstrarea documentelor, transcrierilor, configurațiilor, cheilor de acces și a altor date procesate prin intermediul software-ului.
+
+Înainte de a efectua operațiuni semnificative, este recomandabil să pregătiți copii de rezervă separate. Autorul nu garantează recuperarea datelor șterse, suprascrise, deteriorate, incomplete sau salvate incorect.
+
+Utilizatorul trebuie să păstreze în siguranță acreditările și cheile API și să nu le partajeze prin fișiere, jurnale de diagnosticare sau canale nesigure.
+
+11. EXCLUDEREA GARANȚIILOR
+
+În măsura permisă de legea aplicabilă, ATK-Pro, codul și documentația aferente sunt furnizate „ca atare” și „așa cum sunt disponibile”, fără garanții exprimate sau implicite.
+
+Printre altele, nu sunt garantate absența erorilor, continuitatea funcționării, compatibilitatea cu toate sistemele, disponibilitatea permanentă a portalurilor și a serviciilor externe, adecvarea pentru un anumit scop, corectitudinea rezultatelor sau păstrarea datelor.
+
+Excluderile garanțiilor în baza licențelor aplicabile rămân în vigoare și nu sunt înlocuite de această declinare a răspunderii.
+
+12. LIMITAREA RĂSPUNDERII
+
+În măsura permisă de legea aplicabilă, autorul și orice colaborator nu sunt răspunzători pentru daune, pierderi, costuri sau consecințe care decurg din instalarea, utilizarea sau incapacitatea de a utiliza ATK-Pro.
+
+Aceasta include, dar nu se limitează la, pierderea sau coruperea datelor, rezultate inexacte, indisponibilitatea portalurilor sau serviciilor externe, costurile legate de API sau conexiuni, încălcări ale termenilor terților și utilizări ale resurselor făcute fără autorizațiile necesare.
+
+Nimic din această clauză de declinare a răspunderii nu exclude sau limitează răspunderile care nu pot fi excluse sau limitate conform legislației în vigoare.
+
+13. RESPONSABILITATEA UTILIZATORULUI
+
+Prin instalarea sau utilizarea ATK-Pro, declarați că înțelegeți următoarele:
+
+- software-ul constituie un instrument tehnic și nu o autorizație de accesare, descărcare sau reutilizare a resurselor terților;
+- trebuie să verificați drepturile și condițiile aplicabile fiecărei resurse;
+- trebuie să verificați fiabilitatea rezultatelor produse;
+- trebuie să protejați datele personale, acreditările și cheile API;
+- trebuie să utilizați software-ul în conformitate cu legea și drepturile altora;
+- rămâneți responsabil pentru operațiunile pe care decide să le efectueze.
+
+14. GRATUITATE ȘI DONAȚII
+
+ATK-Pro este distribuit gratuit.
+
+Orice donații sunt exclusiv voluntare, nu constituie contrapartidă pentru o licență, un serviciu sau acces la funcții suplimentare și nu afectează în niciun fel instalarea sau utilizarea software-ului.
+
+15. PREVALENȚA LICENȚELOR ȘI LEGEA APLICABILĂ
+
+Această declinare a răspunderii completează informațiile furnizate utilizatorului, dar nu modifică sau înlocuiește termenii licențelor aplicabile codului, documentației sau componentelor terților.
+
+În caz de conflict, textul licenței relevante și prevederile obligatorii ale legii aplicabile prevalează.
 
 © 2026 Antenati Toolkit Pro
 antenati.toolkit.pro@gmail.com
