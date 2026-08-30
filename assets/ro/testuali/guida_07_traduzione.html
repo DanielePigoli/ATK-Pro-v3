@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="ro">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Modulul 07: Traducere OCR</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 Modulul 07: Traducere OCR</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_06_ocr_avanzato.html">← Mod.06 — OCR avansat</a>
+<a class="nav-button" href="guida.html">🏠 Cuprins principal</a>
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">Mod.08 — Export GEDCOM →</a>
+</div>
+<div class="section">
+<h2>📌 Prezentare generală</h2>
+<p>Forma <strong>Traducere paleografică asistată (LLM)</strong> traduce transcrieri, texte paleografice, note de cercetare sau dosare <code>.txt</code> într-o limbă modernă aleasă de utilizator.</p>
+<p>Se deschide din meniul <em>Servicii → Traducere OCR</em>. Modulul folosește furnizorii AI configurați în ATK-Pro, cu aceleași chei și aceeași logică a preferințelor folosite și de OCR și serviciile de genealogie.</p>
+<p>Traducerea rămâne un suport de lectură: rezultatul trebuie mereu revizuit, mai ales când textul sursă conține ortografii antice, latină, formule notariale, abrevieri, dialecte sau nume proprii.</p>
+</div>
+<div class="section">
+<h2>🖥️ Interfață</h2>
+<p>Fereastra este organizată într-o bară de configurare, o zonă pentru textul sursă, un câmp de instrucțiuni contextuale și o zonă pentru rezultat.</p>
+<div class="section-box">
+<h3>Bara de configurare</h3>
+<ul>
+<li><strong>Furnizorii AI</strong>: Alegeți serviciul de utilizat dintre cele disponibile în instalare, de exemplu Gemini, OpenAI, Claude, Mistral, xAI, DeepSeek, Groq, HuggingFace sau Ollama.</li>
+<li><strong>Model</strong>: Câmp opțional pentru a indica un anumit model acceptat de furnizor. Dacă îl lăsați necompletat, ATK-Pro utilizează modelul implicit prevăzut de configurație.</li>
+<li><strong>Tip document</strong>: Selectați tipul de document sau text de tradus. Puteți crea și elimina tipuri personalizate; pentru tipurile integrate puteți modifica promptul prin suprascriere, dar nu le ștergeți.</li>
+<li><strong>API Cheie și Seif</strong>: introduceți cheia furnizorului ales sau deschideți <em>Seif</em> pentru a consulta sau modifica seiful CSV.</li>
+<li><strong>Limba țintă</strong>: Alegeți limba modernă în care doriți să obțineți traducerea.</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>Text sursă</h3>
+<ul>
+<li><strong>Text sursă</strong>: inserați transcrierea pentru a traduce sau a încărca un fișier <code>.txt</code> generate anterior.</li>
+<li><strong>Încarcă fișier TXT</strong>: deschide un fișier text și îl inserează în zona sursă.</li>
+<li><strong>Glosar și context</strong>: vă permite să dați instrucțiuni modelului înainte de traducere.</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>Rezultat tradus</h3>
+<ul>
+<li>Apăsați <strong>Tradu textul ACUM</strong> pentru a începe procesarea.</li>
+<li>În timpul procesării, panoul de rezultate afișează un mesaj de așteptare.</li>
+<li>Rezultatul este editabil: corectați direct traducerea înainte de a o salva.</li>
+<li><strong>Salvează traducerea (TXT)</strong> exportați text simplu.</li>
+<li><strong>Exportă în Word (DOCX)</strong> creează un document Word editabil.</li>
+</ul>
+</div>
+</div>
+<div class="section">
+<h2>📝 Câmpul Glosar și context — ghid de utilizare</h2>
+<p>Acest câmp opțional vă permite să instruiți modelul cu privire la caracteristicile textului înainte de a începe procesarea. Acesta este locul potrivit pentru a clarifica abrevierile, formulele, limba sursă, criteriile de redare și cuvintele care nu trebuie traduse.</p>
+<div class="section-box">
+<h3>Când se utilizează</h3>
+<p>Câmpul este util în special atunci când textul conține:</p>
+<ul>
+<li><strong>Arhaisme și cuvinte învechite</strong> pe care un traducător modern l-ar putea interpreta diferit</li>
+<li><strong>Termeni de dialect</strong> (siciliană, venețiană, toscană etc.) nu sunt prezente în dicționarele standard</li>
+<li><strong>Formule juridice sau notariale recurente</strong> cu sens tehnic specific</li>
+<li><strong>Nume proprii sau toponime</strong> care nu trebuie traduse, ci transcrise fidel</li>
+<li><strong>Abrevieri</strong> cu sens convențional în corpus documentar</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>Exemple practice</h3>
+<p><strong>Exemplul 1 — act parohial din secolul al XIX-lea în dialectul sicilian:</strong></p>
+<pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">f. = fiul/fiica lui
+fu = deja decedat
+q. = quondam (deja decedat)
+ved. = văduv/văduvă
+Lunile sunt scrise în dialect (Jinnaru, Frivaru, Marzu...).
+Nu traduce nume proprii (Nunzio, Rosaria, Salvatore...).
+Titlurile „don” și „donna” indică persoane cu statut înalt, păstrați-le.</pre>
+<p style="margin-top:1rem;"><strong>Exemplul 2 — Act notarial în limba latină medievală:</strong></p>
+<pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Textul este în latină notarială. Traduceți în italiană modernă.
+Menține formulele juridice standard (rogatio, instrumentum, actum...).
+'lib.' = lire (monedă, nu unitate de greutate). 'sol.' = soldi.
+Toponimele din genitiv latin trebuie întotdeauna redate cu numele italian actual.</pre>
+<p style="margin-top:1rem;"><strong>Exemplul 3 — Scrisoare personală în italiană din secolul al XIX-lea:</strong></p>
+<pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Text în italiană formală din secolul al XIX-lea. Traduceți în engleză modernă.
+Păstrați tonul formal, fără a-l face conversațional.
+„Pregiatissimo” și „Esimio” sunt formule de curtoazie: redați cu echivalente adecvate în limba engleză.
+Nu traduce numele proprii.</pre>
+</div>
+<div class="section-box">
+<h3>Strategia recomandată</h3>
+<ul>
+<li>Construiți glosarul <strong>progresiv</strong>: faceți o primă traducere, identificați erorile recurente, adăugați instrucțiuni și încercați din nou.</li>
+<li>Pentru înregistrări diferite, păstrați glosare separate și lipiți-le în câmp înainte de procesare.</li>
+<li>Specificați întotdeauna <strong>limba textului sursă</strong>, în special pentru latină, dialecte, limbi regionale sau documente multilingve.</li>
+<li>Indicați când numele proprii, toponimele, titlurile sau formulele trebuie păstrate și nu modernizate.</li>
+</ul>
+</div>
+</div>
+<div class="section">
+<h2>🌐 Limbi țintă</h2>
+<div class="section-box">
+<p>Lista disponibilă corespunde celor 20 de limbi acceptate de interfața multilingvă și glosarul ATK-Pro.</p>
+<table>
+<thead><tr><th>Limbă</th><th>Nume nativ</th><th>Limbă</th><th>Nume nativ</th></tr></thead>
+<tbody>
+<tr><td>Italiană</td><td>Italiano</td><td>Rusă</td><td>Русский</td></tr>
+<tr><td>Engleză</td><td>English</td><td>Arabă</td><td>العربية</td></tr>
+<tr><td>Spaniolă</td><td>Español</td><td>Olandeză</td><td>Nederlands</td></tr>
+<tr><td>Franceză</td><td>Français</td><td>Ebraică</td><td>עברית</td></tr>
+<tr><td>Germană</td><td>Deutsch</td><td>Japoneză</td><td>日本語</td></tr>
+<tr><td>Portugheză</td><td>Português</td><td>Chineză</td><td>中文</td></tr>
+<tr><td>Poloneză</td><td>Polski</td><td>Turcă</td><td>Türkçe</td></tr>
+<tr><td>Daneză</td><td>Dansk</td><td>Norvegiană</td><td>Norsk</td></tr>
+<tr><td>Vietnameză</td><td>Tiếng Việt</td><td>Greacă</td><td>Ελληνικά</td></tr>
+<tr><td>Română</td><td>Română</td><td>Suedeză</td><td>Svenska</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section">
+<h2>📝 Note operaționale</h2>
+<div class="section-box">
+<ul>
+<li>Procesarea este asincronă: butonul de traducere este dezactivat în timpul solicitării, în timp ce fereastra rămâne receptivă. Modificările aduse câmpurilor în timp ce așteptați nu modifică solicitarea deja trimisă.</li>
+<li>Textele lungi sau complexe pot necesita mai mult timp și mai multe revizuiri manuale.</li>
+<li>Cheia poate proveni din seiful comun; furnizorul, modelul, limba și contextul sunt salvate ca preferințe specifice modulului de traducere.</li>
+<li>Traducerea produce rezultate textuale în TXT sau DOCX: nu generează imagini, metadate, arbori genealogici sau fișiere GEDCOM.</li>
+<li>Nu trimiteți texte confidențiale sau restricționate furnizorilor externi decât dacă ați verificat termenii de utilizare, confidențialitatea și permisiunile.</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_06_ocr_avanzato.html">← Mod.06 — OCR avansat</a>
+<a class="nav-button" href="guida.html">🏠 Cuprins principal</a>
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">Mod.08 — Export GEDCOM →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>
