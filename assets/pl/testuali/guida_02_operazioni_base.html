@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="pl" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 02: Operazioni di base</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Moduł 02: Podstawowe operacje</title>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -325,29 +326,49 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📚 Modulo 02: Operazioni di base</h1>
-        </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-        <div class="section-box">
-            <h3>4. CARICAMENTO RECORD IIIF - FORMATI DI INPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📥 STRUTTURA DELL'INPUT</h4>
-            <p>ATK-Pro accetta file di input con un formato specifico basato su COPPIE: Per OGNI record da elaborare, fornisci:</p>
-            <h3>1. RIGA 1: Modalità + Nome (facoltativo)</h3>
-            <ul>
-                <li>D = Documento singolo (una singola immagine/pagina)</li>
-                <li>R = Registro (collezione completa di pagine/documenti)</li>
-            </ul>
-            <h3>2. RIGA 2: URL del Manifest IIIF</h3>
-            <p><strong>Esempio di file input.txt corretto:</strong></p>
-            <pre class="file-structure"># Commenti iniziano con #
+<div class="container">
+<header>
+<h1>📚 Moduł 02: Podstawowe operacje</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">← Mod.01 — Instalacja, uruchomienie i interfejs</a>
+<a class="nav-button" href="guida.html">🏠 Indeks główny</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 — Wyszukiwanie wspomagane AI →</a>
+</div>
+<div class="section-box">
+<h3>1. WCZYTANIE REKORDÓW – FORMATY WPROWADZANIA</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>📥 STRUKTURA WEJŚCIOWA I OBSŁUGIWANE PORTALE</h4>
+<p>ATK-Pro akceptuje pliki wejściowe o określonym formacie w oparciu o PARY: Dla KAŻDEGO rekordu, który ma zostać przetworzony, podaj Tryb + URL.</p>
+<p><strong>Obsługiwane portale:</strong> skopiuj i wklej publiczny URL strony, przeglądarki, manifestu lub kompatybilnego PDF. ATK-Pro rozpoznaje portal i stosuje odpowiednią metodę techniczną i ostrożnościową.</p>
+<p><strong>Obsługiwane</strong> oznacza zweryfikowaną zgodność techniczną, a nie masową autoryzację pobierania. Zasób musi być publicznie dostępny, a użytkownik musi szanować prawa, licencje, warunki korzystania i ograniczenia danego portalu. ATK-Pro nie omija loginów, loginów partnerskich, paywallów ani znaczników <code>nodownload</code>.</p>
+<p>Antenati (Włochy), Gallica (Francja), DigiVatLib (Watykan), Biblioteki Bodleian (Oxford), Europeana IIIF, Matricula Online, Findbuch (Südtirol), e-codices/e-rara/e-manuscripta (Szwajcaria), Heidelberg UB, Internet Culturale/Estense, Brixiana, Memooria, BNC Rzym, BNCF Teca, Museo Galileo i Internet Archive.</p>
+<h4>🇮🇹 WŁOSKIE PORTALE DODANE W V3</h4>
+<table>
+<thead>
+<tr><th>Portal</th><th>Wejścia i tryby</th><th>Granice operacyjne</th></tr>
+</thead>
+<tbody>
+<tr><td>Biblioteka Cyfrowa w Sienie</td><td>Strona przeglądarki IIIF; <code>D</code> lub <code>R</code></td><td>Dla <code>R</code> wymagany jest wyraźny zakres; sprawdź prawa obiektu.</td></tr>
+<tr><td>Biblioteka cyfrowa Trentina</td><td>strona publiczna; obrazy lub bezpośrednio PDF</td><td>W przypadku rejestrów i sekwencji użyj zakresu. Jeśli wymagany jest tylko PDF bez zakresu, ATK-Pro używa oficjalnego PDF, jeśli jest dostępny.</td></tr>
+<tr><td>Biblioteca Digitale Lombarda</td><td>PDF publiczny punkt końcowy REST lub punkt końcowy BookReader; <code>D</code> lub <code>R</code></td><td>Odbudowuje całą sekwencję wielostronicową z kanw Cantaloupe IIIF i ponawia tylko tymczasowo niedostępne strony. Jeśli BookReader nie zwróci prawidłowych płócien, użyj bezpośredniego REST PDF.</td></tr>
+<tr><td>Biblioteka cyfrowa Rovereto</td><td>Strona encji lub URL API elementu; <code>D</code> lub <code>R</code></td><td>Pobieraj tylko publiczne strumienie bitów rozpoznawane jako strony; dla <code>R</code> wymagany jest zakres.</td></tr>
+<tr><td>BUB Cyfrowy</td><td>Strona BUB z parametrem <code>manifest=</code> lub manifest IIIF BUB</td><td>Tylko zasoby publiczne; dla <code>R</code> wymagany jest strzelnica i zweryfikowana licencja danego obiektu.</td></tr>
+<tr><td>Biblioteka cyfrowa FICLIT</td><td>Strona manifestu Omeka S o IIIF FICLIT</td><td>Tylko przedmioty publiczne; dla <code>R</code> wymagany jest zakres. Obrazy są przechwytywane z bezpośredniego zasobu kanwy.</td></tr>
+<tr><td>Archiwum Historyczne UniBO</td><td>Manifest publiczny IIIF pojedynczego elementu; <code>D</code> lub <code>R</code></td><td>Żadne kolekcje nie są akceptowane jako dane wejściowe. Dla <code>R</code> Wymagany jest wyraźny zakres i należy zweryfikować uprawnienia poszczególnych pozycji.</td></tr>
+<tr><td>Uniwersytet PHAIDRA w Padwie</td><td>Publiczna strona obiektu lub jego oficjalny manifest IIIF; <code>D</code> lub <code>R</code></td><td>Tylko obiekty publiczne. Dla <code>R</code> wymagany jest zakres; Sprawdź informację o prawach lub licencję związaną z przedmiotem.</td></tr>
+<tr><td>DOGE Uniwersytet w Genui</td><td>Publiczna strona obiektu; <code>D</code> lub <code>R</code></td><td>Korzystaj wyłącznie z zasobów publicznych zadeklarowanych do pobrania z portalu. Źródła oryginalne lub markowe są wyłączone <code>nodownload</code>; dla <code>R</code> wymagany jest zakres.</td></tr>
+</tbody>
+</table>
+<p><strong>Uwaga:</strong> BEIC, Ambrosiana i OrienTales nie są uwzględnione w downloaderze: nie zidentyfikowano żadnych stabilnych publicznych punktów końcowych lub zbadane zapisy wymagają dostępu partnera. Archiwa Narodowe, SAN, SIAS, SIUSA, BeWeB oraz źródła Ticino, Gryzonia i diecezjalne pozostają źródłami orientacji i ręcznych konsultacji.</p>
+<h3>1. WIERSZ 1: Tryb + Nazwa (opcjonalnie)</h3>
+<ul>
+<li>D = Pojedynczy dokument (pojedynczy obraz/pagina)</li>
+<li>R = Rejestr (pełny zbiór stron/documenti)</li>
+</ul>
+<h3>2. WIERSZ 2: Publiczny URL rekordu lub zasobu</h3>
+<p><strong>Przykład poprawnego pliku input.txt:</strong></p>
+<pre class="file-structure"># Commenti iniziano con #
 
 RECORD 1 (coppia di righe):
 D - Lettera Importante
@@ -360,66 +381,67 @@ https://archives.example.org/iiif/reg456/manifest.json
 RECORD 3 (coppia di righe):
 D - Fotografia Singola
 https://collections.example.org/iiif/foto789/manifest.json</pre>
-            <h4>📝 REGOLE FORMATO INPUT:</h4>
-            <ul>
-                <li>Righe vuote: ignorate (puoi usarle per leggibilità)</li>
-                <li>Righe con #: ignorate come commenti</li>
-                <li>Modalità D o R: sono obbligatorie (maiuscole)</li>
-                <li>Nome file: facoltativo dopo modalità (es. "D - Nome" o solo "D")</li>
-                <li>URL: deve iniziare con http:// o https://</li>
-                <li>Coppie: modalità + URL devono stare su righe consecutive</li>
-            </ul>
-            <h4>⚙️ COME CARICARE L'INPUT - 3 OPZIONI DAL MENU:</h4>
-            <p>OPZIONE 1: Visualizza Esempio Input ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Esempio input"</h3>
-            <h3>2. Si apre una finestra che mostra il file di esempio localizzato</h3>
-            <h3>3. Puoi copiare il contenuto come template per il tuo file input</h3>
-            <h3>4. File di esempio: assets/[lingua]/testuali/input_link_base.txt</h3>
-            <p>OPZIONE 2: Apri File Input Pronto ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Apri input"</h3>
-            <h3>2. Si apre un dialog di selezione file</h3>
-            <h3>3. Scegli il tuo file input.txt (deve rispettare il formato coppie)</h3>
-            <h3>4. ATK-Pro carica automaticamente e legge tutti i record</h3>
-            <h3>5. Visualizza numero di record caricati e pronti per l'elaborazione</h3>
-            <p>OPZIONE 3: Modifica Input Già Caricato ──────────────────────────────────────────</p>
-            <h3>1. Dopo aver caricato un file input (OPZIONE 2)</h3>
-            <h3>2. Clicca Menu → "File input" → "Modifica input"</h3>
-            <h3>3. Si apre un editor di testo con il file attualmente caricato</h3>
-            <h3>4. Modifica le coppie (aggiungi, rimuovi, cambia URL)</h3>
-            <h3>5. Clicca "Salva" per aggiornare i record in elaborazione</h3>
-            <h3>6. Il programma reinterpreta il file aggiornato</h3>
-            <h4>📌 DIFFERENZA TRA D E R:</h4>
-            <ul>
-                <li>D (Documento): Gestisce una singola immagine/pagina
+<h4>📝 ZASADY FORMATU WPROWADZANIA:</h4>
+<ul>
+<li>Puste linie: ignorowane (można ich użyć dla zwiększenia czytelności)</li>
+<li>Linie z #: Ignorowane jako komentarze</li>
+<li>Tryby D/d lub R/r: są obowiązkowe; wielkie i małe litery są równoważne</li>
+<li>Nazwa pliku: opcjonalna po trybie (np. „D - Nazwa” lub po prostu „D”)</li>
+<li>URL: musi zaczynać się od http:// lub https://</li>
+<li>Pary: mode + URL muszą znajdować się w kolejnych liniach</li>
+</ul>
+<h4>⚙️JAK WCZYTAĆ WEJŚCIE - 3 OPCJE Z MENU:</h4>
+<p>OPCJA 1: Wyświetl przykładowe dane wejściowe ───────────────────────────────────────</p>
+<h3>1. Kliknij Menu → „Plik wejściowy” → „Przykład wejściowy”</h3>
+<h3>2. Otworzy się okno pokazujące zlokalizowany plik przykładowy</h3>
+<h3>3. Możesz skopiować zawartość jako szablon pliku wejściowego</h3>
+<h3>4. Przykładowy plik: aktywa/[lingua]/testuali/input_link_base.txt</h3>
+<p><strong>Uwaga dotycząca nazwy pliku:</strong> nazywa się rozpowszechniany plik <code>input_link_base.txt</code>. Nazwa została znormalizowana w wersji 3, aby uniknąć odniesień do poprzednich wersji; format pozostaje zgodny z ładowaniem rekordów IIIF.</p>
+<p>OPCJA 2: Otwórz gotowy plik wejściowy ───────────────────────────────────────</p>
+<h3>1. Kliknij Menu → „Plik wejściowy” → „Otwórz wejście”</h3>
+<h3>2. Otworzy się okno dialogowe wyboru pliku</h3>
+<h3>3. Wybierz plik input.txt (musi przestrzegać formatu par)</h3>
+<h3>4. ATK-Pro automatycznie ładuje i odczytuje wszystkie rekordy</h3>
+<h3>5. Wyświetl liczbę rekordów załadowanych i gotowych do przetworzenia</h3>
+<p>OPCJA 3: Edytuj dane wejściowe już załadowane ───────────────────── ─────────────────────</p>
+<h3>1. Po wczytaniu pliku wejściowego (OPCJA 2)</h3>
+<h3>2. Kliknij Menu → „Plik wejściowy” → „Edytuj dane wejściowe”</h3>
+<h3>3. Otworzy się edytor tekstu z aktualnie załadowanym plikiem</h3>
+<h3>4. Edytuj pary (dodaj, usuń, zmień URL)</h3>
+<h3>5. Kliknij „Zapisz”, aby zaktualizować przetwarzane rekordy</h3>
+<h3>6. Program reinterpretuje zaktualizowany plik</h3>
+<h4>📌 RÓŻNICA MIĘDZY D I R:</h4>
+<ul>
+<li>D (Dokument): zarządza pojedynczym obrazem/pagina
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: file singolo per il documento</li>
-                <li style="margin-top: 12px;">R (Registro): Gestisce collezioni multi-pagina
+<li style="list-style: none; margin-left: 20px;">→ Dane wyjściowe: Pojedynczy plik dokumentu</li>
+<li style="margin-top: 12px;">R (Rejestr): Zarządza zbiorami wielostronicowymi
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: cartella con pagine organizzate + PDF (se richiesto dall'utente)</li>
-            </ul>
-            <h4>✅ VALIDAZIONE RECORD</h4>
-            <p>Dopo il caricamento, il programma verifica:</p>
-            <ul>
-                <li>✓ URL accessibile e raggiungibile</li>
-                <li>✓ Formato IIIF valido (questa versione+)</li>
-                <li>✓ Numero immagini e canvas disponibili</li>
-                <li>✓ Metadata (titolo, autore, data)</li>
-            </ul>
-            <h4>❌ ERRORI COMUNI</h4>
-            <ul>
-                <li>"URL non valido": Controlla copia/incolla URL</li>
-                <li>"Manifest non trovato (404)": URL è scaduto o sbagliato</li>
-                <li>"Formato IIIF non supportato": Il server non usa IIIF standard</li>
-                <li>"Timeout connessione": Connessione Internet lenta/assente</li>
-            </ul>
-            <h4>💾 SALVATAGGIO RECORD</h4>
-            <p>Dopo il caricamento del manifest, il programma salva automaticamente i metadati IIIF. DOVE: Nella cartella output che scegli (vedi Sezione 5, PASSO 2) <strong>STRUTTURA CARTELLE DOPO CARICAMENTO (prima dell'elaborazione):</strong></p>
+<li style="list-style: none; margin-left: 20px;">→ Wyjście: folder z uporządkowanymi stronami + PDF (na żądanie użytkownika)</li>
+</ul>
+<h4>✅WALIDACJA REKORDÓW</h4>
+<p>Po załadowaniu program sprawdza:</p>
+<ul>
+<li>✓ URL dostępny i osiągalny</li>
+<li>✓ Zgodny zasób: manifest IIIF v2/v3, obsługiwana strona, obraz lub bezpośredni PDF według portalu</li>
+<li>✓ Liczba dostępnych obrazów i płócien</li>
+<li>✓ Metadane (tytuł, autor, data)</li>
+</ul>
+<h4>❌ CZĘSTE BŁĘDY</h4>
+<ul>
+<li>„URL nieprawidłowy”: Sprawdź kopię/incolla URL</li>
+<li>„Nie znaleziono manifestu (404)”: URL wygasło lub jest nieprawidłowe</li>
+<li>„Format IIIF nie jest obsługiwany”: Serwer nie używa standardu IIIF</li>
+<li>„Przekroczono limit czasu połączenia”: Wolne połączenie internetowe/assente</li>
+</ul>
+<h4>💾 REKORDOWA OSZCZĘDNOŚĆ</h4>
+<p>Po załadowaniu manifestu program automatycznie zapisuje metadane IIIF. GDZIE: W wybranym przez Ciebie folderze wyjściowym (patrz Sekcja 2, KROK 2) <strong>STRUKTURA FOLDERÓW PO WŁADOWANIU (przed obróbką):</strong></p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale (livello principale)
  └─ [nome]/                            ← Sottocartella SOLO per metadati
     ├─ [nome]_genealogico.json        ← Metadati genealogici estratti
     └─ [nome]_tecnico.json            ← Metadati tecnici (canvas ID, numero pagine)</pre>
-<p> DOPO L'ELABORAZIONE (quando clicchi Menu → Output → Elabora): Nel livello principale vengono aggiunti i file elaborati:</p>
+<p> PO PRZETWARZANIU (po kliknięciu Menu → Wyjście → Proces): Przetworzone pliki dodawane są na poziom główny:</p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
  ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite dai tile IIIF (una per pagina)
@@ -427,296 +449,300 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
  ├─ [nome]_canvas_N.jpg/.png/.tif       (N = numero totale di pagine/canvas)
  ├─ [nome].json                        ← Sidecar JSON per ogni immagine (metadati EXIF)
  └─ [nome].pdf                         ← PDF completo (vedi spiegazione sotto)</pre>
-
-<p>I metadati rimangono nella sottocartella [nome]/ come salvati al caricamento.</p>
-<p><strong>NOTA IMPORTANTE: Organizzazione file</strong></p>
-            <ul>
-                <li>Manifest IIIF: livello principale della cartella output</li>
-                <li>Immagini (canvas), PDF, Sidecar JSON: livello principale della cartella output</li>
-                <li>SOLO metadati tecnici e genealogici: salvati in sottocartella [nome]/</li>
-                <li>Le cartelle temporanee (tiles_canvas_X/) vengono eliminate automaticamente al termine</li>
-                <li>Questa struttura consente di gestire più record nella stessa cartella senza confusione</li>
-            </ul>
-<p><strong>Esempio:</strong> Se elabori "Registro1", troverai:</p>
-            <ul>
-                <li>manifest_[ID1]_Registro1.json (livello principale)</li>
-                <li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (livello principale)</li>
-                <li>Registro1.pdf (livello principale)</li>
-                <li>Registro1/ (sottocartella SOLO con metadati genealogico e tecnico)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>5. ELABORAZIONE E DOWNLOAD IMMAGINI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>🎯 FLUSSO DI ELABORAZIONE</h4>
-            <p>Il workflow di elaborazione prevede 3 passi:</p>
-            <h4>PASSO 1: SELEZIONA FORMATI IMMAGINE</h4>
-            <p>─────────────────────────────────────</p>
-            <h3>1. Carica un file input (File input → Apri input): la finestra formati si apre automaticamente</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona formati immagine"</h3>
-            <h3>3. Si apre una finestra di dialogo con 3 opzioni:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Formato senza perdita (lossless), migliore qualità, file più grandi</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Formato compresso (lossy), buon compromesso qualità/dimensione</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Formato archiviale, massima qualità, file molto grandi</p>
-            <p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Documento PDF</strong></p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Genera un PDF completo con tutte le pagine del registro o documento, in aggiunta ai formati immagine selezionati (o come unico output se nessun formato immagine è selezionato)</p>
-            <h3>4. Seleziona almeno un formato immagine o PDF (puoi sceglierne più di uno)</h3>
-            <h3>5. Clicca "Conferma"</h3>
-            <p>✅ <strong>I formati scelti vengono memorizzati</strong> e pre-selezionati automaticamente alla prossima apertura del programma.</p>
-            <h4>📝 CONSIGLI:</h4>
-            <ul>
-                <li>Per preview/consultazione: JPG (veloce da aprire, minore spazio)</li>
-                <li>Per archivio conservativo: PNG (lossless, compromesso di spazio) o TIFF (massima qualità)</li>
-                <li>Per entrambi: seleziona sia PNG che TIFF</li>
-                <li>Per PDF: seleziona PDF insieme a uno o più formati immagine, oppure seleziona solo PDF per generare esclusivamente il documento PDF senza file immagine separati</li>
-            </ul>
-            <h4>PASSO 2: SELEZIONA CARTELLE OUTPUT</h4>
-            <p>──────────────────────────────────────</p>
-            <h3>1. La finestra cartelle si apre automaticamente dopo la scelta dei formati (quando carichi un file input)</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona cartelle output"</h3>
-            <h3>3. Scegli la MODALITÀ di organizzazione delle cartelle:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella unica per tutti</span> → un'unica cartella per tutti i record (doc e registri)</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartelle separate doc/reg</span> → una cartella per tutti i documenti, una per tutti i registri</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella per ogni record</span> → una cartella distinta per ciascun record nel file input</p>
-            <h3>4. Dopo la scelta della modalità, seleziona le cartelle richieste (1, 2 o N finestre di dialog)</h3>
-            <h3>5. Al termine mostra il riepilogo delle cartelle scelte</h3>
-            <p>✅ <strong>Modalità e cartelle vengono memorizzate</strong>. Alla prossima apertura di un file input, vengono ripristinate automaticamente se compatibili con il numero di record.</p>
-            <p>⚠️ Se il nuovo file input ha un numero diverso di Documenti/Registri rispetto alle cartelle salvate, viene mostrato un avviso e la selezione viene azzerata per richiedere nuove cartelle.</p>
-            <h4>📌 RIEPILOGO MODALITÀ:</h4>
-            <ul>
-                <li><strong>Cartella unica:</strong> Semplice, tutto in un posto. Adatto per elaborazioni veloci o test</li>
-                <li><strong>Separate doc/reg:</strong> Organizzazione per tipo. Default: <code>output/doc/</code> e <code>output/reg/</code></li>
-                <li><strong>Per ogni record:</strong> Massima flessibilità. Puoi usare drive diversi, NAS, cartelle personalizzate</li>
-            </ul>
-            <h4>PASSO 3: AVVIA ELABORAZIONE</h4>
-            <p>─────────────────────────────</p>
-            <h3>1. Clicca Menu → "Output" → "Elabora"</h3>
-            <h3>2. Verifica che:</h3>
-            <p>✓ Almeno 1 formato immagine selezionato</p>
-            <p>✓ Almeno 1 record caricato</p>
-            <p><strong>Se mancano questi requisiti, appare messaggio di errore:</strong></p>
-            <p>❌ "Nessun formato selezionato" → Vai a PASSO 1</p>
-            <p>❌ "Nessun record caricato" → Vai a Caricamento Input (Sezione 4)</p>
-            <h4>📺 FINESTRA DI ELABORAZIONE</h4>
-            <p>Non appena clicchi "Elabora", si apre una finestra modale con: </p>
-            <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window2.webp" alt="Finestra elaborazione in corso" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
-            </div>
-            <h4>📊 ELEMENTI VISIBILI:</h4>
-            <p>1️⃣ TITOLO FINESTRA: "Elaborazione in corso"</p>
-            <ul>
-                <li>Rimane in primo piano finché l'elaborazione non termina</li>
-                <li>Non puoi interagire con il resto della GUI</li>
-            </ul>
-            <p>2️⃣ ETICHETTA PROGRESSO: "Elaborazione record: 2/5 — Nome File"</p>
-            <ul>
-                <li>Mostra: record attualmente elaborato (2) su totale (5)</li>
-                <li>Mostra anche il nome del file/registro in elaborazione</li>
-                <li>Si aggiorna in tempo reale man mano che processa i record</li>
-                <li>Es: "Elaborazione record: 1/3 — Registro Matrimoni 1850"</li>
-            </ul>
-            <p>3️⃣ BARRA DI PROGRESSO: Avanzamento visuale</p>
-            <ul>
-                <li>Formato numerico: "2/5" (numero attuale / totale)</li>
-                <li>Barra colore che avanza da sinistra a destra</li>
-                <li>Raggiunge il 100% (massima larghezza) quando completo</li>
-                <li>NON mostra percentuale, solo numero</li>
-            </ul>
-            <p>4️⃣ PULSANTE [ANNULLA]</p>
-            <ul>
-                <li>Cliccabile durante elaborazione</li>
-                <li>Chiude la finestra di progresso</li>
-                <li>⚠️ L'elaborazione continua in background (non interrompe il download)</li>
-                <li>I file scaricati rimangono nella cartella output selezionata</li>
-            </ul>
-            <h4>🔄 DURANTE L'ELABORAZIONE</h4>
-            <p><strong>Il programma in background:</strong></p>
-            <pre class="file-structure">├─ Scarica immagini dai server IIIF
+<p>Metadane pozostają w podfolderze [nazwa]/, tak jak zostały zapisane po przesłaniu.</p>
+<p><strong>WAŻNA UWAGA: Organizacja plików</strong></p>
+<ul>
+<li>Manifest IIIF: poziom główny folderu wyjściowego</li>
+<li>Obrazy (płótno), PDF, Sidecar JSON: poziom główny folderu wyjściowego</li>
+<li>TYLKO metadane techniczne i genealogiczne: zapisane w podfolderze [nazwa]/</li>
+<li>Foldery tymczasowe (tiles_canvas_X/) są automatycznie usuwane po zakończeniu</li>
+<li>Ta struktura pozwala na zarządzanie wieloma rekordami w tym samym folderze bez zamieszania</li>
+</ul>
+<p><strong>Przykład:</strong> Jeśli przetworzysz „Register1”, znajdziesz:</p>
+<ul>
+<li>manifest_[ID1]_Registro1.json (najwyższy poziom)</li>
+<li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (poziom główny)</li>
+<li>Registro1.pdf (poziom główny)</li>
+<li>Registro1/ (podfolder TYLKO z metadanymi genealogicznymi i technicznymi)</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. PRZETWARZANIE I POBIERANIE OBRAZÓW</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>🎯 PRZEPŁYW PRZETWARZANIA</h4>
+<p>Proces przetwarzania składa się z 3 kroków:</p>
+<h4>KROK 1: WYBIERZ FORMATY OBRAZU</h4>
+<p>─────────────────────────────────────</p>
+<h3>1. Załaduj plik wejściowy (Plik wejściowy → Otwórz wejście): okno formatów otwiera się automatycznie</h3>
+<h3>2. Alternatywnie: Kliknij Menu → „Ustawienia” → „Wybierz formaty obrazów”</h3>
+<h3>3. Otworzy się okno dialogowe z 3 opcjami:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Format bezstratny, lepsza jakość, większe pliki</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Format skompresowany (stratny), kompromis dobrej jakości/dimensione</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Format archiwalny, najwyższa jakość, bardzo duże pliki</p>
+<p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Dokument PDF</strong></p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Wygeneruj kompletny PDF ze wszystkimi stronami dziennika lub dokumentu, oprócz wybranych formatów obrazu (lub jako jedyny wynik, jeśli nie wybrano żadnego formatu obrazu)</p>
+<h3>4. Wybierz przynajmniej jeden format obrazu lub PDF (możesz wybrać więcej niż jeden)</h3>
+<h3>5. Kliknij „Potwierdź”</h3>
+<p>✅ <strong>Wybrane formaty zostaną zapisane</strong> i automatycznie wybrane przy następnym otwarciu programu.</p>
+<h4>📝 WSKAZÓWKI:</h4>
+<ul>
+<li>Do podglądu/consultazione: JPG (szybkie otwieranie, mniej miejsca)</li>
+<li>Dla archiwum konserwatywnego: PNG (bezstratny, kompromis w zakresie przestrzeni) lub TIFF (maksymalna jakość)</li>
+<li>Dla obu: wybierz zarówno PNG, jak i TIFF</li>
+<li>Dla PDF: Wybierz PDF wraz z jednym lub kilkoma formatami obrazu lub wybierz sam PDF, aby wygenerować tylko dokument PDF bez oddzielnych plików obrazów</li>
+</ul>
+<h4>KROK 2: WYBIERZ FOLDERY WYJŚCIOWE</h4>
+<p>───────────────────────────────────────</p>
+<h3>1. Okno folderu otwiera się automatycznie po wybraniu formatów (po wczytaniu pliku wejściowego)</h3>
+<h3>2. Alternatywnie: Kliknij Menu → „Ustawienia” → „Wybierz foldery wyjściowe”</h3>
+<h3>3. Wybierz TRYB organizacji folderów:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Jeden folder dla wszystkich</span> → jeden folder dla wszystkich akt (dokumentów i rejestrów)</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Oddzielne foldery doc/reg</span> → jeden folder na wszystkie dokumenty, jeden na wszystkie rejestry</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Folder dla każdego rekordu</span> → osobny folder dla każdego rekordu w pliku wejściowym</p>
+<h3>4. Po wybraniu trybu wybierz wymagane foldery (1, 2 lub N okien dialogowych)</h3>
+<h3>5. Na koniec wyświetli się podsumowanie wybranych folderów</h3>
+<p>✅ <strong>Tryby i foldery są przechowywane</strong>. Przy następnym otwarciu pliku wejściowego zostaną one automatycznie przywrócone, jeśli są zgodne z liczbą rekordów.</p>
+<p>⚠️ Jeśli nowy plik wejściowy zawiera inną liczbę dokumentów /Registri niż liczba zapisanych folderów, wyświetli się ostrzeżenie, a wybór zostanie zresetowany w celu zażądania nowych folderów.</p>
+<p>🛡️ <strong>Kontrola prewencyjna tras:</strong> Przed utworzeniem folderów lub plików ATK-Pro sprawdza oczekiwane nazwy i ścieżki. Nazwy niezgodne z Windows i zbyt długie segmenty blokują tylko dany rekord; Ostrzeżenia dotyczące zgodności są wyświetlane w końcowym podsumowaniu.</p>
+<p>☁️ <strong>OneDrive/SharePoint nie jest zakładany jako domyślne miejsce docelowe.</strong> Jego ograniczenia są stosowane tylko wtedy, gdy wybrany folder faktycznie znajduje się w katalogu głównym OneDrive. W pozostałych ścieżkach historyczny próg Windows wynoszący 260 znaków traktowany jest jako ostrzeżenie ostrożnościowe, a nie automatyczna blokada.</p>
+<h4>📌 PODSUMOWANIE TRYBU:</h4>
+<ul>
+<li><strong>Pojedynczy folder:</strong> Proste, wszystko w jednym miejscu. Nadaje się do szybkiego przetwarzania lub testowania</li>
+<li><strong>Oddzielny dokument/reg:</strong> Organizacja według rodzaju. Wartości domyślne: <code>output/doc/</code> tj <code>output/reg/</code></li>
+<li><strong>Dla każdego rekordu:</strong> Maksymalna elastyczność. Możesz używać różnych dysków, NAS, niestandardowych folderów</li>
+</ul>
+<h4>KROK 3: ROZPOCZNIJ PRZETWARZANIE</h4>
+<p>─────────────────────────────</p>
+<h3>1. Kliknij Menu → „Wyjście” → „Proces”</h3>
+<h3>2. Sprawdź, czy:</h3>
+<p>✓ Wybrano co najmniej 1 format obrazu</p>
+<p>✓ Przesłano co najmniej 1 rekord</p>
+<p><strong>Jeśli brakuje tych wymagań, pojawi się komunikat o błędzie:</strong></p>
+<p>❌ „Nie wybrano formatu” → Przejdź do KROKU 1</p>
+<p>❌ „Nie załadowano żadnych rekordów” → Przejdź do Ładowanie danych wejściowych (sekcja 1)</p>
+<h4>📺 OKNO PRZETWARZANIA</h4>
+<p>Po kliknięciu „Przetwarzaj” otwiera się okno modalne z: </p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="Okno przetwarzania" src="images/window2.webp" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>📊 WIDOCZNE ELEMENTY:</h4>
+<p>1️⃣ TYTUŁ OKNA: „Przetwarzanie”</p>
+<ul>
+<li>Pozostaje na pierwszym planie aż do zakończenia przetwarzania</li>
+<li>Nie możesz wchodzić w interakcję z resztą GUI</li>
+</ul>
+<p>2️⃣ ETYKIETA POSTĘPU: „Przetwarzanie rekordów: 2/5 — nazwa pliku”</p>
+<ul>
+<li>Pokaż: aktualnie przetwarzany rekord (2) z całości (5)</li>
+<li>Pokazuje także nazwę przetwarzanego pliku /registro</li>
+<li>Aktualizuje się w czasie rzeczywistym podczas przetwarzania zapisów</li>
+<li>Np.: „Przetwarzanie rekordu: 1/3 — Rejestr małżeństw 1850”</li>
+</ul>
+<p>3️⃣ PASEK POSTĘPU: Postęp wizualny</p>
+<ul>
+<li>Format liczb: „2/5” (liczba bieżąca/całkowita)</li>
+<li>Pasek kolorów przesuwający się od lewej do prawej</li>
+<li>Osiąga 100% (maksymalna szerokość) po zapełnieniu</li>
+<li>NIE pokazuje procentu, tylko liczbę</li>
+</ul>
+<p>PRZYCISK 4️⃣ [ANULUJ].</p>
+<ul>
+<li>Możliwość kliknięcia podczas przetwarzania</li>
+<li>Monituje o przerwanie całej partii i zamyka okno postępu</li>
+<li>Zamknięcie ma charakter kooperacyjny: może poczekać na zakończenie trwającego już pojedynczego żądania sieciowego</li>
+<li>Żadne dane wyjściowe z anulowanej sesji nie są publikowane w wybranym folderze; istniejące pliki pozostają niezmienione</li>
+</ul>
+<h4>🔄 PODCZAS PRZETWARZANIA</h4>
+<p><strong>Program w tle:</strong></p>
+<pre class="file-structure">├─ Scarica immagini dai server IIIF
 ├─ Legge manifest per canvas ID
 ├─ Ricostruisce tile in immagini complete
 ├─ Converte nei formati selezionati (PNG, JPG, TIFF)
 └─ Salva nelle cartelle scelte</pre>
-            <p><strong>La GUI mostra progress in tempo reale:</strong></p>
-            <ul>
-                <li>Ogni 2-3 secondi aggiorna numero record</li>
-                <li>Nessun blocco: interfaccia rimane reattiva</li>
-                <li>Puoi annullare in qualsiasi momento</li>
-            </ul>
-            <h4>⚠️ COMPORTAMENTO SE CLICCHI ANNULLA:</h4>
-            <h3>1. Elaborazione si ferma subito</h3>
-            <h3>2. File parziali vengono rimossi</h3>
-            <h3>3. Finestra si chiude</h3>
-            <h3>4. Puoi ricominciare da Menu → Output → Elabora</h3>
-            <h4>📋 PDF — GENERAZIONE AUTOMATICA DURANTE L'ELABORAZIONE</h4>
-            <p>Se hai selezionato <strong>PDF</strong> nella maschera di scelta formati (PASSO 1), il PDF viene generato automaticamente al termine del download di ogni registro o documento, senza nessuna finestra di conferma aggiuntiva.</p>
-            <h4>📌 COMPORTAMENTO:</h4>
-            <ul>
-                <li>✅ <strong>PDF selezionato nella maschera formati:</strong> il PDF viene generato automaticamente al termine del download; non viene chiesta nessuna conferma aggiuntiva</li>
-                <li>❌ <strong>PDF non selezionato:</strong> solo le immagini nei formati scelti, nessun PDF</li>
-            </ul>
-            <p>Caratteristiche del PDF generato:</p>
-            <ul>
-                <li>Nome file: <code>[nome].pdf</code>, senza suffissi aggiuntivi (es. <code>Registro Matrimoni 1920.pdf</code>)</li>
-                <li>Salvato nella cartella output scelta, allo stesso livello delle immagini</li>
-                <li>Pagine in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N)</li>
-                <li>Se un canvas non è scaricabile, viene inserita una pagina <em>placeholder</em> localizzata con link diretto al canvas originale su Antenati</li>
-                <li>Nessun file temporaneo rimane nella cartella output al termine della generazione</li>
-            </ul>
-            <h4>⚠️ COSA NON FARE DURANTE ELABORAZIONE:</h4>
-            <ul>
-                <li>❌ Non chiudere il programma (perde file parziali)</li>
-                <li>❌ Non staccare disco esterno (errore salvataggio)</li>
-                <li>❌ Non spegnere PC/laptop</li>
-                <li>❌ Non staccare internet (arresta download)</li>
-            </ul>
-            <h4>✅ COSA PUOI FARE:</h4>
-            <ul>
-                <li>✓ Aspettare che finisca (è la procedura normale)</li>
-                <li>✓ Cliccare Annulla se urgente</li>
-                <li>✓ Usare il PC per altre cose normalmente (minimizza solo la finestra)</li>
-            </ul>
-            <h4>🎉 FINE ELABORAZIONE</h4>
-            <p>Quando tutti i record sono stati elaborati:</p>
-            <h3>1. La finestra di progresso si chiude automaticamente</h3>
-            <h3>2. Appare un messaggio: "Operazione completata"</h3>
-            <h3>3. Clicca OK per chiudere il messaggio</h3>
-            <h3>4. La finestra di progresso scompare completamente</h3>
-            <p>Dopo:</p>
-            <ul>
-                <li>Visualizza file output nelle cartelle che hai selezionato al PASSO 2</li>
-                <li>Ogni documento/registro ha propria sottocartella all'interno della cartella da te scelta</li>
-                <li>Immagini sono pronte per uso (visualizzazione, stampa, archiviazione, PDF)</li>
-            </ul>
-            <h4>✅ OUTPUT GENERATO:</h4>
-            <p>Per ogni record elaborato troverai:</p>
-            <ul>
-                <li>Immagini nei formati selezionati (PNG, JPG, TIFF)</li>
-                <li>manifest_[ID]_[nome].json → Manifest IIIF originale con metadati strutturati</li>
-                <li>[nome]_genealogico.json → Metadati genealogici (date, luoghi, nomi, comuni, province)</li>
-                <li>[nome]_tecnico.json → Metadati tecnici (numero canvas, lista canvas ID, diritti, file generati)</li>
-                <li>[nome].json → Sidecar JSON per ogni immagine (metadati EXIF embedded)</li>
-            </ul>
-            <h4>📝 NOTA SUI NOMI FILE:</h4>
-            <ul>
-                <li>Il [nome] base viene preso direttamente dal file input.txt (riga utente)</li>
-                <li>Se scrivi nel file input "Registro Matrimoni 1920", i file saranno:
+<p><strong>GUI pokazuje postęp w czasie rzeczywistym:</strong></p>
+<ul>
+<li>Co 2-3 sekundy aktualizuje numer rekordu</li>
+<li>Brak zawieszeń: interfejs pozostaje responsywny</li>
+<li>Możesz anulować w dowolnym momencie</li>
+</ul>
+<h4>⚠️ ZACHOWANIE W PRZYPADKU KLIKNIĘCIA ANULUJ:</h4>
+<h3>1. Wnioskuje się o wspólne wyłączenie całej partii</h3>
+<h3>2. Wszystkie tymczasowe wyniki wytworzone przez anulowaną partię zostaną usunięte</h3>
+<h3>3. Pliki znajdujące się już w folderach wyjściowych przed uruchomieniem pozostają niezmienione</h3>
+<h3>4. Możesz zacząć od nowa, wybierając Menu → Wyjście → Proces</h3>
+<h4>📋 PDF — AUTOMATYCZNE GENEROWANIE PODCZAS PRZETWARZANIA</h4>
+<p>Jeśli wybrałeś <strong>PDF</strong> w masce wyboru formatu (KROK 1) PDF jest generowany automatycznie na koniec pobierania każdego rejestru lub dokumentu, bez dodatkowego okna potwierdzenia.</p>
+<h4>📌 ZACHOWANIE:</h4>
+<ul>
+<li>✅ <strong>W masce formatu wybrano PDF:</strong> PDF jest generowany automatycznie po zakończeniu pobierania; nie jest wymagane żadne dodatkowe potwierdzenie</li>
+<li>❌ <strong>Nie wybrano PDF:</strong> tylko obrazy w wybranych formatach, bez PDF</li>
+</ul>
+<p>Charakterystyka wygenerowanego PDF:</p>
+<ul>
+<li>Nazwa pliku: <code>[nome].pdf</code>, bez dodatkowych przyrostków (np. <code>Registro Matrimoni 1920.pdf</code>)</li>
+<li>Zapisane w wybranym folderze wyjściowym, na tym samym poziomie co obrazy</li>
+<li>Strony w rosnącej kolejności numerycznej (płótno 1 → płótno 2 → … → płótno N)</li>
+<li>Jeśli płótna nie można pobrać, wstawiana jest strona <em>symbol zastępczy</em> zlokalizowane z bezpośrednim linkiem do oryginalnego płótna na Ancestors</li>
+<li>Po zakończeniu generowania w folderze wyjściowym nie pozostają żadne pliki tymczasowe</li>
+</ul>
+<h4>⚠️ CZEGO NIE ROBIĆ PODCZAS PRZETWARZANIA:</h4>
+<ul>
+<li>❌ Nie zamykaj programu (utrata częściowych plików)</li>
+<li>❌ Nie wyjmuj dysku zewnętrznego (błąd zapisu)</li>
+<li>❌ Nie wyłączaj PC/laptop</li>
+<li>❌ Nie odłączaj Internetu (zatrzymaj pobieranie)</li>
+</ul>
+<h4>✅ CO MOŻESZ ZROBIĆ:</h4>
+<ul>
+<li>✓ Poczekaj, aż się zakończy (jest to normalna procedura)</li>
+<li>✓ Kliknij Anuluj, jeśli jest to pilne</li>
+<li>✓ Normalnie używaj komputera do innych celów (po prostu minimalizuj okno)</li>
+</ul>
+<h4>🎉 KONIEC PRZETWARZANIA</h4>
+<p>Po przetworzeniu wszystkich rekordów:</p>
+<h3>1. Okno postępu zamyka się automatycznie</h3>
+<h3>2. Pojawia się komunikat: „Operacja zakończona”</h3>
+<h3>3. Kliknij OK, aby zamknąć komunikat</h3>
+<h3>4. Okno postępu znika całkowicie</h3>
+<p>Po:</p>
+<ul>
+<li>Wyświetl pliki wyjściowe w folderach wybranych w KROKU 2</li>
+<li>Każdy dokument/registro ma swój własny podfolder w wybranym folderze</li>
+<li>Obrazy są gotowe do użycia (przeglądanie, drukowanie, archiwizacja, PDF)</li>
+</ul>
+<h4>✅ WYGENEROWANY WYJŚCIE:</h4>
+<p>Dla każdego przetworzonego rekordu znajdziesz:</p>
+<ul>
+<li>Obrazy w wybranych formatach (PNG, JPG, TIFF)</li>
+<li>manifest_[ID]_[nazwa].json → Oryginalny manifest IIIF z metadanymi strukturalnymi</li>
+<li>[nazwa]_genealogico.json → Metadane genealogiczne (daty, miejsca, nazwy, gminy, województwa)</li>
+<li>[nazwa]_tecnico.json → Metadane techniczne (numer płótna, lista identyfikatorów płótna, prawa, wygenerowane pliki)</li>
+<li>[nazwa].json → Sidecar JSON dla każdego obrazu (osadzone metadane EXIF)</li>
+</ul>
+<h4>📝 UWAGA DOTYCZĄCA NAZW PLIKÓW:</h4>
+<ul>
+<li>Baza [nazwa] jest pobierana bezpośrednio z pliku input.txt (linia użytkownika)</li>
+<li>Jeśli w pliku wejściowym wpiszesz „Spis małżeństwa 1920”, plikami będą:
                     <ul>
-                        <li>Registro Matrimoni 1920_canvas_1.jpg</li>
-                        <li>Registro Matrimoni 1920_genealogico.json</li>
-                        <li>Registro Matrimoni 1920_tecnico.json</li>
-                    </ul>
-                </li>
-                <li>I suffissi JSON rimangono in EN (_genealogico, _tecnico) per compatibilità</li>
-                <li>Puoi usare nomi in qualunque lingua nel file input (IT, EN, misto)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>6. PDF PER REGISTRI E DOCUMENTI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>COME ATTIVARE LA GENERAZIONE PDF</h4>
-            <p>La generazione del PDF si attiva selezionando la casella <strong>PDF</strong> nella maschera di scelta formati (Menu → Impostazioni → "Seleziona formati immagine").</p>
-            <p>Puoi combinare PDF con uno o più formati immagine (es. PDF + PNG), oppure selezionare solo PDF per ottenere esclusivamente il documento senza file immagine separati.</p>
-            <h4>📄 CARATTERISTICHE DEL PDF GENERATO</h4>
-            <ul>
-                <li><strong>Nome file:</strong> il PDF è denominato semplicemente <code>[nome].pdf</code>, senza suffissi aggiuntivi — ad esempio <code>Registro Matrimoni 1920.pdf</code></li>
-                <li><strong>Posizione:</strong> salvato nella cartella output scelta, allo stesso livello delle immagini: <code>[cartella_scelta]\[nome].pdf</code></li>
-                <li><strong>Ordine pagine:</strong> le pagine sono sempre in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N), indipendentemente dall'ordine in cui i tile vengono scaricati</li>
-                <li><strong>Pagine placeholder:</strong> se un canvas non è disponibile (errore di rete o risorsa temporaneamente non raggiungibile), al suo posto viene inserita automaticamente una pagina <em>placeholder</em> localizzata nella lingua selezionata. La pagina placeholder contiene:
+<li>Rejestr małżeństw 1920_canvas_1.jpg</li>
+<li>Rejestr małżeństw 1920_genealogico.json</li>
+<li>Rejestr małżeństw 1920_tecnico.json</li>
+</ul>
+</li>
+<li>Przyrostki JSON pozostają w języku EN (_genealogiczne, _technical) ze względu na kompatybilność</li>
+<li>W pliku wejściowym możesz używać nazw w dowolnym języku (IT, EN, mieszany)</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3. PDF DLA ZAPISÓW I DOKUMENTÓW</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>JAK AKTYWOWAĆ GENERACJĘ PDF</h4>
+<p>Generowanie PDF aktywuje się poprzez zaznaczenie pola <strong>PDF</strong> w masce wyboru formatu (Menu → Ustawienia → „Wybierz formaty obrazu”).</p>
+<p>Możesz połączyć PDF z jednym lub większą liczbą formatów obrazu (np. PDF + PNG) lub wybrać tylko PDF, aby otrzymać wyłącznie dokument bez oddzielnych plików graficznych.</p>
+<h4>📄 FUNKCJE WYGENEROWANEGO PDF</h4>
+<ul>
+<li><strong>Nazwa pliku:</strong> PDF nazywa się po prostu <code>[nome].pdf</code>, bez dodatkowych przyrostków – np <code>Registro Matrimoni 1920.pdf</code></li>
+<li><strong>Lokalizacja:</strong> zapisane w wybranym folderze wyjściowym, na tym samym poziomie co obrazy: <code>[cartella_scelta]\[nome].pdf</code></li>
+<li><strong>Kolejność stron:</strong> strony są zawsze ułożone w rosnącej kolejności numerycznej (płótno 1 → płótno 2 → … → płótno N), niezależnie od kolejności pobierania kafelków</li>
+<li><strong>Strony zastępcze:</strong> jeśli płótno nie jest dostępne (błąd sieci lub zasób chwilowo nieosiągalny), w jego miejsce automatycznie wstawiana jest strona <em>symbol zastępczy</em> zlokalizowane w wybranym języku. Strona zastępcza zawiera:
                     <ul>
-                        <li>Un testo di avviso localizzato (es. "Immagine non disponibile")</li>
-                        <li>Il link diretto al canvas originale su Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>), così da poter consultare la fonte in modo semplice</li>
-                    </ul>
-                    In questo modo viene sempre generato il PDF, con tutte le informazioni necessarie a completarlo in caso di immagini non scaricate.
+<li>Zlokalizowany tekst ostrzeżenia (np. „Obraz niedostępny”)</li>
+<li>Bezpośredni link do oryginalnego płótna na Ancestors (<code>https://antenati.cultura.gov.it/ark:/…</code>), dzięki czemu można łatwo sprawdzić źródło</li>
+</ul>
+                    W ten sposób zawsze generowany jest PDF ze wszystkimi informacjami niezbędnymi do jego uzupełnienia w przypadku niepobranych obrazów.
                 </li>
-                <li><strong>Pulizia automatica:</strong> i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine del processo. Nella cartella output rimangono solo le immagini nei formati scelti, il PDF finale, i manifest e i metadati</li>
-            </ul>
-            <h4>🚫 Se PDF non è selezionato:</h4>
-            <ul>
-                <li>Solo le immagini vengono scaricate nei formati selezionati</li>
-                <li>Nessun PDF generato</li>
-            </ul>
-            </div>
-            <div class="section">
-        <h2>&#128204; FUNZIONALIT&#192; DISPONIBILI E PIANIFICATE</h2>
-        <p>Il menu &ldquo;Servizi&rdquo; contiene 5 funzioni: 4 gi&agrave; disponibili, 1 pianificata per versioni future.</p>
-
-        
-
-        <div class="section-box">
-            <h3>1&#65039;&#8419; VISUALIZZAZIONE IMMAGINI &#9989;</h3>
-            <p>Viewer integrato per immagini genealogiche:</p>
-            <ul>
-                <li>Formati supportati: JPG, PNG, TIFF (inclusi TIFF multi-pagina con navigazione avanti/indietro)</li>
-                <li>Zoom con rotella del mouse e pulsanti dedicati</li>
-                <li>Pan con trascinamento del mouse</li>
-                <li>Modalit&agrave; &ldquo;Adatta alla finestra&rdquo; e &ldquo;1:1 pixel&rdquo;</li>
-                <li>Sidecar JSON affiancato all&apos;immagine (EXIF e metadati tecnici)</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_03_visualizzazione_immagini.html">Vedi Guida Visualizzazione Immagini</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>2&#65039;&#8419; VISUALIZZAZIONE METADATI JSON &#9989;</h3>
-            <p>Viewer ad albero per metadati strutturati:</p>
-            <ul>
-                <li>Apertura diretta di file <code>_genealogico.json</code> e <code>_tecnico.json</code></li>
-                <li>Visualizzazione ad albero espandibile</li>
-                <li>Sezioni: dati genealogici, metadati tecnici, EXIF dalle immagini</li>
-                <li>Anteprima immagine abbinata affiancata al pannello metadati</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_04_visualizzazione_metadati.html">Vedi Guida Visualizzazione Metadati JSON</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>3&#65039;&#8419; OCR AVANZATO &#9989;</h3>
-            <p>Trattamento OCR avanzato tramite LLM Vision:</p>
-            <ul>
-                <li>Estrazione testo da documenti antichi (inclusi manoscritti in italiano ottocentesco e latino)</li>
-                <li>Mantenimento della struttura e dei riferimenti del layout (TEI XML)</li>
-                <li>Riconoscimento e pulizia automatica dei dati strutturati (es. tabelle, ruoli)</li>
-                <li>Estrazione di entit&agrave; (nomi, date, relazioni) in formato JSON navigabile</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_05_ocr_avanzato.html">Vedi Guida OCR Avanzato</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>4&#65039;&#8419; TRADUZIONE &#9989;</h3>
-            <p>Traduzione contestuale dei testi estratti:</p>
-            <ul>
-                <li>Traduzione automatica in 20 lingue supportate</li>
-                <li>Gestione della formattazione e del layout originale</li>
-                <li>Possibilit&agrave; di alternare il testo originale e il testo tradotto</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_06_traduzione.html">Vedi Guida Traduzione</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>5&#65039;&#8419; ESPORTAZIONE GEDCOM</h3>
-            <p>Esportazione in formati genealogici:</p>
-            <ul>
-                <li>GEDCOM (standard genealogico internazionale)</li>
-                <li>Interoperabilit&agrave; con software genealogici: Ancestry, Family Historian, Family Tree Maker,
-                Findmypast, FamilySearch, Geni, Geneanet, Gramps, Legacy Family Tree, MyHeritage,
-                Reunion (macOS), RootsMagic, WikiTree</li>
-            </ul>
-            <p style="font-style:italic;color:#7a5c3b;margin-top:0.6rem;">
-            &#128204; <em>Nota: L&apos;elencazione dei software &egrave; puramente indicativa e non
-            vincolante allo sviluppo dell&apos;interoperabilit&agrave; con ciascuna piattaforma.</em></p>
-            <p style="margin-top:0.6rem;"><strong>Status:</strong> &#128302; Pianificata &ndash;
-            <a href="guida_07_esportazione_gedcom.html">Vedi Guida GEDCOM</a></p>
-        </div>
-    </div>
-            <div class="section-box">
-            <h3>9. CARTELLE E FILE OUTPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📂 STRUTTURA OUTPUT</h4>
-            <p>Quando elabori un record IIIF, ATK-Pro salva i file nella cartella che hai scelto nel PASSO 2 (Seleziona cartella output).</p>
-            <h4>STRUTTURA ORGANIZZATA PER RECORD:</h4>
-            <pre class="file-structure">[cartella_output]/
+<li><strong>Automatyczne czyszczenie:</strong> pliki tymczasowe użyte do wygenerowania PDF są automatycznie usuwane na końcu procesu. Tylko obrazy w wybranych formatach, ostateczny PDF, manifesty i metadane pozostają w folderze wyjściowym</li>
+</ul>
+<h4>🚫 Jeśli nie wybrano PDF:</h4>
+<ul>
+<li>Pobierane są tylko obrazy w wybranych formatach</li>
+<li>Nie wygenerowano PDF</li>
+</ul>
+</div>
+<div class="section">
+<h2>4. 📌 DOSTĘPNE FUNKCJE</h2>
+<p>Menu „Usługi” zawiera funkcje operacyjne v3: wyszukiwanie wspomagane AI, przeglądanie obrazów, przeglądanie metadanych JSON, OCR Advanced, tłumaczenie OCR i eksport GEDCOM.</p>
+<div class="section-box">
+<h3>1️⃣ WYSZUKIWANIE WSPOMAGANE AI ✅</h3>
+<p>Asystent przy ustalaniu strategii badań genealogicznych:</p>
+<ul>
+<li>Przekształcaj nazwiska, miejsca, okresy i cele w leady badawcze</li>
+<li>Sugeruje portale, filtry i przykładowe zapytania do sprawdzenia ręcznie</li>
+<li>Obsługuje scenariusze włoskie, włoskojęzyczne, migracyjne i międzynarodowe</li>
+<li>Umożliwia tworzenie osobistych notatek, porównywanie wielu dostawców i zapisywanie wyników</li>
+</ul>
+<p><strong>Stan:</strong> ✅ Dostępne –
+            <a href="guida_03_ricerca_assistita_ai.html">Zobacz Przewodnik wyszukiwania wspomaganego AI</a></p>
+</div>
+<div class="section-box">
+<h3>2️⃣ OGLĄDANIE OBRAZU ✅</h3>
+<p>Zintegrowana przeglądarka obrazów genealogicznych:</p>
+<ul>
+<li>Obsługiwane formaty: JPG, PNG, TIFF (w tym wielostronicowa nawigacja do przodu TIFF/indietro)</li>
+<li>Zoom za pomocą kółka myszy i dedykowanych przycisków</li>
+<li>Przesuwaj, przeciągając myszką</li>
+<li>Tryby „Dopasuj do okna” i „Piksel 1:1”.</li>
+<li>Sidecar JSON obok obrazu (EXIF i metadane techniczne)</li>
+</ul>
+<p><strong>Stan:</strong> ✅ Dostępne –
+            <a href="guida_04_visualizzazione_immagini.html">Patrz Przewodnik oglądania zdjęć</a></p>
+</div>
+<div class="section-box">
+<h3>3️⃣ WYŚWIETL METADANE JSON ✅</h3>
+<p>Przeglądarka drzewa metadanych strukturalnych:</p>
+<ul>
+<li>Bezpośrednie otwieranie plików <code>_genealogico.json</code> tj <code>_tecnico.json</code></li>
+<li>Rozszerzalny widok drzewa</li>
+<li>Sekcje: dane genealogiczne, metadane techniczne, EXIF ​​z obrazów</li>
+<li>Dopasowany podgląd obrazu obok siebie w panelu metadanych</li>
+</ul>
+<p><strong>Stan:</strong> ✅ Dostępne –
+            <a href="guida_05_visualizzazione_metadati.html">Patrz Przewodnik przeglądania metadanych JSON</a></p>
+</div>
+<div class="section-box">
+<h3>4️⃣ OCR ZAAWANSOWANY ✅</h3>
+<p>Zaawansowane leczenie OCR poprzez wizję LLM:</p>
+<ul>
+<li>Ekstrakcja tekstu z dokumentów starożytnych (w tym rękopisów w XIX-wiecznym języku włoskim i łacińskim)</li>
+<li>Utrzymanie struktury układu i referencji (TEI XML)</li>
+<li>Automatyczne rozpoznawanie i czyszczenie danych strukturalnych (np. tabele, role)</li>
+<li>Ekstrakcja jednostek (nazw, dat, relacji) w nawigacyjnym formacie JSON</li>
+</ul>
+<p><strong>Stan:</strong> ✅ Dostępne –
+            <a href="guida_06_ocr_avanzato.html">Zobacz Zaawansowany podręcznik OCR</a></p>
+</div>
+<div class="section-box">
+<h3>5️⃣ TŁUMACZENIE OCR ✅</h3>
+<p>Tłumaczenie kontekstowe wyodrębnionych lub transkrybowanych tekstów:</p>
+<ul>
+<li>Tłumaczenie tekstów OCR, transkrypcje ręczne i pliki TXT</li>
+<li>Stosowanie typów dokumentów, glosariusza i kontekstu</li>
+<li>Konfigurowalny dostawca AI, opcjonalny szablon i Key Vault</li>
+<li>Edytowalne wyjście TXT lub DOCX</li>
+</ul>
+<p><strong>Stan:</strong> ✅ Dostępne –
+            <a href="guida_07_traduzione.html">Zobacz Przewodnik tłumaczeń OCR</a></p>
+</div>
+<div class="section-box">
+<h3>6️⃣ EKSPORT GEDCOM ✅</h3>
+<p>Wspomagana analiza genealogiczna i eksport GEDCOM:</p>
+<ul>
+<li>Uniwersalne wejście z metodą Auto-Discovery, Vision AI lub Refinery LLM</li>
+<li>Możliwość rozbudowy istniejącej bazy GEDCOM lub CSV</li>
+<li>Notatki paleograficzne i typologie dokumentów pomagające w ekstrakcji</li>
+<li>Generowanie pliku <code>genealogia_*.ged</code> należy sprawdzić przed użyciem</li>
+</ul>
+<p style="margin-top:0.6rem;"><strong>Stan:</strong> ✅ Dostępne –
+            <a href="guida_08_esportazione_gedcom.html">Patrz Poradnik GEDCOM</a></p>
+</div>
+</div>
+<div class="section-box">
+<h3>5. FOLDY I PLIKI WYJŚCIOWE</h3>
+<p>──────────────────── ──────────────────── ──────────────────── ────────────────────</p>
+<h4>📂 STRUKTURA WYJŚCIOWA</h4>
+<p>Kiedy przetwarzasz rekord IIIF, ATK-Pro zapisuje pliki w folderze wybranym w KROKU 2 (Wybierz folder wyjściowy).</p>
+<h4>STRUKTURA ORGANIZOWANA PRZEZ RECORD:</h4>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
 ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite (una per pagina)
 ├─ [nome]_canvas_2.jpg/.png/.tif
@@ -726,9 +752,9 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ [nome]/                           ← Sottocartella SOLO per metadati
    ├─ [nome]_genealogico.json        ← Metadati genealogici
    └─ [nome]_tecnico.json            ← Metadati tecnici</pre>
-            <h4>MULTI-RECORD NELLA STESSA CARTELLA:</h4>
-            <p>Se elabori 3 record nella stessa cartella, la struttura diventa:</p>
-            <pre class="file-structure">[cartella_output]/
+<h4>WIELE NAGRODÓW W TYM SAMYM FOLDERZE:</h4>
+<p>Jeśli przetworzysz 3 rekordy w tym samym folderze, struktura będzie wyglądać następująco:</p>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID1]_Registro1.json
 ├─ Registro1_canvas_1.jpg
 ├─ Registro1_canvas_2.jpg
@@ -752,36 +778,30 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ Registro3/
     ├─ Registro3_genealogico.json
     └─ Registro3_tecnico.json</pre>
-            <h4>📌 NOTE SULLA STRUTTURA:</h4>
-            <ul>
-                <li>Manifest IIIF, Immagini, PDF, Sidecar JSON: nel livello principale</li>
-                <li>SOLO metadati tecnici e genealogici: in sottocartelle [nome]/ (uno per record)</li>
-                <li>Le cartelle temporanee (<code>tiles_canvas_X/</code>) e i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine dell'elaborazione: nella cartella output non rimane nessun file di lavoro intermedio</li>
-                <li>Questa organizzazione consente di gestire molteplici record nella stessa cartella senza confusione tra file</li>
-            </ul>
-            <h4>📋 CONVENZIONE DI DENOMINAZIONE:</h4>
-            <ul>
-                <li>Manifest: manifest_[ID]_[nome].json</li>
-                <li>Immagini: [nome]_canvas_1, [nome]_canvas_2, ... [nome]_canvas_N</li>
-                <li>JSON metadati: [nome]_genealogico.json, [nome]_tecnico.json</li>
-                <li>JSON immagini: [nome].json (per ogni canvas)</li>
-                <li>PDF: [nome].pdf</li>
-            </ul>
-            </div>
-            
-        
-                </div>
-        
-    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-
-    <footer style="text-align: center;">
-            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-        </footer>
-    </div>
-    </div>
+<h4>📌 UWAGI DOTYCZĄCE KONSTRUKCJI:</h4>
+<ul>
+<li>Manifest IIIF, obrazy, PDF, wózek boczny JSON: na poziomie głównym</li>
+<li>TYLKO metadane techniczne i genealogiczne: w [nazwa]/podfolderach (po jednym na rekord)</li>
+<li>Foldery tymczasowe (<code>tiles_canvas_X/</code>) i pliki tymczasowe użyte do wygenerowania PDF są automatycznie usuwane po zakończeniu przetwarzania: w folderze wyjściowym nie pozostaje żaden pośredni plik roboczy</li>
+<li>Organizacja ta umożliwia zarządzanie wieloma rekordami w tym samym folderze bez pomieszania plików</li>
+</ul>
+<h4>📋 KONWENCJA NAZWANIA:</h4>
+<ul>
+<li>Manifest: manifest_[ID]_[nazwa].json</li>
+<li>Obrazy: [nazwa]_kanwa_1, [nazwa]_kanwa_2, ... [nazwa]_kanwa_N</li>
+<li>Metadane JSON: [nazwa]_genealogico.json, [nazwa]_tecnico.json</li>
+<li>Obrazy JSON: [nazwa].json (dla każdego płótna)</li>
+<li>PDF: [nazwa].pdf</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">← Mod.01 — Instalacja, uruchomienie i interfejs</a>
+<a class="nav-button" href="guida.html">🏠 Indeks główny</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 — Wyszukiwanie wspomagane AI →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Ancestors Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
 </body>
 </html>
