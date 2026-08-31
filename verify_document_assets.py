@@ -54,6 +54,8 @@ POLISH_GUIDE_MODULES = ITALIAN_GUIDE_MODULES.copy()
 
 GREEK_GUIDE_MODULES = ITALIAN_GUIDE_MODULES.copy()
 
+RUSSIAN_GUIDE_MODULES = ITALIAN_GUIDE_MODULES.copy()
+
 MENU_DOCUMENTS = {
     "Disclaimer": (
         "disclaimer_legale_ATK-Pro.html",
@@ -113,6 +115,8 @@ def expected_guide_modules(lang_dir: Path) -> list[str]:
         return POLISH_GUIDE_MODULES
     if lang_dir.name == "el":
         return GREEK_GUIDE_MODULES
+    if lang_dir.name == "ru":
+        return RUSSIAN_GUIDE_MODULES
     return BASE_GUIDE_MODULES
 
 
@@ -252,6 +256,7 @@ def main() -> int:
         f"Swedish {len(SWEDISH_GUIDE_MODULES)}, Romanian {len(ROMANIAN_GUIDE_MODULES)}, "
         f"Polish {len(POLISH_GUIDE_MODULES)}, "
         f"Greek {len(GREEK_GUIDE_MODULES)}, "
+        f"Russian {len(RUSSIAN_GUIDE_MODULES)}, "
         f"other languages {len(BASE_GUIDE_MODULES)}"
     )
     print("- Menu documents checked: Disclaimer, author, project, guide")
