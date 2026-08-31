@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 02: Operazioni di base</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 模块 02：基本操作</title>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -12,14 +13,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -30,7 +31,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -40,12 +41,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -54,21 +55,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             /* border-bottom: 3px solid #a67c52; */
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -77,13 +78,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -96,12 +97,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             /* border: 2px solid #a67c52; */
@@ -110,33 +111,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -144,40 +145,40 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
             /* border: 2px solid #a67c52; */
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +186,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +194,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +216,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +231,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +240,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +263,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             /* border: 1px solid #a67c52; */
             padding: 12px 8px;
@@ -271,7 +272,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +282,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             /* border: 2px solid #a67c52; */
@@ -297,15 +298,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -325,29 +326,49 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📚 Modulo 02: Operazioni di base</h1>
-        </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-        <div class="section-box">
-            <h3>4. CARICAMENTO RECORD IIIF - FORMATI DI INPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📥 STRUTTURA DELL'INPUT</h4>
-            <p>ATK-Pro accetta file di input con un formato specifico basato su COPPIE: Per OGNI record da elaborare, fornisci:</p>
-            <h3>1. RIGA 1: Modalità + Nome (facoltativo)</h3>
-            <ul>
-                <li>D = Documento singolo (una singola immagine/pagina)</li>
-                <li>R = Registro (collezione completa di pagine/documenti)</li>
-            </ul>
-            <h3>2. RIGA 2: URL del Manifest IIIF</h3>
-            <p><strong>Esempio di file input.txt corretto:</strong></p>
-            <pre class="file-structure"># Commenti iniziano con #
+<div class="container">
+<header>
+<h1>📚 模块 02：基本操作</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">← Mod.01 — 安装、启动和界面</a>
+<a class="nav-button" href="guida.html">🏠 主索引</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 — AI 辅助研究 →</a>
+</div>
+<div class="section-box">
+<h3>1. 记录加载 - 输入格式</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>* 输入结构和支助门户</h4>
+<p>ATK-Pro 接受采用成对格式的输入文件：对于每条待处理记录，请提供“模式 + URL”。</p>
+<p><strong>支持的门户 :</strong> 复制并粘贴该页面的公众URL,查看器,海报或兼容PDF. ATK-Pro承认该门户并应用其技术和谨慎模式.</p>
+<p><strong>支助</strong> 表示经核实的技术兼容性,而不是任意允许下载。 资源必须向公众开放,用户必须尊重个人门户的权利、许可证、使用条件和限制。 ATK-Pro不绕过登录器,附属访问器,付费墙或标记 <code>nodownload</code>.</p>
+<p>Antenati(意大利)、Gallica(法国)、DigiVatLib(瓦蒂坎)、Bodleian图书馆(牛津)、Europeana IIIF、Matricula Online、Findbuch(Südtirol)、e-codices/e-rara/e-manuscripta(瑞士)、Heidelberg UB、互联网文化/Estense</p>
+<h4>🇮🇹 v3 新增的意大利门户</h4>
+<table>
+<thead>
+<tr><th>门户</th><th>输入和模式</th><th>业务限制</th></tr>
+</thead>
+<tbody>
+<tr><td>《锡耶纳数字报》</td><td>页面浏览器IIIF; <code>D</code> 或 <code>R</code></td><td>为: <code>R</code> 需要一个明确的范围; 核实对象的权利。</td></tr>
+<tr><td>数字图书馆 Trentina</td><td>公共页面; 图像或直接 PDF</td><td>对于日志和序列使用范围. 如果只需要无范围的PDF,ATK-Pro在可用时使用官方PDF.</td></tr>
+<tr><td>Biblioteca Digitale Lombarda</td><td>端点 PDF REST或端点书阅读器; <code>D</code> 或 <code>R</code></td><td>它从画布 Cantaloupe IIIF重建整个多页序列,只考虑暂时没有的页. 如果 BookReader 不返回有效的画布, 请使用直接 PDF REST 。</td></tr>
+<tr><td>罗韦雷托数字图书馆</td><td>(一) 项目所涉实体或项目所涉实体; <code>D</code> 或 <code>R</code></td><td>仅下载确认为页面的公共位流; <code>R</code> 需要一个范围。</td></tr>
+<tr><td>BUB 数字</td><td>有参数的 BUB 页面 <code>manifest=</code> IIIF BUB</td><td>只有公共资源; <code>R</code> 需要范围,必须核查单个物体的许可证。</td></tr>
+<tr><td>FICLIT 数字图书馆</td><td>Omeka S 条目页面或 FICLIT IIIF 清单</td><td>只有公共物品;用于 <code>R</code> 需要一个范围。 图片由画布的直接资源获取.</td></tr>
+<tr><td>阿基维奥·斯托里科</td><td>单个条目的公开 IIIF 清单； <code>D</code> 或 <code>R</code></td><td>藏品不作为输入接受. 为: <code>R</code> 需要明确的范围,必须核查个别物品的权利。</td></tr>
+<tr><td>PHAIDRA Padua大学</td><td>物体的公开页或其正式的IIIF海报; <code>D</code> 或 <code>R</code></td><td>只是公共物品。 为: <code>R</code> a 需要范围; 检查与电源有关的权利通知或许可证。</td></tr>
+<tr><td>DOGE 热那亚大学</td><td>物体的公开页面; <code>D</code> 或 <code>R</code></td><td>只使用门户网站宣布可下载的公共资源. 不包括原始资源或标记资源 <code>nodownload</code>; 用于 <code>R</code> 需要一个范围。</td></tr>
+</tbody>
+</table>
+<p><strong>说明:</strong> EIBC、Ambrosiana和OrienTales不包含在下载器中:尚未确定稳定的公共端点,或所审查的记录需要附属查阅。 国家档案局、SAN、SIAS、SIUSA、BEWEB和Ticino、Grison和Diocesan资料来源仍然是指导和人工咨询的来源。</p>
+<h3>1. 第 1 行：模式 + 名称（可选）</h3>
+<ul>
+<li>D=单一文档(一张图像/页)</li>
+<li>R = 书记官处(完整收集的页数/文件)</li>
+</ul>
+<h3>2. 第 2 行：记录或资源的公共 URL</h3>
+<p><strong>正确输入.txt文件示例 :</strong></p>
+<pre class="file-structure"># Commenti iniziano con #
 
 RECORD 1 (coppia di righe):
 D - Lettera Importante
@@ -360,66 +381,67 @@ https://archives.example.org/iiif/reg456/manifest.json
 RECORD 3 (coppia di righe):
 D - Fotografia Singola
 https://collections.example.org/iiif/foto789/manifest.json</pre>
-            <h4>📝 REGOLE FORMATO INPUT:</h4>
-            <ul>
-                <li>Righe vuote: ignorate (puoi usarle per leggibilità)</li>
-                <li>Righe con #: ignorate come commenti</li>
-                <li>Modalità D o R: sono obbligatorie (maiuscole)</li>
-                <li>Nome file: facoltativo dopo modalità (es. "D - Nome" o solo "D")</li>
-                <li>URL: deve iniziare con http:// o https://</li>
-                <li>Coppie: modalità + URL devono stare su righe consecutive</li>
-            </ul>
-            <h4>⚙️ COME CARICARE L'INPUT - 3 OPZIONI DAL MENU:</h4>
-            <p>OPZIONE 1: Visualizza Esempio Input ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Esempio input"</h3>
-            <h3>2. Si apre una finestra che mostra il file di esempio localizzato</h3>
-            <h3>3. Puoi copiare il contenuto come template per il tuo file input</h3>
-            <h3>4. File di esempio: assets/[lingua]/testuali/input_link_base.txt</h3>
-            <p>OPZIONE 2: Apri File Input Pronto ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Apri input"</h3>
-            <h3>2. Si apre un dialog di selezione file</h3>
-            <h3>3. Scegli il tuo file input.txt (deve rispettare il formato coppie)</h3>
-            <h3>4. ATK-Pro carica automaticamente e legge tutti i record</h3>
-            <h3>5. Visualizza numero di record caricati e pronti per l'elaborazione</h3>
-            <p>OPZIONE 3: Modifica Input Già Caricato ──────────────────────────────────────────</p>
-            <h3>1. Dopo aver caricato un file input (OPZIONE 2)</h3>
-            <h3>2. Clicca Menu → "File input" → "Modifica input"</h3>
-            <h3>3. Si apre un editor di testo con il file attualmente caricato</h3>
-            <h3>4. Modifica le coppie (aggiungi, rimuovi, cambia URL)</h3>
-            <h3>5. Clicca "Salva" per aggiornare i record in elaborazione</h3>
-            <h3>6. Il programma reinterpreta il file aggiornato</h3>
-            <h4>📌 DIFFERENZA TRA D E R:</h4>
-            <ul>
-                <li>D (Documento): Gestisce una singola immagine/pagina
+<h4>: 输入格式规则:</h4>
+<ul>
+<li>空白行: 被忽略( 您可以用它们来读取)</li>
+<li>带有 # 的行: 作为注释被忽略</li>
+<li>D/d或R/r模式:是强制的;大写和小写等同</li>
+<li>文件名:模式后可选(例如“D-名称”或仅“D”)</li>
+<li>URL:必须从http://或https://开始.</li>
+<li>配对:模式 + URL 必须保持连续行</li>
+</ul>
+<h4>' 如何装入输入 - 菜单中的3个选项 :</h4>
+<p>“备选案文1:视图输入示例”“pope”“pope:?”“pope:?”“pope:?”“pope:?”“pope:?”“pope:?”“波兰”。</p>
+<h3>1. 点击菜单 → "文件输入" → "示例输入"</h3>
+<h3>2. 打开显示本地化样本文件的窗口</h3>
+<h3>3. 您可以将内容复制为输入文件的模板</h3>
+<h3>4. 示例文件:资产/[语 /文本/输入链接基础。 ]</h3>
+<p><strong>文件名上的注释 :</strong> 发送文件名为 <code>input_link_base.txt</code>。该名称在 v3 中已实现常态化,以避免引用以前的版本;该格式仍然与装入 IIIF 记录兼容。</p>
+<p>备选案文2:打开电子输入文件。 “邮箱” “邮箱” “邮箱” “邮箱” “邮箱” “邮箱” “邮箱” “邮箱” “邮箱”。</p>
+<h3>1. 点击菜单 "文件输入" "打开输入"</h3>
+<h3>2. 打开文件选择对话框</h3>
+<h3>3. 选择您的 input.txt 文件( 必须遵循夫妇格式)</h3>
+<h3>4. ATK-Pro自动加载并读取所有记录</h3>
+<h3>5. 查看已装入并准备处理的记录数目</h3>
+<p>“备选案文3:编辑已装入的输入”。 “邮箱”。 “邮箱”。“邮箱”。“邮箱”。“邮箱”。“邮箱”。“邮箱”。</p>
+<h3>1. 上传输入文件后(执行部分第2段)</h3>
+<h3>2. 点击菜单 "文件输入" "编辑输入"</h3>
+<h3>3. 打开当前装入的文件的文本编辑器</h3>
+<h3>4. 编辑配对( 添加、 删除、 更改 URL)</h3>
+<h3>5. 单击“保存”以更新记录</h3>
+<h3>6. 程序重新解释更新的文件</h3>
+<h4>: D 和 R 之间的差异:</h4>
+<ul>
+<li>D(文档):管理单一图像/页面
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: file singolo per il documento</li>
-                <li style="margin-top: 12px;">R (Registro): Gestisce collezioni multi-pagina
+<li style="list-style: none; margin-left: 20px;">− 输出:文档的单一文件</li>
+<li style="margin-top: 12px;">R( 注册员): 管理多页收藏
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: cartella con pagine organizzate + PDF (se richiesto dall'utente)</li>
-            </ul>
-            <h4>✅ VALIDAZIONE RECORD</h4>
-            <p>Dopo il caricamento, il programma verifica:</p>
-            <ul>
-                <li>✓ URL accessibile e raggiungibile</li>
-                <li>✓ Formato IIIF valido (questa versione+)</li>
-                <li>✓ Numero immagini e canvas disponibili</li>
-                <li>✓ Metadata (titolo, autore, data)</li>
-            </ul>
-            <h4>❌ ERRORI COMUNI</h4>
-            <ul>
-                <li>"URL non valido": Controlla copia/incolla URL</li>
-                <li>"Manifest non trovato (404)": URL è scaduto o sbagliato</li>
-                <li>"Formato IIIF non supportato": Il server non usa IIIF standard</li>
-                <li>"Timeout connessione": Connessione Internet lenta/assente</li>
-            </ul>
-            <h4>💾 SALVATAGGIO RECORD</h4>
-            <p>Dopo il caricamento del manifest, il programma salva automaticamente i metadati IIIF. DOVE: Nella cartella output che scegli (vedi Sezione 5, PASSO 2) <strong>STRUTTURA CARTELLE DOPO CARICAMENTO (prima dell'elaborazione):</strong></p>
+<li style="list-style: none; margin-left: 20px;">+ 产出:有组织页面的文件夹+PDF(如果用户需要)</li>
+</ul>
+<h4>✅ 记录验证</h4>
+<p>装入后,程序检查:</p>
+<ul>
+<li>访问和可访问的 URL</li>
+<li>相容资源:海报 IIIF v2/v3, 支持的页面, 图像或直接 PDF 根据门户网站</li>
+<li>可用的图像和画布数量</li>
+<li>元数据(标题、作者、日期)</li>
+</ul>
+<h4>❌ 常见错误</h4>
+<ul>
+<li>"URL 无效":控制副本/粘贴URL</li>
+<li>"未找到的操作(404)":URL已过期或错误</li>
+<li>"不支持的IIIF形式": 服务器不使用标准 IIIF</li>
+<li>"时空连接":慢/慢互联网连接</li>
+</ul>
+<h4>保存记录</h4>
+<p>加载清单后，程序会自动保存 IIIF 元数据。保存位置：您选择的输出文件夹（参见第 2 节“步骤 2”） <strong>运输结构(处理前):</strong></p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale (livello principale)
  └─ [nome]/                            ← Sottocartella SOLO per metadati
     ├─ [nome]_genealogico.json        ← Metadati genealogici estratti
     └─ [nome]_tecnico.json            ← Metadati tecnici (canvas ID, numero pagine)</pre>
-<p> DOPO L'ELABORAZIONE (quando clicchi Menu → Output → Elabora): Nel livello principale vengono aggiunti i file elaborati:</p>
+<p> 处理完成后（点击“菜单 → 输出 → 处理”时）：已处理的文件会添加到顶层目录：</p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
  ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite dai tile IIIF (una per pagina)
@@ -427,296 +449,300 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
  ├─ [nome]_canvas_N.jpg/.png/.tif       (N = numero totale di pagine/canvas)
  ├─ [nome].json                        ← Sidecar JSON per ogni immagine (metadati EXIF)
  └─ [nome].pdf                         ← PDF completo (vedi spiegazione sotto)</pre>
-
-<p>I metadati rimangono nella sottocartella [nome]/ come salvati al caricamento.</p>
-<p><strong>NOTA IMPORTANTE: Organizzazione file</strong></p>
-            <ul>
-                <li>Manifest IIIF: livello principale della cartella output</li>
-                <li>Immagini (canvas), PDF, Sidecar JSON: livello principale della cartella output</li>
-                <li>SOLO metadati tecnici e genealogici: salvati in sottocartella [nome]/</li>
-                <li>Le cartelle temporanee (tiles_canvas_X/) vengono eliminate automaticamente al termine</li>
-                <li>Questa struttura consente di gestire più record nella stessa cartella senza confusione</li>
-            </ul>
-<p><strong>Esempio:</strong> Se elabori "Registro1", troverai:</p>
-            <ul>
-                <li>manifest_[ID1]_Registro1.json (livello principale)</li>
-                <li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (livello principale)</li>
-                <li>Registro1.pdf (livello principale)</li>
-                <li>Registro1/ (sottocartella SOLO con metadati genealogico e tecnico)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>5. ELABORAZIONE E DOWNLOAD IMMAGINI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>🎯 FLUSSO DI ELABORAZIONE</h4>
-            <p>Il workflow di elaborazione prevede 3 passi:</p>
-            <h4>PASSO 1: SELEZIONA FORMATI IMMAGINE</h4>
-            <p>─────────────────────────────────────</p>
-            <h3>1. Carica un file input (File input → Apri input): la finestra formati si apre automaticamente</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona formati immagine"</h3>
-            <h3>3. Si apre una finestra di dialogo con 3 opzioni:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Formato senza perdita (lossless), migliore qualità, file più grandi</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Formato compresso (lossy), buon compromesso qualità/dimensione</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Formato archiviale, massima qualità, file molto grandi</p>
-            <p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Documento PDF</strong></p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Genera un PDF completo con tutte le pagine del registro o documento, in aggiunta ai formati immagine selezionati (o come unico output se nessun formato immagine è selezionato)</p>
-            <h3>4. Seleziona almeno un formato immagine o PDF (puoi sceglierne più di uno)</h3>
-            <h3>5. Clicca "Conferma"</h3>
-            <p>✅ <strong>I formati scelti vengono memorizzati</strong> e pre-selezionati automaticamente alla prossima apertura del programma.</p>
-            <h4>📝 CONSIGLI:</h4>
-            <ul>
-                <li>Per preview/consultazione: JPG (veloce da aprire, minore spazio)</li>
-                <li>Per archivio conservativo: PNG (lossless, compromesso di spazio) o TIFF (massima qualità)</li>
-                <li>Per entrambi: seleziona sia PNG che TIFF</li>
-                <li>Per PDF: seleziona PDF insieme a uno o più formati immagine, oppure seleziona solo PDF per generare esclusivamente il documento PDF senza file immagine separati</li>
-            </ul>
-            <h4>PASSO 2: SELEZIONA CARTELLE OUTPUT</h4>
-            <p>──────────────────────────────────────</p>
-            <h3>1. La finestra cartelle si apre automaticamente dopo la scelta dei formati (quando carichi un file input)</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona cartelle output"</h3>
-            <h3>3. Scegli la MODALITÀ di organizzazione delle cartelle:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella unica per tutti</span> → un'unica cartella per tutti i record (doc e registri)</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartelle separate doc/reg</span> → una cartella per tutti i documenti, una per tutti i registri</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella per ogni record</span> → una cartella distinta per ciascun record nel file input</p>
-            <h3>4. Dopo la scelta della modalità, seleziona le cartelle richieste (1, 2 o N finestre di dialog)</h3>
-            <h3>5. Al termine mostra il riepilogo delle cartelle scelte</h3>
-            <p>✅ <strong>Modalità e cartelle vengono memorizzate</strong>. Alla prossima apertura di un file input, vengono ripristinate automaticamente se compatibili con il numero di record.</p>
-            <p>⚠️ Se il nuovo file input ha un numero diverso di Documenti/Registri rispetto alle cartelle salvate, viene mostrato un avviso e la selezione viene azzerata per richiedere nuove cartelle.</p>
-            <h4>📌 RIEPILOGO MODALITÀ:</h4>
-            <ul>
-                <li><strong>Cartella unica:</strong> Semplice, tutto in un posto. Adatto per elaborazioni veloci o test</li>
-                <li><strong>Separate doc/reg:</strong> Organizzazione per tipo. Default: <code>output/doc/</code> e <code>output/reg/</code></li>
-                <li><strong>Per ogni record:</strong> Massima flessibilità. Puoi usare drive diversi, NAS, cartelle personalizzate</li>
-            </ul>
-            <h4>PASSO 3: AVVIA ELABORAZIONE</h4>
-            <p>─────────────────────────────</p>
-            <h3>1. Clicca Menu → "Output" → "Elabora"</h3>
-            <h3>2. Verifica che:</h3>
-            <p>✓ Almeno 1 formato immagine selezionato</p>
-            <p>✓ Almeno 1 record caricato</p>
-            <p><strong>Se mancano questi requisiti, appare messaggio di errore:</strong></p>
-            <p>❌ "Nessun formato selezionato" → Vai a PASSO 1</p>
-            <p>❌ "Nessun record caricato" → Vai a Caricamento Input (Sezione 4)</p>
-            <h4>📺 FINESTRA DI ELABORAZIONE</h4>
-            <p>Non appena clicchi "Elabora", si apre una finestra modale con: </p>
-            <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window2.webp" alt="Finestra elaborazione in corso" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
-            </div>
-            <h4>📊 ELEMENTI VISIBILI:</h4>
-            <p>1️⃣ TITOLO FINESTRA: "Elaborazione in corso"</p>
-            <ul>
-                <li>Rimane in primo piano finché l'elaborazione non termina</li>
-                <li>Non puoi interagire con il resto della GUI</li>
-            </ul>
-            <p>2️⃣ ETICHETTA PROGRESSO: "Elaborazione record: 2/5 — Nome File"</p>
-            <ul>
-                <li>Mostra: record attualmente elaborato (2) su totale (5)</li>
-                <li>Mostra anche il nome del file/registro in elaborazione</li>
-                <li>Si aggiorna in tempo reale man mano che processa i record</li>
-                <li>Es: "Elaborazione record: 1/3 — Registro Matrimoni 1850"</li>
-            </ul>
-            <p>3️⃣ BARRA DI PROGRESSO: Avanzamento visuale</p>
-            <ul>
-                <li>Formato numerico: "2/5" (numero attuale / totale)</li>
-                <li>Barra colore che avanza da sinistra a destra</li>
-                <li>Raggiunge il 100% (massima larghezza) quando completo</li>
-                <li>NON mostra percentuale, solo numero</li>
-            </ul>
-            <p>4️⃣ PULSANTE [ANNULLA]</p>
-            <ul>
-                <li>Cliccabile durante elaborazione</li>
-                <li>Chiude la finestra di progresso</li>
-                <li>⚠️ L'elaborazione continua in background (non interrompe il download)</li>
-                <li>I file scaricati rimangono nella cartella output selezionata</li>
-            </ul>
-            <h4>🔄 DURANTE L'ELABORAZIONE</h4>
-            <p><strong>Il programma in background:</strong></p>
-            <pre class="file-structure">├─ Scarica immagini dai server IIIF
+<p>元数据仍保留在加载时保存的子文件夹 [nome]/ 中。</p>
+<p><strong>注:文件组织</strong></p>
+<ul>
+<li>Express IIIF: 输出文件夹的主要级别</li>
+<li>图像 (canvas), PDF, Sidecar JSON: 主输出文件夹级别</li>
+<li>仅技术和家谱元数据：保存在子文件夹 [nome]/ 中</li>
+<li>临时文件夹( 平面画布 X/) 在结尾处自动删除</li>
+<li>此结构允许您在同一文件夹中管理多个记录而不产生混淆</li>
+</ul>
+<p><strong>示例</strong> 如果您处理“ 注册 1 ” , 你会发现 :</p>
+<ul>
+<li>海报 [ID1] Registro1.json (主级别)</li>
+<li>Registro1_canvas_1.jpg,Registro1_canvas_2.jpg,......(主级).</li>
+<li>Registro1.pdf(主级)</li>
+<li>Registro1/（仅包含家谱和技术元数据的子文件夹）</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. 图像的处理和下载</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>🎯 处理流程</h4>
+<p>处理工作流程包括三个步骤:</p>
+<h4>步骤1:选择图像格式</h4>
+<p>─────────────────────────────────────</p>
+<h3>1. 上传输入文件(文件输入 打开输入):格式窗口自动打开</h3>
+<h3>2. 或者:单击菜单 → "设置" → "选择图像格式"</h3>
+<h3>3. 打开包含3个选项的对话框:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">PNG 时间轴</span>  − 无损失格式(无损失),质量更好,文件更大</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">JPG 时间轴</span>  ——压缩格式(损耗),良好折中质量/差价</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">TIFF 时间轴</span> — 存档格式,最高质量,非常大的文件</p>
+<p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>PDF文档</strong></p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">PDF 时间轴</span> − 生成一个完整的PDF,除了选定的图像格式(或者在没有选择图像格式的情况下作为单一的输出)之外,还有登记册或文档的所有页面。</p>
+<h3>4. 选择至少一个图像或PDF格式(您可以选择多个)</h3>
+<h3>5. 点击“确认”</h3>
+<p>✅ <strong>所选格式被存储</strong> ,并在下一个程序打开时自动选择。</p>
+<h4>: 小费 :</h4>
+<ul>
+<li>用于预览/协商:JPG(快速打开,空间较少)</li>
+<li>保守档案:PNG(无损失,空间妥协)或TIFF(最大质量)</li>
+<li>两者:既选择PNG,又选择PNG.</li>
+<li>对于 PDF : 选择 PDF 和一个或多个图像格式, 或者只选择 PDF 创建单独的 PDF 文档, 没有图像文件 。</li>
+</ul>
+<h4>步骤2: 选择输出文件夹</h4>
+<p>──────────────────────────────────────</p>
+<h3>1. 文件夹窗口在选择格式后自动打开(当你上传输入文件时)</h3>
+<h3>2. 或者:单击菜单 → "设置" → "选择输出文件夹"</h3>
+<h3>3. 选择文件夹组织方式：</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ 所有记录使用同一文件夹</span> • 所有记录(文件和记录)的单一文件夹</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">*           单独的文件夹 doc/ reg</span> — 所有文件的文件夹, 所有日志的文件夹</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">每个记录的每个文件夹</span> ~ 输入文件中每个记录都有一个单独的文件夹 。</p>
+<h3>4. 在选择模式后, 选择所需的文件夹 (1、2 或 N 对话框)</h3>
+<h3>5. 结尾处显示选定文件夹的摘要</h3>
+<p>✅ <strong>模式和文件夹已存储</strong>。在输入文件下次打开时,如果它们与记录号码兼容,则自动恢复。</p>
+<p>如果新输入文件的文档/登记文件数量与保存的文件夹不同,则会显示一个提醒,并重设选择以请求新文件夹.</p>
+<p>🛡️ <strong>预防性路线控制 :</strong> 在创建文件夹或文件之前, ATK-Pro 验证预期名称和路径。 Windows不兼容的名称和过长的片段屏蔽了唯一受影响的记录;兼容性提示在最后摘要中显示.</p>
+<p>☁️ <strong>OneDrive/SharePoint不假设为默认目的地.</strong> 其限制只在选中的文件夹实际在一个 OneDrive 根下时才应用 。 在其他路线中,260个字符的历史Windows阈值被视为谨慎的警告,而不是自动锁定.</p>
+<h4>: 摘要模式 :</h4>
+<ul>
+<li><strong>单个文件夹 :</strong> 很简单,都在一个地方 适用于快速处理或测试</li>
+<li><strong>单独的医生/医生:</strong> 按类型分列的组织。 默认 : <code>output/doc/</code> 和 <code>output/reg/</code></li>
+<li><strong>每项记录:</strong> 最大灵活性。 您可以使用不同的驱动器, NAS, 自定义文件夹</li>
+</ul>
+<h4>步骤3:开始处理</h4>
+<p>─────────────────────────────</p>
+<h3>1. 点击菜单 "输出" "程序"</h3>
+<h3>2. 检查:</h3>
+<p>\\ 至少一个选中的图像格式</p>
+<p>至少装入1个记录</p>
+<p><strong>如果缺少这些要求,则出现错误消息:</strong></p>
+<p>❌ “未选择格式” → 转到步骤 1</p>
+<p>❌ “未加载记录” → 转到“加载输入”（第 1 节）</p>
+<h4>📺 处理窗口</h4>
+<p>点击“Work”后,一个模式窗口立即打开: </p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="窗口处理中" src="images/window2.webp" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>: 可见元素:</h4>
+<p>"进行中"</p>
+<ul>
+<li>站在前列直到处理结束</li>
+<li>无法与 GUI 的其余部分交互</li>
+</ul>
+<p>2️⃣ 进度标签：“正在处理记录：2/5 — 文件名”。</p>
+<ul>
+<li>显示:目前处理的记录(2),共计(5)</li>
+<li>还在处理中显示文件/ 注册名</li>
+<li>它处理记录时实时更新</li>
+<li>Es:"记录处理:1/3——1850年结婚登记".</li>
+</ul>
+<p>3️⃣ 进度条：可视化进度</p>
+<ul>
+<li>数字格式:"2/5"(当前/总数)</li>
+<li>从左向右推进颜色栏</li>
+<li>完成时达到100%(最大宽度)</li>
+<li>未显示百分比, 只显示数字</li>
+</ul>
+<p>4]按钮 [无</p>
+<ul>
+<li>处理时可点击</li>
+<li>需要中断整个批次并关闭进度窗口</li>
+<li>逮捕是合作的:它可以等待已经进行中的单一网络请求的结束</li>
+<li>在选中的文件夹中不公布删除会话的输出; 现有文件保持不变</li>
+</ul>
+<h4>处理过程中</h4>
+<p><strong>背景程序 :</strong></p>
+<pre class="file-structure">├─ Scarica immagini dai server IIIF
 ├─ Legge manifest per canvas ID
 ├─ Ricostruisce tile in immagini complete
 ├─ Converte nei formati selezionati (PNG, JPG, TIFF)
 └─ Salva nelle cartelle scelte</pre>
-            <p><strong>La GUI mostra progress in tempo reale:</strong></p>
-            <ul>
-                <li>Ogni 2-3 secondi aggiorna numero record</li>
-                <li>Nessun blocco: interfaccia rimane reattiva</li>
-                <li>Puoi annullare in qualsiasi momento</li>
-            </ul>
-            <h4>⚠️ COMPORTAMENTO SE CLICCHI ANNULLA:</h4>
-            <h3>1. Elaborazione si ferma subito</h3>
-            <h3>2. File parziali vengono rimossi</h3>
-            <h3>3. Finestra si chiude</h3>
-            <h3>4. Puoi ricominciare da Menu → Output → Elabora</h3>
-            <h4>📋 PDF — GENERAZIONE AUTOMATICA DURANTE L'ELABORAZIONE</h4>
-            <p>Se hai selezionato <strong>PDF</strong> nella maschera di scelta formati (PASSO 1), il PDF viene generato automaticamente al termine del download di ogni registro o documento, senza nessuna finestra di conferma aggiuntiva.</p>
-            <h4>📌 COMPORTAMENTO:</h4>
-            <ul>
-                <li>✅ <strong>PDF selezionato nella maschera formati:</strong> il PDF viene generato automaticamente al termine del download; non viene chiesta nessuna conferma aggiuntiva</li>
-                <li>❌ <strong>PDF non selezionato:</strong> solo le immagini nei formati scelti, nessun PDF</li>
-            </ul>
-            <p>Caratteristiche del PDF generato:</p>
-            <ul>
-                <li>Nome file: <code>[nome].pdf</code>, senza suffissi aggiuntivi (es. <code>Registro Matrimoni 1920.pdf</code>)</li>
-                <li>Salvato nella cartella output scelta, allo stesso livello delle immagini</li>
-                <li>Pagine in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N)</li>
-                <li>Se un canvas non è scaricabile, viene inserita una pagina <em>placeholder</em> localizzata con link diretto al canvas originale su Antenati</li>
-                <li>Nessun file temporaneo rimane nella cartella output al termine della generazione</li>
-            </ul>
-            <h4>⚠️ COSA NON FARE DURANTE ELABORAZIONE:</h4>
-            <ul>
-                <li>❌ Non chiudere il programma (perde file parziali)</li>
-                <li>❌ Non staccare disco esterno (errore salvataggio)</li>
-                <li>❌ Non spegnere PC/laptop</li>
-                <li>❌ Non staccare internet (arresta download)</li>
-            </ul>
-            <h4>✅ COSA PUOI FARE:</h4>
-            <ul>
-                <li>✓ Aspettare che finisca (è la procedura normale)</li>
-                <li>✓ Cliccare Annulla se urgente</li>
-                <li>✓ Usare il PC per altre cose normalmente (minimizza solo la finestra)</li>
-            </ul>
-            <h4>🎉 FINE ELABORAZIONE</h4>
-            <p>Quando tutti i record sono stati elaborati:</p>
-            <h3>1. La finestra di progresso si chiude automaticamente</h3>
-            <h3>2. Appare un messaggio: "Operazione completata"</h3>
-            <h3>3. Clicca OK per chiudere il messaggio</h3>
-            <h3>4. La finestra di progresso scompare completamente</h3>
-            <p>Dopo:</p>
-            <ul>
-                <li>Visualizza file output nelle cartelle che hai selezionato al PASSO 2</li>
-                <li>Ogni documento/registro ha propria sottocartella all'interno della cartella da te scelta</li>
-                <li>Immagini sono pronte per uso (visualizzazione, stampa, archiviazione, PDF)</li>
-            </ul>
-            <h4>✅ OUTPUT GENERATO:</h4>
-            <p>Per ogni record elaborato troverai:</p>
-            <ul>
-                <li>Immagini nei formati selezionati (PNG, JPG, TIFF)</li>
-                <li>manifest_[ID]_[nome].json → Manifest IIIF originale con metadati strutturati</li>
-                <li>[nome]_genealogico.json → Metadati genealogici (date, luoghi, nomi, comuni, province)</li>
-                <li>[nome]_tecnico.json → Metadati tecnici (numero canvas, lista canvas ID, diritti, file generati)</li>
-                <li>[nome].json → Sidecar JSON per ogni immagine (metadati EXIF embedded)</li>
-            </ul>
-            <h4>📝 NOTA SUI NOMI FILE:</h4>
-            <ul>
-                <li>Il [nome] base viene preso direttamente dal file input.txt (riga utente)</li>
-                <li>Se scrivi nel file input "Registro Matrimoni 1920", i file saranno:
+<p><strong>GUI 展览的实时进度 :</strong></p>
+<ul>
+<li>每2-3秒更新记录号</li>
+<li>无块: 接口仍然反应性</li>
+<li>您可以随时取消</li>
+</ul>
+<h4>: 如果单击取消, 行为 :</h4>
+<h3>1. 需要合作扣押整批货物</h3>
+<h3>2. 取消批次产生的所有临时产出被删除</h3>
+<h3>3. 启动前已在输出文件夹中的文件保持不变</h3>
+<h3>4. 您可以从菜单开始 输出 。</h3>
+<h4>' PDF - 处理过程中的自动生成</h4>
+<p>如果已在格式选择界面（步骤 1）中选中 <strong>PDF</strong>，则每个登记册或文档下载完成后会自动生成 PDF，无需额外确认。</p>
+<h4>共性行为 :</h4>
+<ul>
+<li>✅ <strong>在格式掩码中选择的 PDF :</strong> PDF在下载结束时自动生成;不需要额外确认</li>
+<li>❌ <strong>未选择 PDF :</strong> 只有选定格式的图像,没有 PDF</li>
+</ul>
+<p>PDF的特性产生:</p>
+<ul>
+<li>文件名 : <code>[nome].pdf</code>,不添加后缀(如: <code>Registro Matrimoni 1920.pdf</code>)</li>
+<li>保存在选中的输出文件夹中, 级别与图像相同</li>
+<li>页数按数字顺序增长(第1页)</li>
+<li>如果画布无法下载,则插入一个页面 <em>占位符</em> 位于 Antenati 上与原始画布有直接联系的</li>
+<li>生成结束时输出文件夹中没有临时文件</li>
+</ul>
+<h4>: 处理过程中不做的事:</h4>
+<ul>
+<li>❌ 不要关闭程序（否则会丢失未完成文件）</li>
+<li>❌ 不要断开外部磁盘（否则会导致保存错误）</li>
+<li>不要关闭个人电脑/平板电脑</li>
+<li>❌ 不要断开互联网连接（否则下载会停止）</li>
+</ul>
+<h4>你可以做什么吗?</h4>
+<ul>
+<li>等待结束(这是正常程序)</li>
+<li>\\ 如果紧急, 点击取消</li>
+<li>将您的 PC 用于其他正常事务( 只要最小化窗口)</li>
+</ul>
+<h4>精细</h4>
+<p>处理所有记录时:</p>
+<h3>1. 进度窗口自动关闭</h3>
+<h3>2. 出现一条信息: "完成操作"</h3>
+<h3>3. 单击“确定”以关闭信件</h3>
+<h3>4. 进展窗口完全消失</h3>
+<p>下一个:</p>
+<ul>
+<li>在步骤 2 所选的文件夹中查看输出文件</li>
+<li>每个文档/注册人在您选择的文件夹中都有自己的子文件夹</li>
+<li>图像可供使用(视图、打印、存储、PDF)</li>
+</ul>
+<h4>输出 :</h4>
+<p>每一份详细记录,你会发现:</p>
+<ul>
+<li>选定格式的图片( PNG, JPG, TIFF)</li>
+<li>manifest_[ID]_[nome].json → 带结构化元数据的原始 IIIF 清单</li>
+<li>[名称]_genealogico.json → 基因元数据(日期,地点,名称,市,省)</li>
+<li>[名]_tecnico.json → 技术元数据(数字画布,列表画布ID,权利,生成的文件)</li>
+<li>[名]. json → 双车JSON 每张图像(EXIF嵌入方法)</li>
+</ul>
+<h4>: 文件名上的注释 :</h4>
+<ul>
+<li>[名]基础直接取自输入.txt文件(用户日志)</li>
+<li>如果您在输入文件"登记婚礼1920"中写下,这些文件将是:
                     <ul>
-                        <li>Registro Matrimoni 1920_canvas_1.jpg</li>
-                        <li>Registro Matrimoni 1920_genealogico.json</li>
-                        <li>Registro Matrimoni 1920_tecnico.json</li>
-                    </ul>
-                </li>
-                <li>I suffissi JSON rimangono in EN (_genealogico, _tecnico) per compatibilità</li>
-                <li>Puoi usare nomi in qualunque lingua nel file input (IT, EN, misto)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>6. PDF PER REGISTRI E DOCUMENTI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>COME ATTIVARE LA GENERAZIONE PDF</h4>
-            <p>La generazione del PDF si attiva selezionando la casella <strong>PDF</strong> nella maschera di scelta formati (Menu → Impostazioni → "Seleziona formati immagine").</p>
-            <p>Puoi combinare PDF con uno o più formati immagine (es. PDF + PNG), oppure selezionare solo PDF per ottenere esclusivamente il documento senza file immagine separati.</p>
-            <h4>📄 CARATTERISTICHE DEL PDF GENERATO</h4>
-            <ul>
-                <li><strong>Nome file:</strong> il PDF è denominato semplicemente <code>[nome].pdf</code>, senza suffissi aggiuntivi — ad esempio <code>Registro Matrimoni 1920.pdf</code></li>
-                <li><strong>Posizione:</strong> salvato nella cartella output scelta, allo stesso livello delle immagini: <code>[cartella_scelta]\[nome].pdf</code></li>
-                <li><strong>Ordine pagine:</strong> le pagine sono sempre in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N), indipendentemente dall'ordine in cui i tile vengono scaricati</li>
-                <li><strong>Pagine placeholder:</strong> se un canvas non è disponibile (errore di rete o risorsa temporaneamente non raggiungibile), al suo posto viene inserita automaticamente una pagina <em>placeholder</em> localizzata nella lingua selezionata. La pagina placeholder contiene:
+<li>1920_canvas_1.jpg结婚登记簿</li>
+<li>1920_genealogico.json结婚登记簿</li>
+<li>1920_tecnico.json结婚登记簿</li>
+</ul>
+</li>
+<li>JSON 后缀保留在 EN( 基因、 技术) 中以兼容性</li>
+<li>您可以在输入文件中任意语言中使用名称( IT, EN, 混合)</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3. 登记和证件的PDF</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>如何激活生成 PDF</h4>
+<p>PDF的生成通过选择框激活 <strong>PDF</strong> 在格式选择掩码(Menu = 设置 = 选择图像大小)中。</p>
+<p>您可以将 PDF 与一个或多个图像格式(如 PDF + PNG)合并,或者只选择 PDF ,只获取文档而无需单独的图像文件.</p>
+<h4>📄 生成的 PDF 特性</h4>
+<ul>
+<li><strong>文件名 :</strong> PDF 被简单地称为 <code>[nome].pdf</code>,不添加后缀——例如: <code>Registro Matrimoni 1920.pdf</code></li>
+<li><strong>地点 :</strong> 保存在选中的输出文件夹中, 级别与图像相同 : <code>[cartella_scelta]\[nome].pdf</code></li>
+<li><strong>页面顺序 :</strong> 页面总是在数字顺序上不断增长(canvas 1 → 画布 2 → 画布 N),无论瓷砖的下载顺序如何</li>
+<li><strong>页面占位符 :</strong> 如果一个画布无法使用(网络错误或暂时没有资源),则自动插入一个页面的位置 <em>占位符</em> 位于选定的语言中。 占位符页面包含:
                     <ul>
-                        <li>Un testo di avviso localizzato (es. "Immagine non disponibile")</li>
-                        <li>Il link diretto al canvas originale su Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>), così da poter consultare la fonte in modo semplice</li>
-                    </ul>
-                    In questo modo viene sempre generato il PDF, con tutte le informazioni necessarie a completarlo in caso di immagini non scaricate.
+<li>一个本地化的警告文本( 例如“ 图像不可用 ” )</li>
+<li>直接链接到Antenati上的原始画布(<code>https://antenati.cultura.gov.it/ark:/…</code>),这样你就可以轻松地查阅来源</li>
+</ul>
+                    以这种方式,PDF总是生成的,在被卸载的图像中,有完成它所需的所有信息.
                 </li>
-                <li><strong>Pulizia automatica:</strong> i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine del processo. Nella cartella output rimangono solo le immagini nei formati scelti, il PDF finale, i manifest e i metadati</li>
-            </ul>
-            <h4>🚫 Se PDF non è selezionato:</h4>
-            <ul>
-                <li>Solo le immagini vengono scaricate nei formati selezionati</li>
-                <li>Nessun PDF generato</li>
-            </ul>
-            </div>
-            <div class="section">
-        <h2>&#128204; FUNZIONALIT&#192; DISPONIBILI E PIANIFICATE</h2>
-        <p>Il menu &ldquo;Servizi&rdquo; contiene 5 funzioni: 4 gi&agrave; disponibili, 1 pianificata per versioni future.</p>
-
-        
-
-        <div class="section-box">
-            <h3>1&#65039;&#8419; VISUALIZZAZIONE IMMAGINI &#9989;</h3>
-            <p>Viewer integrato per immagini genealogiche:</p>
-            <ul>
-                <li>Formati supportati: JPG, PNG, TIFF (inclusi TIFF multi-pagina con navigazione avanti/indietro)</li>
-                <li>Zoom con rotella del mouse e pulsanti dedicati</li>
-                <li>Pan con trascinamento del mouse</li>
-                <li>Modalit&agrave; &ldquo;Adatta alla finestra&rdquo; e &ldquo;1:1 pixel&rdquo;</li>
-                <li>Sidecar JSON affiancato all&apos;immagine (EXIF e metadati tecnici)</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_03_visualizzazione_immagini.html">Vedi Guida Visualizzazione Immagini</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>2&#65039;&#8419; VISUALIZZAZIONE METADATI JSON &#9989;</h3>
-            <p>Viewer ad albero per metadati strutturati:</p>
-            <ul>
-                <li>Apertura diretta di file <code>_genealogico.json</code> e <code>_tecnico.json</code></li>
-                <li>Visualizzazione ad albero espandibile</li>
-                <li>Sezioni: dati genealogici, metadati tecnici, EXIF dalle immagini</li>
-                <li>Anteprima immagine abbinata affiancata al pannello metadati</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_04_visualizzazione_metadati.html">Vedi Guida Visualizzazione Metadati JSON</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>3&#65039;&#8419; OCR AVANZATO &#9989;</h3>
-            <p>Trattamento OCR avanzato tramite LLM Vision:</p>
-            <ul>
-                <li>Estrazione testo da documenti antichi (inclusi manoscritti in italiano ottocentesco e latino)</li>
-                <li>Mantenimento della struttura e dei riferimenti del layout (TEI XML)</li>
-                <li>Riconoscimento e pulizia automatica dei dati strutturati (es. tabelle, ruoli)</li>
-                <li>Estrazione di entit&agrave; (nomi, date, relazioni) in formato JSON navigabile</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_05_ocr_avanzato.html">Vedi Guida OCR Avanzato</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>4&#65039;&#8419; TRADUZIONE &#9989;</h3>
-            <p>Traduzione contestuale dei testi estratti:</p>
-            <ul>
-                <li>Traduzione automatica in 20 lingue supportate</li>
-                <li>Gestione della formattazione e del layout originale</li>
-                <li>Possibilit&agrave; di alternare il testo originale e il testo tradotto</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_06_traduzione.html">Vedi Guida Traduzione</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>5&#65039;&#8419; ESPORTAZIONE GEDCOM</h3>
-            <p>Esportazione in formati genealogici:</p>
-            <ul>
-                <li>GEDCOM (standard genealogico internazionale)</li>
-                <li>Interoperabilit&agrave; con software genealogici: Ancestry, Family Historian, Family Tree Maker,
-                Findmypast, FamilySearch, Geni, Geneanet, Gramps, Legacy Family Tree, MyHeritage,
-                Reunion (macOS), RootsMagic, WikiTree</li>
-            </ul>
-            <p style="font-style:italic;color:#7a5c3b;margin-top:0.6rem;">
-            &#128204; <em>Nota: L&apos;elencazione dei software &egrave; puramente indicativa e non
-            vincolante allo sviluppo dell&apos;interoperabilit&agrave; con ciascuna piattaforma.</em></p>
-            <p style="margin-top:0.6rem;"><strong>Status:</strong> &#128302; Pianificata &ndash;
-            <a href="guida_07_esportazione_gedcom.html">Vedi Guida GEDCOM</a></p>
-        </div>
-    </div>
-            <div class="section-box">
-            <h3>9. CARTELLE E FILE OUTPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📂 STRUTTURA OUTPUT</h4>
-            <p>Quando elabori un record IIIF, ATK-Pro salva i file nella cartella che hai scelto nel PASSO 2 (Seleziona cartella output).</p>
-            <h4>STRUTTURA ORGANIZZATA PER RECORD:</h4>
-            <pre class="file-structure">[cartella_output]/
+<li><strong>自动清理 :</strong> 用于 pdf 生成的临时文件在进程结束时自动删除。 输出文件夹中仅保留所选格式、PDF、海报和元数据中的图像</li>
+</ul>
+<h4>如果未选中 PDF :</h4>
+<ul>
+<li>只以选定格式下载图像</li>
+<li>没有生成 PDF</li>
+</ul>
+</div>
+<div class="section">
+<h2>4. 现有特征</h2>
+<p>“服务”菜单包含 v3 的操作功能：AI 辅助研究、图像查看、JSON 元数据查看、高级 OCR、OCR 翻译和 GEDCOM 导出。</p>
+<div class="section-box">
+<h3>1️⃣ AI 辅助研究</h3>
+<p>制定家族研究战略助理:</p>
+<ul>
+<li>将姓氏、地点、时间和目标变为搜索轨道</li>
+<li>建议门户、过滤器和样本查询手动检查</li>
+<li>支持意大利、意大利、意大利和国际设想</li>
+<li>允许个人笔记、多提供者比较和保存结果</li>
+</ul>
+<p><strong>状态 :</strong> * 备有
+            <a href="guida_03_ricerca_assistita_ai.html">见AI协助研究指南。</a></p>
+</div>
+<div class="section-box">
+<h3>2️⃣ 图像查看 ✅</h3>
+<p>基因图象的综合查看器 :</p>
+<ul>
+<li>支持格式:JPG,PNG,TIFF(包括多页TIFF)</li>
+<li>用鼠标轮和专用按钮缩放</li>
+<li>用鼠标拖动纸</li>
+<li>“添加到窗口”和“1:1像素”模式</li>
+<li>侧车JSON 与图像并列(EXIF和技术元数据)</li>
+</ul>
+<p><strong>状态 :</strong> * 备有
+            <a href="guida_04_visualizzazione_immagini.html">参见图像视图指南</a></p>
+</div>
+<div class="section-box">
+<h3>3️⃣ 查看 JSON 元数据 {}</h3>
+<p>结构化元数据树查看器 :</p>
+<ul>
+<li>直接打开文件 <code>_genealogico.json</code> 和 <code>_tecnico.json</code></li>
+<li>可扩展树显示</li>
+<li>段落:家族数据、技术元数据、图像中的EXIF</li>
+<li>在元数据面板旁匹配图像预览</li>
+</ul>
+<p><strong>状态 :</strong> * 备有
+            <a href="guida_05_visualizzazione_metadati.html">查看指南元数据 JSON</a></p>
+</div>
+<div class="section-box">
+<h3>4️⃣ OCR 高级 ✅</h3>
+<p>通过 LLM 视野进行高级 OCR 治疗 :</p>
+<ul>
+<li>古代文献的摘录文本(包括第十九和拉丁意大利文的手稿)</li>
+<li>维持布局结构和参考文献(TEI XML)</li>
+<li>结构数据(如表格、角色)的自动识别和清理</li>
+<li>用可航行的JSON格式提取实体(名称、日期、报告)</li>
+</ul>
+<p><strong>状态 :</strong> * 备有
+            <a href="guida_06_ocr_avanzato.html">查看高级 OCR 指南</a></p>
+</div>
+<div class="section-box">
+<h3>5️⃣ OCR 翻译</h3>
+<p>摘录或转录文本的背景翻译:</p>
+<ul>
+<li>翻译文本 OCR,人工抄录和TXT文件</li>
+<li>文件类型、词汇表和上下文的使用</li>
+<li>可配置的 IA 提供者、可选模型和安全密钥</li>
+<li>输出 TXT 或可编辑的 DOCX</li>
+</ul>
+<p><strong>状态 :</strong> * 备有
+            <a href="guida_07_traduzione.html">见OCR 翻译指南</a></p>
+</div>
+<div class="section-box">
+<h3>6️⃣ 导出 GEDCOM</h3>
+<p>协助基因分析和导出GEDCOM:</p>
+<ul>
+<li>具有自动发现方法、视野IA或精炼LLM的通用输入</li>
+<li>可能增加现有的GEDCOM或CSV基数</li>
+<li>用于引导提取的图像注释和文档类型</li>
+<li>文件的生成 <code>genealogia_*.ged</code> 在使用前检查</li>
+</ul>
+<p style="margin-top:0.6rem;"><strong>状态 :</strong> * 备有
+            <a href="guida_08_esportazione_gedcom.html">见GEDCOM 指南</a></p>
+</div>
+</div>
+<div class="section-box">
+<h3>5. 文件夹和输出文件</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>产出结构</h4>
+<p>处理 IIIF 记录时，ATK-Pro 会将文件保存到步骤 2 所选的文件夹（选择输出文件夹）。</p>
+<h4>记录结构:</h4>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
 ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite (una per pagina)
 ├─ [nome]_canvas_2.jpg/.png/.tif
@@ -726,9 +752,9 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ [nome]/                           ← Sottocartella SOLO per metadati
    ├─ [nome]_genealogico.json        ← Metadati genealogici
    └─ [nome]_tecnico.json            ← Metadati tecnici</pre>
-            <h4>MULTI-RECORD NELLA STESSA CARTELLA:</h4>
-            <p>Se elabori 3 record nella stessa cartella, la struttura diventa:</p>
-            <pre class="file-structure">[cartella_output]/
+<h4>在同一文件夹中的多记录 :</h4>
+<p>如果您在同一文件夹中处理3个记录,则结构变为:</p>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID1]_Registro1.json
 ├─ Registro1_canvas_1.jpg
 ├─ Registro1_canvas_2.jpg
@@ -752,36 +778,30 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ Registro3/
     ├─ Registro3_genealogico.json
     └─ Registro3_tecnico.json</pre>
-            <h4>📌 NOTE SULLA STRUTTURA:</h4>
-            <ul>
-                <li>Manifest IIIF, Immagini, PDF, Sidecar JSON: nel livello principale</li>
-                <li>SOLO metadati tecnici e genealogici: in sottocartelle [nome]/ (uno per record)</li>
-                <li>Le cartelle temporanee (<code>tiles_canvas_X/</code>) e i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine dell'elaborazione: nella cartella output non rimane nessun file di lavoro intermedio</li>
-                <li>Questa organizzazione consente di gestire molteplici record nella stessa cartella senza confusione tra file</li>
-            </ul>
-            <h4>📋 CONVENZIONE DI DENOMINAZIONE:</h4>
-            <ul>
-                <li>Manifest: manifest_[ID]_[nome].json</li>
-                <li>Immagini: [nome]_canvas_1, [nome]_canvas_2, ... [nome]_canvas_N</li>
-                <li>JSON metadati: [nome]_genealogico.json, [nome]_tecnico.json</li>
-                <li>JSON immagini: [nome].json (per ogni canvas)</li>
-                <li>PDF: [nome].pdf</li>
-            </ul>
-            </div>
-            
-        
-                </div>
-        
-    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-
-    <footer style="text-align: center;">
-            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-        </footer>
-    </div>
-    </div>
+<h4>: 结构注释:</h4>
+<ul>
+<li>IIIF 清单、图像、PDF、Sidecar JSON：位于顶层目录</li>
+<li>仅技术和分族元数据:分文件夹[名称]/(每个记录一个)</li>
+<li>临时文件夹( E)<code>tiles_canvas_X/</code>)和用于 PDF 生成的临时文件在处理结束时自动删除:输出文件夹中没有保留中间工作文件</li>
+<li>此组织允许您在同一文件夹中管理多个记录而不混淆文件</li>
+</ul>
+<h4>📋 命名约定：</h4>
+<ul>
+<li>清单：manifest_[ID]_[nome].json</li>
+<li>图像: [名称]画布 1, [名称]画布 2,. [名称]画布 N</li>
+<li>JSON元数据:_tecnico.json,_tecnico.json</li>
+<li>JSON影像:[名]. json(每张帆布)</li>
+<li>PDF：[nome].pdf</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">← Mod.01 — 安装、启动和界面</a>
+<a class="nav-button" href="guida.html">🏠 主索引</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 — AI 辅助研究 →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
 </body>
 </html>

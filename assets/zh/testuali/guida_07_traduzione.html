@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 模块 07：OCR 翻译</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 模块 07：OCR 翻译</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_06_ocr_avanzato.html">← Mod.06 — 高级 OCR</a>
+<a class="nav-button" href="guida.html">🏠 主索引</a>
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">Mod.08 — 导出 GEDCOM →</a>
+</div>
+<div class="section">
+<h2>全景概览</h2>
+<p>模块 <strong>辅助古文字翻译 (LLM)</strong> 翻译复制、苍白文本、搜索笔记或文件 <code>.txt</code> 在用户选择的现代语言中。</p>
+<p>从菜单打开 <em>服务 —— 翻译</em>。该模块使用ATK-Pro中配置的IA提供者,其密钥和首选逻辑也由OCR和家族学服务使用。</p>
+<p>译名仍然支持阅读:结果必须总是修改,特别是当源文本包含古文,拉丁文,公证式,缩写,方言或正名时.</p>
+</div>
+<div class="section">
+<h2>🖥️ 界面</h2>
+<p>窗口排列在一个配置栏,一个源文本区域,一个上下文指示字段和一个结果区域.</p>
+<div class="section-box">
+<h3>配置栏</h3>
+<ul>
+<li><strong>内 容</strong>:在安装中可用的服务中选择使用服务,如双子座,OpenAI,克劳德,米斯特拉尔,xAI,DeepSeek,Groq,HuggingFace或Ollama.</li>
+<li><strong>型号</strong>:可选字段,以表示提供者支持的特定模型. 如果您将其留为空白,ATK-Pro会使用默认配置模型.</li>
+<li><strong>文档类型</strong>: 选择要翻译的文档或文本的类型。 您可以创建并删除自定义类型; 对于集成类型, 您可以通过覆盖更改提示, 但不要删除它们 。</li>
+<li><strong>API 钥匙和安全</strong>: 输入选定的提供者密钥或打开文件 <em>保险箱</em> 可查询或编辑 CSV 保险库。</li>
+<li><strong>目标语言</strong>: 选择想要翻译的现代语言.</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>来源文本</h3>
+<ul>
+<li><strong>文本来源</strong>: 粘贴文本以翻译或上传文件 <code>.txt</code> 先前生成。</li>
+<li><strong>加载 TXT 文件</strong>:打开文本文件并将其插入源区域。</li>
+<li><strong>词汇表和上下文</strong>:允许在翻译前给模型指示.</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>翻译结果</h3>
+<ul>
+<li>新闻 <strong>立即翻译文本</strong> 开始处理。</li>
+<li>在处理结果面板时显示一个等待消息.</li>
+<li>结果是可以编辑的:在保存之前直接更正翻译.</li>
+<li><strong>保存翻译 (TXT)</strong> 导出简单的文本。</li>
+<li><strong>导出到 Word (DOCX)</strong> 创建可编辑的 Word 文档。</li>
+</ul>
+</div>
+</div>
+<div class="section">
+<h2>• 词汇和上下文字段——使用指南</h2>
+<p>此可选字段允许您在开始处理前对模型进行文字特性的教育. 澄清缩写,公式,源语言,出产标准和不翻译的单词是正确的.</p>
+<div class="section-box">
+<h3>什么时候用</h3>
+<p>如果案文包含:</p>
+<ul>
+<li><strong>古典主义和过时的词语</strong> 现代翻译家可以有不同的解释</li>
+<li><strong>方言术语</strong> (西西里语, veneto, Tuscan 等)没有出现在标准词典中</li>
+<li><strong>经常性法律或公证形式</strong> 具有特定技术意义的</li>
+<li><strong>名称或名称</strong> 翻译,但忠实地转录</li>
+<li><strong>简称</strong> 具有传统意义的文件目录</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>实例</h3>
+<p><strong>例1——19世纪西西里方言教区行为:</strong></p>
+<pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">f. = figlio/a di
+fu = già defunto/a
+q. = quondam (già defunto/a)
+vid. = vedova/o
+I mesi sono scritti in dialetto (Jinnaru, Frivaru, Marzu...).
+Non tradurre i nomi propri (Nunzio, Rosaria, Salvatore...).
+Gli appellativi 'don' e 'donna' indicano persone di rango elevato, mantenerli.</pre>
+<p style="margin-top:1rem;"><strong>例2——中世纪拉丁语的公证法案:</strong></p>
+<pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Il testo è in latino notarile. Traduci in italiano moderno.
+Mantieni le formule giuridiche standard (rogatio, instrumentum, actum...).
+'lib.' = libbre (moneta, non peso). 'sol.' = soldi.
+I toponimi in genitivo latino vanno sempre resi con il nome italiano corrente.</pre>
+<p style="margin-top:1rem;"><strong>例3 — 19世纪意大利语的个人信件:</strong></p>
+<pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Testo in italiano ottocentesco formale. Traduci in inglese moderno.
+Mantieni il tono formale, senza renderlo colloquiale.
+'Pregiatissimo' e 'Esimio' sono formule di cortesia: rendi con equivalenti inglesi appropriati.
+Non tradurre i nomi propri.</pre>
+</div>
+<div class="section-box">
+<h3>建议的战略</h3>
+<ul>
+<li>构建词汇表 <strong>渐进</strong>: 做第一个翻译,查找反复出现的错误,添加指令并再次尝试.</li>
+<li>对于不同的登记册,在进行处理之前,将单独的词汇存储并粘贴在现场。</li>
+<li>总是指定 <strong>源文本语言</strong>,特别是拉丁语,方言,区域语言或多语言文件.</li>
+<li>说明何时必须保留而不是更新适当的名称、名称、头衔或公式。</li>
+</ul>
+</div>
+</div>
+<div class="section">
+<h2>di 目标语言</h2>
+<div class="section-box">
+<p>实际选择对应ATK-Pro的界面和多语言词汇支持的20种语言.</p>
+<table>
+<thead><tr><th>语言</th><th>自动</th><th>语言</th><th>自动</th></tr></thead>
+<tbody>
+<tr><td>意大利语Name</td><td>Italiano</td><td>俄罗斯联邦</td><td>Русский</td></tr>
+<tr><td>联合国</td><td>English</td><td>阿拉伯语</td><td>العربية</td></tr>
+<tr><td>西班牙语</td><td>Español</td><td>荷兰语Name</td><td>Nederlands</td></tr>
+<tr><td>法语</td><td>Français</td><td>希伯来语</td><td>עברית</td></tr>
+<tr><td>德语</td><td>Deutsch</td><td>日本</td><td>日本語</td></tr>
+<tr><td>葡萄牙语</td><td>Português</td><td>中国</td><td>中文</td></tr>
+<tr><td>波兰语Name</td><td>Polski</td><td>土耳其语Name</td><td>Türkçe</td></tr>
+<tr><td>丹麦语Name</td><td>Dansk</td><td>挪威语</td><td>Norsk</td></tr>
+<tr><td>越南语Name</td><td>Tiếng Việt</td><td>捷克语Name</td><td>Ελληνικά</td></tr>
+<tr><td>罗马尼亚语</td><td>Română</td><td>瑞典语</td><td>Svenska</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section">
+<h2>操作笔记</h2>
+<div class="section-box">
+<ul>
+<li>处理是同步的:在请求期间翻译按钮被禁用,而窗口仍然响应. 等待时对字段的更改不会改变已经发出的请求 。</li>
+<li>对于较长或复杂的文本,可以提供更多的时间和更多的人工修订。</li>
+<li>密钥可以来自共享金库;提供者,模型,语言和上下文被保存为翻译模块的特定偏好.</li>
+<li>翻译在TXT或DOCX中生成文本输出:它不会生成图像,元数据,家族树或GEDCOM文件.</li>
+<li>在未核实使用条件,隐私和权限的情况下,不要发送外部提供者的机密文本或受到限制.</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_06_ocr_avanzato.html">← Mod.06 — 高级 OCR</a>
+<a class="nav-button" href="guida.html">🏠 主索引</a>
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">Mod.08 — 导出 GEDCOM →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>
