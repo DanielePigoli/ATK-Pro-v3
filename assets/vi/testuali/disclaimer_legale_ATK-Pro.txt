@@ -1,23 +1,131 @@
-📋 Tuyên bố Miễn trừ Trách nhiệm Pháp lý
+TUYÊN BỐ MIỄN TRỪ TRÁCH NHIỆM PHÁP LÝ
 Antenati Toolkit Pro
 
 ATK-Pro – Antenati Toolkit Pro
-Tuyên bố miễn trừ trách nhiệm pháp lý và cam kết sử dụng đạo đức
+Từ chối hợp pháp, từ ngữ sử dụng và cam kết thực tế
 
-Dự án ATK-Pro được thiết kế cho mục đích lưu trữ, phả hệ và tư vấn.
-Tất cả nội dung, trừ khi có quy định khác, được phân phối theo giấy phép Creative Commons BY-NC-SA 4.0.
-Cấm sử dụng thương mại trực tiếp, phân phối lại mà không ghi nguồn hoặc sửa đổi không được theo dõi của nội dung gốc.
-ATK-Pro không phân phối lại bất kỳ nội dung nào từ Cổng thông tin Antenati (antenati.cultura.gov.it) và không có ý định sao chép giao diện, cấu trúc hoặc tổ chức của nó.
-Bất kỳ ai cài đặt hoặc sử dụng ATK-Pro đều cam kết tuân thủ đầy đủ các thông báo pháp lý và điều khoản sử dụng do Bộ Văn hóa quy định, có tại địa chỉ:
+1. BẢN CHẤT VÀ MỤC ĐÍCH CỦA DỰ ÁN
+
+ATK-Pro là một phần mềm được phát triển độc lập cho các nguyên mẫu, gia phả, tài liệu, nghiên cứu và tư vấn.
+
+Phần mềm này giúp cho việc truy cập và xử lý tài nguyên địa phương được truy cập hợp pháp qua cổng Atenati và các cổng chính khác hoặc các tài liệu được hỗ trợ về mặt kỹ thuật.
+
+ATK-Pro không phải là một dịch vụ chính thức của Bộ Văn hóa, của Cảng Antenati, của Nhà nước lưu trữ hoặc của các tổ chức và các cổng khác có thể hỗ trợ. Sự hiện diện của các tham khảo, liên kết hoặc chức năng liên quan đến các dịch vụ của đảng thứ ba không có nghĩa là sự ủng hộ, tài trợ hoặc sự cho phép sử dụng lại nội dung của họ.
+
+2. GIẤY PHÉP MÃ NGUỒN
+
+Mã nguồn gốc của ATK-Pro, ngoại trừ các tập tin hoặc phần được xác định rõ ràng là thành phần của đảng thứ ba, được phân phối theo Giấy Phép Công Cộng GNU Affero, phiên bản 3 hoặc, theo sự lựa chọn của giấy phép, bất kỳ phiên bản sau nào.
+
+Mã nguồn tương ứng với phiên bản được phân phối có trong kho dự án chính thức. Chế độ truy cập nguồn và một bản sao bằng lái cùng với các hiện vật được phát hành.
+
+Giấy phép mã nguồn được ghi trong tệp LICENSE.
+
+3. GIẤY PHÉP TÀI LIỆU
+
+Tài liệu gốc, bao gồm hướng dẫn, trình bày và biên tập nội dung, được phân phối theo sáng tạo chung Attribution-NonCommeral-sharea like 4.0 quốc tế (CC BO-C-SA 4.0), trừ khi được chỉ ra.
+
+Giấy phép lái xe được ghi trong hồ sơ tài liệu.
+
+4. TÊN, LOGO VÀ CÁC YẾU TỐ NHẬN DIỆN
+
+Cái tên “ATK-Pro quái vật, logo và các yếu tố đặc trưng của nhân dạng đồ họa không được cấp phép để tạo ra hoặc quảng cáo các sản phẩm đạo hàm và vẫn được dành riêng cho người sở hữu.
+
+Chỉ miêu tả về công trình ban đầu của họ, cho thấy họ có trách nhiệm tương thích hoặc hoàn thành nhiệm vụ.
+
+Các điều kiện liên quan được ghi trong hồ sơ của TRADEMARKS.
+
+5. THÀNH PHẦN CỦA BÊN THỨ BA
+
+Những thói nghiện phần mềm, phông chữ và các thành phần khác của Đảng giữ lại giấy phép, thông báo bản quyền và bất kỳ điều kiện bổ sung nào được ghi rõ trong tập tin ba chủ đề.
+
+Giấy phép được gán cho mã gốc và tài liệu hướng dẫn của ATK-Pro không thay thế và cũng không thay đổi giấy phép của thành phần đảng thứ ba.
+
+6. TÀI NGUYÊN VÀ CỔNG THÔNG TIN BÊN NGOÀI
+
+ATK-Pro không cấp giấy phép cho tài liệu, hình ảnh, siêu dữ liệu hoặc các nguồn tài nguyên khác từ cổng Antenati hoặc các cổng bên ngoài khác.
+
+Những nguồn tài nguyên này vẫn phục tùng quyền lợi, giấy phép, điều kiện truy cập và sử dụng lại quy định của mỗi người.
+
+Người dùng cần phải kiểm tra các điều kiện áp dụng cho tài nguyên cá nhân và, liên quan đến Cổng Antenate, cũng tham khảo các ghi chú pháp lý được xuất bản ở:
+
 https://antenati.cultura.gov.it/note-legali/
-Các tài liệu được đưa vào nút tư vấn không phải là nguồn chính thức và không có giá trị xác nhận hoặc pháp lý.
-Giao diện và các công cụ được phát triển trong dự án nhằm tạo điều kiện thuận lợi cho người dùng phả hệ tự tư vấn trong môi trường địa phương, không cần kết nối hoặc hỗ trợ từ các dịch vụ bên ngoài.
-Bất kỳ tham chiếu nào đến cơ quan công cộng, kho lưu trữ hoặc tài liệu lịch sử chỉ nhằm mục đích nghiên cứu, phân tích và bối cảnh hóa.
-Mỗi tệp trong cấu trúc ATK-Pro (định dạng .txt, .md, .html hoặc .pdf) được soạn thảo với mục đích tuyên bố, lưu trữ hoặc trình diễn.
-Cấu trúc thư mục, tập lệnh vận hành và ghi chú phả hệ được cung cấp dưới dạng nguyên mẫu, không có bất kỳ đảm bảo nào về chức năng hoặc xác minh bên ngoài.
-Tác giả dự án từ chối mọi trách nhiệm liên quan đến việc sử dụng sai, diễn giải sai hoặc sửa đổi không được phép đối với các tài liệu và công cụ được đưa vào.
-Nút tư vấn được hiểu là một kho lưu trữ có lưu thông hạn chế, chỉ dành cho mục đích nghiên cứu và không dành cho phân phối công khai hoặc có hệ thống.
-Tuyên bố này là một phần không thể tách rời của cấu trúc tài liệu của dự án.
 
-© 2026 Antenati Toolkit Pro
+Dấu hiệu của một cánh cổng được hỗ trợ một cách kỹ thuật không phải là một tuyên bố về tính chính đáng của bất kỳ hoạt động nào thực hiện trên nguồn tài nguyên của nó.
+
+7. PHƯƠNG THỨC SỬ DỤNG TÀI NGUYÊN
+
+ATK-Pro được dự định cho các thao tác đúng giờ và mục tiêu, ám chỉ một tài liệu, đơn vị lưu trữ hoặc mỗi cá nhân đăng ký được truy cập hợp pháp cho người dùng.
+
+Phần mềm không nhằm mục đích thu thập nội dung hàng loạt hoặc bừa bãi, tải xuống có hệ thống toàn bộ bộ sưu tập, hoặc vượt qua cơ chế xác thực, đăng ký thuê bao, thẻ truy cập tạm thời, tường phí, dấu cấm tải xuống, biện pháp bảo vệ kỹ thuật hay các giới hạn do đơn vị quản lý cổng đặt ra.
+
+ATK-Pro không bảo đảm rằng một nguồn tài nguyên có thể truy cập kỹ thuật cũng có thể tải về tự do, tái sử dụng, có khả năng sửa chữa hoặc phân phối lại.
+
+Bạn chịu trách nhiệm về việc lựa chọn nguồn lực, mở rộng các hoạt động và tuân theo pháp luật thích hợp, bao gồm các quy định bản quyền, bảo vệ dữ liệu cá nhân, bí mật, quyền truy cập vào kho lưu trữ và điều kiện hợp đồng của các dịch vụ được sử dụng.
+
+8. CHỨC NĂNG TRÍ TUỆ NHÂN TẠO VÀ DỊCH VỤ TỪ XA
+
+Bất kỳ chuyển đổi, công nhận, dịch hay phân tích nào được hỗ trợ bởi trí thông minh nhân tạo chỉ được kích hoạt bởi người dùng.
+
+Khi chọn nhà cung cấp từ xa, có thể truyền dữ liệu cần thiết cho thao tác này, kể cả ảnh, văn bản, hướng dẫn hoặc siêu dữ liệu vào hệ thống của nhà cung cấp đã chọn. Việc xử lý diễn ra phù hợp với điều kiện hợp đồng và thông tin bí mật do nhà cung cấp đó cung cấp.
+
+ATK-Pro không điều khiển kho lưu trữ, xử lý hoặc có thể sử dụng dữ liệu được thực hiện bởi dịch vụ từ xa. Trước khi gửi, người dùng phải xác nhận rằng tài liệu có thể được truyền đi một cách chính đáng và không chứa dữ liệu cá nhân, bí mật hoặc không được bảo vệ phù hợp với dịch vụ đã chọn.
+
+Các nhà cung cấp bên ngoài vẫn phải chịu trách nhiệm về các loại chìa khóa đó. ATK-Pro không đảm bảo sự sẵn có, sự liên tục, giá cả, hiệu suất hay sự kéo dài của các mô hình và dịch vụ bên thứ ba.
+
+9. ĐỘ TIN CẬY CỦA KẾT QUẢ
+
+Các bản sao, bản dịch, dữ liệu phả hệ, siêu dữ liệu và các kết quả được tạo ra phần mềm khác hoặc được phối hợp lại có thể chứa lỗi, bỏ ra, giải thích không chính xác hoặc không thể kiểm tra thông tin.
+
+Đặc biệt, không nên xem những kết quả do trí thông minh nhân tạo hoặc nhân tạo sản sản xuất là bản sao, chứng thực, ý kiến chuyên môn hoặc thay thế để tham khảo ý kiến của các nguồn gốc gốc.
+
+Bạn phải kiểm chứng bất kỳ kết quả đáng kể nào bằng cách so sánh nó với tài liệu gốc và bất kỳ nguồn chính thức nào.
+
+10. LƯU TRỮ VÀ BẢO MẬT DỮ LIỆU
+
+Bạn có trách nhiệm lưu trữ tài liệu, bản sao, cấu hình, phím truy cập và dữ liệu khác được xử lý thông qua phần mềm.
+
+Trước khi thực hiện những hoạt động liên quan, cần phải chuẩn bị những bản sao bảo mật. Tác giả không bảo đảm phục hồi dữ liệu đã bị xóa, ghi đè, bị hư hại, chưa hoàn thành hoặc lưu sai.
+
+Bạn cần phải giữ thẻ tín dụng và chìa khóa của bạn bảo vệ và không nên chia sẻ chúng thông qua tập tin không an toàn, các bản ghi chẩn đoán hoặc các kênh.
+
+11. KHÔNG CÓ BẢO ĐẢM
+
+Trong giới hạn cho phép bằng cách áp dụng luật pháp, ATK-Pro, mã và tài liệu của luật này được cung cấp “như thể chúng là những tài liệu đăng ký và“ không có giấy tờ rõ ràng hoặc hàm ý.
+
+Không có gì đảm bảo, giữa những thứ khác, sự thiếu vắng của lỗi lầm, sự liên tục của phẫu thuật, sự tương thích với tất cả các hệ thống, sự sẵn có lâu dài của các cổng và dịch vụ bên ngoài, sự phù hợp cho một mục đích cụ thể, sự chính xác của kết quả hoặc bảo tồn dữ liệu.
+
+Các lệnh hủy bỏ bảo hành được cung cấp trong các giấy phép ứng dụng sẽ vẫn còn hợp lệ và sẽ không được thay thế bằng lệnh này.
+
+12. GIỚI HẠN TRÁCH NHIỆM
+
+Trong giới hạn cho phép bằng cách áp dụng luật pháp, tác giả và bất kỳ cộng tác viên nào không phản ứng với thiệt hại, tổn thất, chi phí hoặc hậu quả từ việc cài đặt, sử dụng hoặc không thể sử dụng ATK-Pro.
+
+Điều này bao gồm, ví dụ, mất mát hoặc thay đổi dữ liệu, kết quả không chính xác, không ổn định của các cổng ra vào hoặc các dịch vụ bên ngoài, chi phí liên quan đến APIs hoặc kết nối, vi phạm điều kiện đảng thứ ba và sử dụng tài nguyên mà không cần thiết.
+
+Không có sự sắp đặt nào để loại trừ hoặc hạn chế những điều khoản không thể loại trừ hoặc hạn chế luật pháp.
+
+13. TRÁCH NHIỆM CỦA NGƯỜI DÙNG
+
+Bằng cách cài đặt hoặc sử dụng ATK-Pro, người dùng tuyên bố rằng:
+
+- phần mềm là một công cụ kỹ thuật và không có quyền truy cập, tải về hoặc sử dụng lại nguồn tài nguyên của bên thứ ba;
+- phải xác minh quyền lợi và điều kiện áp dụng cho mỗi nguồn tài nguyên;
+- phải kiểm tra sự đáng tin cậy của kết quả sản xuất;
+- phải bảo vệ dữ liệu cá nhân, giấy ủy nhiệm và các phím ADI;
+- phải sử dụng phần mềm để tuân thủ pháp luật và quyền lợi của người khác.
+- Vẫn chịu trách nhiệm về các chiến dịch mà anh ta quyết định thực hiện.
+
+14. SỬ DỤNG MIỄN PHÍ VÀ ĐÓNG GÓP
+
+ATK-Pro được phân phối miễn phí.
+
+Bất cứ sự đóng góp nào đều là tự nguyện, không nên xem xét giấy phép, dịch vụ hoặc quyền truy cập các tính năng bổ sung và không ảnh hưởng đến việc cài đặt hoặc sử dụng phần mềm.
+
+15. ƯU TIÊN CỦA GIẤY PHÉP VÀ LUẬT ÁP DỤNG
+
+Người tuyên bố này tích hợp thông tin của bạn, nhưng không thay đổi hoặc thay thế các điều kiện giấy phép thích hợp với mã, tài liệu hoặc thành phần đảng thứ ba.
+
+Trong trường hợp tương phản, văn bản của giấy phép thích hợp và những điều khoản không thể loại bỏ của luật pháp được áp dụng.
+
+© 2026 Antenati công cụ Pro
 antenati.toolkit.pro@gmail.com
