@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 الوحدة 06: OCR متقدم</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 الوحدة 06: OCR متقدم</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">← Mod.05 — عرض بيانات JSON</a>
+<a class="nav-button" href="guida.html">(هـ) المؤشر الرئيسي</a>
+<a class="nav-button" href="guida_07_traduzione.html">Mod.07 - Translation →</a>
+</div>
+<div class="section">
+<h2>لمحة عامة عن البلدان</h2>
+<p>الوحدة <strong>OCR المتقدم (النسخ الدبلوماسي)</strong> مقتطفات من الصور والوثائق PDF من خلال نماذج متعددة الوسائط، ونماذج متخصصة من طراز OCR، وخدمات HTR. وهي مصممة خصيصا للوثائق التاريخية: المخطوطات، والأفعال الموثقة، والسجلات الأبوية، والرسائل الأرشيفية في القرن التاسع عشر، الإيطالية أو اللاتينية أو اللهجة.</p>
+<p>وخلافا للمحركات التقليدية من طراز OCR (Tesseract، وما إلى ذلك)، يمكن للوحدة أن تفسر التهجئة في سياق الوثيقة وتعترف بالمختصرات والصيغ المتكررة. ويمثِّل الناتج من TEI-P5 الخطوط المصفَّاة، وعند الاعتراف به، تكسر الصفحات، وتتوسّع الخطوات غير القابلة للقراءة؛ وهو لا يستنسخ بالكامل المخطط البياني الأصلي.</p>
+<p>يفتح من القائمة <em>الخدمات → OCR السلف</em> من الطلب الرئيسي.</p>
+</div>
+<div class="section">
+<h2>دليل تقاطعي - خطوة</h2>
+<div class="section-box">
+<h3>الخطوة 1 - اختيار الملفات</h3>
+<p>Click <strong>&amp;quot; Select File (images/PDF) &amp;quot;</strong> لفتح المختار يمكنك اختيار ملفات متعددة في وقت واحد <kbd>Ctrl</kbd> أو <kbd>Shift</kbd>.</p>
+<p><strong>الأشكال المقبولة:</strong></p>
+<ul>
+<li><strong>الصور</strong>: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tiff</code>, <code>.tif</code></li>
+<li><strong>PDF</strong>: any PDF document (scanded or native)</li>
+</ul>
+<p style="margin-top:0.8rem;">ويبين عدد الملفات المختارة إلى جانب العلامة. ويتم تجهيز كل ملف على حدة وتوليد ملفات إنتاجه.</p>
+</div>
+<div class="section-box">
+<h3>الخطوة 2 - اختيار المزود الرئيسي للمعارف IA و API</h3>
+<p>اختيار المزود في قائمة الهبوط <strong>&amp;quot; مُقدِّم مُدرِج مُنتخب &amp;quot;</strong>:</p>
+<table>
+<thead><tr><th>المزوّد</th><th>نوع الخدمة</th><th>وثائق التفويض</th><th>مذكرات التشغيل</th></tr></thead>
+<tbody>
+<tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>الخدمات عن بعد</td><td>API</td><td>وتتوقف النماذج والتوافر على حساب مقدِّم الخدمات وعلى الظروف الراهنة.</td></tr>
+<tr><td><strong>Mistral, Groq, xAI</strong></td><td>نقاط النهاية البعيدة القابلة للمقارنة</td><td>API</td><td>(ب) اختيار نموذج يمكن أن يجهز الصور؛ وليس جميع النماذج النصية تدعم صورة OCR.</td></tr>
+<tr><td><strong>DeepSeek</strong></td><td>Remote endpoint only text in current formation</td><td>API</td><td>وهو غير مناسب للزجاج البصري OCR إلى أن يتم تشكيل نموذج متوافق مع النقطتين النهائية والصورة.</td></tr>
+<tr><td><strong>HuggingFace</strong></td><td>Remote API Inference</td><td>Token HuggingFace</td><td>ويتوقف التوافق والنتائج على النموذج المكون.</td></tr>
+<tr><td><strong>المعاملات</strong></td><td>خدمات الاتصالات السلكية واللاسلكية</td><td><code>email:password</code> أو الدب المكسور</td><td>ويشترط وجود حساب وما لا يقل عن مجموعة واحدة متاحة.</td></tr>
+<tr><td><strong>Ollama</strong></td><td>الخدمة المحلية</td><td>No API remote key</td><td>(ب) يتطلب تشغيلاً من طراز Ollama ونموذجاً مرئياً متوافقاً يتم تركيبه محلياً.</td></tr>
+</tbody>
+</table>
+<p style="margin-top:0.8rem;">المخيم <strong>&amp;quot; النموذج )الاختياري( &amp;quot;</strong> يسمح باستبدال النموذج الافتراضي استعمله فقط إذا كنت تعرف محدد بدقة وتوافق بصري للنموذج بالنسبة لـ(جيميني) هذا الحقل لم يظهر</p>
+<p>يمكنك إدخال وثائق التفويض في الميدان المكرس أو فتح <strong>خزنة</strong>وتخزن مفاتيح آي أي محليا في قبو CSV <code>api_keys.csv</code>: هذه ليست سلسلة مفاتيح نظام التشغيل المحمية. حماية المستعمل و النسخ الأمنية و الإلغاء الرئيسي تبقى مسؤوليتك</p>
+</div>
+<div class="section-box">
+<h3>ثالثا - الخطوة ٣ - أشكال النواتج</h3>
+<p>اختيار شكل أو أكثر من أشكال النواتج (جميع ثلاثة مختارين حسب التقصير):</p>
+<ul>
+<li><strong>نص بسيط (.txt)</strong>: مثالية للتجهيز في وقت لاحق (النقل، الفهرسة).</li>
+<li><strong>مستند Word (.docx)</strong>: Text formatted, editable with Microsoft Word or LibreOffice.</li>
+<li><strong>XML TEI (xml)</strong>: TEI-P5 format to represent transcription, with descriptive header, lines and markers recognized for pages, expansions and unreadable text.</li>
+</ul>
+<p style="margin-top:0.8rem;">الملفات يتم حفظها في ملف الوجهة التي ستختارينها عندما تضربين (زكس كيوبرتج)</p>
+</div>
+<div class="section-box">
+<h3>الخطوة ٤ - التعليمات الإضافية )الاختيارية ولكن الموصى بها(</h3>
+<p>المخيم <strong>&amp;quot; الصكوك الدولية &amp;quot;</strong> يسمح لك بتكييف السلوك النموذجي لكل دورة عمل:</p>
+<ul>
+<li>الإشارة إلى اللهجة أو تغيير اللغة</li>
+<li>الإبلاغ عن المختصرات المتكررة ومعانيها</li>
+<li>تحديد ما إذا كان ينبغي تجاهل الطوابع أو الشروح الهامشية أو الطوابع</li>
+<li>اشتراط حفظ صيغة محددة</li>
+</ul>
+<p style="margin-top:0.8rem;"><strong>أمثلة عملية:</strong></p>
+<ul>
+<li><em>&amp;quot; إن أسماء الأشهر هي في القرن التاسع عشر لهجة صقلية. لا تصلحه &amp;quot; .</em></li>
+<li><em>&amp;quot; تجاهل الطوابع على الهامش والملاحظات بقلم أحمر &amp;quot; .</em></li>
+<li><em>"الإختصار" يمكن أن يعني "السجن" و"فو" و"ك" يشيران إلى أن الشخص المذكور قد مات بالفعل</em></li>
+</ul>
+<p style="margin-top:0.8rem;"><strong>محفوظات التعليمات:</strong> أكثر التعليمات استخداما يمكن حفظها مع الزر <strong>“+”</strong> وذك َّرت من قائمة التسرب &amp;quot; التعليمات المنس َّقة &amp;quot; في الدورات اللاحقة.</p>
+<p>يمكن إضافة التعليمات المحفوظة أو إعادة تسميتها أو حذفها. يحدد <strong>نوع الوثيقة</strong> المجال الأساسي؛ وبالإضافة إلى الأنواع المضمنة يمكنك إنشاء ملخصات وثائق مخصصة أو تحريرها أو إزالتها.</p>
+</div>
+<div class="section-box">
+<h3>مساعدة في مجال المعايرة والتشخيص (اختياري)</h3>
+<p>وتبيّن عمليات المعايرة المساعدة الجزء الأعلى من الملف الأول المختار نتيجة التصويب وتستخدم النص المعتمد كمرجع للتجهيز الكامل. It is useful to verify provider, model, document type and instructions before starting an extended batch.</p>
+<p>ويوفّر خيار التشخيص معلومات تقنية إضافية عن المعالجة. تنشيطه عندما تحتاج إلى تحليل خطأ أو تقديم عناصر الدعم؛ والتحقق من المحتوى قبل تقاسمه، لأنه قد يشمل بيانات الوثائق أو الطلبات.</p>
+</div>
+<div class="section-box">
+<h3>)ب( الخطوة ٥ - الوصف المرجعي )بضع طلقات، اختياري(</h3>
+<p>المخيم <strong>&amp;quot; وصف المرجع &amp;quot;</strong> ويعطي النموذج نموذجاً صحيحاً للسياق يُستخدم في الطلب. لا تضيف أو تحرر أو تستكمل النموذج</p>
+<p><strong>كيفية استخدامها:</strong></p>
+<ol>
+<li>ترجمة شفوية ودقيقة إلى الصفحة الأولى (أو الصفوف الأولى) من السجل</li>
+<li>تقديم النص الوارد في ميدان &amp;quot; وصف المراجع &amp;quot;</li>
+<li>بدء العمل بنظام OCR: سيستخدم النموذج هذا الوصف كدليل لبقية الوثيقة</li>
+</ol>
+<p style="margin-top:0.8rem;"><strong>النتائج:</strong> ويمكن أن يحسن الدقة، لا سيما على الممرات الصعبة، والاختصارات غير العادية أو اللهجات المحلية؛ ويتوقف الأثر على نوعية مقدمي الخدمات والنموذج والوثائق.<br/>
+            والميدان &amp;quot; النص البطيء &amp;quot; (.) يفرغ من الوصف ويعيد العمل بأسلوب موحد.</p>
+</div>
+<div class="section-box">
+<h3>الخطوة ٦ - استعراض تفاعلي )اختياري(</h3>
+<p>Quit <strong>&amp;quot; استعراض تفاعلي قابل للتداول &amp;quot;</strong> ينشط أسلوب تفاعلي يفتح بعد كل عملية:</p>
+<ul>
+<li><strong>اللوحة اليسرى</strong>: صورة أصلية مع زوم (عجلة أمواج) ومجلة</li>
+<li><strong>الفريق اليميني</strong>: text OCR extract, editable freely</li>
+<li><strong>&amp;quot; الزر &amp;quot;</strong>: باستثناء النص المنقح في الأشكال المختارة</li>
+<li><strong>&amp;quot; Salta Page &amp;quot;</strong>: Discard current processing and move to next page</li>
+</ul>
+<p style="margin-top:0.8rem;">مفيد للتحقق في الوقت الحقيقي من نوعية OCR والخطأات الصحيحة قبل الإنقاذ النهائي. وبالنسبة للضربات الكبيرة، من الأفضل إلغاء التنقيح التفاعلي وتصحيح النص الخلفي.</p>
+</div>
+<div class="section-box">
+<h3>▶️ الخطوة 7 — بدء OCR</h3>
+<p>Click <strong>&amp;quot; Start OCR &amp;quot;</strong>- سيلزم توفير ملف المقصد لملفات النواتج.</p>
+<p>وتظهر الحانه التقدم المحرز (الملف الحالي/المجموع). وتتم عملية التجهيز في خيط مستقل: فالواجهة البينية لا تزال مستجيبة أثناء التجهيز.</p>
+<p>خلال الخفافيش ATK-Pro تستكمل الوصف التدريجي <code>*_trascrizione_parziale.txt</code> مع بياناته وفي حالة توقف التجهيز، تُبقي هذه الملفات مسترجعة كما سبق تسجيلها؛ ولا تعتبرها ناتجا نهائيا إلى أن تكتمل الدفعة وتنقح.</p>
+<p>وفي نهاية المطاف، سيؤكد صندوق رقمي إتمام أو سيشير إلى أي أخطاء.</p>
+</div>
+</div>
+<div class="section">
+<h2>🔑 كيفية الحصول على مفتاح API</h2>
+<div class="section-box">
+<h3>الحسابات والمفاتيح والنماذج والتكاليف</h3>
+<p>الحصول على وثائق التفويض حصرا من مجموعة المزود الرسمية المختار ولا تشاركهم في ملفات المدخلات، والمحاضر أو طلبات الخدمة. ويمكن أن تتغير الواجهات والنماذج والاحتمالات والتوافر الجغرافي والأسعار دون تحديث ATK-Pro.</p>
+<p>قبل التجهيز المكثف دائماً ما تتشاور مع فريق التوثيق و الفواتير في حسابك ولا تضمن شركة ATK-Pro خططاً مجانية، أو حداً أدنى من الاحتمالات أو استمرار نموذج محدد.</p>
+</div>
+</div>
+<div class="section">
+<h2>النتائج المثلى</h2>
+<div class="section-box">
+<ul>
+<li><strong>الصور النوعية</strong>: الصور الواضحة عند 300+ IMPs produce significantly better results. Avoid JPEG with high compression (artefatti).</li>
+<li><strong>تستخدم دائما التعليمات الإضافية</strong>: Even few context lines significantly increase accuracy for dialectal documents or unusual spelling.</li>
+<li><strong>الصفحة الأولى كمرجع</strong>: ترجمــة يدويــة للصفحة الأولى واستخدام حقل &amp;quot; وصف المراجع &amp;quot; ؛ وكثيرا ما يكون التحسن في الصفحات التالية ملحوظا.</li>
+<li><strong>الاختبار</strong>: بالنسبة إلى الدفعات الكبيرة (أكثر من 100 صورة)، اختبر أولاً 5–10 ملفات مع المراجعة التفاعلية قبل متابعة الدفعة كاملة.</li>
+<li><strong>TEI XML</strong>: Select the XML TEI format if you plan to deposit transcription in academic digital archives or share it with other researchers.</li>
+<li><strong>احفظ التعليمات</strong>: كل سلسلة محفوظات لها خصائصها الخاصة. توفير مجموعة محددة من التعليمات لكل سجل أو صندوق يعالج.</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">← Mod.05 — عرض بيانات JSON</a>
+<a class="nav-button" href="guida.html">(هـ) المؤشر الرئيسي</a>
+<a class="nav-button" href="guida_07_traduzione.html">Mod.07 - Translation →</a>
+</div>
+<footer style="text-align: center;">
+<p>2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>
