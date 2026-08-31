@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 モジュール 06：高度な OCR</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 モジュール 06：高度な OCR</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">← Mod.05 — メタデータ JSON を見る</a>
+<a class="nav-button" href="guida.html">e メインインデックス</a>
+<a class="nav-button" href="guida_07_traduzione.html">Mod.07 — 翻訳 →</a>
+</div>
+<div class="section">
+<h2>パノラマ 概要</h2>
+<p>モジュール <strong>高度なOCR（外交的転記）</strong> PDF の画像とドキュメントからテキストを抽出し、マルチモーダルモデル、特殊な OCR モデルと HTR サービス. 歴史的文書のために特別に設計されています:原稿、公正な行為、パリッシュレコード、9世紀のイタリア、ラテン語または方言のアーカイブ文字。</p>
+<p>従来のOCRエンジン(Tesseractなど)とは異なり、モジュールは文書の文脈でスペルを解釈し、再発の省略と式を認識することができます。 TEI-P5 出力は、トランクベッド ラインを表し、認識すると、ページが破綻し、拡大し、未読化したステップは、元のグラフィック レイアウトを完全に再現しません。</p>
+<p>メニューから開く <em>サービス → OCR アドバンスト</em> 主な用途</p>
+</div>
+<div class="section">
+<h2>インターフェイス — ステップバイステップガイド</h2>
+<div class="section-box">
+<h3>dei ステップ1 - ファイル選択</h3>
+<p>クリック <strong>「ファイルの選択(画像/PDF)」</strong> セレクターを開く 複数のファイルを一度に選択できます。 <kbd>Ctrl</kbd> または <kbd>Shift</kbd>.</p>
+<p><strong>受け入れられたフォーマット:</strong></p>
+<ul>
+<li><strong>イメージ</strong>: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tiff</code>, <code>.tif</code></li>
+<li><strong>PDF</strong>: PDF文書(スキャンまたはネイティブ)</li>
+</ul>
+<p style="margin-top:0.8rem;">ラベルの横に選択したファイルの数が表示されます。 各ファイルが個別に処理され、出力ファイルを生成します。</p>
+</div>
+<div class="section-box">
+<h3>🤖 手順 2 — AI プロバイダーと API キーの選択</h3>
+<p>ドロップダウンメニューでプロバイダーを選択します <strong>「IAプロバイダーを選択」</strong>:</p>
+<table>
+<thead><tr><th>プロバイダー</th><th>サービスの種類</th><th>資格情報</th><th>操作ノート</th></tr></thead>
+<tbody>
+<tr><td><strong>Gemini, OpenAI, クロード</strong></td><td>リモートサービス</td><td>APIプロバイダキー</td><td>モデルと可用性は、プロバイダーのアカウントと現在の条件によって異なります。</td></tr>
+<tr><td><strong>ミストラル、グロク、XAI</strong></td><td>互換性のあるリモートエンドポイント</td><td>APIプロバイダキー</td><td>OCRのビジュアルをサポートするすべてのテキストモデルではなく、画像を処理することができるテンプレートを選択します。</td></tr>
+<tr><td><strong>イマラチオ</strong></td><td>リモートエンドポイントは、現在の設定のテキストのみ</td><td>APIプロバイダキー</td><td>エンドポイントと画像互換性モデルが設定されるまで、ビジュアルOCRには適していません。</td></tr>
+<tr><td><strong>フォグレース</strong></td><td>リモート API インフェレンス</td><td>トークン HuggingFace</td><td>互換性と結果は、設定されたモデルによって異なります。</td></tr>
+<tr><td><strong>トランスクリバス</strong></td><td>リモートHTRサービス</td><td><code>email:password</code> またはベアアートークン</td><td>利用可能なアカウントと少なくとも1つのコレクションが必要です。</td></tr>
+<tr><td><strong>Ollama</strong></td><td>ローカルサービス</td><td>APIのリモート キー無し</td><td>アクティブな Ollama とローカルにインストールされている互換性のあるビジュアルモデルが必要です。</td></tr>
+</tbody>
+</table>
+<p style="margin-top:0.8rem;">キャンプ <strong>「オーバーライドモデル(オプション)」</strong> デフォルトモデルを置き換えることができます。 モデルの正確な識別子と視覚の互換性を知っている場合にのみ使用します。 ジオミニではこのフィールドは表示されません。</p>
+<p>専用のフィールドに認証情報を入力するか、または開いているか <strong>金庫</strong>. IAのキーはCSVのボルトでローカルで貯えられます <code>api_keys.csv</code>: これは、オペレーティングシステムの保護キーホルダーではありません。 ユーザーのプロファイル保護、セキュリティコピー、鍵の取消はお客様の責任を保ちます。</p>
+</div>
+<div class="section-box">
+<h3>📄 手順 3 — 出力形式</h3>
+<p>1つ以上の出力形式(デフォルトで3つ選択)を選択します。</p>
+<ul>
+<li><strong>プレーンテキスト (.txt)</strong>: フラットトランスクリプション、最大互換性。 後処理(transduction、indexing)に最適。</li>
+<li><strong>Wordドキュメント (.docx)</strong>: Microsoft Word または LibreOffice でフォーマット、編集可能</li>
+<li><strong>XML TEI(.xml)</strong>: 転写を表す TEI-P5 形式, 記述ヘッダ, 行とマーカーは、ページのために認識, 拡張と未読化テキスト.</li>
+</ul>
+<p style="margin-top:0.8rem;">OCRを起動するときに選択した宛先フォルダに保存されます。</p>
+</div>
+<div class="section-box">
+<h3>📝 手順 4 — 追加指示（任意ですが推奨）</h3>
+<p>キャンプ <strong>「IAインスツルメンツを追加」</strong> 各ワークセッションのモデル動作をカスタマイズできます。</p>
+<ul>
+<li>テキストのダイアレクトや言語の変形を示す</li>
+<li>略語とその意味の再帰報告</li>
+<li>スタンプ、マージンアノテーション、スタンプを無視するかどうかを指定する</li>
+<li>特定の方式の保存を要求して下さい</li>
+</ul>
+<p style="margin-top:0.8rem;"><strong>実用的な例:</strong></p>
+<ul>
+<li><em>「年月の名前は19世紀のシチリアの方言です。 修正しないでください。</em></li>
+<li><em>「赤鉛筆の証拠金とノートにスタンプを無視する」</em></li>
+<li><em>「省略 'f.' は 'son'; 'fu' と 'q.' を 意味することができます。 」</em></li>
+</ul>
+<p style="margin-top:0.8rem;"><strong>指示のアーカイブ:</strong> 最も頻繁に使用される指示はボタンによって保存することができます <strong>“+”</strong> その後のセッションでは、ドロップダウンメニュー「Saved Instructions」からリコールされます。</p>
+<p>保存された指示は、名前を変更または削除することができます。 ふりがな <strong>ドキュメントの種類</strong> 基本的なプロンプトを決定します: 含まれているタイプに加えて、カスタムドキュメントプロファイルを作成、編集、または削除することができます。</p>
+</div>
+<div class="section-box">
+<h3>) 助けられた口径測定および診断(任意)</h3>
+<p>校正は、最初の選択したファイルの上部の部分を処理し、補正の結果を表示し、承認されたテキストを完全な処理の参照として使用します。 提供者、モデル、文書の種類、指示を検証するのに便利です。</p>
+<p>診断オプションは、処理に関する追加の技術的な情報を保存します。 エラーを分析したり、サポート要素を提供する必要がある場合は、有効化します。ドキュメントデータやリクエストを含む可能性があるため、共有する前にコンテンツを確認してください。</p>
+</div>
+<div class="section-box">
+<h3>🎓 手順 5 — 参照文字起こし（few-shot、任意）</h3>
+<p>キャンプ <strong>「参考文献の翻訳」</strong> リクエストで使用するモデルを正しいトランスクリプションコンテキスト例にします。 モデルを追加、編集、更新しないでください。</p>
+<p><strong>使い方:</strong></p>
+<ol>
+<li>手動で、正確に登録の最初のページ(または最初の行)をトランクします</li>
+<li>フィールドで区切るテキストを貼り付ける “参照の翻訳”</li>
+<li>OCRを起動します。このモデルは、文書の残りの部分のためのガイドとして、その転写を使用します。</li>
+</ol>
+<p style="margin-top:0.8rem;"><strong>結果:</strong> 特に困難な車線、異常なショートカット、または局所的な方言で精度を向上させることができます。効果は、プロバイダ、モデル、文書の品質に依存します。<br/>
+            フィールド「テキストの削除」 (✖) 空の転写と標準モードの復元.</p>
+</div>
+<div class="section-box">
+<h3>🔍 手順 6 — 対話型レビュー（任意）</h3>
+<p>ログイン <strong>「インタラクティブ・レビュー・ウィンドウを有効にする」</strong> 各処理後に開くインタラクティブモードをアクティブにします。</p>
+<ul>
+<li><strong>左パネル</strong>: ズーム(マウスホイール)とパンのオリジナルイメージ</li>
+<li><strong>右パネル</strong>: テキストOCRのエキス、編集可能自由に</li>
+<li><strong>「ファイルの承認と生成」ボタン</strong>: 選択した形式で変更されたテキストを保存します</li>
+<li><strong>「Salta Page」ボタン</strong>: 現在の処理を破棄し、次のページに移動</li>
+</ul>
+<p style="margin-top:0.8rem;">OCRの品質と決定的な救助の前に正しいエラーをリアルタイムで確認するのに便利です。 大規模なバッチでは、インタラクティブなリビジョンを無効にし、バックテキストを修正することが好ましいです。</p>
+</div>
+<div class="section-box">
+<h3>▶️ 手順 7 — OCR を開始</h3>
+<p>クリック <strong>「OCRを起動」</strong>. 出力ファイルの保存先フォルダが必要です。</p>
+<p>プログレッシブバーは進行状況(現在の/合計ファイル)を示しています。 処理は別々のスレッドで行われます。処理中にインターフェイスが応答し続けます。</p>
+<p>ATK-Proのバッチでは、プログレッシブトランスクリプションが更新されます <code>*_trascrizione_parziale.txt</code> メタデータを使って。 処理が中断されている場合は、これらのファイルを既にtranscribedとして回復するようにしてください。 バッチが完了し、変更されるまで、それらを決定的な出力を検討しないでください。</p>
+<p>最後に、ダイアログ ボックスは、完了またはエラーを通知します。</p>
+</div>
+</div>
+<div class="section">
+<h2>APIキーを取得する方法</h2>
+<div class="section-box">
+<h3>アカウント、キー、モデル、コスト</h3>
+<p>選択したプロバイダの公式コンソールからのみ資格情報を取得し、入力ファイル、トランスクリプト、またはサービスリクエストで共有しません。 ATK-Proの更新なしでインターフェイス、モデル、オッズ、地理的な可用性および価格は変更できます。</p>
+<p>広範な処理の前に、常にあなたのアカウントのドキュメントと課金パネルを参照してください。 ATK-Proは、特定のモデルの無料の計画、最小オッズまたはパーマニエンスを保証するものではありません。</p>
+</div>
+</div>
+<div class="section">
+<h2>最適な結果を得るためのヒント</h2>
+<div class="section-box">
+<ul>
+<li><strong>品質イメージ</strong>: 300以上のIMPで画像をクリアすると、かなり優れた結果が得られます。 JPEGを高圧縮(artefatti)で避けてください。</li>
+<li><strong>追加指示を常に使用</strong>: 文脈が少ない場合でも、文字盤文書や異常なスペルの精度が大幅に向上します。</li>
+<li><strong>参照として最初のページ</strong>: 手動で最初のページをトランクし、「参照の翻訳」フィールドを使用します。次のページの改善はしばしば顕著です。</li>
+<li><strong>試験バッチ</strong>: 大規模なバッチ(100以上の画像)では、フルバッチで進める前に、アクティブ・インタラクティブ・レビューで5-10ファイルを最初にテストします。</li>
+<li><strong>圭亞那元 XML</strong>: 学術的デジタルアーカイブでの転写を堆積させたり、他の研究者と共有したりする場合は、XML TEI形式を選択します。</li>
+<li><strong>指示を保存</strong>: 各アーカイブシリーズには独自の機能があります。 各ログまたは処理されたファンドの指示の特定のセットを保存します。</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">← Mod.05 — メタデータ JSON を見る</a>
+<a class="nav-button" href="guida.html">e メインインデックス</a>
+<a class="nav-button" href="guida_07_traduzione.html">Mod.07 — 翻訳 →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>
