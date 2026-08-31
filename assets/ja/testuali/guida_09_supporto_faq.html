@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 モジュール 09：ドキュメント、サポート、トラブルシューティング、FAQ</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 モジュール 09：ドキュメント、サポート、トラブルシューティング、FAQ</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">← Mod.08 — GEDCOM をエクスポート</a>
+<a class="nav-button" href="guida.html">e メインインデックス</a>
+</div>
+<div class="section-box">
+<h3>1. ドキュメントメニュー:リソースとサポート</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>利用できる文書</h4>
+<p>メニュー <strong>文書</strong> アプリケーションの情報リソースにアクセスするための5つのオプションがあります。</p>
+<p><strong>: 注意:</strong> インストールにはドキュメントが含まれており、インターネット接続なしで相談できます。</p>
+<h4>1) 免責事項(法的利用)</h4>
+<ul>
+<li>アプリケーションに含まれている公式の法的免責事項のテキストを開きます。</li>
+<li>内容:責任の制限、利用条件、ソフトウェアライセンス</li>
+<li>集中的な使用の前に重要な読み取り</li>
+<li>申請書の新版とともに更新することができます。法的な見直しを変更する場合は、新しい受諾が必要です。</li>
+</ul>
+<h4>第2回発表者</h4>
+<ul>
+<li>オープニング: presentazione_autore.html</li>
+<li>構成要素:短い著者の伝記、アーカイブ/デジタル経験</li>
+<li>プロジェクトの背景を理解することができます</li>
+</ul>
+<h4>3. プロジェクトプレゼンテーション</h4>
+<ul>
+<li>オープニング: presentazione_progetto_ATK-Pro.html</li>
+<li>内容:
+                    <ul>
+<li>主な目的:複数の港および家族仕事机</li>
+<li>ポータルポリシー:ログイン、ペイウォール、または技術的な制限を回避することなく、互換性のあるパブリックソースの使用</li>
+<li>v3周囲:ポータルレジスタ、AI支援研究、OCR、OCR 翻訳、遺伝子分析、GEDCOMのエクスポート</li>
+<li>代表者: 遺伝子の研究者、アーカイブスカラー、イタリア、イタリアのコミュニティ</li>
+<li>多言語: 20 の支えられた言語(IT、EN、ES、PT、FR、DE、AR、HE、NL、RU、JA、SV、ZH、RO、EL、PL、DA、NO、TR、VI)</li>
+</ul>
+</li>
+<li>ライブ文書、進行中の統合の対象</li>
+</ul>
+<h4>4) GUIDA(メインインデックス)</h4>
+<ul>
+<li>オープニング: guida.html</li>
+<li>含まれています: イタリアのガイドv3のモジュラーインデックス</li>
+<li>ここからは、インストール、基本操作、ビューア、メタデータ、OCR、翻訳、GEDCOM、サポート、AI支援研究にアクセスすることができます</li>
+</ul>
+<h4>5 インフォメーション</h4>
+<ul>
+<li>3行のウィンドウを表示:
+                    <ul>
+<li>1. ATK-Pro vx.x.x (バージョン番号)</li>
+<li>©2026 Daniele Pigoli (著作権と著者)</li>
+<li>3. 電子メールサポート(レポート/推奨)</li>
+</ul>
+</li>
+<li>正式な連絡先のメールを使用する</li>
+<li>自動的に更新される</li>
+</ul>
+<h4>多言語対応</h4>
+<ul>
+<li>発表者、プレゼンテーションプロジェクト、ガイドを選択した言語で公開します。</li>
+<li>オペレーティング・免責事項は、イタリアの公式法的レビューを使用しています。</li>
+<li>ローカル化されたリソースが利用できない場合は、相対メッセージが表示されます。</li>
+<li>たとえば入力ファイルの場合、英語はフォールバックとして使われます。</li>
+</ul>
+<h4>サポートに連絡する方法</h4>
+<p>電子メール: antenati.toolkit.pro@gmail.com</p>
+<ul>
+<li>バグ報告:問題の記述+スクリーンショット/ログ</li>
+<li>提案のために:新しい機能か改善を提案して下さい</li>
+<li>技術的な質問のため: 操作の明確化を要求して下さい</li>
+<li>開発優先事項の提案のため:改善、評価可能な公共のポータルまたは機能の終了を提案して下さい。
+                    <ul>
+<li>提案は評価されますが、開発はATK-Proがプロソフトウェアハウスではなくアマチュアレベルで管理され、維持されるという事実によって調整されます。</li>
+<li>限られた可用性とリソースに依存する実装時間。</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. プログラムの閉鎖およびプロジェクト サポート</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>ATK-PROを閉じる方法</h4>
+<p>システムによって管理された方法でプログラムを閉じることができます。</p>
+<ol>
+<li>選択する <strong>設定 → 閉じる</strong>;</li>
+<li>タイトルバーの最後のボタンを使用します。</li>
+<li>Windowsでは、標準的なショートカットを使用します <strong>アルト+F4</strong>.</li>
+</ol>
+<p>閉じるときにオプションのウィンドウが表示されます <strong>プロジェクトを支援する</strong>.</p>
+<h4>▶ ウィンドウ「プロジェクトをサポート」</h4>
+<p>3つの最後の方法のいずれかを選択した後、ウィンドウが開きます。</p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="窓サポートプロジェクト" src="images/window4.webp" style="max-width: 600px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>このウィンドウでできること</h4>
+<p>「オプション1:バナーをクリック(画像の任意の部分)</p>
+<ul>
+<li>PayPal.me公式ページでブラウザを開きます</li>
+<li>寄付金額(完全無料)をお選びいただけます。</li>
+<li>ペイパルでのお支払い(国によっては口座がない場合)</li>
+<li>制約なし:寄付しないと決めることもできます。</li>
+</ul>
+<p>il OPTION 2: QR コードをスキャン</p>
+<ol>
+<li>スマートフォンカメラを開きます。</li>
+<li>バナーQRコードを埋めます。</li>
+<li>進行前に提案したアドレスをブラウザでチェックしてください。</li>
+</ol>
+<p>OPオプション3:「閉じる」ボタンをクリック</p>
+<ul>
+<li>バナーを閉じる</li>
+<li>プログラムを永久に終えて下さい</li>
+<li>結束なし:寄付なしで閉じることができます</li>
+</ul>
+<h4>重要なメモ:</h4>
+<p>✓ 寄付はFACOLTATIVE TOTALMENTです</p>
+<p>✓ プログラムは、寄付の有無にかかわらず同じように動作します</p>
+<p>✓ トラッキングなし、制限機能なし</p>
+<p>✓ バナーは、プロジェクトによって構成されているPayPalアドレスを開きます。 常にブラウザで表示される目的地をチェックします</p>
+<p>✓ あなたが好むときにプロジェクトをサポートすることができます</p>
+<h4>寄付が意図されているものだけ:</h4>
+<p>ATK-Proの将来の開発をサポート:</p>
+<ul>
+<li>プロジェクトの流通・インフラ・サービス</li>
+<li>依存性およびソフトウェアコンポーネント</li>
+<li>開発時間、テスト、ドキュメント、および後のバージョンのメンテナンス</li>
+<li>IIIF検証テストサーバー</li>
+<li>ドキュメントとメンテナンス</li>
+</ul>
+<h4>寄付の代替:</h4>
+<p>寄付できませんが、サポートを希望しない場合は、次のことができます。</p>
+<ul>
+<li>ソーシャルメディアでATK-Proを共有する</li>
+<li>革新的な用途や興味深いケーススタディをレポート</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3. トラブルシューティングとFAQ</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>よくある質問</h4>
+<h4>P:プログラムはマニフェストのローディングに固執しますか?</h4>
+<p><strong>R:</strong> 通常はネットワークタイムアウトです。 チェック:</p>
+<ol>
+<li>お使いのブラウザの信頼できるページを開くことで、インターネット接続が機能していることを確認してください。</li>
+<li>ブラウザでURL IIIFを開き、アドレスバーから再度コピーします。</li>
+<li>ファイアウォールやセキュリティソフトウェアがATK-Pro接続を許可していることを確認してください。</li>
+<li>プロキシネットワークを使用する場合は、オペレーティングシステムのネットワーク設定を確認してください。</li>
+</ol>
+<p>問題が主張したら、URL をテストするために別のテストして下さい IIIF の関係を試みて下さい</p>
+<h4>P: "File not found (404)" - どういう意味ですか?</h4>
+<p><strong>R:</strong> ポスターのURLは到達できません。 原因:</p>
+<ul>
+<li>URLが期限切れ(リポジトリが更新されていない)</li>
+<li>リポジトリ オフライン</li>
+<li>URLパラメータ(誤ったマニフェストID)</li>
+</ul>
+<p>ソリューション:ATK-Proで接着する前にブラウザでURLをチェック</p>
+<h4>P:非常に遅いか、割込みますか?</h4>
+<p><strong>R:</strong> 試してみましょう:</p>
+<ol>
+<li>Wi-Fiネットワークの安定性をチェックするか、利用可能な場合は有線接続を使用してください。</li>
+<li>別のパブリックURL IIIFを試して、減速がサーバーに依存しているかどうかを確認します。</li>
+<li>リソースプロファイルを選択することにより、負荷を減らす <strong>軽量</strong>.</li>
+<li>問題が 1 つのポータルだけに懸念する場合, 信頼し、再試行: リモートサービスは混雑または一時的に利用できなくなることがあります。.</li>
+</ol>
+<h4>P:Reconstructionの遅いイメージ - 加速する方法?</h4>
+<p><strong>R:</strong> 通信速度は、主にIIIFサーバ、画像サイズ、接続、コンピュータ上で利用可能なリソースの応答に依存します。</p>
+<ul>
+<li>プロフィールの使用 <strong>軽量</strong> 資源消費量を減らすため <strong>高速</strong> 適切なシステムのみ。</li>
+<li>メモリやネットワークが圧力下にある場合、ページ数が少ないプロセスログ。</li>
+<li>選択したプロファイルに関係なく、いくつかのポータルは順次アクセスを課すことを忘れないでください。</li>
+</ul>
+<h4>P: PDFの出力は破損していますか、または開いていませんか?</h4>
+<p><strong>R:</strong> 試してみましょう:</p>
+<ol>
+<li>診断の有用なコピーを保ち、その後、不完全なPDFを削除または名前を変更します。</li>
+<li>レコードをリロードする <strong>ファイル入力 → 入力を開く</strong> PDFを再生成します。</li>
+<li>宛先が書けやすく、処理に十分なスペースがあることを確認してください。</li>
+<li>問題がPDFを懸念しているかどうかを確認するために生成された個々の画像を確認してください。</li>
+</ol>
+<h4>P:アーカイブ用のTIFFファイルを使用するにはどうすればよいですか?</h4>
+<p><strong>R:</strong> TIFFは貯蔵のために完全な無損失のフォーマットです:</p>
+<ol>
+<li>画像フォーマット間でTIFFを選択します。</li>
+<li>ATK-Proは、TIFFをロスレス圧縮LZWで保存します。</li>
+<li>異なるサポートでコピーを保存し、定期的にバックアップの完全性を確認します。</li>
+<li>時間の経過とともにストレージは、フォーマットだけでなく、メディア、コピー、整合性チェックにも依存します。</li>
+</ol>
+<h4>P:複数のレコードを同時に処理できますか?</h4>
+<p><strong>R:</strong> バッチレコードは順番で処理されます。 単一のレコード内では、ポータルとリソースプロファイルに応じて、ページやタイルを並行して処理することができます。</p>
+<ol>
+<li>サポートされているすべてのレコードで入力ファイルを準備します。</li>
+<li>から選ぶ <strong>ファイル入力 → 入力を開く</strong>.</li>
+<li>1回のスタート <strong>出力 → Elabora</strong>.</li>
+<li>ATK-Proは、その後のレコードで自動的に継続します。</li>
+</ol>
+<p>例: 入力に 5 レコードが含まれている場合、ATK-Pro は自動的に処理します。</p>
+<ul>
+<li>レコード1(ダウンロード+再構築)</li>
+<li>レコード2(ダウンロード+再構築)</li>
+<li>... 記録まで 5</li>
+</ul>
+<p>結果は、設定されたフォルダに保存されます。各レコードの処理を手動で再起動する必要はありません。</p>
+<h4>P: ファイルが保存されますか?</h4>
+<p><strong>R:</strong> デフォルトパス:</p>
+<ul>
+<li><strong>標準的な取付け:</strong> フォルダ <code>ATK-Pro/output</code> ユーザー文書</li>
+<li><strong>ポータブルモード:</strong> フォルダ <code>output</code> 実行可能です。</li>
+</ul>
+<p>目的地を変更できます <strong>設定 → 出力フォルダの選択</strong>. デフォルトフォルダは自動的に作成されます。</p>
+<h4>P: なぜ ATK-Pro 信号は出力パスをブロックしますか?</h4>
+<p><strong>R:</strong> ファイルを作成する前に、ATK-Proはレコードの最長のルートを制御します。 最終的な要約は2つの状況を区別します。</p>
+<ul>
+<li><strong>ブロックエラー:</strong> 名前には、許可されていない文字が含まれていて、予約名 Windows を使用して、スペースまたはポイントで終了し、またはセグメントは、サポートされている制限を超える。 影響を受けるレコードが止まり、相対的なワークブックが作成されていない。</li>
+<li><strong>互換性の通知:</strong> パスは、プルーデンシャルのしきい値に近いか、最近のWindowsアプリケーションで困難を作成することができます。 処理は続行できますが、より短い目的地を選ぶのが最善です。</li>
+</ul>
+<p>プロフィール <strong>OneDrive/シェアポイント</strong> 選択したフォルダが実際にルート下にある場合にのみ適用されます <code>OneDrive</code> または <code>OneDrive - Organizzazione</code>。 エラーの場合、レコード名を短くするか、ドライブルートに近いコピー先フォルダを選択します。 他の処理で既に生成されたファイルを名前を変更したり、移動する必要はありません。</p>
+<h4>P: 処理後に出力ファイルを移動できますか?</h4>
+<p><strong>R:</strong> はい、処理後に最終ファイルを移動させることができます。</p>
+<p>完了後:</p>
+<ol>
+<li>レコードフォルダを新しい宛先に移動します。</li>
+<li>最終的なPDFは自律的です。それはまたあなたの仕事のアーカイブの一部である場合イメージおよびメタデータを保ちます。</li>
+<li>レコードを再作業すると、ポスターやその他のソースファイルを保存します。</li>
+</ol>
+<h4>P: 突然クラッシュ - 何をするか?</h4>
+<p><strong>R:</strong> プログラムがクラッシュするかどうか:</p>
+<ol>
+<li>チェックイン <code>atkpro.log</code> または、活動的な延長診断と、 <code>atkpro_debug.log</code>. 場所は、インストールの種類によって異なります:実行可能またはアプリケーション作業ディレクトリの横にある検索。</li>
+<li>エラーメッセージをコピーするか、スクリーンショットを撮る。</li>
+<li>プログラムを再起動し、操作を繰り返します。</li>
+<li>エラーが繰り返された場合、別のIIIFレコードを試して、特定のマニフェストから一般的な問題を区別します。</li>
+</ol>
+<h4>E 一般的なエラーとソリューション</h4>
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+<thead style="background-color: #f0f0f0;">
+<tr>
+<th style="text-align: left;">エラー</th>
+<th style="text-align: left;">導入事例</th>
+<th style="text-align: left;">ソリューション</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「ネットワークタイムアウト」</td>
+<td>サーバー IIIF の遅い/オフライン</td>
+<td>別のURLと再度試みて下さい</td>
+</tr>
+<tr>
+<td>「無効なIIIFフォーマット」</td>
+<td>URLはマニフェストIIIFではないです</td>
+<td>お使いのブラウザでURLをチェック</td>
+</tr>
+<tr>
+<td>「ディスクスペースフル」</td>
+<td>不十分なディスクスペース</td>
+<td>ユニットの空きスペース</td>
+</tr>
+<tr>
+<td>「許可拒否」</td>
+<td>保護されたフォルダ/読み取り専用</td>
+<td>ユーザーに属するフォルダを選択し、書き込み可能であることを確認します。システムフォルダや保護を避けます。</td>
+</tr>
+<tr>
+<td>「URLが見つかりません」</td>
+<td>マニフェスト IIIF 期限切れ</td>
+<td>ポータルでIDをチェック</td>
+</tr>
+<tr>
+<td>「風に反応しない」</td>
+<td>スロー/重い処理</td>
+<td>待ってからキャンセルをクリック</td>
+</tr>
+</tbody>
+</table>
+<h4>P:ポータルは認識されますが、ダウンロードは拒否されます。 なぜ?</h4>
+<p><strong>R:</strong> 技術的な互換性はアクセス条件を除去しません。 ATK-Proは、アフィリエイトログインまたはアクセスを必要とするリソースを拒否または制限し、安定した公開エンドポイントを公開しない、マークされている <code>nodownload</code> または必要な操作と互換性がない。 対象の公開ページを開き、ライセンスと使用条件を確認し、公式のURLでのみテストします。</p>
+<h4>P: 壊れたOCRのバッチを回復できますか?</h4>
+<p><strong>R:</strong> OCRファイルの選択したフォルダをチェックする <code>*_trascrizione_parziale.txt</code> メタデータ。 これらは、その決定を検討する前に、作業が進行的に保存され、確認し、完了する。</p>
+<h4>Eサポートと連絡先</h4>
+<p>問題が解決を試みた後主張する場合:</p>
+<ol>
+<li>プロジェクトのプレゼンテーションとメニューからこのガイドを参照してください。 <strong>文書</strong>.</li>
+<li>問題が解決しない場合は、 <strong>antenati.toolkit.pro@gmail.com</strong> 以下を含む:</li>
+</ol>
+<ul>
+<li>バージョンATK-Pro(メニュードキュメント→情報)</li>
+<li>オペレーティング・システムおよび版(例えばWindows 10/11、Ubuntu 22.04、macOS 13)</li>
+<li>URL IIIFは問題を引き起こします</li>
+<li>エラースクリーンショット(表示されている場合)</li>
+</ul>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">← Mod.08 — GEDCOM をエクスポート</a>
+<a class="nav-button" href="guida.html">e メインインデックス</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>

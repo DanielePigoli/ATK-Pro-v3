@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ja" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 04: Visualizzazione Metadati JSON</title>
-    <meta name="description" content="ATK-Pro — Visualizzazione Metadati JSON">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>モジュール 08: 輸出 GEDCOM</title>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -13,14 +13,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -31,7 +31,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -41,12 +41,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -55,21 +55,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 3px solid #a67c52;
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -78,13 +78,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -97,12 +97,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             border: 2px solid #a67c52;
@@ -111,33 +111,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -145,39 +145,40 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
+            border: 2px solid #a67c52;
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +186,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +194,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +216,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +231,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +240,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +263,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             border: 1px solid #a67c52;
             padding: 12px 8px;
@@ -271,7 +272,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +282,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             border: 2px solid #a67c52;
@@ -297,15 +298,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -326,60 +327,87 @@
 </head>
 <body>
 <div class="container">
-    <header>
-        <h1>📚 Modulo 04: Visualizzazione Metadati JSON</h1>
-    </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_03_visualizzazione_immagini.html" class="nav-button">⬅️ Mod.03 — Visualizzazione Immagini</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_05_ocr_avanzato.html" class="nav-button">Mod.05 — Funzioni Avanzate OCR ➡️</a>
-        </div>
-
-    <div class="section">
-        <h2>&#128204; Panoramica</h2>
-        <p>Il <strong>Viewer Metadati JSON</strong> di ATK-Pro &egrave; dedicato alla visualizzazione dei file JSON generati durante l&apos;elaborazione dei documenti. Si apre dal menu <em>Strumenti</em> dell&apos;applicazione.</p>
-        <p>Il viewer apre qualsiasi file <code>.json</code>. Cerca automaticamente un&apos;immagine con lo stesso nome nella stessa cartella (estensioni: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tif</code>, <code>.tiff</code>) e, se la trova, la mostra nel pannello destro.</p>
-    </div>
-
-    <div class="section">
-        <h2>&#127795;&#65039; Interfaccia</h2>
-        <p>La finestra &egrave; divisa in due pannelli affiancati:</p>
-
-        <div class="section-box">
-            <h3>Pannello Sinistro &mdash; Tabella Metadati</h3>
-            <p>I dati del file JSON vengono visualizzati come una <strong>tabella a due colonne</strong>:</p>
-            <ul>
-                <li><strong>Campo</strong>: il nome della chiave JSON</li>
-                <li><strong>Valore metadato</strong>: il valore corrispondente</li>
-            </ul>
-            <p style="margin-top:0.8rem;">Vengono visualizzati solo i campi di <strong>primo livello</strong> del JSON. I campi il cui nome inizia con <code>_</code> (underscore) sono omessi perch&eacute; riservati all&apos;uso interno. Strutture annidate (oggetti o array) appaiono come rappresentazione testuale nella colonna Valore.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>Pannello Destro &mdash; Anteprima Immagine</h3>
-            <p>Se viene trovata un&apos;immagine abbinata, questa viene caricata con le stesse funzionalit&agrave; del Viewer Immagini (zoom con rotella, pulsanti +/&minus;, Adatta alla finestra, 1:1, pan con trascinamento).</p>
-            <p style="margin-top:0.8rem;">Se non viene trovata alcuna immagine abbinata, il pannello mostra <em>&ldquo;Nessuna immagine abbinata trovata&rdquo;</em>.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>Toggle Pannelli</h3>
-            <ul>
-                <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello sinistro con i metadati</li>
-                <li><strong>Pulsante &ldquo;&#9658; Mostra metadati&rdquo;</strong>: Ripristina il pannello metadati</li>
-            </ul>
-        </div>
-    </div>
-
-     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_03_visualizzazione_immagini.html" class="nav-button">⬅️ Mod.03 — Visualizzazione Immagini</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_05_ocr_avanzato.html" class="nav-button">Mod.05 — Funzioni Avanzate OCR ➡️</a>
-        </div>
-
-    <footer>
-        <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-    </footer>
+<header>
+<h1>モジュール 08: 輸出 GEDCOM</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_07_traduzione.html">← Mod.07 — 翻訳 OCR</a>
+<a class="nav-button" href="guida.html">e メインインデックス</a>
+<a class="nav-button" href="guida_09_supporto_faq.html">Mod.09 — ドキュメント、サポート、FAQ →</a>
+</div>
+<div class="section">
+<h2>パノラマ 概要</h2>
+<p>モジュール <strong>GEDCOMエクスポート</strong> v3 は、選択されたテキスト、画像、文書を取り、ATK-Pro で構成された IA プロバイダーを使用し、ファイルを生成するのを支援しました。 <code>.ged</code> CSVサポートファイル2つを使って。</p>
+<p>メニューから開く <em>サービス → エクスポート GEDCOM</em>. 公衆名は、GEDCOM形式にリンクされていますが、実際の作品には、遺伝子抽出、線写真のメモの使用、IAキーの既存のベースと管理の可能増加が含まれます。</p>
+<p>結果は、それを遺伝子ソフトウェアにインポートする前に検証する必要があります。AIはデータと関係を構造化するのに役立ちますが、それはソースの重要な読書を置き換えません。</p>
+</div>
+<div class="section">
+<h2>facciaインターフェイス</h2>
+<div class="section-box">
+<h3>1. 方法および普遍的な入力</h3>
+<p>最初のセクションでは、メソッドの表示とファイルを分析できるようにします。 オプション <strong>オートディスカバリー</strong>, <strong>ビジョンIA</strong> そして、 <strong>精製 LLM</strong> 設定として保存されますが、現在のバージョンでは3つの別のパイプラインをアクティブにしません。実際の処理は主にファイルタイプに依存します。</p>
+<ul>
+<li><strong>TXTとDOCX</strong>: 専用のテキストパイプラインを読んで、トランスクリプトとしてプロンプトに差し込みます。</li>
+<li><strong>その他の入力</strong>: 利用可能な抽出フローに応じて、選択したプロバイダに転送されます。</li>
+<li><strong>選択可能なフォーマット</strong>: <code>.pdf</code>, <code>.docx</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.webp</code>, <code>.tiff</code>, <code>.tif</code>, <code>.bmp</code>, <code>.txt</code>, <code>.json</code> そして、 <code>.csv</code>.</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. 基本的な増加を主張する</h3>
+<p>ボタン <strong>ベースを読み込む</strong> GEDCOM または CSV 形式で既に存在する遺伝子基盤を示します。 何も読み込まれないと、モジュールは新しいジョブを作成します。 ベースをロードすると、別の宛先を選択しても、結果が含まれているフォルダに自動的に保存されます。</p>
+</div>
+<div class="section-box">
+<h3>3. パレグラフノートデータベース</h3>
+<p>このセクションでは、一般的な作業を文書の種類と操作上の注意にリンクします。 保存されたメモをリコールし、新しいメモを作成したり、それを編集したり、削除したりすることができます。</p>
+<p>メモは、モデルの省略、ローカル式、ドキュメント言語、キンシップルール、読書の疑いや抽出基準に説明するために使用されます。</p>
+</div>
+<div class="section-box">
+<h3>4. 宛先出力</h3>
+<p>結果を保存するためのフォルダを選択します。 既存のベースがロードされると、ベースフォルダが使用されます。 モジュールはファイルを生成します <code>genealogia_*.ged</code> GEDCOMの 同じ基本的な名前の 5.5.1 形式および 2 つのサポート ファイル: <code>*_REVISIONE.csv</code> そして、 <code>*_REGISTRO_ORIGINALE.csv</code>.</p>
+</div>
+<div class="section-box">
+<h3>5. モーターIAおよび欠陥のキー</h3>
+<ul>
+<li><strong>プロバイダー</strong>: Claude、OpenAI、Gemini、Mistral、xAI、DeepSeek、Gruaq、HuggingFace、Ollamaなどの設定されたものの間でIAサービスを選択します。</li>
+<li><strong>オーバーライドモデル</strong>: 選択したプロバイダーがサポートする特定のモデルを示すオプションフィールド。プロバイダーがGeminiの場合に隠されます。</li>
+<li><strong>キーボールトを管理（CSV）</strong>: ボルトから直接CSVファイルを開きます。</li>
+<li><strong>完全抽出を開始</strong>: GEDCOMの解析と生成を開始します。</li>
+</ul>
+<p>カスタムドキュメントタイプを作成および削除できます。 統合型の場合、オーバーライドでプロンプトを変更できますが、タイプを削除しないでください。</p>
+</div>
+</div>
+<div class="section">
+<h2>sso 推奨フロー</h2>
+<ol>
+<li>既読の入力を準備します。: 演技によって既に組織されているトランスクリプション、画像、ファイル。</li>
+<li>素材に最も適した方法表示を選択し、現在のバージョンでは別のパイプラインを選択していないことを念頭に置いてください。</li>
+<li>既存のジョブを継続している場合は、GEDCOM または CSV ベースを充電してください。</li>
+<li>機能の種類を選択し、コンクリート製法ノートを追加します。</li>
+<li>出力フォルダ、プロバイダ、キーを選択します。</li>
+<li>フル抽出を開始します。</li>
+<li>ファイルのチェック <code>.ged</code> 他のプログラムにインポートする前に生成されます。</li>
+</ol>
+</div>
+<div class="section">
+<h2>ver 警告</h2>
+<div class="section-box">
+<ul>
+<li>GEDCOM製品は、明確なテストではなく、作業拠点です。</li>
+<li>家族の関係、日付、場所および名前は元の源で確認されなければなりません。</li>
+<li>OCRエラー、転写または解釈は、家族ファイルで伝播することができます。</li>
+<li>GEDCOMを外部ソフトウェアにインポートする前に、元のファイルのコピーを保存し、任意の重複を確認します。</li>
+<li>機密文書を外部プロバイダーに送信したり、使用条件、プライバシー、許可を検証することなく制限を受けることはできません。</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_07_traduzione.html">← Mod.07 — 翻訳 OCR</a>
+<a class="nav-button" href="guida.html">e メインインデックス</a>
+<a class="nav-button" href="guida_09_supporto_faq.html">Mod.09 — ドキュメント、サポート、FAQ →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
 </div>
 </body>
 </html>

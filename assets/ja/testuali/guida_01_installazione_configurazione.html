@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ja" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 01: Installazione, Avvio e Interfaccia</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 モジュール 01：インストール、起動、インターフェース</title>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -12,14 +13,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -30,7 +31,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -40,12 +41,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -54,21 +55,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 3px solid #a67c52;
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -77,13 +78,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -96,12 +97,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             border: 2px solid #a67c52;
@@ -110,33 +111,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -144,39 +145,39 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -184,7 +185,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -192,20 +193,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -214,10 +215,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -229,7 +230,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -238,20 +239,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -261,7 +262,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             border: 1px solid #a67c52;
             padding: 12px 8px;
@@ -270,7 +271,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -280,15 +281,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             border: 2px solid #a67c52;
@@ -296,15 +297,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -324,167 +325,174 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>1. Installazione, Avvio e Interfaccia</h1>
-        </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_02_operazioni_base.html" class="nav-button">Mod.02 &mdash; Operazioni di Base &#8594;</a>
-        </div>
-        <div class="section-box">
-            <h3>1. INSTALLAZIONE E REQUISITI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>SISTEMA OPERATIVO</h4>
-            <ul>
-                <li><strong>Windows:</strong> Windows 10 o successivo (64-bit) — Professional, Home, Server</li>
-                <li><strong>Linux:</strong> Ubuntu 20.04+ o distribuzioni compatibili (pacchetto .deb o archivio .tar.gz)</li>
-                <li><strong>macOS:</strong> macOS 11 Big Sur o successivo — distribuzione .dmg (test su hardware reale in corso)</li>
-                <li>64-bit obbligatorio su tutte le piattaforme</li>
-                <li>Almeno 2 GB di RAM disponibili (4 GB consigliati per elaborazione batch)</li>
-                <li>1 GB di spazio libero su disco</li>
-            </ul>
-            <h4>INSTALLAZIONE</h4>
-            <p><strong>🪟 Windows</strong></p>
-            <ol>
-                <li>Scarica <code>ATK-Pro-Setup-vx.x.x.exe</code> dalla pagina Release ufficiale</li>
-                <li>Fai doppio click sul file installer</li>
-                <li>Seleziona "Esegui con privilegi di amministratore", se richiesto</li>
-                <li>Segui la procedura guidata (Next → Next → Install)</li>
-                <li>Durante l'installazione verrà richiesta la selezione della lingua (20 disponibili)</li>
-                <li>Al termine, spunta "Avvia ATK-Pro" per avviare il programma</li>
-                <li>Accetta eventuali avvisi di Windows Firewall/Defender</li>
-            </ol>
-            <p><strong>🐧 Linux</strong></p>
-            <ol>
-                <li>Scarica <code>ATK-Pro-vx.x.x.deb</code> (Debian/Ubuntu) o <code>.tar.gz</code> dalla pagina Release</li>
-                <li><strong>Pacchetto .deb:</strong> <code>sudo dpkg -i ATK-Pro-vx.x.x.deb</code> oppure doppio click in Nautilus/Files</li>
-                <li><strong>Archivio .tar.gz:</strong> estrai e avvia <code>./ATK-Pro</code> dalla cartella estratta</li>
-                <li>La lingua viene selezionata al primo avvio e salvata nel file di configurazione utente</li>
-            </ol>
-            <p><strong>🍎 macOS</strong></p>
-            <ol>
-                <li>Scarica <code>ATK-Pro-vx.x.x.dmg</code> dalla pagina Release</li>
-                <li>Apri il file .dmg e trascina ATK-Pro nella cartella Applicazioni</li>
-                <li>Al primo avvio: clic destro → Apri (necessario per applicazioni non notarizzate)</li>
-                <li>La lingua viene selezionata al primo avvio e salvata nel file di configurazione utente</li>
-            </ol>
-            <h4>POSIZIONI DI DEFAULT</h4>
-            <p><strong>🪟 Windows</strong></p>
-            <ul>
-                <li>Programma: <code>C:\Program Files\ATK-Pro\</code></li>
-                <li>Output utente: <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\</code></li>
-                <li>Input (opzionale): <code>C:\Users\[TuoNome]\Documents\ATK-Pro\input\</code></li>
-            </ul>
-            <p><strong>🐧 Linux</strong></p>
-            <ul>
-                <li>Programma: <code>/opt/ATK-Pro/</code> (deb) oppure cartella estratta (.tar.gz)</li>
-                <li>Output utente: <code>~/Documents/ATK-Pro/output/</code></li>
-                <li>Input (opzionale): <code>~/Documents/ATK-Pro/input/</code></li>
-            </ul>
-            <p><strong>🍎 macOS</strong></p>
-            <ul>
-                <li>Programma: <code>/Applications/ATK-Pro.app</code></li>
-                <li>Output utente: <code>~/Documents/ATK-Pro/output/</code></li>
-                <li>Input (opzionale): <code>~/Documents/ATK-Pro/input/</code></li>
-            </ul>
-            <h4>REQUISITI DI RETE</h4>
-            <ul>
-                <li>Connessione Internet stabile (obbligatoria per accedere a IIIF Manifests)</li>
-                <li>Firewall: Consenti connessioni HTTPS in uscita (porta 443)</li>
-                <li>Proxy aziendale: Se in ambiente corporate, configura le credenziali proxy nel menu</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>2. PRIMO AVVIO E CONFIGURAZIONE</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>PRIMO AVVIO</h4>
-            <h3>1. Clicca su icona ATK-Pro dal Desktop o Menu Start</h3>
-            <h3>2. Se è la prima volta, il programma crea le cartelle utente automaticamente</h3>
-            <h4>SELEZIONE LINGUA</h4>
-            <p><strong>Le lingue disponibili sono:</strong></p>
-            <ul style="display: flex; flex-direction: column; flex-wrap: wrap; gap: 8px; list-style: none; padding-left: 0;">
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">IT</span>Italiano (Italiano): Fondamentale per i cittadini residenti e i nuovi espatriati.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EN</span>English (Inglese): Lingua ponte per USA, Canada, Australia e Regno Unito.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ES</span>Español (Spagnolo): Copre tutti i paesi ispanici delle Americhe, le Filippine e la Spagna (meta preferita dai giovani italiani nel 2024-2025).</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">FR</span>Français (Francese): Per le storiche e vaste comunità in Francia e Belgio.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DE</span>Deutsch (Tedesco): Per la Germania (quasi 900.000 residenti italiani) e la Svizzera.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PT</span>Português (Portoghese): Indispensabile per il Brasile (bacino di oltre 30 milioni di discendenti).</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RU</span>Русский (Russo): Per coprire le comunità e i discendenti nelle ex repubbliche sovietiche e nei Balcani.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">AR</span> العربية (Arabo, RTL): Per le comunità in Nord Africa (Egitto, Tunisia, Marocco) e per i discendenti nei paesi del Golfo.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NL</span>Nederlands (Olandese): Fondamentale per i Paesi Bassi, hub in fortissima crescita per i laureati italiani nel 2025.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">HE</span> עברית (Ebraico, RTL): Per la significativa e attiva comunità di italiani in Israele.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">JA</span>日本語 (Giapponese): Per la comunità di professionisti e italiani residenti in Giappone.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">SV</span>Svenska (Svedese): La Svezia è la principale destinazione scandinava per gli italiani nel 2025.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ZH</span>中文 (Cinese): Per i residenti e gli operatori economici in Cina.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RO</span>Română (Rumeno): Per la grande comunità di imprenditori e residenti italiani in Romania.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EL</span>Ελληνικά (Greco): Per i legami storici e i residenti stabili nelle isole e nelle città greche.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PL</span>Polski (Polacco): Per gli italiani residenti in Polonia (hub logistico e industriale).</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DA</span>Dansk (Danese): Per i ricercatori e i creativi italiani in Danimarca.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NO</span>Norsk (Norvegese): Per la comunità legata al settore oil&gas e tecnologico.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">TR</span>Türkçe (Turco): Per la storica comunità dei "Levantini" e i residenti a Istanbul.</li>
-                <li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">VI</span>Tiếng Việt (Vietnamita): Per la crescente comunità di business nel sud-est asiatico.</li>
-            </ul>
-            <p>con le quali, in base ai dati disponibili a fine 2025, si stima di poter coprire circa il 98% dei discendenti da italiani e delle comunità italiane o italofone sparse per il mondo.</p>
-            <ul>
-                <li>Su <strong>Windows</strong>: la lingua viene scelta durante l'installer e memorizzata nel Registro di Windows</li>
-                <li>Su <strong>Linux/macOS</strong>: la lingua viene selezionata al primo avvio e salvata nel file di configurazione utente</li>
-                <li>In entrambi i casi viene caricata automaticamente a ogni avvio</li>
-                <li>Può essere cambiata in qualsiasi momento tramite Menu → Impostazioni → Cambia lingua</li>
-                <li>Il programma richiede un riavvio per applicare la nuova lingua selezionata</li>
-            </ul>
-            <h4>📂 CONFIGURAZIONE CARTELLE</h4>
-            <p>Alla prima esecuzione, il programma crea automaticamente le seguenti cartelle:</p>
-            <ul>
-                <li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\</code></li>
-                <li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\doc\</code> (default documenti)</li>
-                <li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\reg\</code> (default registri)</li>
-                <li><strong>Linux/macOS:</strong> analoghe sotto <code>~/Documents/ATK-Pro/output/</code></li>
-                <li>Cartella <code>input\</code> analoga (opzionale, per input file)</li>
-            </ul>
-            <p>Durante l'elaborazione vengono create cartelle temporanee per i tile scaricati (<code>tiles_canvas_X/</code>) e, se richiesto il PDF, file temporanei per la sua generazione.
+<div class="container">
+<header>
+<h1>1. 取付け、開始およびインターフェイス</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida.html">e メインインデックス</a>
+<a class="nav-button" href="guida_02_operazioni_base.html">Mod.02 — ベース操作 →</a>
+</div>
+<div class="section-box">
+<h3>1. 取付けおよび条件</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>オペレーティング システム</h4>
+<ul>
+<li><strong>Windows:</strong> Windows 10以降(64ビット) — プロフェッショナル、ホーム、サーバー</li>
+<li><strong>Linux:</strong> Ubuntu 20.04+ または互換性のある配布 ( .deb パッケージまたは .tar.gz アーカイブ)</li>
+<li><strong>macOS:</strong> macOS 11ビッグサー以降 — .dmg分布(進行中の実際のハードウェア)</li>
+<li>すべてのプラットフォームで64ビット必須</li>
+<li>利用可能なRAMの少なくとも2 GB(4 GBはバッチ処理のために推奨)</li>
+<li>1 GBの無料ディスクスペース</li>
+</ul>
+<h4>導入事例</h4>
+<p><strong>Windowsの特長</strong></p>
+<ol>
+<li>ダウンロード <code>ATK-Pro-Setup-vx.x.x.exe</code> 公式リリースページより</li>
+<li>インストーラファイルをダブルクリック</li>
+<li>必要に応じて「管理者権限で除外」を選択します。</li>
+<li>ウィザード(次へ → 次へ → インストール)に従ってください</li>
+<li>インストール中に言語選択(20可)が要求されます</li>
+<li>最後に、「ATK-Proを起動」をチェックしてプログラムを開始</li>
+<li>Windowsの防火壁/擁護者からの警報を受け入れて下さい</li>
+</ol>
+<p><strong>Linuxの特長</strong></p>
+<ol>
+<li>ダウンロード <code>ATK-Pro-vx.x.x.deb</code> (Debian/Ubuntu) または <code>.tar.gz</code> リリースページから</li>
+<li><strong>.debのパッケージ:</strong> <code>sudo dpkg -i ATK-Pro-vx.x.x.deb</code> または Nautilus/Files のダブルクリック</li>
+<li><strong>.tar.gz アーカイブ:</strong> 外部からスタート <code>./ATK-Pro</code> 抽出されたフォルダから</li>
+<li>最初の起動時に言語を選択し、ユーザ設定ファイルに保存されます。</li>
+</ol>
+<p><strong>macOSの特長</strong></p>
+<ol>
+<li>ダウンロード <code>ATK-Pro-vx.x.x.dmg</code> リリースページから</li>
+<li>.dmgファイルを開き、ATK-Proをアプリケーションフォルダにドラッグします</li>
+<li>初回起動時:右クリック→[開く](未指定のアプリケーションに必要な)</li>
+<li>最初の起動時に言語を選択し、ユーザ設定ファイルに保存されます。</li>
+</ol>
+<h4>デフォルト位置</h4>
+<p><strong>Windowsの特長</strong></p>
+<ul>
+<li>プログラム: <code>C:\Program Files\ATK-Pro\</code></li>
+<li>ユーザー出力: <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\</code></li>
+<li>入力(任意): <code>C:\Users\[TuoNome]\Documents\ATK-Pro\input\</code></li>
+</ul>
+<p><strong>Linuxの特長</strong></p>
+<ul>
+<li>プログラム: <code>/opt/ATK-Pro/</code> (deb) または抽出されたフォルダー (.tar.gz)</li>
+<li>ユーザー出力: <code>~/Documents/ATK-Pro/output/</code></li>
+<li>入力(任意): <code>~/Documents/ATK-Pro/input/</code></li>
+</ul>
+<p><strong>macOSの特長</strong></p>
+<ul>
+<li>プログラム: <code>/Applications/ATK-Pro.app</code></li>
+<li>ユーザー出力: <code>~/Documents/ATK-Pro/output/</code></li>
+<li>入力(任意): <code>~/Documents/ATK-Pro/input/</code></li>
+</ul>
+<h4>ネットワーク要件</h4>
+<ul>
+<li>安定したインターネット接続(IIIFマニフェストにアクセスするための必須)</li>
+<li>ファイアウォール: アウトバウンド HTTPS 接続を許可 (ポート 443)</li>
+<li>企業プロキシ: ATK-Pro はプロキシの資格情報のための内部メニューを持っていません。 オペレーティングシステムまたはネットワーク環境でプロキシを設定し、HTTPS 接続がポータルに許可されている管理者に確認します。</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. 最初開始および構成</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>スタート</h4>
+<h3>1. デスクトップまたは開始メニューからATK-Proアイコンをクリック</h3>
+<h3>2。 初めての場合、プログラムは自動的にユーザーフォルダを作成します</h3>
+<h4>言語選択</h4>
+<p><strong>利用可能な言語は次のとおりです。</strong></p>
+<ul style="display: flex; flex-direction: column; flex-wrap: wrap; gap: 8px; list-style: none; padding-left: 0;">
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">IT</span>イタリア語(英語): 住民と新しい駐在員の基礎。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EN</span>英語: 米国、カナダ、オーストラリア、イギリス向けのブリッジ言語</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ES</span>Español(スペイン語): それは、アメリカ、フィリピン、スペインのすべてのヒスパニック国をカバーしています(2024-2025の若いイタリアによる優先月)。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">FR</span>Français(ドイツ):フランスとベルギーの歴史的かつ広大なコミュニティのために。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DE</span>ドイツ(ドイツ):ドイツ(900.000のイタリア人住民)、スイス</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PT</span>(ポルトガル語): ブラジル(30万以上の子孫に閉じる)の対象外。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RU</span>有益(ロシア):旧ソ連共和国とバルカンスのコミュニティと子孫をカバーするため。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">AR</span> العربية (Arabo, RTL): 北部アフリカ(エジプト、チュニジア、モロッコ)および湾岸諸国の子孫のために。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NL</span>オランダ:2025年イタリア卒業生の強い成長の拠点であるオランダに拠点を置く。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">HE</span> ホテル(ヘブライ語、RTL): イスラエルのイタリアの重要かつ活発なコミュニティのために。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">JA</span>日本語(Japanese): 日本で滞在する専門家やイタリア人のコミュニティのために</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">SV</span>スウェーデン語(スウェーデン語):スウェーデンは2025年にイタリアの主要スカンジナビアの目的地です。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">ZH</span>中文(簡体) 中国語(簡体)</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">RO</span>ロマニア(ロマニアン):ルーマニアのイタリアの起業家や住民の素晴らしいコミュニティのために。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">EL</span>ギリシャの島と都市の歴史的関係と安定した住民のために。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">PL</span>ポーランド在住のイタリア人(ロディスティック・インダストリアル・ハブ)</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">DA</span>デンマークのイタリア人研究者と創作者のために</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">NO</span>Norsk(Norvegese):油と技術のコミュニティのために。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">TR</span>イスタンブールの歴史的な「Levantini」コミュニティと住民のために(トルコ)。</li>
+<li><span style="background: #f0f0f0; padding: 2px 8px; border-radius: 3px; font-weight: bold;">VI</span>Tiáïng Vietnat(Vietnamita):東南アジアで成長するビジネスコミュニティのために。</li>
+</ul>
+<p>2025年の終わりに利用可能なデータによると、イタリアの子孫の約98%をカバーすることができると推定され、イタリアやイタリアのコミュニティは世界中で散らばる。</p>
+<ul>
+<li>新着情報 <strong>Windows</strong>: インストーラー中に言語が選択され、Windowsレジストリに保存されます</li>
+<li>新着情報 <strong>Linux/macOS</strong>: 最初の起動時に言語を選択し、ユーザ設定ファイルに保存します。</li>
+<li>どちらの場合も各開始時に自動的にロードされます</li>
+<li>メニュー → 設定 → 言語変更</li>
+<li>プログラムは、選択した新しい言語を適用するために再起動が必要です</li>
+</ul>
+<h4>📂 フォルダー構成</h4>
+<p>最初に実行すると、プログラムは次のフォルダーを自動的に作成します。</p>
+<ul>
+<li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\</code></li>
+<li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\doc\</code> (デフォルト文書)</li>
+<li><strong>Windows:</strong> <code>C:\Users\[TuoNome]\Documents\ATK-Pro\output\reg\</code> (デフォルトレジスタ)</li>
+<li><strong>Linux/macOS:</strong> 下記のような <code>~/Documents/ATK-Pro/output/</code></li>
+<li>フォルダ <code>input\</code> アナログ(任意、ファイル入力用)</li>
+</ul>
+<p>暫定フォルダの処理は、ダウンロードされたタイルのために作成されます()<code>tiles_canvas_X/</code>) そして、必要に応じて、PDF、その生成のための一時的なファイル。
             </p>
-            <p>Tutte le cartelle e i file temporanei vengono eliminati automaticamente al termine dell'elaborazione.
+<p>処理終了時に、一時フォルダとファイルが自動的に削除されます。
             </p>
-            <p>Rimangono solo i file finali elaborati (immagini nei formati scelti, PDF, manifest e metadati).
+<p>最終的なファイルのみを処理する(選択した形式、PDF、マニフェスト、メタデータ)。
             </p>
-            <p>Per modificare le cartelle di output usa Menu → Impostazioni → "Seleziona cartelle output". Le scelte vengono memorizzate e ripristinate automaticamente alla sessione successiva.</p>
-            </div>
-            <div class="section-box">
-            <h3>3. INTERFACCIA PRINCIPALE</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>LAYOUT DELLA FINESTRA</h4>
-            <p>La finestra principale di Antenati Toolkit Pro ha una struttura semplice e intuitiva.</p>
-            <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window1.webp" alt="Finestra principale ATK-Pro" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
-            </div>
-            <h4>📝 LEGENDA TESTATA:</h4>
-            <ul>
-                <li>[🔲] Icona del programma (Antenati Toolkit Pro logo)</li>
-                <li>"ATK-Pro" Titolo della finestra</li>
-                <li>[_] Riduci a icona (minimizza la finestra)</li>
-                <li>[□] Espandi/Collassa (massimizza o ripristina la finestra)</li>
-                <li>[✕] Chiudi (termina il programma con banner di supporto)</li>
-            </ul>
-            <!-- Frase sul motto latino spostata in fondo alla descrizione -->
-            <p style="margin-top: 10px; color: #5a3e2b;">
-                In calce è riportato il motto latino “Qui ante nos venerunt, in memoria nostra vivunt”, a ricordare l’importanza delle radici e della memoria collettiva.
+<p>出力フォルダを変更するには、メニュー→設定→「出力フォルダの選択」を使用します。 選択肢は、次のセッションに自動的に保存され、復元されます。</p>
+<h4>PROFILOリソースプロファイル</h4>
+<p>コマンド <strong>設定 → リソースプロファイル</strong> PDFのダウンロード、画像再構築および生成時に使用される並列性を調整します。</p>
+<ul>
+<li><strong>軽量:</strong> 現代のプロセスとメモリピークを制限します。強力なコンピュータや非常に長い処理のために示されています。</li>
+<li><strong>バランス:</strong> ほとんどの場合のために適した速度および安定性間のデフォルト妥協。</li>
+<li><strong>速い:</strong> より多くのリソースを使用して時間を減らします。 十分によくコンピュータでそれを選択します。</li>
+</ul>
+<p>プロファイルは、取得された文書の品質、権利、数量を変更しません。 ポータルの特定のプルーデンシャル制限は、引き続き優先されます。</p>
+</div>
+<div class="section-box">
+<h3>3. 主要なインターフェイス</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>ウィンドウレイアウト</h4>
+<p>Antenati Toolkit Proのメインウィンドウには、シンプルで直感的な構造があります。</p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="主要な窓 ATK-Pro" src="images/window1.webp" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>: テストされた凡例:</h4>
+<ul>
+<li>[🔲] プログラムアイコン(Antenati Toolkit Proロゴ)</li>
+<li>「ATK-Pro」ウィンドウタイトル</li>
+<li>[ ] アイコンに縮小(ウィンドウを最小化)</li>
+<li>D) 拡大/Collassa(最大または復元ウィンドウ)</li>
+<li>[ja] サポートバナーでプログラムを閉じる</li>
+</ul>
+<!-- Frase sul motto latino spostata in fondo alla descrizione -->
+<p style="margin-top: 10px; color: #5a3e2b;">
+                ラティナモットー “Qui ante nos venerunt, 私たちのvivuntのメモリで”, 根と集団的な記憶の重要性を思い出させます.
             </p>
-            <h4>BARRA DEI MENU</h4>
-            <p>Nella parte superiore della finestra, sotto la testata:</p>
-            <p>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[File input]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Output]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Servizi]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Documenti]</span>
-                <span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[Impostazioni]</span>
-            </p>
-            <p>Ogni menu contiene pulsanti e opzioni specifiche (vedi sezione successiva).</p>
-            <h4>MENU DISPONIBILI</h4>
-            <h3>1. FILE INPUT</h3>
-            <p><strong>Gestisce il caricamento dei record IIIF:</strong></p>
-            <pre class="file-structure">├─ Esempio input
+<h4>メニューバー</h4>
+<p>ウィンドウの上部に、頭の下に:</p>
+<p>
+<span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[ファイル入力]</span>
+<span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[出力]</span>
+<span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[サービス]</span>
+<span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[ドキュメント]</span>
+<span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">[設定]</span>
+</p>
+<p>各メニューには、特定のボタンとオプション(次のセクションを参照してください)が含まれています。</p>
+<h4>メニュー</h4>
+<h3>1. ファイル入力</h3>
+<p><strong>IIIFレコードの読み込みを管理します。</strong></p>
+<pre class="file-structure">├─ Esempio input
 │  └─ Visualizza il file di esempio (mostra formato coppie: modalità D/R + URL)
 ├─ Apri input
 │  └─ Seleziona un file .txt con i tuoi record IIIF
@@ -492,18 +500,20 @@
 └─ Modifica input
    └─ Modifica il file input attualmente caricato
       (Aggiungi/rimuovi record, cambia URL, salva modifiche)</pre>
-            <h3>2. OUTPUT</h3>
-            <p><strong>Gestisce elaborazione e output:</strong></p>
-            <pre class="file-structure">├─ Elabora
+<h3>2. 出力</h3>
+<p><strong>処理および出力を管理して下さい:</strong></p>
+<pre class="file-structure">├─ Elabora
 │  └─ Avvia il download, la ricostruzione e il salvataggio delle immagini
 │     (Mostra finestra di progresso in tempo reale)
 ├─ Apri cartella output
 │  └─ Apre in Esplora Risorse la cartella con i file elaborati
 └─ Visualizza elaborazioni precedenti
    └─ Lista dei record già elaborati</pre>
-            <h3>3. SERVIZI</h3>
-            <p><strong>Elenco dei servizi integrati:</strong></p>
-            <pre class="file-structure">├─ Visualizzazione Immagini
+<h3>3. サービス</h3>
+<p><strong>統合サービスの一覧:</strong></p>
+<pre class="file-structure">├─ Ricerca assistita AI
+│  └─ Suggerisce portali, piste di ricerca e query genealogiche da verificare
+├─ Visualizzazione Immagini
 │  └─ Viewer immagini scaricate e/o PDF generati
 ├─ Visualizzazione Metadati JSON
 │  └─ JSON originali e metadati (genealogici, tecnici, EXIF)
@@ -513,16 +523,16 @@
 │  └─ Traduzione automatica testi estratti nelle lingue selezionate
 └─ Esportazione GEDCOM
    └─ GEDCOM, Gramps, Family Tree Maker, Ancestry, MyHeritage, WikiTree, etc.</pre>
-            <h3>4. DOCUMENTI</h3>
-            <p><strong>Accesso a risorse e documentazione:</strong></p>
-            <pre class="file-structure">├─ Disclaimer - Clausole legali e termini d'uso
+<h3>4. 文書</h3>
+<p><strong>リソースとドキュメントへのアクセス:</strong></p>
+<pre class="file-structure">├─ Disclaimer - Clausole legali e termini d'uso
 ├─ Presentazione autore - Background dell'autore del progetto
 ├─ Presentazione progetto - Storia, motivazioni, roadmap di ATK-Pro
-├─ Guida - Questo documento (guida operativa completa)
+├─ Guida - Indice principale della guida modulare
 └─ Informazioni - Versione, copyright, email di contatto</pre>
-            <h3>5. IMPOSTAZIONI</h3>
-            <p><strong>Configurazione generale del programma:</strong></p>
-            <pre class="file-structure">├─ Cambia lingua
+<h3>5. 設定</h3>
+<p><strong>プログラムの一般的な構成:</strong></p>
+<pre class="file-structure">├─ Cambia lingua
 │  └─ Seleziona la lingua dell'interfaccia (richiede riavvio)
 ├─ Seleziona formati immagine
 │  └─ Scegli tra PNG, JPG, TIFF e PDF (almeno 1 obbligatorio)
@@ -539,69 +549,65 @@
 ├─ Importa configurazione
 │  └─ Carica un file di impostazioni precedentemente salvato (ripristina tutte le preferenze e percorsi)
 ├─ Verifica aggiornamenti
-│  └─ Controlla la disponibilità di nuove versioni del programma (funzione in sviluppo)
+│  └─ Controlla la disponibilità di nuove versioni del programma
 └─ Chiudi
     └─ Termina il programma (mostra banner di supporto PayPal.me)</pre>
-            </div>
-            <div class="section-box">
-            <h3>7. LOCALIZZAZIONE MULTILINGUE</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>LINGUE SUPPORTATE</h4>
-            <p>ATK-Pro è disponibile in 20 lingue:</p>
-            <ul style="list-style: none; padding-left: 0;">
-                <li>1. Italiano (IT - Italiano)</li>
-                <li>2. English (EN - Inglese)</li>
-                <li>3. Español (ES - Spagnolo)</li>
-                <li>4. Français (FR - Francese)</li>
-                <li>5. Deutsch (DE - Tedesco)</li>
-                <li>6. Português (PT - Portoghese)</li>
-                <li>7. Русский (RU - Russo)</li>
-                <li>8. العربية (AR - Arabo, RTL)</li>
-                <li>9. Nederlands (NL - Olandese)</li>
-                <li>10. עברית (HE - Ebraico, RTL)</li>
-                <li>11. 日本語 (JA - Giapponese)</li>
-                <li>12. Svenska (SV - Svedese)</li>
-                <li>13. 中文 (ZH - Cinese)</li>
-                <li>14. Română (RO - Rumeno)</li>
-                <li>15. Ελληνικά (EL - Greco)</li>
-                <li>16. Polski (PL - Polacco)</li>
-                <li>17. Dansk (DA - Danese)</li>
-                <li>18. Norsk (NO - Norvegese)</li>
-                <li>19. Türkçe (TR - Turco)</li>
-                <li>20. Tiếng Việt (VI - Vietnamita)</li>
-            </ul>
-            <h4>CAMBIO LINGUA</h4>
-            <p>La lingua può essere cambiata in qualsiasi momento tramite Menu → Impostazioni → Cambia lingua.</p>
-            <p>Il programma richiede un riavvio per applicare la nuova lingua.</p>
-            <p>Al riavvio, il programma carica automaticamente la nuova lingua selezionata.</p>
-            <h4>TESTI LOCALIZZATI</h4>
-            <p>Con il cambio lingua vengono tradotti:</p>
-            <ul>
-                <li>Menu e pulsanti</li>
-                <li>Messaggi di avanzamento</li>
-                <li>Dialoghi di errore/avviso</li>
-                <li>Documenti nel menu Documenti</li>
-            </ul>
-            <h4>NOTA SU FONT E LAYOUT</h4>
-            <ul>
-                <li>Lingue RTL (Arabo, Ebreo) cambiano layout (menu/controlli allineati a destra)</li>
-                <li>Font UTF-8 multi-lingue garantisce corretta visualizzazione</li>
-                <li>Se vedi caratteri corrotti su Windows, aggiorna a Windows 10+ (issue rara)</li>
-            </ul>
-            </div>
-            
-        
-                </div>
-        
-    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_02_operazioni_base.html" class="nav-button">Mod.02 &mdash; Operazioni di Base &#8594;</a>
-        </div>
+</div>
+<div class="section-box">
+<h3>4. 多言語ローカリゼーション</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>対応言語</h4>
+<p>ATK-Proは20の言語で利用できます:</p>
+<ul style="list-style: none; padding-left: 0;">
+<li>1. イタリア(IT)</li>
+<li>2. 英語(EN)</li>
+<li>3. スペイン語(ES)</li>
+<li>4. Français (FR - フランス語)</li>
+<li>5。 ドイツ(DE - ドイツ)</li>
+<li>6. 能力(PT - ポルトガル語)</li>
+<li>7. Руский (RU - ロシア)</li>
+<li>8. العربية (AR - アラビア語、RTL)</li>
+<li>9. オランダ(NL)</li>
+<li>10.ホテル(HE - Hebrew, RTL)</li>
+<li>11. 日本語 (JA)</li>
+<li>12。 (SV - スウェーデン)</li>
+<li>中国語(簡体)</li>
+<li>14. Românaya (RO - ルーマニア語)</li>
+<li>15. Eλληνικκκκκκ(EL - ギリシャ)</li>
+<li>16 米ドル (PL - ポーランド)</li>
+<li>17.デンマーク (DA - デンマーク)</li>
+<li>18. ノルスク (NO - ノルウェー)</li>
+<li>19. (TR - トルコ語)</li>
+<li>20. Tiáong Vietets(ベトナム - ベトナム)</li>
+</ul>
+<h4>言語変更</h4>
+<p>メニュー → 設定 → 変更言語でいつでも言語を変更できます。</p>
+<p>プログラムは新しい言語を適用するために再起動が必要です。</p>
+<p>再起動すると、選択した言語が自動的に読み込まれます。</p>
+<h4>ローカライズされたテキスト</h4>
+<p>言語変更は翻訳されます。</p>
+<ul>
+<li>メニューとボタン</li>
+<li>進捗メッセージ</li>
+<li>エラー/ノートダイアログ</li>
+<li>ドキュメントメニューのドキュメント</li>
+</ul>
+<h4>フォントとレイアウトに注意</h4>
+<ul>
+<li>RTL 言語(Arabo、ヘブライ語) 変更のレイアウト(右揃えのメニュー/コントロール)</li>
+<li>複数の言語フォントUTF-8は正しい表示を保障します</li>
+<li>Windowsで破損した文字が表示された場合、Windows 10+(Rareissue)にアップグレードしてください。</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida.html">e メインインデックス</a>
+<a class="nav-button" href="guida_02_operazioni_base.html">Mod.02 — ベース操作 →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
 
-    <footer style="text-align: center;">
-            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-        </footer>
-    </div>
-    </div>
+
 </body>
 </html>
