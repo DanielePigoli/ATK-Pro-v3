@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 03: Visualizzazione Immagini</title>
-    <meta name="description" content="ATK-Pro — Visualizzazione Immagini">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 模块 03：AI 辅助研究</title>
+<meta content="ATK-Pro — AI 辅助研究" name="description"/>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -13,14 +14,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -31,7 +32,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -41,12 +42,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -55,21 +56,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 3px solid #a67c52;
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -78,13 +79,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -97,12 +98,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             border: 2px solid #a67c52;
@@ -111,33 +112,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -145,39 +146,39 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +186,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +194,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +216,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +231,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +240,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +263,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             border: 1px solid #a67c52;
             padding: 12px 8px;
@@ -271,7 +272,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +282,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             border: 2px solid #a67c52;
@@ -297,15 +298,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -326,84 +327,92 @@
 </head>
 <body>
 <div class="container">
-    <header>
-        <h1>📚 Modulo 03: Visualizzazione Immagini</h1>
-    </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_02_operazioni_base.html" class="nav-button">⬅️ Mod.02 — Operazioni di Base</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_04_visualizzazione_metadati.html" class="nav-button">Mod.04 — Visualizzazione Metadati JSON ➡️</a>
-        </div>
-
-    <div class="section">
-        <h2>&#128204; Panoramica</h2>
-        <p>Il <strong>Viewer Immagini</strong> di ATK-Pro &egrave; un visualizzatore integrato per l&apos;analisi di documenti genealogici digitalizzati. Si apre attraverso il menu <em>Strumenti</em> dell&apos;applicazione principale. Supporta JPEG, PNG e TIFF (inclusi file multi-pagina).</p>
-    </div>
-
-    <div class="section">
-        <h2>&#128194; Formati Supportati</h2>
-        <div class="section-box">
-            <table>
-                <thead><tr><th>Formato</th><th>Estensione</th><th>Note</th></tr></thead>
-                <tbody>
-                    <tr><td><strong>JPEG</strong></td><td>.jpg, .jpeg</td><td>Supporto completo</td></tr>
-                    <tr><td><strong>PNG</strong></td><td>.png</td><td>Supporto completo</td></tr>
-                    <tr><td><strong>TIFF</strong></td><td>.tif, .tiff</td><td>Supporto multi-pagina con navigazione dedicata</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>&#128421;&#65039; Interfaccia e Controlli</h2>
-        <div class="section-box">
-            <h3>&#128269; Zoom</h3>
-            <ul>
-                <li><strong>Rotella del mouse</strong>: Zoom incrementale (passo 15%) centrato sul cursore</li>
-                <li><strong>Pulsante &ldquo; + &rdquo;</strong>: Zoom avanti del 15%</li>
-                <li><strong>Pulsante &ldquo; &minus; &rdquo;</strong>: Zoom indietro del 15%</li>
-                <li><strong>Pulsante &ldquo;Adatta alla finestra&rdquo;</strong>: Ridimensiona l&apos;immagine per occupare l&apos;area disponibile (proporzionalmente)</li>
-                <li><strong>Pulsante &ldquo;1:1&rdquo;</strong>: Visualizzazione a risoluzione nativa (un pixel immagine = un pixel schermo)</li>
-            </ul>
-            <p style="margin-top:0.8rem;">Il livello di zoom corrente &egrave; sempre visibile nell&apos;indicatore percentuale tra i pulsanti + e &minus;. Il range va dal 5% all&apos;800%.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>&#9995;&#65039; Pan (Spostamento)</h3>
-            <p><strong>Click e trascinamento</strong>: Tieni premuto il tasto sinistro del mouse e trascina per spostare l&apos;immagine. Il cursore cambia in mano chiusa durante il trascinamento e in mano aperta al passaggio sull&apos;area dell&apos;immagine.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>&#128197; TIFF Multi-Pagina</h3>
-            <p>Per i file TIFF contenenti pi&ugrave; fotogrammi, compare una barra di navigazione aggiuntiva nella toolbar:</p>
-            <ul>
-                <li><strong>Campo numerico (spinbox)</strong>: Inserisci il numero della pagina desiderata; il viewer carica immediatamente il fotogramma corrispondente</li>
-                <li><strong>Indicatore &ldquo;/ N&rdquo;</strong>: Mostra il numero totale di pagine accanto al campo numerico</li>
-            </ul>
-            <p style="margin-top:0.8rem;"><em>Nota:</em> I registri del Portale Antenati sono spesso distribuiti come TIFF multi-pagina; ogni fotogramma corrisponde a una pagina del registro.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>&#128203; Pannello Metadati Sidecar (Pannello Destro)</h3>
-            <p>Se nella stessa cartella dell&apos;immagine esiste un file JSON con lo stesso nome base (es. <code>documento.jpg</code> &rarr; cerca <code>documento.json</code>), il pannello destro visualizza i metadati in forma di tabella.</p>
-            <ul>
-                <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello destro per ampliare l&apos;area di visualizzazione dell&apos;immagine</li>
-                <li><strong>Pulsante &ldquo;&#9658; Mostra metadati&rdquo;</strong>: Ripristina il pannello metadati</li>
-            </ul>
-            <p style="margin-top:0.8rem;">Se non viene trovato alcun sidecar JSON, il pannello destro mostra <em>&ldquo;Nessun sidecar JSON trovato&rdquo;</em>.</p>
-        </div>
-    </div>
-
-     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_02_operazioni_base.html" class="nav-button">⬅️ Mod.02 — Operazioni di Base</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_04_visualizzazione_metadati.html" class="nav-button">Mod.04 — Visualizzazione Metadati JSON ➡️</a>
-        </div>
-
-    <footer>
-        <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-    </footer>
+<header>
+<h1>📚 模块 03：AI 辅助研究</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_02_operazioni_base.html">← Mod.02 — 基本操作</a>
+<a class="nav-button" href="guida.html">🏠 主索引</a>
+<a class="nav-button" href="guida_04_visualizzazione_immagini.html">Mod.04 — 图像查看 →</a>
+</div>
+<div class="section">
+<h2>全景概览</h2>
+<p>职能 <strong>协助研究</strong> 帮助将基因问题转换成更整齐的工作轨道:它建议门户,搜索轨道,过滤器和样本查询手动尝试现有来源.</p>
+<p>从菜单打开 <strong>服务 - &gt; 协助研究</strong>它不下载文件,也不取代门户的直接咨询:它产生业务指示,用于检查、引用和使用档案判断。</p>
+</div>
+<div class="section">
+<h2>何时使用</h2>
+<div class="section-box">
+<ul>
+<li>当您从姓氏、地点和时期开始,但您不知道哪些档案或门户需要先检查。</li>
+<li>当你想建立对多个国家的搜索,例如意大利移民到美国,欧洲或大洋洲.</li>
+<li>当想要获得样本查询和过滤器以复制到机构门户网站时.</li>
+<li>当您需要比较生育,洗礼,婚姻,死亡,杠杆,移民或公民身份的替代策略时.</li>
+</ul>
+</div>
+<div class="warning">
+<p><strong>说明:</strong> 人工智能模型产生的结果是工作假设。 它们必须始终通过官方渠道加以核实,不构成家族证据。</p>
+</div>
+</div>
+<div class="section">
+<h2>主要领域</h2>
+<div class="section-box">
+<h3>搜索查询</h3>
+<p>输入来源的主题、地点、周期和类型。 一个有用的例子是: <code>Rossi, Bianchi a Firenze e Prato 1850-1900, battesimi e matrimoni</code>.</p>
+<p>请求越是具体,说明的可用性就越大:避免过于笼统的短语,并总是表示任何迁移,姓氏的变体或相关的历史区域.</p>
+</div>
+<div class="section-box">
+<h3>AI 供应商和可选模式</h3>
+<p>提供者菜单允许您在应用程序中配置的两者之间选择使用 AI 服务 。 可选的模型字段只有在您想要指定被选中的提供者支持的特定模型时才会服务;否则它可以保持空.</p>
+</div>
+<div class="section-box">
+<h3>标准提示</h3>
+<p>该功能包括四个预定义的音轨:</p>
+<ul>
+<li><strong>详细常规搜索</strong>第一次大范围侦察</li>
+<li><strong>详细国际策略</strong>用于意大利境外的迁徙路线和研究。</li>
+<li><strong>特定记录详细搜索</strong>当你寻找一个特定的行为。</li>
+<li><strong>带筛选器的高级搜索</strong>,当您想要获得更结构化的过滤器,变体和查询。</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>多供应商</h3>
+<p>选项 <strong>使用所有可用提供商处理（多提供商）</strong> 默认激活。 如果金库内有多个密钥,ATK-Pro可以质疑多个提供者,比较结果. 如果您想要将自己限制在选定的提供者范围内, 可以禁用它 。</p>
+</div>
+</div>
+<div class="section">
+<h2>个人笔记</h2>
+<p>Note 一节允许您保存反复出现的指令以添加到您的请求中:例如姓氏的变体,历史边界,已知的教区,已经检查过的档案或标准被排除在外.</p>
+<p>可以创建新音符,保存,称为列表或删除. 所选的音符被添加到发送到AI提供者的最终提示中.</p>
+</div>
+<div class="section">
+<h2>e 结果和救援</h2>
+<div class="section-box">
+<p>新闻 <strong>建议门户和查询</strong> 开始处理。 在工作期间,窗口显示提供者的地位和所使用的密钥槽。</p>
+<p>结果可以按门户,动机,实例查询,时间段,行为类型或过滤器/战略分类. 生成后,您可以保存 Markdown 格式 (.md) 或 简单文本 (.txt) 或 HTML 格式 (.html) 的输出,并带有按钮 <strong>保存 AI 结果</strong> 和 <strong>保存 HTML 结果</strong>.</p>
+</div>
+</div>
+<div class="section">
+<h2>🔑 密钥保险库</h2>
+<p>按钮 <strong>管理密钥库（CSV）</strong> 为配置的提供者打开密钥管理。 搜索函数仅使用一个有效的密钥或兼容本地配置的提供者.</p>
+</div>
+<div class="section">
+<h2>i 业务限制</h2>
+<ul>
+<li>该功能不会绕过登录,付费墙,技术限制或门户的使用条件.</li>
+<li>提案必须先在官方门户网站上检查,然后才能进行有文件记载的研究。</li>
+<li>AI供应商和模型的可用性会随时间而变化.</li>
+<li>对于敏感研究，请始终记录实际查阅的来源，而不仅仅是 AI 建议。</li>
+</ul>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_02_operazioni_base.html">← Mod.02 — 基本操作</a>
+<a class="nav-button" href="guida.html">🏠 主索引</a>
+<a class="nav-button" href="guida_04_visualizzazione_immagini.html">Mod.04 — 图像查看 →</a>
+</div>
+<footer>
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
 </div>
 </body>
 </html>

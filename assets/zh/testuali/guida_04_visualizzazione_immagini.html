@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 模块 04：图像查看</title>
+<meta content="ATK-Pro — 图像查看" name="description"/>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 模块 04：图像查看</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">← Mod.03 — AI 辅助研究</a>
+<a class="nav-button" href="guida.html">🏠 主索引</a>
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">Mod.05 — 查看 JSON 元数据 →</a>
+</div>
+<div class="section">
+<h2>全景概览</h2>
+<p>那个 <strong>图像查看器</strong> ATK-Pro是分析数字化基因文件的综合工具. 通过菜单打开 <em>服务 – 图像视图</em> 主要应用程序。 支持 JPEG, PNG和 TIFF(包括多页文件).</p>
+</div>
+<div class="section">
+<h2>i 支持的格式</h2>
+<div class="section-box">
+<table>
+<thead><tr><th>格式</th><th>延长</th><th>页:1</th></tr></thead>
+<tbody>
+<tr><td><strong>JPEG</strong></td><td>.jpg, .jpeg</td><td>全力支持</td></tr>
+<tr><td><strong>PNG</strong></td><td>.png</td><td>全力支持</td></tr>
+<tr><td><strong>TIFF</strong></td><td>.tif, .tiff</td><td>专用导航多页支持</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section">
+<h2>e 接口和控制</h2>
+<div class="section-box">
+<h3>缩放</h3>
+<ul>
+<li><strong>老鼠罗特拉</strong>: 15% 级递增缩放</li>
+<li><strong>按钮“ + ”</strong>: 缩小15%</li>
+<li><strong>按钮“ - ”</strong>: 缩小15%</li>
+<li><strong>“上到窗口”按钮</strong>: 修改图像大小以占用可用的区域( 比例)</li>
+<li><strong>“1:1”按钮</strong>: 原生分辨率显示( 图像像素 = 屏幕像素)</li>
+</ul>
+<p style="margin-top:0.8rem;">当前缩放水平总是在 + 和 - 按钮之间的百分比指标中可见. 范围从5%到800%。</p>
+</div>
+<div class="section-box">
+<h3>) 潘(设定)</h3>
+<p><strong>单击并拖曳</strong>:按鼠标左键并拖动以移动图像。 滑动器在拖曳时会改变闭合的手,在手部会打开图像区域的通道.</p>
+</div>
+<div class="section-box">
+<h3>TIFF 多页</h3>
+<p>对于包含多个框架的TIFF文件,工具栏中会出现一个额外的导航栏:</p>
+<ul>
+<li><strong>数字字段( 平盒)</strong>: 输入想要的页码; 查看器立即上传相应的帧</li>
+<li><strong>指标“/N”</strong>: 显示数字字段旁边的页面总数</li>
+</ul>
+<p style="margin-top:0.8rem;"><em>说明:</em> TIFF文件的每个框架都作为单独的一页管理.</p>
+</div>
+<div class="section-box">
+<h3>侧车元数据面板(右面板)</h3>
+<p>如果在图像的同一文件夹中有一个JSON文件,其基本名称相同(例如. <code>documento.jpg</code> • 搜索 <code>documento.json</code>),右面板以表格的形式显示元数据。</p>
+<ul>
+<li><strong>“ 隐藏元数据” 按钮</strong>: 隐藏右面板以扩展图像显示区域</li>
+<li><strong>“ 显示元数据” 按钮</strong>: 恢复元数据面板</li>
+</ul>
+<p style="margin-top:0.8rem;">如果找不到 JSON 侧车, 右面板显示 <em>“没有发现JSON号侧车”</em>。如果文件存在但无法读取,则面板报告元数据读取错误。</p>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">← Mod.03 — AI 辅助研究</a>
+<a class="nav-button" href="guida.html">🏠 主索引</a>
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">Mod.05 — 查看 JSON 元数据 →</a>
+</div>
+<footer>
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>
