@@ -1,23 +1,131 @@
-📋 Yasal Uyarı
-Antenati Toolkit Pro
+ALE LEGAL DISCLAIMER
+Toolkit Pro
 
-ATK-Pro – Antenati Toolkit Pro
-Yasal uyarı ve etik kullanım taahhüdü
+ATK-Pro – Antenter Toolkit Pro
+Yasal Uyarıcı, Kullanım Şartları ve Etik Tebliğ
 
-ATK-Pro projesi arşiv, soyağacı ve danışma amaçları için tasarlanmıştır.
-Tüm içerikler, aksi belirtilmedikçe, Creative Commons BY-NC-SA 4.0 lisansı altında dağıtılır.
-Doğrudan ticari kullanım, kaynak belirtmeden yeniden dağıtım veya orijinal içeriğin izlenmeyen değişikliği yasaktır.
-ATK-Pro, Antenati Portalı'ndan (antenati.cultura.gov.it) herhangi bir içerik yeniden dağıtmaz ve arayüzünü, yapısını veya organizasyonunu çoğaltmayı amaçlamaz.
-ATK-Pro'yu kuran veya kullanan herkes, Kültür Bakanlığı tarafından belirlenen yasal bildirimlere ve kullanım şartlarına tam olarak uymayı kabul eder; bunlar aşağıdaki adreste mevcuttur:
+1. PROJENİN NİTELİĞİ VE AMAÇLARI
+
+ATK-Pro, arkeolog, belgesel, çalışma ve danışmanlık amaçları için bağımsız olarak geliştirilmiş bir yazılımdır.
+
+Yazılım, Antenati Portal ve diğer arşiv portalları veya teknik olarak desteklenen belgeseller aracılığıyla kullanıcıya yasal olarak erişilebilir kaynakların erişim ve yerel işlenmesini kolaylaştırır.
+
+ATK-Pro, Kültür Bakanlığı'nın, Devlet Arşivlerinin veya desteklenen diğer örgütlerin ve portalların resmi bir hizmeti değildir. Referansların varlığı, üçüncü taraf hizmetleri ile ilgili bağlantılar veya işlevleri, içeriklerini yeniden kullanmak için bağlılık, onay, sponsorluk veya genel izin anlamına gelmez.
+
+2. KAYNAK KODU LİSANSI
+
+ATK-Pro'in orijinal kaynağı kodu, dosyaları veya porsiyonlar hariç, üçüncü taraf bileşenleri olarak ifade edilir, GNU Affero General Public Lisans, sürüm 3 veya daha sonraki sürüme göre dağıtılır.
+
+dağıtılan sürüme ait kaynak kodu resmi proje havuzunda mevcuttur. Kaynak erişim modları ve bir lisans kopyası sürüm eserlere eşlik eder.
+
+Kod lisansı LICENSE dosyasında belirtilmiştir.
+
+3. BELGELENDİRME LİSANSI
+
+Rehberler, sunumlar ve editör içeriği dahil olmak üzere orijinal belgeler, Creative Commons Attribution-NonShare-ShareAlike 4.0 International (CC BY-NC-SA 4.0) olarak dağıtılır.
+
+Belge lisansı LICENSE-DOCUMENT dosyasında belirtilmiştir.
+
+4. AD, LOGO VE AYIRT EDİCİ UNSURLAR
+
+“ATK-Pro”, logo ve grafik kimliğinin ayırt edici unsurları, tür ürünlerin yaratılması veya tanıtımı için lisanslı değildir ve sahibine ayrılmıştır.
+
+Sadece tanımlayıcı kullanımları orijinal projeyi tanımlamak için izin verilir, uyumluluk gösterir veya alıntı yükümlülükleri yerine getirir.
+
+İlgili koşullar, ECOMARKS dosyasında belirtilmiştir.
+
+5. ÜÇÜNCÜ TARAF BİLEŞENLERİ
+
+Yazılım bağımlılıkları, fontlar ve diğer üçüncü taraf bileşenleri, ilgili lisanslarını, telif hakları uyarılarını ve THIRD-PARTY-NOTICES dosyasınında belirtilen ek koşulları korur.
+
+ATK-Pro'in orijinal koduna ve belgelerine atanan lisanslar, üçüncü parti bileşenlerinin lisanslarını değiştirmiyor.
+
+6. HARİCİ KAYNAKLAR VE PORTALLAR
+
+ATK-Pro, Antennaate Portal veya diğer dış portallardan gelen dokümanları, görüntüler, metadata veya diğer kaynakları dağıtmaz.
+
+Bu kaynaklar, ilgili sahipleri tarafından kurulan haklar, lisanslar, erişim koşulları ve yeniden kullanım kurallarına tabidir.
+
+Kullanıcı, bireysel kaynağa uygulanabilir koşulları kontrol etmek ve Anten Portalı ile ilgili olarak, aynı zamanda yayınlanan yasal notlara da danışmak gerekir:
+
 https://antenati.cultura.gov.it/note-legali/
-Danışma düğümünde yer alan belgeler resmi bir kaynak değildir ve herhangi bir onaylayıcı veya yasal değere sahip değildir.
-Projede geliştirilen arayüz ve araçlar, soyağacı kullanıcılarının yerel ortamlarda bağımsız danışmasını kolaylaştırmak için tasarlanmıştır; harici hizmetlerle bağlantı veya destek olmadan.
-Kamu kurumlarına, arşivlere veya tarihi belgelere yapılan herhangi bir atıf yalnızca çalışma, analiz ve bağlam amaçlıdır.
-ATK-Pro yapısında bulunan her dosya (.txt, .md, .html veya .pdf formatında) beyan, arşiv veya gösterim amacıyla hazırlanmıştır.
-Dizin yapıları, operasyonel komut dosyaları ve soyağacı notları prototip olarak sunulmakta olup, işlevsellik veya harici doğrulama garantisi yoktur.
-Proje yazarı, dahil edilen belgelerin ve araçların yanlış kullanımı, yanlış yorumlanması veya izinsiz değiştirilmesinden sorumlu değildir.
-Danışma düğümü, yalnızca çalışma amaçlı ve kamuya açık veya sistematik dağıtım için değil, sınırlı dolaşıma sahip bir arşiv olarak anlaşılmalıdır.
-Bu bildirim, projenin dokümantasyon mimarisinin ayrılmaz bir parçasıdır.
+
+Teknik olarak desteklenen bir portalın göstergesidir, kaynakları üzerinde yapılan herhangi bir işlemin meşruiyeti hakkında bir açıklama oluşturmaz.
+
+7. KAYNAKLARIN KULLANIM ŞEKLİ
+
+ATK-Pro hedefli ve zamanında operasyonlar için tasarlanmıştır, tek belgeye, tek depolama ünitesine veya kullanıcıya meşru olarak erişilebilir olan bireysel kayıta atıfta bulunur.
+
+Yazılım, tüm koleksiyonların sistematik indirilmesi veya kimlik doğrulamalarının, aboneliklerin, geçici geçişlerin, ücretli engellerin, kuponların, teknik koruma önlemleri veya portal yöneticileri tarafından belirlenen kısıtlamalar için amaçlanmamıştır.
+
+ATK-Pro, teknik olarak erişilebilir bir kaynağın da özgürce indirilebilir, kopyalanabilir veya yeniden dağıtılabilir olduğunu garanti etmez.
+
+Kaynakları seçmek, operasyonları genişletmek ve telif hakkı hükümleri dahil olmak üzere geçerli mevzuata uymak, kişisel verileriniz, gizliliğinizi korumak, kullanılan hizmetlerin arşivlerine ve sözleşme koşullarına erişmekten sorumlusunuz.
+
+8. YAPAY ZEKÂ İŞLEVLERİ VE UZAK HİZMETLER
+
+Yapay zeka tarafından yardımcı olan herhangi bir transkript, tanıma, çeviri veya analiz işlevleri yalnızca kullanıcı tarafından aktive edilir.
+
+Uzak bir sağlayıcı seçildiğinde, görüntüler, metinler, talimatlar veya metadata dahil olmak üzere operasyon için gerekli olan veriler seçilmiş sağlayıcının sistemlerine aktarılabilir. İşlem, bu tedarikçi tarafından sağlanan sözleşme koşulları ve gizlilik bilgilerine uygun olarak gerçekleşir.
+
+ATK-Pro, uzak servislerden veri depolama, işleme veya kullanımı kontrol etmez. göndermeden önce, kullanıcı materyalin yasal olarak aktarılabileceğini ve kişisel verileri, gizli veya aksi takdirde seçilmiş hizmetle uyumlu olarak korunamayacağını doğrulamalıdır.
+
+API anahtarları ve dış tedarikçiler tarafından uygulanan herhangi bir masraf sizin sorumluluğunuz altında kalır. ATK-Pro, üçüncü taraf modellerinin ve hizmetlerinin sürekliliği, fiyatları, performansı veya permanence garanti etmez.
+
+9. SONUÇLARIN GÜVENİLİRLİĞİ
+
+Transcripts, çeviriler, genalojik veriler, metadata ve diğer yazılım destekli veya yeniden işbirliği sonuçları hataları içerebilir, omissions, inaccurate yorumlar veya kontrol edilemez bilgiler.
+
+Özellikle, OCR veya yapay zeka tarafından üretilen sonuçlar, orijinal kaynakların danışmanlığı için gerçek kopyalar, sertifikalar, profesyonel fikirler veya yedekler olarak düşünülmemelidir.
+
+Orijinal belge ve herhangi bir resmi kaynakla karşılaştırarak önemli bir sonucu doğrulamanız gerekir.
+
+10. VERİLERİN SAKLANMASI VE GÜVENLİK
+
+Belgeleri, transkriptleri, konfigürasyonları, erişim anahtarlarını ve yazılım aracılığıyla işlenmiş diğer verileri depolamaktan sorumlusunuz.
+
+İlgili işlemleri yapmadan önce, ayrı güvenlik kopyaları hazırlanmalıdır. Yazar silinmiş, yazılı, hasarlı, eksik veya yanlış kurtarılmış verilerin kurtarılmasını garanti etmez.
+
+API kimlik ve anahtarlarınızı korumalı ve onları dosyaları, tanı girişleri veya güvenli olmayan kanallarla paylaşmamalısınız.
+
+11. GARANTİLERİN BULUNMAMASI
+
+Geçerli yasa tarafından izin verilen sınırlar içinde, ATK-Pro, kodu ve belgeleri “bildikleri gibi” ve “bilinçsiz veya ima edilen garantiler olmadan” sağlanır.
+
+Başka şeyler arasında, hataların yokluğu, tüm sistemlerle uyumluluk, portalların ve dış hizmetlerin kalıcı kullanılabilirliği, belirli bir amaç için uygunluk veya verilerin korunması.
+
+Geçerli lisanslarda verilen garanti istisnaları geçerli kalacaktır ve bu feragatname tarafından değiştirilmeyecektir.
+
+12. SORUMLULUĞUN SINIRLANDIRILMASI
+
+Geçerli yasa tarafından izin verilen sınırlar içinde, yazar ve herhangi bir işbirlikçi, yüklemeden kaynaklanan zararlara, maliyetlere veya sonuçlara, ATK-Pro'i kullanmaya karar vermez.
+
+Bu, örneğin, verilerin kaybı veya modifikasyonu, yanlış sonuçlar, portalların veya dış hizmetlerin yetersizliği, API veya bağlantılarla ilgili maliyetler, gerekli izinler olmadan yapılan kaynakların ihlali.
+
+Bu feragatçi dışlama veya uygulanabilir yasa altında dışlanamaz veya sınırlı olmayabilir.
+
+13. KULLANICININ SORUMLULUĞU
+
+ATK-Pro'i kurmak veya kullanarak, bunu beyan ediyorsunuz:
+
+- Yazılım teknik bir araçtır ve üçüncü taraf kaynakları indirmek veya yeniden kullanmak için bir yetki değildir;
+- Her kaynağa uygulanacak hakları ve koşullarını doğrulamalı;
+- üretilen sonuçların güvenilirliğini kontrol etmelidir;
+- kişisel verileri, kimlik bilgilerini ve anahtarlarını korumalı API;
+- yazılımı kanun ve diğerlerinin haklarına uygun olarak kullanmalıdır;
+- gerçekleştirmeye karar verdiği işlemlerden sorumlu kalır.
+
+14. ÜCRETSİZ KULLANIM VE BAĞIŞLAR
+
+ATK-Pro ücretsiz olarak dağıtılır.
+
+Herhangi bir bağış sadece gönüllüdür, bir lisans, hizmet veya ek özelliklere erişim ve herhangi bir şekilde yazılımın kurulumunu veya kullanımını etkilemez.
+
+15. LİSANSLARIN VE UYGULANACAK HUKUKUN ÖNCELİĞİ
+
+Bu feragatçi bilginizi birleştirir, ancak kod, belge veya üçüncü parti bileşenleri için geçerli olan lisans koşullarını değiştirmez.
+
+Aksine, ilgili lisansın metni ve geçerli kanunun sorgulanabilir hükümleri geçerli.
 
 © 2026 Antenati Toolkit Pro
 antenati.toolkit.pro@gmail.com

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Modül 06: Gelişmiş OCR</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Modül 06: Gelişmiş OCR</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">← Mod.05 – Metadata JSON</a>
+<a class="nav-button" href="guida.html">e Main index</a>
+<a class="nav-button" href="guida_07_traduzione.html">Mod.07 - Çeviri →</a>
+</div>
+<div class="section">
+<h2>Panoramica Genel Bakış</h2>
+<p>Modül <strong>Gelişmiş OCR (Diplomatik Transkripsiyon)</strong> Görüntülerden ve belgelerinden alıntılar PDF Multimodal modellerinden, özel OCR modelleri ve HTR hizmetleri aracılığıyla. Özellikle tarihsel belgeler için tasarlanmıştır: makaleler, notary eylemler, parish kayıtları, 19. yüzyılda İtalyan, Latince veya lehçe.</p>
+<p>Geleneksel OCR motorlarının aksine (Tesseract, vs.), modül belge bağlamında büyüyü yorumlayabilir ve tekrarlanan kısaltmalar ve formülleri tanıyabilir. TEI-P5 çıktı, kanal çizgilerini temsil eder ve tanındığında sayfa kırılır, genişletilir ve kullanılamaz adımlar; orijinal grafik düzeni tamamen yeniden üretmiyor.</p>
+<p>Ana uygulamadaki <em>Hizmetler → Gelişmiş OCR</em> menüsünden açılır.</p>
+</div>
+<div class="section">
+<h2>🖥️ Arayüz — adım adım kılavuz</h2>
+<div class="section-box">
+<h3>Dei Step 1 - Dosya seçimi</h3>
+<p>Şuna tıklayın <strong>Dosyayı seçin (images/PDF)</strong> Seçiciyi açmak için. Bir seferde birden fazla dosyayı seçebilirsiniz, tutarken <kbd>Ctrl</kbd> veya <kbd>Shift</kbd>.</p>
+<p><strong>Kabul edilen formatlar:</strong></p>
+<ul>
+<li><strong>Fotoğraflar</strong>: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tiff</code>, <code>.tif</code></li>
+<li><strong>PDF</strong>Herhangi bir PDF belgesi (scanded veya yerli)</li>
+</ul>
+<p style="margin-top:0.8rem;">Seçilmiş dosyaların sayısı etiketin yanında gösterilir. Her dosya ayrı işlenir ve çıktı dosyalarını üretir.</p>
+</div>
+<div class="section-box">
+<h3>🤖 Adım 2 — Yapay zekâ sağlayıcısını ve API anahtarını seçme</h3>
+<p>Kaldır menüdeki sağlayıcısı seçin <strong>“IA Provider'ı seçin”</strong>:</p>
+<table>
+<thead><tr><th>Sağlayıcı</th><th>Hizmet Türü</th><th>Credentials</th><th>İşletim notları</th></tr></thead>
+<tbody>
+<tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Uzak hizmetler</td><td>API sağlayıcı anahtarı</td><td>Modeller ve kullanılabilirlik, sağlayıcının hesap ve mevcut koşullarına bağlıdır.</td></tr>
+<tr><td><strong>Mistral, Groq, xAI</strong></td><td>Uyumlu uzaktan uç noktaları</td><td>API sağlayıcı anahtarı</td><td>Görüntüleri işlemek için bir şablon seçin; tüm metin modelleri OCR görselini desteklemez.</td></tr>
+<tr><td><strong>DeepSeek</strong></td><td>Uzak uç noktası sadece mevcut konfigürasyonda metin</td><td>API sağlayıcı anahtarı</td><td>Son nokta ve görüntü uyumlu modeli yapılandırıncaya kadar görsel OCR için uygun değildir.</td></tr>
+<tr><td><strong>HuggingFace</strong></td><td>Uzak API Inference</td><td>Hediye HuggingFace</td><td>Uyumluluk ve sonuçlar yapısal modele bağlıdır.</td></tr>
+<tr><td><strong>Transkribus</strong></td><td>Uzak HTR hizmeti</td><td><code>email:password</code> or Bearer token</td><td>Bir hesap ve en azından mevcut bir koleksiyon gerektirir.</td></tr>
+<tr><td><strong>Ollama</strong></td><td>Yerel servis</td><td>API uzaktan anahtar</td><td>Aktif Ollama ve yerel olarak yüklenen uyumlu bir görsel model gerektirir.</td></tr>
+</tbody>
+</table>
+<p style="margin-top:0.8rem;">Kamp kampı <strong>"Override Model (optional)"</strong> varsayılan modeli değiştirmesine izin verir. Sadece modelin tam tanımlayıcısını ve görsel uyumluluğunu biliyorsanız kullanın. Gemini için bu alan gösterilmez.</p>
+<p>Özel alanda kimlikleri ekleyebilir veya açın <strong>Kasa</strong>. IA anahtarları, CSV min <code>api_keys.csv</code>: Bu, işletim sisteminin korumalı anahtarı değildir. Kullanıcı profili koruması, güvenlik kopyaları ve anahtar geri dönüş sizin sorumluluğunuzdadır.</p>
+</div>
+<div class="section-box">
+<h3>di Step 3 - Çıkış formatları</h3>
+<p>Bir veya daha fazla çıkış formatlarını seçin (tüm üçü varsayılan olarak seçilir):</p>
+<ul>
+<li><strong>Düz metin (.txt)</strong>: Flat transcription, maksimum uyumluluk. Daha sonra işleme için ideal (transduction, indexing).</li>
+<li><strong>Word belgesi (.docx)</strong>Ders formatı, Microsoft Word veya LibreOffice ile düzenlenebilir.</li>
+<li><strong>XML TEI (.xml)</strong>: TEI-P5 formatı, transkript, satırlar ve işaretleyiciler sayfalar, genişlemeler ve hazırlanabilir metin için tanınan.</li>
+</ul>
+<p style="margin-top:0.8rem;">Dosyalar, OCR'i kaldırdığınızda seçeceğiniz varış klasöründe kaydedilir.</p>
+</div>
+<div class="section-box">
+<h3>📝 Adım 4 — Ek talimatlar (isteğe bağlı ancak önerilir)</h3>
+<p>Kamp kampı <strong>"Add IA Instruments"</strong> Her çalışma seansı için model davranışını özelleştirmenize izin verir:</p>
+<ul>
+<li>Metin veya dil değişkeni</li>
+<li>Rapor tekrarlanan kısaltmalar ve onların anlamı</li>
+<li>pulları görmezden gelmek, marjinal annotasyonları veya pulları görmezden gelmek</li>
+<li>Belirli formül korumayı gerektirir</li>
+</ul>
+<p style="margin-top:0.8rem;"><strong>Pratik örnekler:</strong></p>
+<ul>
+<li><em>“Ayların isimleri 19. yüzyılda Sicilya lehçesindedir. Bunu düzeltmeyin.”</em></li>
+<li><em>"Kırmızı kalemde marj ve notlar üzerine damgalar."</em></li>
+<li><em>“Uygun ‘f.’, ‘son’ anlamına gelebilir; ‘fu’ ve ‘q.’, bahsedilen kişinin zaten öldüğünü gösteriyor.”</em></li>
+</ul>
+<p style="margin-top:0.8rem;"><strong>Talimatlar arşivi:</strong> En sık kullanılan talimatlar düğme ile kurtarılabilir <strong>“+”</strong> Ve sonraki seanslarda “Kaynaklar” damla aşağı menüden hatırladı.</p>
+<p>Kaydedilen talimatlar eklenebilir, yeniden adlandırılabilir veya silinebilir. <strong>Belge türü</strong> Temel uyarıyı belirler: dahil edilen türlere ek olarak, özel belge profillerini oluşturabilir veya kaldırabilirsiniz.</p>
+</div>
+<div class="section-box">
+<h3>2) Kalibrasyon ve Tanı (isteğen)</h3>
+<p>İlk seçilen dosyanın üst bölümünü takip eden kalibrasyon süreçleri, düzeltme sonucu gösterir ve tam işleme için onaylanmış metni kullanır. Sağlayıcı, model, belge tipi ve talimatları genişletilmiş bir toplu başlatmadan önce doğrulamak yararlıdır.</p>
+<p>Tanı seçeneği işleme konusunda ek teknik bilgiler sağlar. Bir hata analiz etmeniz veya destek elementleri sağlamanız gerektiğinde etkinleştirin; paylaşmadan önce içeriği kontrol edin, çünkü belge verilerini veya talebi içerebilir.</p>
+</div>
+<div class="section-box">
+<h3>di Step 5 – Referans transkripsiyon (few-shot, Seçmeli)</h3>
+<p>Kamp kampı <strong>"Transscription of Referans"</strong> Talepte kullanılmak için doğru bir transkript contextual örneği verir. Model eklemek, düzenlemek veya güncellemek.</p>
+<p><strong>Nasıl kullanılır:</strong></p>
+<ol>
+<li>Manually ve doğru bir şekilde ilk sayfayı (veya ilk satırları) yayınlayın</li>
+<li>Metin çevirisi "Transscription of Referans" alanında yayınlandı.</li>
+<li>OCR: Model, belgenin geri kalanı için bir kılavuz olarak kullanılmasını sağlayacaktır.</li>
+</ol>
+<p style="margin-top:0.8rem;"><strong>Sonuçlar:</strong> Doğruluğu geliştirebilir, özellikle zor şeritler, olağandışı kısayollar veya yerel lehçeler; etki sağlayıcıya, modele ve belge kalitesine bağlıdır.<br/>
+            Alan "Delete Text" (.) transkripsiyon ve standart modu geri yükler.</p>
+</div>
+<div class="section-box">
+<h3>🔍 Adım 6 — Etkileşimli inceleme (isteğe bağlı)</h3>
+<p>Oldukça haklı <strong>"Enable Interactive Review Pencere"</strong> Her işlemden sonra açılan interaktif bir mod aktive eder:</p>
+<ul>
+<li><strong>Sol Panel</strong>: zoom (mouse tekerlek) ve paniğe sahip orijinal görüntü</li>
+<li><strong>Doğru panel</strong>: text OCR ekstraksiyon, özgürce serbestçe değiştirilebilir</li>
+<li><strong>“Onayla ve Dosya Oluştur” düğmesi</strong>: Seçilen formatlarda revize edilen metni kurtarmak</li>
+<li><strong>"Salta Page" düğmesine</strong>: Discard mevcut işleme ve bir sonraki sayfaya hareket edin</li>
+</ul>
+<p style="margin-top:0.8rem;">OCR'in kalitesi ve kesin kurtarmadan önce doğru hataları doğrulamak için kullanışlı. Büyük partiler için, interaktif revizyonu devre dışı bırakmak ve geri metni düzeltmek tercih edilir.</p>
+</div>
+<div class="section-box">
+<h3>▶️ Adım 7 — OCR’yi başlatma</h3>
+<p>Şuna tıklayın <strong>"Start OCR"</strong>Çıktı dosyaları için varış klasörü gerekli olacaktır.</p>
+<p>İlerleme barı ilerleme gösterir (şimdi/ toplam dosya). İşlem ayrı bir alanda gerçekleşir: arayüz işleme sırasında duyarlı kalır.</p>
+<p>Partiler sırasında ATK-Pro, ilerici bir transkript güncellemektedir <code>*_trascrizione_parziale.txt</code> Onun metadata ile. İşlem kesintiye uğrarsa, bu dosyaları zaten tanımlanmış olarak kurtarmaya devam edin; Onları kesin olarak devre dışı bırakılınca ve revize edilene kadar düşünmeyin.</p>
+<p>Sonunda, bir dialog kutusu tamamlanmayı veya herhangi bir hataları doğrulayacaktır.</p>
+</div>
+</div>
+<div class="section">
+<h2>API anahtarı nasıl alınır</h2>
+<div class="section-box">
+<h3>Hesaplar, anahtarlar, modeller ve maliyetler</h3>
+<p>Kimlik bilgilerini yalnızca seçilen sağlayıcının resmî konsolundan alın; bunları giriş dosyalarında, transkriptlerde veya destek taleplerinde paylaşmayın. Arayüzler, modeller, kotalar, coğrafi kullanılabilirlik ve fiyatlar ATK-Pro güncellenmeden değişebilir.</p>
+<p>Geniş işlemden önce, her zaman hesabınızın belgeleri ve fatura paneline danışın. ATK-Pro ücretsiz planlar, minimum oranlar veya belirli bir modelin varlığı garanti etmez.</p>
+</div>
+</div>
+<div class="section">
+<h2>optimal sonuçlar için ipuçları</h2>
+<div class="section-box">
+<ul>
+<li><strong>Kalite görüntüleri</strong>: 300+ IMP'deki Clear görüntüler önemli ölçüde daha iyi sonuçlar üretir. JPEG'den yüksek kompresyon (artefat) ile kaçının.</li>
+<li><strong>Her zaman Ek Talimatları kullanın</strong>: Birkaç bağlam hatları bile lehçe belgeleri veya alışılmadık yazım için doğruluğu önemli ölçüde artırır.</li>
+<li><strong>İlk sayfa referans olarak</strong>Manually ilk sayfayı yazar ve "Transscription of Referans" alanını kullanır; sonraki sayfalardaki gelişmeler genellikle dikkat çekicidir.</li>
+<li><strong>Test Batchch</strong>: Büyük toplular için (100+ görüntüler), ilk test 5-10 dosya üzerinde tam topluluğa gitmeden önce Active Interactive Review ile test.</li>
+<li><strong>TEI XML</strong>: XML TEI formatını akademik dijital arşivlerde transkript vermeyi planlıyorsanız veya diğer araştırmacılarla paylaşın.</li>
+<li><strong>Talimatları kurtarın</strong>: Her arşiv serisi kendi özelliklerine sahiptir. Her giriş veya finans için belirli bir talimatları kurtar.</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">← Mod.05 – Metadata JSON</a>
+<a class="nav-button" href="guida.html">e Main index</a>
+<a class="nav-button" href="guida_07_traduzione.html">Mod.07 - Çeviri →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>

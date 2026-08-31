@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="tr" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 02: Operazioni di base</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Modül 02: Temel İşlemler</title>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -12,14 +13,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -30,7 +31,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -40,12 +41,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -54,21 +55,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             /* border-bottom: 3px solid #a67c52; */
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -77,13 +78,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -96,12 +97,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             /* border: 2px solid #a67c52; */
@@ -110,33 +111,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -144,40 +145,40 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
             /* border: 2px solid #a67c52; */
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +186,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +194,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +216,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +231,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +240,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +263,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             /* border: 1px solid #a67c52; */
             padding: 12px 8px;
@@ -271,7 +272,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +282,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             /* border: 2px solid #a67c52; */
@@ -297,15 +298,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -325,29 +326,49 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📚 Modulo 02: Operazioni di base</h1>
-        </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-        <div class="section-box">
-            <h3>4. CARICAMENTO RECORD IIIF - FORMATI DI INPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📥 STRUTTURA DELL'INPUT</h4>
-            <p>ATK-Pro accetta file di input con un formato specifico basato su COPPIE: Per OGNI record da elaborare, fornisci:</p>
-            <h3>1. RIGA 1: Modalità + Nome (facoltativo)</h3>
-            <ul>
-                <li>D = Documento singolo (una singola immagine/pagina)</li>
-                <li>R = Registro (collezione completa di pagine/documenti)</li>
-            </ul>
-            <h3>2. RIGA 2: URL del Manifest IIIF</h3>
-            <p><strong>Esempio di file input.txt corretto:</strong></p>
-            <pre class="file-structure"># Commenti iniziano con #
+<div class="container">
+<header>
+<h1>Modül 02: Temel İşlemler</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">← Mod.01 – Kurulum, Başlatma ve Arayüz</a>
+<a class="nav-button" href="guida.html">e Main index</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 - AI'yı araştırmayı →</a>
+</div>
+<div class="section-box">
+<h3>1. KAYIT YÜKLEME - GIRIŞ FORMATLARI</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>" GIRIŞ YAPISI VE PORTALLARI DESTEKLEDI</h4>
+<p>ATK-Pro, belirli bir COPPIE tabanlı bir formatla giriş dosyalarını kabul eder: OGNI kayıtları için süreç için Mode + URL sağlar.</p>
+<p><strong>Desteklenen portallar:</strong> Sayfanın resmi URL'i kopyalayın, görüntüleyici, poster veya uyumlu PDF. ATK-Pro portalı tanır ve teknik ve titiz modunu uygular.</p>
+<p><strong>Desteklendi Desteklendi</strong> Doğrulanmış bir teknik uyumluluk gösterir, indirmek için yanlış bir izin değil. Kaynak açık olarak erişilebilir olmalı ve kullanıcı, bireysel portalın kullanım ve sınırlarına saygı duymalıdır. ATK-Pro girişleri atmıyor, bağlı erişimler, ödemeliler veya işaretleyiciler <code>nodownload</code>.</p>
+<p>Anten (İtalya), Gallica (Fransa), DigiVatLib (Vatikan), Bodleian Kütüphaneler (Oxford), Avrupa IIIF, Matricula Online, Findbuch (Südtirol), e-codices/e-rara/e-manuscripta (Switzerland), Heidelberg UB, Internet Cultural/Estense</p>
+<h4>NELLA ITALIAN PORTALLARI V3'TE EKLENDI</h4>
+<table>
+<thead>
+<tr><th>Portal</th><th>Giriş ve mod</th><th>İşletim limitleri</th></tr>
+</thead>
+<tbody>
+<tr><td>Biblioteca Digitale Siena</td><td>Page viewer IIIF; <code>D</code> veya <code>R</code></td><td>İçin <code>R</code> Açık bir aralık gereklidir; nesnenin haklarını doğrulayın.</td></tr>
+<tr><td>Dijital Kütüphane Trentina</td><td>Halk sayfası; görüntüler veya doğrudan PDF</td><td>Loglar ve diziler bir aralığı kullanır. Eğer aralığı olmayan sadece PDF gerekliyse, ATK-Pro mevcut olduğunda resmi PDF kullanır.</td></tr>
+<tr><td>Biblioteca Digitale Lombarda</td><td>Endpoint PDF REST veya endpoint BookReader; <code>D</code> veya <code>R</code></td><td>tuvallerden Cantaloupe IIIF ve sadece geçici olarak mevcut olmayan sayfaları yeniden yapılandırır. BookReader geçerli bir tuval geri dönmezse, doğrudan PDF REST kullanın.</td></tr>
+<tr><td>Rovereto Digital Library</td><td>Varlık veya URL API of theitem; <code>D</code> veya <code>R</code></td><td>Sayfalar olarak tanınan sadece halka açık uçları indirin; çünkü <code>R</code> Bir aralık gereklidir.</td></tr>
+<tr><td>BUB Dijital</td><td>BUB sayfası parametre ile <code>manifest=</code> veya poster IIIF BUB</td><td>Sadece kamu kaynakları; çünkü <code>R</code> Bir aralık gereklidir ve bireysel nesnenin lisansı doğrulanmalıdır.</td></tr>
+<tr><td>FICLIT Digital Library</td><td>Sayfa Omeka S veya poster IIIF FICLIT</td><td>Sadece halk eşyaları; çünkü <code>R</code> Bir aralık gereklidir. Görüntüler tuvalin doğrudan kaynağı tarafından satın alınır.</td></tr>
+<tr><td>Archivio Storico UniBO</td><td>Manifest IIIF tek öğe seyircisi; <code>D</code> veya <code>R</code></td><td>Koleksiyonlar giriş olarak kabul edilmez. İçin <code>R</code> Açık bir aralık gereklidir ve bireysel eşya hakları doğrulanmalıdır.</td></tr>
+<tr><td>PHAIDRA Padua Üniversitesi</td><td>nesnenin veya resmi IIIF posterinin resmi sayfası; <code>D</code> veya <code>R</code></td><td>Sadece kamusal nesneler. İçin <code>R</code> Bir aralık gereklidir; etherm ile ilişkili hakları fark veya lisansı kontrol edin.</td></tr>
+<tr><td>DOGE University of Genoa</td><td>nesnenin genel sayfası; <code>D</code> veya <code>R</code></td><td>Portal tarafından indirilebilir ilan edilen sadece kamu kaynakları kullanın. Orijinal veya işaretli kaynaklar dışlanır <code>nodownload</code>Çünkü <code>R</code> Bir aralık gereklidir.</td></tr>
+</tbody>
+</table>
+<p><strong>Not:</strong> EIBC, Ambrosiana ve OrienTales indirmeye dahil değildir: istikrarlı halk uç noktaları belirlenmemiştir veya incelenen kayıtların bağlı erişim gerektirir. Ulusal Arşivler, SAN, SIAS, SIUSA, BeWeB ve Ticino, Grison ve diocesan kaynakları rehberlik ve manuel danışmanlık kaynaklarıdır.</p>
+<h3>1. RIGA 1: Mode + Name (optional)</h3>
+<ul>
+<li>D = Single document (bir görüntü / sayfa)</li>
+<li>R = Kayıt (Tam sayfaların koleksiyonu/documents)</li>
+</ul>
+<h3>2. RIGA 2: URL public record or resource</h3>
+<p><strong>Doğru input.txt dosyasının örneği:</strong></p>
+<pre class="file-structure"># Commenti iniziano con #
 
 RECORD 1 (coppia di righe):
 D - Lettera Importante
@@ -360,66 +381,67 @@ https://archives.example.org/iiif/reg456/manifest.json
 RECORD 3 (coppia di righe):
 D - Fotografia Singola
 https://collections.example.org/iiif/foto789/manifest.json</pre>
-            <h4>📝 REGOLE FORMATO INPUT:</h4>
-            <ul>
-                <li>Righe vuote: ignorate (puoi usarle per leggibilità)</li>
-                <li>Righe con #: ignorate come commenti</li>
-                <li>Modalità D o R: sono obbligatorie (maiuscole)</li>
-                <li>Nome file: facoltativo dopo modalità (es. "D - Nome" o solo "D")</li>
-                <li>URL: deve iniziare con http:// o https://</li>
-                <li>Coppie: modalità + URL devono stare su righe consecutive</li>
-            </ul>
-            <h4>⚙️ COME CARICARE L'INPUT - 3 OPZIONI DAL MENU:</h4>
-            <p>OPZIONE 1: Visualizza Esempio Input ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Esempio input"</h3>
-            <h3>2. Si apre una finestra che mostra il file di esempio localizzato</h3>
-            <h3>3. Puoi copiare il contenuto come template per il tuo file input</h3>
-            <h3>4. File di esempio: assets/[lingua]/testuali/input_link_base.txt</h3>
-            <p>OPZIONE 2: Apri File Input Pronto ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Apri input"</h3>
-            <h3>2. Si apre un dialog di selezione file</h3>
-            <h3>3. Scegli il tuo file input.txt (deve rispettare il formato coppie)</h3>
-            <h3>4. ATK-Pro carica automaticamente e legge tutti i record</h3>
-            <h3>5. Visualizza numero di record caricati e pronti per l'elaborazione</h3>
-            <p>OPZIONE 3: Modifica Input Già Caricato ──────────────────────────────────────────</p>
-            <h3>1. Dopo aver caricato un file input (OPZIONE 2)</h3>
-            <h3>2. Clicca Menu → "File input" → "Modifica input"</h3>
-            <h3>3. Si apre un editor di testo con il file attualmente caricato</h3>
-            <h3>4. Modifica le coppie (aggiungi, rimuovi, cambia URL)</h3>
-            <h3>5. Clicca "Salva" per aggiornare i record in elaborazione</h3>
-            <h3>6. Il programma reinterpreta il file aggiornato</h3>
-            <h4>📌 DIFFERENZA TRA D E R:</h4>
-            <ul>
-                <li>D (Documento): Gestisce una singola immagine/pagina
+<h4>: GIRIŞ FORMATI KURALLARI:</h4>
+<ul>
+<li>Blank satırları: görmezden gelin (Onları okunabilirlik için kullanabilirsiniz)</li>
+<li># ile başlayan satırlar: yorum olarak yok sayılır</li>
+<li>D/d veya R/r modları: zorunlu; üst katlar ve alt koşullar eşdeğerdir</li>
+<li>Dosya adı: mod (e.g. "D - Name" veya sadece "D")</li>
+<li>URL: http ile başlamalıdır:// veya https://</li>
+<li>Çiftler: mod + URL ardı sıralarda kalmalıdır</li>
+</ul>
+<h4>GIRIŞ NASIL YÜKLENECEK - MENÜDEN 3 SEÇENEK:</h4>
+<p>"Okul:"Pope" "Pope:"Pope: "Pope:?"</p>
+<h3>1. Menu → "File girdi" → "Example girdi"</h3>
+<h3>2. Yerelleştirilmiş örnek dosyayı gösteren bir pencere açın</h3>
+<h3>3. İçerik dosyasını giriş dosyanız için bir şablon olarak kopyalayabilirsiniz</h3>
+<h3>4. Örnek dosyası: varlıklar / [dil]/testuali/input_link_base.txt</h3>
+<p><strong>Dosya adı üzerine not:</strong> dağıtılan dosya adı <code>input_link_base.txt</code>. Adı daha önceki sürümlere atıfta bulunmak için v3'te normalleştirildi; format IIIF kayıtlarının yüklenmesiyle uyumlu kalır.</p>
+<p>OPTION 2: Open E-Input File.” “Posss.” “Posss.” “Posss.”</p>
+<h3>1. Menu → "File girdi" → "Açık giriş"</h3>
+<h3>2. Bir dosya seçimi</h3>
+<h3>3. input.txt dosyasını seçin ( çiftler formatına uyma)</h3>
+<h3>4. ATK-Pro otomatik olarak yükler ve tüm kayıtları okur</h3>
+<h3>5. İşleme için yüklenen ve hazır kayıt sayısını görüntülemek</h3>
+<p>“Olay 3: Edit Giriş Yüklendi.” “Posss.” “Posss.” “Posss.”</p>
+<h3>1. Bir giriş dosyasını yüklemeden sonra (OPTION 2)</h3>
+<h3>2. Menu → "File girdi" → "Edit girdi"</h3>
+<h3>3. Şu anda yüklenen dosya editörü ile bir metin editörü açın</h3>
+<h3>4. Edit çiftleri (örneğin, URL)</h3>
+<h3>5. Kayıtlarınızı güncellemek için " Kaydet"</h3>
+<h3>6. Program, güncellenmiş dosyayı yeniden gözden geçiriyor</h3>
+<h4>: D VE R ARASINDAKI FARK:</h4>
+<ul>
+<li>D (Document): Tek bir görüntü / sayfayı yönetin
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: file singolo per il documento</li>
-                <li style="margin-top: 12px;">R (Registro): Gestisce collezioni multi-pagina
+<li style="list-style: none; margin-left: 20px;">→ Çıktı: Belge için tek dosya</li>
+<li style="margin-top: 12px;">R (Register): Çok sayfalı koleksiyonları yönetin
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: cartella con pagine organizzate + PDF (se richiesto dall'utente)</li>
-            </ul>
-            <h4>✅ VALIDAZIONE RECORD</h4>
-            <p>Dopo il caricamento, il programma verifica:</p>
-            <ul>
-                <li>✓ URL accessibile e raggiungibile</li>
-                <li>✓ Formato IIIF valido (questa versione+)</li>
-                <li>✓ Numero immagini e canvas disponibili</li>
-                <li>✓ Metadata (titolo, autore, data)</li>
-            </ul>
-            <h4>❌ ERRORI COMUNI</h4>
-            <ul>
-                <li>"URL non valido": Controlla copia/incolla URL</li>
-                <li>"Manifest non trovato (404)": URL è scaduto o sbagliato</li>
-                <li>"Formato IIIF non supportato": Il server non usa IIIF standard</li>
-                <li>"Timeout connessione": Connessione Internet lenta/assente</li>
-            </ul>
-            <h4>💾 SALVATAGGIO RECORD</h4>
-            <p>Dopo il caricamento del manifest, il programma salva automaticamente i metadati IIIF. DOVE: Nella cartella output che scegli (vedi Sezione 5, PASSO 2) <strong>STRUTTURA CARTELLE DOPO CARICAMENTO (prima dell'elaborazione):</strong></p>
+<li style="list-style: none; margin-left: 20px;">→ Çıktı: organize sayfalar ile klasör + PDF (kul tarafından gerekliyse)</li>
+</ul>
+<h4>RECORD VALIDATION</h4>
+<p>Yüklemeden sonra, program kontrolleri:</p>
+<ul>
+<li>✓ URL erişilebilir ve erişilebilir</li>
+<li>Karşılaştırmalı Kaynak: IIIF v2/v3, desteklenen sayfa, görüntü veya PDF doğrudan portala göre</li>
+<li>Mevcut görüntüler ve tuval sayısı</li>
+<li>✓ Metadata (Yazı, yazar, tarih)</li>
+</ul>
+<h4>COMUNI YAYGIN HATALARI</h4>
+<ul>
+<li>"URL geçersiz": Kontrol kopyası/paste URL</li>
+<li>"Manifest (404) bulunamadı": URL sona ermiş veya yanlış</li>
+<li>"IIIF desteklenmedi": Sunucu standart IIIF kullanmıyor</li>
+<li>"Timeout connection": Slow/slow Internet bağlantısı</li>
+</ul>
+<h4>KAYDET</h4>
+<p>Manifest yüklendikten sonra program IIIF meta verilerini otomatik olarak kaydeder. NEREYE: Seçtiğiniz çıktı klasörüne (bkz. Bölüm 2, ADIM 2)<strong>CARTELLE STRUCTURE ( işlemeden önce):</strong></p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale (livello principale)
  └─ [nome]/                            ← Sottocartella SOLO per metadati
     ├─ [nome]_genealogico.json        ← Metadati genealogici estratti
     └─ [nome]_tecnico.json            ← Metadati tecnici (canvas ID, numero pagine)</pre>
-<p> DOPO L'ELABORAZIONE (quando clicchi Menu → Output → Elabora): Nel livello principale vengono aggiunti i file elaborati:</p>
+<p>İŞLEMDEN SONRA (Menü → Çıktı → İşle seçeneğine tıkladığınızda): Ana düzeye işlenen dosyalar eklenir:</p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
  ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite dai tile IIIF (una per pagina)
@@ -427,296 +449,300 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
  ├─ [nome]_canvas_N.jpg/.png/.tif       (N = numero totale di pagine/canvas)
  ├─ [nome].json                        ← Sidecar JSON per ogni immagine (metadati EXIF)
  └─ [nome].pdf                         ← PDF completo (vedi spiegazione sotto)</pre>
-
-<p>I metadati rimangono nella sottocartella [nome]/ come salvati al caricamento.</p>
-<p><strong>NOTA IMPORTANTE: Organizzazione file</strong></p>
-            <ul>
-                <li>Manifest IIIF: livello principale della cartella output</li>
-                <li>Immagini (canvas), PDF, Sidecar JSON: livello principale della cartella output</li>
-                <li>SOLO metadati tecnici e genealogici: salvati in sottocartella [nome]/</li>
-                <li>Le cartelle temporanee (tiles_canvas_X/) vengono eliminate automaticamente al termine</li>
-                <li>Questa struttura consente di gestire più record nella stessa cartella senza confusione</li>
-            </ul>
-<p><strong>Esempio:</strong> Se elabori "Registro1", troverai:</p>
-            <ul>
-                <li>manifest_[ID1]_Registro1.json (livello principale)</li>
-                <li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (livello principale)</li>
-                <li>Registro1.pdf (livello principale)</li>
-                <li>Registro1/ (sottocartella SOLO con metadati genealogico e tecnico)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>5. ELABORAZIONE E DOWNLOAD IMMAGINI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>🎯 FLUSSO DI ELABORAZIONE</h4>
-            <p>Il workflow di elaborazione prevede 3 passi:</p>
-            <h4>PASSO 1: SELEZIONA FORMATI IMMAGINE</h4>
-            <p>─────────────────────────────────────</p>
-            <h3>1. Carica un file input (File input → Apri input): la finestra formati si apre automaticamente</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona formati immagine"</h3>
-            <h3>3. Si apre una finestra di dialogo con 3 opzioni:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Formato senza perdita (lossless), migliore qualità, file più grandi</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Formato compresso (lossy), buon compromesso qualità/dimensione</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Formato archiviale, massima qualità, file molto grandi</p>
-            <p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Documento PDF</strong></p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Genera un PDF completo con tutte le pagine del registro o documento, in aggiunta ai formati immagine selezionati (o come unico output se nessun formato immagine è selezionato)</p>
-            <h3>4. Seleziona almeno un formato immagine o PDF (puoi sceglierne più di uno)</h3>
-            <h3>5. Clicca "Conferma"</h3>
-            <p>✅ <strong>I formati scelti vengono memorizzati</strong> e pre-selezionati automaticamente alla prossima apertura del programma.</p>
-            <h4>📝 CONSIGLI:</h4>
-            <ul>
-                <li>Per preview/consultazione: JPG (veloce da aprire, minore spazio)</li>
-                <li>Per archivio conservativo: PNG (lossless, compromesso di spazio) o TIFF (massima qualità)</li>
-                <li>Per entrambi: seleziona sia PNG che TIFF</li>
-                <li>Per PDF: seleziona PDF insieme a uno o più formati immagine, oppure seleziona solo PDF per generare esclusivamente il documento PDF senza file immagine separati</li>
-            </ul>
-            <h4>PASSO 2: SELEZIONA CARTELLE OUTPUT</h4>
-            <p>──────────────────────────────────────</p>
-            <h3>1. La finestra cartelle si apre automaticamente dopo la scelta dei formati (quando carichi un file input)</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona cartelle output"</h3>
-            <h3>3. Scegli la MODALITÀ di organizzazione delle cartelle:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella unica per tutti</span> → un'unica cartella per tutti i record (doc e registri)</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartelle separate doc/reg</span> → una cartella per tutti i documenti, una per tutti i registri</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella per ogni record</span> → una cartella distinta per ciascun record nel file input</p>
-            <h3>4. Dopo la scelta della modalità, seleziona le cartelle richieste (1, 2 o N finestre di dialog)</h3>
-            <h3>5. Al termine mostra il riepilogo delle cartelle scelte</h3>
-            <p>✅ <strong>Modalità e cartelle vengono memorizzate</strong>. Alla prossima apertura di un file input, vengono ripristinate automaticamente se compatibili con il numero di record.</p>
-            <p>⚠️ Se il nuovo file input ha un numero diverso di Documenti/Registri rispetto alle cartelle salvate, viene mostrato un avviso e la selezione viene azzerata per richiedere nuove cartelle.</p>
-            <h4>📌 RIEPILOGO MODALITÀ:</h4>
-            <ul>
-                <li><strong>Cartella unica:</strong> Semplice, tutto in un posto. Adatto per elaborazioni veloci o test</li>
-                <li><strong>Separate doc/reg:</strong> Organizzazione per tipo. Default: <code>output/doc/</code> e <code>output/reg/</code></li>
-                <li><strong>Per ogni record:</strong> Massima flessibilità. Puoi usare drive diversi, NAS, cartelle personalizzate</li>
-            </ul>
-            <h4>PASSO 3: AVVIA ELABORAZIONE</h4>
-            <p>─────────────────────────────</p>
-            <h3>1. Clicca Menu → "Output" → "Elabora"</h3>
-            <h3>2. Verifica che:</h3>
-            <p>✓ Almeno 1 formato immagine selezionato</p>
-            <p>✓ Almeno 1 record caricato</p>
-            <p><strong>Se mancano questi requisiti, appare messaggio di errore:</strong></p>
-            <p>❌ "Nessun formato selezionato" → Vai a PASSO 1</p>
-            <p>❌ "Nessun record caricato" → Vai a Caricamento Input (Sezione 4)</p>
-            <h4>📺 FINESTRA DI ELABORAZIONE</h4>
-            <p>Non appena clicchi "Elabora", si apre una finestra modale con: </p>
-            <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window2.webp" alt="Finestra elaborazione in corso" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
-            </div>
-            <h4>📊 ELEMENTI VISIBILI:</h4>
-            <p>1️⃣ TITOLO FINESTRA: "Elaborazione in corso"</p>
-            <ul>
-                <li>Rimane in primo piano finché l'elaborazione non termina</li>
-                <li>Non puoi interagire con il resto della GUI</li>
-            </ul>
-            <p>2️⃣ ETICHETTA PROGRESSO: "Elaborazione record: 2/5 — Nome File"</p>
-            <ul>
-                <li>Mostra: record attualmente elaborato (2) su totale (5)</li>
-                <li>Mostra anche il nome del file/registro in elaborazione</li>
-                <li>Si aggiorna in tempo reale man mano che processa i record</li>
-                <li>Es: "Elaborazione record: 1/3 — Registro Matrimoni 1850"</li>
-            </ul>
-            <p>3️⃣ BARRA DI PROGRESSO: Avanzamento visuale</p>
-            <ul>
-                <li>Formato numerico: "2/5" (numero attuale / totale)</li>
-                <li>Barra colore che avanza da sinistra a destra</li>
-                <li>Raggiunge il 100% (massima larghezza) quando completo</li>
-                <li>NON mostra percentuale, solo numero</li>
-            </ul>
-            <p>4️⃣ PULSANTE [ANNULLA]</p>
-            <ul>
-                <li>Cliccabile durante elaborazione</li>
-                <li>Chiude la finestra di progresso</li>
-                <li>⚠️ L'elaborazione continua in background (non interrompe il download)</li>
-                <li>I file scaricati rimangono nella cartella output selezionata</li>
-            </ul>
-            <h4>🔄 DURANTE L'ELABORAZIONE</h4>
-            <p><strong>Il programma in background:</strong></p>
-            <pre class="file-structure">├─ Scarica immagini dai server IIIF
+<p>Metadata alt katerde kalır (isim) / yüklemeye kaydedilir.</p>
+<p><strong>NOT ÖNEMLİ: Dosya Organizasyonu</strong></p>
+<ul>
+<li>Manifest IIIF: ana çıkış klasörü seviyesi</li>
+<li>Görüntüler (canvas), PDF, Sidecar JSON: main level of print klasör klasörü</li>
+<li>Sadece teknik ve genalojik metadata: Subfolder [isim] /</li>
+<li>Geçici klasörler (tiles tuval X/) sonunda otomatik olarak silinir</li>
+<li>Bu yapı aynı klasörde karışıklık olmadan birden fazla kayıt yönetmenize izin verir</li>
+</ul>
+<p><strong>Örnek: Örnek:</strong> "Register1" işlemi yaparsanız, bulacaksınız:</p>
+<ul>
+<li>Poster [ID1]_Registro1.json (main level)</li>
+<li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (orta seviye)</li>
+<li>Registro1.pdf (bakım seviyesi)</li>
+<li>Register1/ (SOLO klasörü Genalogy ve teknik metadata)</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. IŞLEME VE GÖRÜNTÜLERI INDIRME</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>DI IŞLEME AKIŞI</h4>
+<p>İşleme iş akışı 3 adım içerir:</p>
+<h4>ADIM 1: GÖRÜNTÜ FORMATLARINI SEÇIN</h4>
+<p>─────────────────────────────────────</p>
+<h3>1. Bir giriş dosyasını yükleyin (File giriş → Açık giriş): format pencere otomatik olarak açılır</h3>
+<h3>2. Alternatif olarak: Menu → "Settings" → "Seçim formatları seçin"</h3>
+<h3>3. 3 seçenek ile bir diyalog kutusu açın:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">PNG</span>  → Kayıpsız format (zarsız), daha kaliteli, daha büyük dosyalar</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">JPG</span>  → Kompresyon formatı (lossy), iyi uzlaşma kalitesi/dimension</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">TIFF</span> → Archive formatı, en yüksek kalite, çok büyük dosyalar</p>
+<p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>PDF belgesi</strong></p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">PDF</span> → Bir PDF, kayıt veya belgenin tüm sayfaları ile birlikte, seçilen görüntü formatlarına ek olarak (veya görüntü formatı seçilirse tek çıkış olarak)</p>
+<h3>4. En az bir görüntü formatı veya PDF (birden daha fazlasını seçebilirsiniz)</h3>
+<h3>5. Click "Confirm"</h3>
+<p>✅ <strong>Seçilen formatlar depolanır</strong> ve önceden otomatik olarak bir sonraki program açılışında.</p>
+<h4>: IPUÇLARI:</h4>
+<ul>
+<li>Önbellekler için: JPG (daha az uzay açmak için hızlı)</li>
+<li>Muhafazakar arşiv için: PNG (zorsuz, uzay uzlaşması) veya TIFF (maximum kalitesi)</li>
+<li>Her ikisi için: hem PNG hem de TIFF</li>
+<li>PDF için: PDF'yi bir veya daha fazla görüntü formatlarıyla birlikte seçin veya görüntü dosyaları olmadan ayrı bir PDF belgesi oluşturmak için sadece PDF seçin</li>
+</ul>
+<h4>ADIM 2: ÇIKTI KLASÖRLERI SEÇIN</h4>
+<p>──────────────────────────────────────</p>
+<h3>1. klasörler pencere, formatları seçtikten sonra otomatik olarak açılır (bir giriş dosyasını yüklediğinizde)</h3>
+<h3>2. Alternatif olarak: Menu → "Settings" → "Seçim Katers"</h3>
+<h3>3. klasör organizasyonunu seçin MODE:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">Single Folder for All</span>→ tüm kayıtlar için tek bir klasör (belgeler ve kayıt defterleri)</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">Ayrı klasörler doc/reg</span> → tüm belgeler için bir klasör, tüm loglar için biri</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">Her kayıt için</span> → girdi dosyasında her kayıt için ayrı bir klasör</p>
+<h3>4. modu seçtikten sonra, gerekli klasörleri seçin (1, 2 veya N dialog kutuları)</h3>
+<h3>5. Sonunda seçilen klasörlerin özetini gösterir</h3>
+<p>✅ <strong>Modes ve klasörler depolanır</strong>Bir giriş dosyasının bir sonraki açılışında, kayıt numarasıyla uyumlu olup olmadıkları otomatik olarak restore edilirler.</p>
+<p>. Yeni giriş dosyası, kurtarma klasörlerinden farklı sayıda belge / kayıt içeriyorsa, bir uyarı gösteriliyor ve seçim yeni klasörler talep etmeye sıfırlanıyor.</p>
+<p>🛡️ <strong>Önleyici rota kontrolü:</strong> klasörler veya dosyaları oluşturmadan önce, ATK-Pro beklenen isimleri ve yolları doğrulamaktadır. Windows ile uyumlu isimler ve aşırı uzun segmentler sadece etkilenen rekoru engeller; uyumluluk uyarıları son özetde gösterilir.</p>
+<p>☁️ <strong>OneDrive/SharePoint varsayılan bir hedef olarak kabul edilmez.</strong> Limitleri sadece seçilen klasör aslında bir OneDrive kökü altında olduğunda uygulanır. Diğer rotalarda, tarihi Windows 260 karakter eşiği bir prudatif uyarı olarak tedavi edilir ve otomatik bir blok olarak değil.</p>
+<h4>: ÖZET MOD:</h4>
+<ul>
+<li><strong>Tek klasör:</strong> Basit, tek bir yerde. Hızlı işleme veya test için uygun</li>
+<li><strong>Ayrı doc/reg:</strong> Organizasyon türü tarafından. Varsayılan: <code>output/doc/</code> ve <code>output/reg/</code></li>
+<li><strong>Her kayıt için:</strong> Maksimum esneklik. Farklı sürücüler kullanabilirsiniz, NAS, özel klasörler</li>
+</ul>
+<h4>ADIM 3: İŞLEMEYE BAŞLAYIN</h4>
+<p>─────────────────────────────</p>
+<h3>1. Menu → "Output" → "Process"</h3>
+<h3>2. Check that:</h3>
+<p>✓ En az 1 seçilmiş görüntü format</p>
+<p>En az 1 kayıt yüklendi</p>
+<p><strong>Bu gereksinimler eksikse, hata mesajı görünür:</strong></p>
+<p>❌ "Hiçbir biçim seçilmedi" → ADIM 1’e gidin</p>
+<p>❌ "No record installed" → Giriş Şarjine Git (Section 1)</p>
+<h4>DI IŞLEME PENCERESI</h4>
+<p>"Work" tıkladığınızda, bir modal pencere açılır: </p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="İlerlemede Pencere İşleme" src="images/window2.webp" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>: GÖRÜNÜR ELEMENTLER:</h4>
+<p>"In Progress"</p>
+<ul>
+<li>İşleme sona erene kadar ön planda kalın.</li>
+<li>GUI'nin geri kalanıyla etkileşime giremezsiniz</li>
+</ul>
+<p>2: ETICHETTA PROGRESS: "Record Processing: 2/5 - File Name"</p>
+<ul>
+<li>Show: şu anda toplam kayıt (2) toplam (5)</li>
+<li>Ayrıca işlemdeki dosya / kayıt adı gösterir</li>
+<li>Gerçek zamanlı olarak, süreçler kayıtları</li>
+<li>Es: "Record processing: 1/3 - Düğün kayıt 1850"</li>
+</ul>
+<p>3 DI PROGRESS BARRA: Görsel ilerleme</p>
+<ul>
+<li>Numerical format: "2/5" (şimdi / toplam sayı)</li>
+<li>Color bar sağdan sağa sola doğru ilerliyor</li>
+<li>Tamamlandığında %100 (maksimum genişliği) ulaşır</li>
+<li>Yüzde gösterir, sadece sayı</li>
+</ul>
+<p>4] DÜĞME [HAYIR]</p>
+<ul>
+<li>İşleme sırasında kullanılabilir</li>
+<li>Tüm topluun kesintisini ve ilerleme penceresini kapatmak gerekir</li>
+<li>tutuklama kooperatiftir: ilerlemede zaten tek ağ talebinin sonucunu bekleyebilir</li>
+<li>silinmiş seansın çıktısı seçilen klasöründe yayınlandı; mevcut dosyalar değişmeden kaldı</li>
+</ul>
+<h4>" IŞLEME SIRASINDA</h4>
+<p><strong>Arka program:</strong></p>
+<pre class="file-structure">├─ Scarica immagini dai server IIIF
 ├─ Legge manifest per canvas ID
 ├─ Ricostruisce tile in immagini complete
 ├─ Converte nei formati selezionati (PNG, JPG, TIFF)
 └─ Salva nelle cartelle scelte</pre>
-            <p><strong>La GUI mostra progress in tempo reale:</strong></p>
-            <ul>
-                <li>Ogni 2-3 secondi aggiorna numero record</li>
-                <li>Nessun blocco: interfaccia rimane reattiva</li>
-                <li>Puoi annullare in qualsiasi momento</li>
-            </ul>
-            <h4>⚠️ COMPORTAMENTO SE CLICCHI ANNULLA:</h4>
-            <h3>1. Elaborazione si ferma subito</h3>
-            <h3>2. File parziali vengono rimossi</h3>
-            <h3>3. Finestra si chiude</h3>
-            <h3>4. Puoi ricominciare da Menu → Output → Elabora</h3>
-            <h4>📋 PDF — GENERAZIONE AUTOMATICA DURANTE L'ELABORAZIONE</h4>
-            <p>Se hai selezionato <strong>PDF</strong> nella maschera di scelta formati (PASSO 1), il PDF viene generato automaticamente al termine del download di ogni registro o documento, senza nessuna finestra di conferma aggiuntiva.</p>
-            <h4>📌 COMPORTAMENTO:</h4>
-            <ul>
-                <li>✅ <strong>PDF selezionato nella maschera formati:</strong> il PDF viene generato automaticamente al termine del download; non viene chiesta nessuna conferma aggiuntiva</li>
-                <li>❌ <strong>PDF non selezionato:</strong> solo le immagini nei formati scelti, nessun PDF</li>
-            </ul>
-            <p>Caratteristiche del PDF generato:</p>
-            <ul>
-                <li>Nome file: <code>[nome].pdf</code>, senza suffissi aggiuntivi (es. <code>Registro Matrimoni 1920.pdf</code>)</li>
-                <li>Salvato nella cartella output scelta, allo stesso livello delle immagini</li>
-                <li>Pagine in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N)</li>
-                <li>Se un canvas non è scaricabile, viene inserita una pagina <em>placeholder</em> localizzata con link diretto al canvas originale su Antenati</li>
-                <li>Nessun file temporaneo rimane nella cartella output al termine della generazione</li>
-            </ul>
-            <h4>⚠️ COSA NON FARE DURANTE ELABORAZIONE:</h4>
-            <ul>
-                <li>❌ Non chiudere il programma (perde file parziali)</li>
-                <li>❌ Non staccare disco esterno (errore salvataggio)</li>
-                <li>❌ Non spegnere PC/laptop</li>
-                <li>❌ Non staccare internet (arresta download)</li>
-            </ul>
-            <h4>✅ COSA PUOI FARE:</h4>
-            <ul>
-                <li>✓ Aspettare che finisca (è la procedura normale)</li>
-                <li>✓ Cliccare Annulla se urgente</li>
-                <li>✓ Usare il PC per altre cose normalmente (minimizza solo la finestra)</li>
-            </ul>
-            <h4>🎉 FINE ELABORAZIONE</h4>
-            <p>Quando tutti i record sono stati elaborati:</p>
-            <h3>1. La finestra di progresso si chiude automaticamente</h3>
-            <h3>2. Appare un messaggio: "Operazione completata"</h3>
-            <h3>3. Clicca OK per chiudere il messaggio</h3>
-            <h3>4. La finestra di progresso scompare completamente</h3>
-            <p>Dopo:</p>
-            <ul>
-                <li>Visualizza file output nelle cartelle che hai selezionato al PASSO 2</li>
-                <li>Ogni documento/registro ha propria sottocartella all'interno della cartella da te scelta</li>
-                <li>Immagini sono pronte per uso (visualizzazione, stampa, archiviazione, PDF)</li>
-            </ul>
-            <h4>✅ OUTPUT GENERATO:</h4>
-            <p>Per ogni record elaborato troverai:</p>
-            <ul>
-                <li>Immagini nei formati selezionati (PNG, JPG, TIFF)</li>
-                <li>manifest_[ID]_[nome].json → Manifest IIIF originale con metadati strutturati</li>
-                <li>[nome]_genealogico.json → Metadati genealogici (date, luoghi, nomi, comuni, province)</li>
-                <li>[nome]_tecnico.json → Metadati tecnici (numero canvas, lista canvas ID, diritti, file generati)</li>
-                <li>[nome].json → Sidecar JSON per ogni immagine (metadati EXIF embedded)</li>
-            </ul>
-            <h4>📝 NOTA SUI NOMI FILE:</h4>
-            <ul>
-                <li>Il [nome] base viene preso direttamente dal file input.txt (riga utente)</li>
-                <li>Se scrivi nel file input "Registro Matrimoni 1920", i file saranno:
+<p><strong>GUI sergisi gerçek zamanlı olarak ilerliyor:</strong></p>
+<ul>
+<li>Her 2-3 saniyede kayıt numarası</li>
+<li>Blok yok: arayüz reaktif kalır</li>
+<li>Herhangi bir zamanda iptal edebilirsiniz</li>
+</ul>
+<h4>: IPTAL EDERSENIZ DAVRANIŞ:</h4>
+<h3>1. Tüm topluluğun Kooperatif tutuklaması gereklidir</h3>
+<h3>2. İptal edilen toplu tarafından üretilen tüm geçici çıktılar silinir</h3>
+<h3>3. Başlangıçtaki sürüm klasörlerinde zaten mevcut dosyalar değişmeden kaldı</h3>
+<h3>4. Tekrar Menu → Çıktı →</h3>
+<h4>" PDF - IŞLEM SIRASINDA OTOMATIK NESIL</h4>
+<p>Eğer seçilmişseniz <strong>PDF</strong>biçim seçme ekranında (ADIM 1), PDF her kayıt defteri veya belge indirildikten sonra ek bir onay penceresi olmadan otomatik olarak oluşturulur.</p>
+<h4>HESAPLAMA DAVRANIŞI:</h4>
+<ul>
+<li>✅ <strong>PDF format maskesinde seçildi:</strong> PDF otomatik olarak indirmenin sonunda oluşturulur; ek bir onay gerekli değildir.</li>
+<li>❌ <strong>PDF seçilmedi:</strong> Sadece seçilmiş formatlarda görüntüler, PDF</li>
+</ul>
+<p>PDF'in özellikleri:</p>
+<ul>
+<li>Dosya adı: <code>[nome].pdf</code>Ek suf ekleri olmadan (e.g. <code>Registro Matrimoni 1920.pdf</code>)</li>
+<li>Seçilen çıktı klasöründe kurtarıldı, aynı seviyede görüntüler</li>
+<li>Sayılar sayısal olarak büyüyor (canvas 1 → tuval 2 → ... → tuval N)</li>
+<li>Bir tuval indirmezse, bir sayfa yapıştırılır <em>yer sahibi</em> Antenati'de orijinal tuvale doğrudan bağlantı bulunan yer</li>
+<li>Hiçbir geçici dosyalar üretim sonunda çıktı klasöründe kalır</li>
+</ul>
+<h4>: İŞLEME SIRASINDA NE YAPMAMAK:</h4>
+<ul>
+<li>❌ Programı kapatmayın (kısmi dosyalar kaybolur)</li>
+<li>Dış diski detach dış disk (kurtarıcı hata)</li>
+<li>lap PC /laptop'ı kapatmayın</li>
+<li>❌ İnternet bağlantısını kesmeyin (indirme durur)</li>
+</ul>
+<h4>NE YAPABILIRSINIZ:</h4>
+<ul>
+<li>Bunun bitmesini bekleyin (normal prosedürdür)</li>
+<li>✓ Click Cancel if acil</li>
+<li>✓ PC'nizi normalde başka şeyler için kullanın (sadece pencereyi en aza indirmek)</li>
+</ul>
+<h4>🎉 İŞLEM TAMAMLANDI</h4>
+<p>Tüm kayıtların işlendiği zaman:</p>
+<h3>1. Hedef pencere otomatik olarak kapanıyor</h3>
+<h3>2. Bir mesaj ortaya çıkıyor: "Complete operation"</h3>
+<h3>3. Mesajı kapatmak için Tamam</h3>
+<h3>4. Hedef pencere tamamen kaybolur</h3>
+<p>Sonraki:</p>
+<ul>
+<li>ADIM 2’de seçtiğiniz klasörlerdeki çıktı dosyalarını görüntüleyin</li>
+<li>Her belge / kayıt, seçtiğiniz klasör içinde kendi alt katerine sahiptir</li>
+<li>Görüntüler kullanıma hazırdır (gör, baskı, depolama, PDF)</li>
+</ul>
+<h4>✅ ÇIKTI:</h4>
+<p>Her ayrıntılı kayıt için bulacaksınız:</p>
+<ul>
+<li>Seçilen formatlarda görüntüler (PNG, JPG, TIFF)</li>
+<li>[ID] json → Manifest IIIF Orijinal with configured metadata</li>
+<li>[name]_genealogico.json → Genalogy metadata (tarihler, yerler, isimler, belediyeler, şehirler)</li>
+<li>[name]_tecnico.json → Teknik metadata ( numara tuvali, liste tuval ID, haklar, oluşturulan dosyalar)</li>
+<li>[isim]. json → Sidecar JSON her görüntü için (EXIF gömülü yöntemler)</li>
+</ul>
+<h4>DOSYA ISIMLERI HAKKINDA NOT:</h4>
+<ul>
+<li>[isim] üssü doğrudan input.txt dosyasından alınır (kullanıcı log)</li>
+<li>Giriş dosyasında yazsanız "Kayıt Düğünleri 1920", dosyalar olacaktır:
                     <ul>
-                        <li>Registro Matrimoni 1920_canvas_1.jpg</li>
-                        <li>Registro Matrimoni 1920_genealogico.json</li>
-                        <li>Registro Matrimoni 1920_tecnico.json</li>
-                    </ul>
-                </li>
-                <li>I suffissi JSON rimangono in EN (_genealogico, _tecnico) per compatibilità</li>
-                <li>Puoi usare nomi in qualunque lingua nel file input (IT, EN, misto)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>6. PDF PER REGISTRI E DOCUMENTI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>COME ATTIVARE LA GENERAZIONE PDF</h4>
-            <p>La generazione del PDF si attiva selezionando la casella <strong>PDF</strong> nella maschera di scelta formati (Menu → Impostazioni → "Seleziona formati immagine").</p>
-            <p>Puoi combinare PDF con uno o più formati immagine (es. PDF + PNG), oppure selezionare solo PDF per ottenere esclusivamente il documento senza file immagine separati.</p>
-            <h4>📄 CARATTERISTICHE DEL PDF GENERATO</h4>
-            <ul>
-                <li><strong>Nome file:</strong> il PDF è denominato semplicemente <code>[nome].pdf</code>, senza suffissi aggiuntivi — ad esempio <code>Registro Matrimoni 1920.pdf</code></li>
-                <li><strong>Posizione:</strong> salvato nella cartella output scelta, allo stesso livello delle immagini: <code>[cartella_scelta]\[nome].pdf</code></li>
-                <li><strong>Ordine pagine:</strong> le pagine sono sempre in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N), indipendentemente dall'ordine in cui i tile vengono scaricati</li>
-                <li><strong>Pagine placeholder:</strong> se un canvas non è disponibile (errore di rete o risorsa temporaneamente non raggiungibile), al suo posto viene inserita automaticamente una pagina <em>placeholder</em> localizzata nella lingua selezionata. La pagina placeholder contiene:
+<li>1920_canvas_1.jpg düğün kaydı</li>
+<li>1920_genealogico.json düğün kaydı</li>
+<li>1920_tecnico.json düğün kaydı</li>
+</ul>
+</li>
+<li>JSON ekleri, uyumluluk için EN (Genalogy, teknik) olarak kalır.</li>
+<li>Giriş dosyasında herhangi bir dilde isim kullanabilirsiniz (IT, EN, karışık)</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3. KAYIT VE BELGELER IÇIN PDF</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>ÜRETIM PDF</h4>
+<p>PDF nesli kutuyu seçerek aktive edilir <strong>PDF</strong> format seçimi maskesinde (Menu → Ayarlar → "Resim Boyutlarını seçin".</p>
+<p>PDF'i bir veya daha fazla görüntü formatlarıyla birleştirebilirsiniz (e.g. PDF + PNG), veya sadece PDF'yi ayrı görüntü dosyaları olmadan elde etmek için seçebilirsiniz.</p>
+<h4>PDF'IN ÖZELLIKLERI</h4>
+<ul>
+<li><strong>Dosya adı:</strong> PDF sadece denir <code>[nome].pdf</code>Ek ek ekler olmadan - örneğin <code>Registro Matrimoni 1920.pdf</code></li>
+<li><strong>Konum:</strong> Seçilen çıktı klasöründe, aynı seviyede görüntüler olarak kurtarıldı: <code>[cartella_scelta]\[nome].pdf</code></li>
+<li><strong>Page order:</strong> Sayfalar her zaman sayısal olarak büyüyor (canvas 1 → tuval 2 → tuval N), karoların indirildiği düzenden bağımsız olarak.</li>
+<li><strong>Pages placeholder:</strong> Bir tuval mevcut değilse (network hatası veya geçici olarak mevcut olmayan kaynak), bir sayfa otomatik olarak yerine getirilir <em>yer sahibi</em> Seçilen dilde bulunan. Yer sahibi sayfası içerir:
                     <ul>
-                        <li>Un testo di avviso localizzato (es. "Immagine non disponibile")</li>
-                        <li>Il link diretto al canvas originale su Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>), così da poter consultare la fonte in modo semplice</li>
-                    </ul>
-                    In questo modo viene sempre generato il PDF, con tutte le informazioni necessarie a completarlo in caso di immagini non scaricate.
+<li>Yerelleştirilmiş bir uyarı metni (e.g. "Image not available"</li>
+<li>Antenati üzerindeki özgün tuvale doğrudan bağlantı (<code>https://antenati.cultura.gov.it/ark:/…</code>), bu yüzden kolayca kaynağa danışabilirsiniz</li>
+</ul>
+                    Bu şekilde PDF her zaman yüklenmemiş görüntüler durumunda tamamlamak için gerekli olan tüm bilgilerle üretilir.
                 </li>
-                <li><strong>Pulizia automatica:</strong> i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine del processo. Nella cartella output rimangono solo le immagini nei formati scelti, il PDF finale, i manifest e i metadati</li>
-            </ul>
-            <h4>🚫 Se PDF non è selezionato:</h4>
-            <ul>
-                <li>Solo le immagini vengono scaricate nei formati selezionati</li>
-                <li>Nessun PDF generato</li>
-            </ul>
-            </div>
-            <div class="section">
-        <h2>&#128204; FUNZIONALIT&#192; DISPONIBILI E PIANIFICATE</h2>
-        <p>Il menu &ldquo;Servizi&rdquo; contiene 5 funzioni: 4 gi&agrave; disponibili, 1 pianificata per versioni future.</p>
-
-        
-
-        <div class="section-box">
-            <h3>1&#65039;&#8419; VISUALIZZAZIONE IMMAGINI &#9989;</h3>
-            <p>Viewer integrato per immagini genealogiche:</p>
-            <ul>
-                <li>Formati supportati: JPG, PNG, TIFF (inclusi TIFF multi-pagina con navigazione avanti/indietro)</li>
-                <li>Zoom con rotella del mouse e pulsanti dedicati</li>
-                <li>Pan con trascinamento del mouse</li>
-                <li>Modalit&agrave; &ldquo;Adatta alla finestra&rdquo; e &ldquo;1:1 pixel&rdquo;</li>
-                <li>Sidecar JSON affiancato all&apos;immagine (EXIF e metadati tecnici)</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_03_visualizzazione_immagini.html">Vedi Guida Visualizzazione Immagini</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>2&#65039;&#8419; VISUALIZZAZIONE METADATI JSON &#9989;</h3>
-            <p>Viewer ad albero per metadati strutturati:</p>
-            <ul>
-                <li>Apertura diretta di file <code>_genealogico.json</code> e <code>_tecnico.json</code></li>
-                <li>Visualizzazione ad albero espandibile</li>
-                <li>Sezioni: dati genealogici, metadati tecnici, EXIF dalle immagini</li>
-                <li>Anteprima immagine abbinata affiancata al pannello metadati</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_04_visualizzazione_metadati.html">Vedi Guida Visualizzazione Metadati JSON</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>3&#65039;&#8419; OCR AVANZATO &#9989;</h3>
-            <p>Trattamento OCR avanzato tramite LLM Vision:</p>
-            <ul>
-                <li>Estrazione testo da documenti antichi (inclusi manoscritti in italiano ottocentesco e latino)</li>
-                <li>Mantenimento della struttura e dei riferimenti del layout (TEI XML)</li>
-                <li>Riconoscimento e pulizia automatica dei dati strutturati (es. tabelle, ruoli)</li>
-                <li>Estrazione di entit&agrave; (nomi, date, relazioni) in formato JSON navigabile</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_05_ocr_avanzato.html">Vedi Guida OCR Avanzato</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>4&#65039;&#8419; TRADUZIONE &#9989;</h3>
-            <p>Traduzione contestuale dei testi estratti:</p>
-            <ul>
-                <li>Traduzione automatica in 20 lingue supportate</li>
-                <li>Gestione della formattazione e del layout originale</li>
-                <li>Possibilit&agrave; di alternare il testo originale e il testo tradotto</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_06_traduzione.html">Vedi Guida Traduzione</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>5&#65039;&#8419; ESPORTAZIONE GEDCOM</h3>
-            <p>Esportazione in formati genealogici:</p>
-            <ul>
-                <li>GEDCOM (standard genealogico internazionale)</li>
-                <li>Interoperabilit&agrave; con software genealogici: Ancestry, Family Historian, Family Tree Maker,
-                Findmypast, FamilySearch, Geni, Geneanet, Gramps, Legacy Family Tree, MyHeritage,
-                Reunion (macOS), RootsMagic, WikiTree</li>
-            </ul>
-            <p style="font-style:italic;color:#7a5c3b;margin-top:0.6rem;">
-            &#128204; <em>Nota: L&apos;elencazione dei software &egrave; puramente indicativa e non
-            vincolante allo sviluppo dell&apos;interoperabilit&agrave; con ciascuna piattaforma.</em></p>
-            <p style="margin-top:0.6rem;"><strong>Status:</strong> &#128302; Pianificata &ndash;
-            <a href="guida_07_esportazione_gedcom.html">Vedi Guida GEDCOM</a></p>
-        </div>
-    </div>
-            <div class="section-box">
-            <h3>9. CARTELLE E FILE OUTPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📂 STRUTTURA OUTPUT</h4>
-            <p>Quando elabori un record IIIF, ATK-Pro salva i file nella cartella che hai scelto nel PASSO 2 (Seleziona cartella output).</p>
-            <h4>STRUTTURA ORGANIZZATA PER RECORD:</h4>
-            <pre class="file-structure">[cartella_output]/
+<li><strong>Otomatik temizlik:</strong> PDF nesli için kullanılan geçici dosyalar, sürecin sonunda otomatik olarak silinir. Çıktı klasöründe sadece görüntüler seçilmiş formatlarda kalır, son PDF, posterler ve metadatata</li>
+</ul>
+<h4>Eğer PDF seçilmezse:</h4>
+<ul>
+<li>Sadece görüntüler seçilmiş formatlarda indirilir</li>
+<li>PDF üretilmiyor</li>
+</ul>
+</div>
+<div class="section">
+<h2>4. 📌 MEVCUT ÖZELLIKLERI MEVCUTTUR</h2>
+<p>“Hizmetler” menüsü, v3 işletim işlevlerini içerir: AI-assisted araştırma, görüntü gösterimi, JSON metadata görüntüsü, OCR Advanced, OCR Çeviri ve GEDCOM İhracat.</p>
+<div class="section-box">
+<h3>1ITA  AT</h3>
+<p>Genaolojik araştırma stratejileri kurmak için yardımcı:</p>
+<ul>
+<li>Ayılar soyadı, yerler, dönemler ve arama yolları</li>
+<li>portallar, filtreler ve örnek sorguları manuel kontrol etmek için</li>
+<li>İtalyan, İtalyan, İtalyan ve uluslararası senaryoları destekliyor</li>
+<li>Kişisel notlar, multi-provider karşılaştırması ve sonuçları kurtarın</li>
+</ul>
+<p><strong>Durum:</strong> kullanılabilir -
+            <a href="guida_03_ricerca_assistita_ai.html">Yapay Zekâ Destekli Araştırma Kılavuzu</a></p>
+</div>
+<div class="section-box">
+<h3>2️⃣ GÖRÜNTÜ EKRAN ✅</h3>
+<p>Genaolojik görüntüler için bütünleşik görünüm:</p>
+<ul>
+<li>Desteklenen formatlar: JPG, TIFF (çok sayfalı TIFF ile ileri / geri navigasyon)</li>
+<li>Fare tekerlek ve adanmış düğmelerle Zoom</li>
+<li>Pan with mouse drag</li>
+<li>Pencereye ek" ve "1:1 piksel" modu</li>
+<li>Sidecar JSON görüntünün yanında (EXIF ve teknik metadata)</li>
+</ul>
+<p><strong>Durum:</strong> kullanılabilir -
+            <a href="guida_04_visualizzazione_immagini.html">Görüntü Görüntüleme Kılavuzuna bakın</a></p>
+</div>
+<div class="section-box">
+<h3>3TI VIEW METADATA JSON ✅</h3>
+<p>Mekanik metadata için ağaç görünümü:</p>
+<ul>
+<li>Doğrudan dosya açma <code>_genealogico.json</code> ve <code>_tecnico.json</code></li>
+<li>Genişletilmiş ağaç görüntüsü</li>
+<li>Bölümler: Genaolojik veriler, teknik metadata, resimlerden EXIF</li>
+<li>Metadata panelinin yanında eşleştirilmiş görüntü önizleme</li>
+</ul>
+<p><strong>Durum:</strong> kullanılabilir -
+            <a href="guida_05_visualizzazione_metadati.html">Metadata JSON</a></p>
+</div>
+<div class="section-box">
+<h3>4 Z OCR GELIŞMIŞ ✅</h3>
+<p>Gelişmiş OCR tedavisi LLM Vision:</p>
+<ul>
+<li>Eski belgelerden gelen metin (On dokuz ve Latin İtalyan’daki el yazmaları dahil)</li>
+<li>Sınıf yapısı ve referansları (TEI XML)</li>
+<li>yapılandırılmış verilerin otomatik tanınması ve temizliği (örneğin tablolar, roller)</li>
+<li>Varlıkların (isimler, tarihler, raporlar) navigable JSON format</li>
+</ul>
+<p><strong>Durum:</strong> kullanılabilir -
+            <a href="guida_06_ocr_avanzato.html">Gelişmiş OCR Kılavuz</a></p>
+</div>
+<div class="section-box">
+<h3>5 Z OCR ÇEVIRI ÇEVIRISI</h3>
+<p>Özgün metin çevirisi:</p>
+<ul>
+<li>Metin çevirisi OCR, manuel transkriptler ve TXT dosyalar</li>
+<li>Belge türleri, parlak ve bağlam</li>
+<li>Configurable IA sağlayıcı, opsiyonel model ve Güvenli Anahtarlar</li>
+<li>Çıktı TXT veya DOCX düzenlenebilir</li>
+</ul>
+<p><strong>Durum:</strong> kullanılabilir -
+            <a href="guida_07_traduzione.html">OCR Çeviri Kılavuzu</a></p>
+</div>
+<div class="section-box">
+<h3>6️⃣ IHRACAT GEDCOM</h3>
+<p>Genaolojik analiz ve ihracat GEDCOM:</p>
+<ul>
+<li>Auto-Discovery yöntemi ile evrensel giriş, Vizyon IA veya Refinery LLM</li>
+<li>Mevcut GEDCOM veya CSV üssünü artırmak için olasılık</li>
+<li>Paleographic notları ve belge türleri Ekstraksiyona rehberlik etmek için</li>
+<li>Bir dosyanın nesli <code>genealogia_*.ged</code> Kullanmadan önce kontrol etmek</li>
+</ul>
+<p style="margin-top:0.6rem;"><strong>Durum:</strong> kullanılabilir -
+            <a href="guida_08_esportazione_gedcom.html">GEDCOM Kılavuz</a></p>
+</div>
+</div>
+<div class="section-box">
+<h3>5. KLASÖRLER VE ÇIKIŞ DOSYALARI</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>ÇIKTI YAPISI</h4>
+<p>Bir IIIF kaydı işlediğinizde ATK-Pro dosyaları ADIM 2’de seçtiğiniz klasöre kaydeder (Çıktı klasörünü seçin).</p>
+<h4>KAYIT IÇIN ORGANIZE YAPI:</h4>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
 ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite (una per pagina)
 ├─ [nome]_canvas_2.jpg/.png/.tif
@@ -726,9 +752,9 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ [nome]/                           ← Sottocartella SOLO per metadati
    ├─ [nome]_genealogico.json        ← Metadati genealogici
    └─ [nome]_tecnico.json            ← Metadati tecnici</pre>
-            <h4>MULTI-RECORD NELLA STESSA CARTELLA:</h4>
-            <p>Se elabori 3 record nella stessa cartella, la struttura diventa:</p>
-            <pre class="file-structure">[cartella_output]/
+<h4>AYNI KLASÖRDE MULTI-RECORD:</h4>
+<p>Aynı klasörde 3 kayıt işlemi yaparsanız, yapı olur:</p>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID1]_Registro1.json
 ├─ Registro1_canvas_1.jpg
 ├─ Registro1_canvas_2.jpg
@@ -752,36 +778,30 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ Registro3/
     ├─ Registro3_genealogico.json
     └─ Registro3_tecnico.json</pre>
-            <h4>📌 NOTE SULLA STRUTTURA:</h4>
-            <ul>
-                <li>Manifest IIIF, Immagini, PDF, Sidecar JSON: nel livello principale</li>
-                <li>SOLO metadati tecnici e genealogici: in sottocartelle [nome]/ (uno per record)</li>
-                <li>Le cartelle temporanee (<code>tiles_canvas_X/</code>) e i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine dell'elaborazione: nella cartella output non rimane nessun file di lavoro intermedio</li>
-                <li>Questa organizzazione consente di gestire molteplici record nella stessa cartella senza confusione tra file</li>
-            </ul>
-            <h4>📋 CONVENZIONE DI DENOMINAZIONE:</h4>
-            <ul>
-                <li>Manifest: manifest_[ID]_[nome].json</li>
-                <li>Immagini: [nome]_canvas_1, [nome]_canvas_2, ... [nome]_canvas_N</li>
-                <li>JSON metadati: [nome]_genealogico.json, [nome]_tecnico.json</li>
-                <li>JSON immagini: [nome].json (per ogni canvas)</li>
-                <li>PDF: [nome].pdf</li>
-            </ul>
-            </div>
-            
-        
-                </div>
-        
-    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-
-    <footer style="text-align: center;">
-            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-        </footer>
-    </div>
-    </div>
+<h4>YAPI NOTLARI:</h4>
+<ul>
+<li>Manifest IIIF, Görüntüler, PDF, Sidecar JSON: ana seviyede</li>
+<li>SADECE teknik ve genalojik metadata: alt kadranlarda [isim] / (biri kayıt başına)</li>
+<li>Geçici klasörler<code>tiles_canvas_X/</code>PDF nesli için kullanılan geçici dosyalar otomatik olarak işlemenin sonunda silinir: Orta çalışma dosyaları çıktı klasöründe kalır</li>
+<li>Bu organizasyon, dosyalar arasında karışıklık olmadan aynı klasörde birden fazla kayıt yönetmenize olanak sağlar</li>
+</ul>
+<h4>DI ADLANDIRMA KONGRESI:</h4>
+<ul>
+<li>Manifest: [ID] [isim] json</li>
+<li>Görüntüler: [isim] tuval 1, [name] tuval 2, ... [name] tuval N</li>
+<li>JSON metadata: [name]_genealogico.json, [name]_tecnico.jsonXZ</li>
+<li>JSON görüntüleri: [isim]. json (her tuval için)</li>
+<li>PDF: [isim]. pdf</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">← Mod.01 – Kurulum, Başlatma ve Arayüz</a>
+<a class="nav-button" href="guida.html">e Main index</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 - AI'yı araştırmayı →</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
 </body>
 </html>
