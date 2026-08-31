@@ -135,3 +135,15 @@ def test_arabic_guide_uses_current_v3_module_set():
     text_dir = Path("assets/ar/testuali")
     for obsolete_module in documents.BASE_GUIDE_MODULES[2:]:
         assert not (text_dir / obsolete_module).exists()
+
+def test_hebrew_guide_uses_current_v3_module_set():
+    modules = documents.expected_guide_modules(Path("assets/he"))
+
+    assert modules == documents.ITALIAN_GUIDE_MODULES
+    assert "guida_03_ricerca_assistita_ai.html" in modules
+    assert "guida_09_supporto_faq.html" in modules
+    assert "guida_03_visualizzazione_immagini.html" not in modules
+
+    text_dir = Path("assets/he/testuali")
+    for obsolete_module in documents.BASE_GUIDE_MODULES[2:]:
+        assert not (text_dir / obsolete_module).exists()

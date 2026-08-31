@@ -66,6 +66,8 @@ JAPANESE_GUIDE_MODULES = ITALIAN_GUIDE_MODULES.copy()
 
 ARABIC_GUIDE_MODULES = ITALIAN_GUIDE_MODULES.copy()
 
+HEBREW_GUIDE_MODULES = ITALIAN_GUIDE_MODULES.copy()
+
 MENU_DOCUMENTS = {
     "Disclaimer": (
         "disclaimer_legale_ATK-Pro.html",
@@ -137,6 +139,8 @@ def expected_guide_modules(lang_dir: Path) -> list[str]:
         return JAPANESE_GUIDE_MODULES
     if lang_dir.name == "ar":
         return ARABIC_GUIDE_MODULES
+    if lang_dir.name == "he":
+        return HEBREW_GUIDE_MODULES
     return BASE_GUIDE_MODULES
 
 
@@ -282,6 +286,7 @@ def main() -> int:
         f"Chinese {len(CHINESE_GUIDE_MODULES)}, "
         f"Japanese {len(JAPANESE_GUIDE_MODULES)}, "
         f"Arabic {len(ARABIC_GUIDE_MODULES)}, "
+        f"Hebrew {len(HEBREW_GUIDE_MODULES)}, "
         f"other languages {len(BASE_GUIDE_MODULES)}"
     )
     print("- Menu documents checked: Disclaimer, author, project, guide")
