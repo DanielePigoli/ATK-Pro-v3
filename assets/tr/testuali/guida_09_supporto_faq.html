@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Modül 09: Belgelendirme, Destek, Sorun Giderme ve SSS</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Modül 09: Belgelendirme, Destek, Sorun Giderme ve SSS</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">← Mod.08 – GEDCOM Dışa Aktarımı</a>
+<a class="nav-button" href="guida.html">e Main index</a>
+</div>
+<div class="section-box">
+<h3>1. Belgeler menüsü: kaynaklar ve destek</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>MEVCUT BELGELER MEVCUT</h4>
+<p>menüde <strong>Belgeler</strong> Uygulamanın bilgi kaynaklarına erişmek için beş seçenek bulmak.</p>
+<p><strong>Not:</strong> Belgeler yüklemeye dahil edilir ve internet bağlantısı olmadan danışılabilir.</p>
+<h4>1) DISCLAIMER (Yasal Kullanım)</h4>
+<ul>
+<li>Uygulamaya dahil edilen resmi yasal feragatin metni açın.</li>
+<li>Contains: Sorumluluk Sınırları, kullanım koşulları, yazılım lisansları</li>
+<li>Yoğun kullanımdan önce önemli okuma</li>
+<li>Uygulamanın yeni bir versiyonu ile birlikte güncellenebilir; yasal incelemeyi değiştirirken, yeni bir kabul gereklidir.</li>
+</ul>
+<h4>2. SUNUM YAZARI</h4>
+<ul>
+<li>Açılış: presentazione_autore.html</li>
+<li>Contains: kısa yazar biyografi, arşiv / dijital deneyim</li>
+<li>Projenin arka planını anlamanıza izin verin</li>
+</ul>
+<h4>3. PROJE SUNUMU</h4>
+<ul>
+<li>Açılış: presentazione_progetto_ATK-Pro.html</li>
+<li>Contains:
+                    <ul>
+<li>Main hedefler: multi-portal ve aile çalışma masası</li>
+<li>Portal politikası: uyumlu kamu kaynaklarının kullanımı, giriş yapmadan, ödeme duvarı veya teknik kısıtlamalar</li>
+<li>v3 kapsamı: portal kaydı, Yapay Zekâ Destekli Araştırma, OCR, OCR çevirisi, soybilimsel analiz ve GEDCOM dışa aktarımı</li>
+<li>Recipients: Genalojik araştırmacılar, arşiv akademisyenler, İtalyan ve İtalyan toplulukları</li>
+<li>Çok dil: 20 desteklenen diller (IT, EN, ES, PT, FR, DE, AR, HE, NL, RU, JA, SV, ZH, RO, EL, PL, DA, NO, TR, VI)</li>
+</ul>
+</li>
+<li>Canlı belge, ilerici entegrasyona tabi</li>
+</ul>
+<h4>4) GUIDA (bölge indeksi)</h4>
+<ul>
+<li>Açılış: guida.html</li>
+<li>Contains: İtalyan kılavuzunun modüler indeksi v3</li>
+<li>Buradan, özel işletim bölümlerine erişebilirsiniz: kurulum, temel işlemler, izleyiciler, metadata, OCR, çeviri, GEDCOM, destek ve AI Assisted Araştırma</li>
+</ul>
+<h4>5 BILGI</h4>
+<ul>
+<li>3 satır ile pencere göster:
+                    <ul>
+<li>1. ATK-Pro vx.x.x (vers number)</li>
+<li>2. ©2026 Daniele Pigoli (telif hakkı ve yazar)</li>
+<li>3. E-posta desteği ( raporlar için/recommendations)</li>
+</ul>
+</li>
+<li>Resmi temaslar için e-posta kullanın</li>
+<li>Güncelleme otomatik olarak otomatik olarak otomatik olarak Güncelleme</li>
+</ul>
+<h4>Dil kullanılabilirliği</h4>
+<ul>
+<li>Sunum yazarı, sunum projesi ve rehber, mevcut olduğunda seçilmiş dilde açılır.</li>
+<li>İşletim feragati resmi İtalyan yasal incelemeyi kullanır.</li>
+<li>Yerelleştirilmiş bir kaynak mevcut değilse, göreceli mesaj gösterilir.</li>
+<li>Örneğin giriş dosyası, İngilizce bir geri dönüş olarak kullanılır.</li>
+</ul>
+<h4>NASIL DESTEKLE ILETIŞIME GEÇILIR</h4>
+<p>E-posta: antenati.toolkit.pro@gmail.com</p>
+<ul>
+<li>Böcekleri rapor etmek: Problemi + ekran görüntüsü /log</li>
+<li>Öneriler için: Yeni fonksiyonlar veya iyileştirmeler</li>
+<li>Teknik sorular için: Operasyona İlişkin Doğrulamaya Sor</li>
+<li>Geliştirme önceliklerini önermek için: uygulanabilir kamu portallarını veya fonksiyonların tamamlanmasını önerir.
+                    <ul>
+<li>Teklifler değerlendirilecek, ancak geliştirme ATK-Pro'in profesyonel bir yazılım evi tarafından yönetildiği ve muhafaza edildiği gerçeği tarafından şartlandırılmıştır.</li>
+<li>Uygulama süreleri sınırlı kullanılabilirliğe ve kaynaklara bağlıdır.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. Program kapanışı ve proje desteği</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>ATK-PRO</h4>
+<p>Programı sistem tarafından yönetilen şekillerde kapatabilirsiniz:</p>
+<ol>
+<li>seçin <strong>Ayarlar</strong>;</li>
+<li>Başlık çubuğundaki kapanış düğmesine tıklayın;</li>
+<li>Windows, standart kısayol kullanın <strong>Alt+F4</strong>.</li>
+</ol>
+<p>Seçmeli pencere kapanış sırasında gösterilir <strong>Projeyi destekle</strong>.</p>
+<h4>PENCERE "PROJEYI DESTEKLEYIN"</h4>
+<p>3 kapanış yönteminden birini seçtikten sonra, bir pencere açılır:</p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="Pencere desteği projesi" src="images/window4.webp" style="max-width: 600px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>Bu pencerede ne yapabilirsiniz</h4>
+<p>" OPTION 1: Click BANNER (herhangi bir görüntünün bir parçası)</p>
+<ul>
+<li>Tarayıcınızı resmi PayPal ile açın.me page</li>
+<li>Bağış miktarını seçebilirsiniz (tam olarak ücretsiz)</li>
+<li>PayPal ile ödeme (Ülkeye bağlı olarak veya hesap olmadan)</li>
+<li>Hiçbir kısıtlama yok: Ayrıca bağış yapmamaya karar verebilirsiniz</li>
+</ul>
+<p>Il OPTION 2: taramalar QR kodu</p>
+<ol>
+<li>Akıllı kameranızı açın.</li>
+<li>Afişteki QR kodunu tarayın.</li>
+<li>Takip etmeden önce önerilen tarayıcıya göz atın.</li>
+</ol>
+<p>OP OPTION 3: Click " Close" düğmesine tıklayın</p>
+<ul>
+<li>Pencereyi kapat</li>
+<li>Programı kalıcı olarak bitirin</li>
+<li>Hiçbir bağ: Donating olmadan yakınlayabilirsiniz</li>
+</ul>
+<h4>ÖNEMLI NOTLAR:</h4>
+<p>Donations FACOLTATIVE TOTALMENT</p>
+<p>✓ Program aynı şekilde veya bağış yapmadan çalışır</p>
+<p>✓ Takip Et, Limitsiz fonksiyonlar</p>
+<p>Bayrak, proje tarafından yapılandırılan PayPal adresini açar; tarayıcı tarafından gösterilen hedef her zaman kontrol eder</p>
+<p>✓ Projeyi tercih ettiğinizde destekleyebilirsiniz</p>
+<h4>BAĞIŞLARIN NE AMAÇLA AMAÇLANDIĞI IÇIN:</h4>
+<p>ATK-Pro'in gelecekteki gelişimini destekler:</p>
+<ul>
+<li>Proje ile ilgili dağıtım, altyapı ve hizmetler</li>
+<li>Bağımlılık ve yazılım bileşenleri</li>
+<li>Geliştirme zamanı, daha sonraki sürümlerin test edilmesi ve bakımı</li>
+<li>IIIF validation test server</li>
+<li>Dokümantasyon ve bakım</li>
+</ul>
+<h4>BAĞIŞLAMAK IÇIN ALTERNATIF:</h4>
+<p>Bağışlayamazsanız ama desteklemek istiyorsanız, yapabilirsiniz:</p>
+<ul>
+<li>ATK-Pro sosyal medyada paylaşın</li>
+<li>Rapor Yenilikçi kullanımlar veya ilginç vaka çalışmaları</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3. Sorun Giderme ve SSS</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>SIK SIK SORULAR SORDU SORULAR</h4>
+<h4>🔵 S: Program manifest yüklenirken kilitleniyor mu?</h4>
+<p><strong>R:</strong> Genellikle ağ süresidir. Check:</p>
+<ol>
+<li>İnternet bağlantısının tarayıcınızda güvenilir bir sayfa açarak çalıştığını kontrol edin.</li>
+<li>URL IIIF tarayıcıda açın ve adres çubuğundan tekrar kopyalayın.</li>
+<li>Bu duvarları veya güvenlik yazılımının ATK-Pro bağlantılarına izin verdiğini kontrol edin.</li>
+<li>Bir proxy ağı kullanıyorsanız, işletim sistemini ağ yapılandırmasını kontrol edin.</li>
+</ol>
+<p>Sorun devam ederse, URL IIIF bağlantılarını test etmek için farklı deneyin</p>
+<h4>🔵 P: "File bulunamadı (404)" - ne anlama geliyor?</h4>
+<p><strong>R:</strong> Posterin URL ulaşılamaz. Sebepler:</p>
+<ul>
+<li>URL sonad (repository güncellenmez)</li>
+<li>Repository çevrimdışı</li>
+<li>Erroneous URL parametreleri ( yanlışlıkla açık ID)</li>
+</ul>
+<p>Çözüm: URL tarayıcınızda ATK-Pro'de gluing yapmadan önce</p>
+<h4>? P: Çok yavaş indirin veya kesir mi?</h4>
+<p><strong>R:</strong> Deneyin:</p>
+<ol>
+<li>Wi-Fi ağının stabilitesini kontrol edin veya mevcutsa bir telli bağlantı kullanın.</li>
+<li>Yavaşlama sunucuya bağlı olup olmadığını görmek için başka bir kamu URL IIIF deneyin.</li>
+<li>Kaynak profili seçerek yükü azaltın <strong>Hafif</strong>.</li>
+<li>Eğer sorun sadece bir portal, güven ve tekrar deneyin: uzaktan hizmet dayanılmaz veya geçici olarak mevcut olmayabilir.</li>
+</ol>
+<h4>P: Yeniden inşa yavaş görüntüler - nasıl hızlanır?</h4>
+<p><strong>R:</strong> Hız özellikle IIIF sunucusunun yanıtına bağlıdır, bilgisayarda mevcut olan görüntü büyüklüğü, bağlantı ve kaynaklar.</p>
+<ul>
+<li>Profil Kullanımı <strong>Hafif</strong> Kaynak tüketimini azaltmak veya <strong>Hızlı</strong> Sadece yeterli sistemler üzerinde.</li>
+<li>Süreç, hafıza veya ağ baskı altında olup olmadığı bir zamanda daha az sayfaya girer.</li>
+<li>Bazı portalların seçilmiş profilden bağımsız erişim gerektirdiğini unutmayın.</li>
+</ul>
+<h4>PRO P: PDF çıktısı bozulmuş veya açık değil mi?</h4>
+<p><strong>R:</strong> Deneyin:</p>
+<ol>
+<li>Tanının yararlı bir kopyasını tut, sonra eksik PDF'i kaldırın.</li>
+<li>Kayıtları yeniden yükleyin <strong>Dosya girişi</strong> PDF'i yeniden üretin.</li>
+<li>Hedefin yazılabilir olduğundan ve işlem için yeterli alana sahip olduğundan emin olun.</li>
+<li>Problemin sadece PDF ile ilgili endişelerini görmek için üretilen bireysel görüntüleri kontrol edin.</li>
+</ol>
+<h4>I P: TIFF dosyaları arşiv için nasıl kullanırım?</h4>
+<p><strong>R:</strong> TIFF kayıp format, depolama için mükemmel:</p>
+<ol>
+<li>TIFF görüntü biçimleri arasında seçim yapın.</li>
+<li>ATK-Pro TIFF'i kayıp sıkıştırma LZW ile kurtarır.</li>
+<li>Farklı bir destek üzerine bir kopya açın ve periyodik olarak yedeklemenin bütünlüğünü doğrulayın.</li>
+<li>Zaman içinde depolama da medya, kopyalar ve dürüstlük kontrollerine bağlıdır, sadece formatta değil.</li>
+</ol>
+<h4>? P: Birden fazla kayıt aynı anda ( paralel) yapabilir miyim?</h4>
+<p><strong>R:</strong> Bir toplu kayıt seride işlenir. Tek kayıt içinde, sayfalar ve karolar portal ve kaynak profiline paralel olarak işlenebilir.</p>
+<ol>
+<li>Desteklenen tüm kayıtlarla bir giriş dosyasını hazırlayın, diğerinden sonra.</li>
+<li>Onu seçin <strong>Dosya girişi</strong>.</li>
+<li>Bir seferde başlayın <strong>Çıktı → Elabora</strong>.</li>
+<li>ATK-Pro otomatik olarak sonraki rekorlarla devam ediyor.</li>
+</ol>
+<p>Örnek: Giriş 5 kayıt içeriyorsa ATK-Pro otomatik süreçler:</p>
+<ul>
+<li>Record 1 (download + yeniden)</li>
+<li>Record 2 (download + yeniden)</li>
+<li>... Record 5</li>
+</ul>
+<p>Sonuçlar yapılandırılmış klasörlerde kaydedilir; her kayıt için işleme manuel olarak yeniden başlatmanız gerekmez.</p>
+<h4>🔵 P: Dosyalar tam olarak nerede tasarruf eder?</h4>
+<p><strong>R:</strong> Varsayılan yol:</p>
+<ul>
+<li><strong>Standart kurulum:</strong> klasör klasör klasörü <code>ATK-Pro/output</code> Kullanıcı Belgelerinde.</li>
+<li><strong>Portre modu:</strong> klasör klasör klasörü <code>output</code> Bir sonraki duraklanabilir.</li>
+</ul>
+<p>Hedefinizi buradan değiştirebilirsiniz <strong>Ayarlar</strong>. Varsayılan klasörler mümkün olduğunda otomatik olarak oluşturulur.</p>
+<h4>? P: Neden ATK-Pro sinyali veya bir çıkış yolu bloke ediyor?</h4>
+<p><strong>R:</strong> dosyaları oluşturmadan önce, ATK-Pro kayıt için en uzun rotayı kontrol eder. Son özet iki durumu ayırt eder:</p>
+<ul>
+<li><strong>Blok hatası:</strong> Adın izin verilmez, Windows, bir uzay veya bir nokta ile biter veya bir segment desteklenen sınırı aşıyor. Sadece etkilenen kayıt durduruluyor ve göreceli iş kitabı oluşturulmuyor.</li>
+<li><strong>Uyumluluk bildirimi:</strong> Yol titiz bir eşiğe yakındır veya daha az yeni Windows uygulamaları ile zorluklar yaratabilir. İşleme devam edebilir, ancak daha kısa bir hedef seçmek en iyisidir.</li>
+</ul>
+<p>Profil <strong>OneDrive/SharePoint</strong> Sadece seçilen klasör aslında bir kök altında olduğunda uygulanır <code>OneDrive</code> veya <code>OneDrive - Organizzazione</code>Hata durumunda, kayıt adını kısaltmak veya sürücü köküne daha yakın bir hedef klasörü seçin; başka işlem tarafından üretilen dosyaları adlandırmanız veya taşımanız gerekmez.</p>
+<h4>? P: İşlemeden sonra çıktı dosyaları taşıyabilir miyim?</h4>
+<p><strong>R:</strong> Evet, son dosyalar işlemden sonra taşınabilir.</p>
+<p>Tamamlandıktan sonra:</p>
+<ol>
+<li>Kayıt klasörü yeni hedefe taşıyın.</li>
+<li>Son PDF otonomdir; Ayrıca, çalışma arşivinizin bir parçası olup görüntüleri ve metadata tutar.</li>
+<li>Kaydı yeniden çalışmayı beklerseniz, posteri ve diğer kaynak dosyalarını tut.</li>
+</ol>
+<h4>🔵 P: Crashes ani - ne yapmalı?</h4>
+<p><strong>R:</strong> Program çökerse:</p>
+<ol>
+<li>Kontrol edin <code>atkpro.log</code> veya aktif genişletilmiş tanılarla, <code>atkpro_debug.log</code>. Konum yükleme türüne bağlıdır: executable veya uygulama çalışma kılavuzunda bir sonraki arama.</li>
+<li>Hata mesajını kopyalayın veya bir ekran görüntüsü alın.</li>
+<li>Programı yeniden başlatın ve operasyonu tekrarlayın.</li>
+<li>Hata tekrarlanırsa, belirli bir açıktan genel bir sorunu ayırt etmek için başka bir IIIF kaydı deneyin.</li>
+</ol>
+<h4>E YAYGIN HATALAR VE ÇÖZÜMLER</h4>
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+<thead style="background-color: #f0f0f0;">
+<tr>
+<th style="text-align: left;">Hata</th>
+<th style="text-align: left;">Vaka Örneği</th>
+<th style="text-align: left;">Çözüm çözümü</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"Network timeout"</td>
+<td>Server IIIF yavaş/offline</td>
+<td>Farklı URL ile tekrar deneyin</td>
+</tr>
+<tr>
+<td>"Invalid IIIF format"</td>
+<td>URL Manifest IIIF</td>
+<td>URL tarayıcınızda</td>
+</tr>
+<tr>
+<td>"Disk uzay dolu"</td>
+<td>Yetersiz disk alanı</td>
+<td>Birimlerde Ücretsiz Uzay</td>
+</tr>
+<tr>
+<td>" İzin inkar"</td>
+<td>Korumalı klasör / Sadece</td>
+<td>Kullanıcınıza ait bir klasör seçin ve yazılabilir olduğunu doğrulayın; sistem klasörlerinden veya korumalı.</td>
+</tr>
+<tr>
+<td>"URL bulunamadı"</td>
+<td>Manifest IIIF expired</td>
+<td>Portalda kimlik kontrol edin</td>
+</tr>
+<tr>
+<td>"Win not reply"</td>
+<td>Slow/heavy processing</td>
+<td>Wait veya click Cancel</td>
+</tr>
+</tbody>
+</table>
+<h4>. P: portal tanınır ancak indirme reddedilir. Neden?</h4>
+<p><strong>R:</strong> Teknik uyumluluk erişim koşullarını ortadan kaldırmaz. ATK-Pro, iştirak giriş veya erişim gerektiren kaynakları reddediyor veya sınırlar, istikrarlı bir halka uç noktası ortaya çıkarmaz, işaretlenir <code>nodownload</code> veya gerekli operasyonla uyumlu haklara sahip değildir. Konunun genel sayfasını açın, lisans kontrol edin ve kullanım koşulları ve yalnızca resmi desteklenen resmi URL ile test edin.</p>
+<h4>PRO P: kırık bir OCR partisini kurtarabilir miyim?</h4>
+<p><strong>R:</strong> OCR dosyası için seçilen klasörü kontrol edin <code>*_trascrizione_parziale.txt</code> ve metadata. Onlar, kesin düşünmeden önce kontrol etmek ve tamamlamak için sürekli olarak kaydedilen işi içerirler.</p>
+<h4>🆘 DESTEK VE İLETİŞİM</h4>
+<p>Sorun çözüm denedikten sonra devam ederse:</p>
+<ol>
+<li>Proje sunumuna bakın ve menüden bu kılavuz <strong>Belgeler</strong>.</li>
+<li>Sorun çözülmezse, yazmak için yaz <strong>antenati.toolkit.pro@gmail.com</strong> Ayrıca:</li>
+</ol>
+<ul>
+<li>Sürüm ATK-Pro (menu Belgeleri → Bilgi)</li>
+<li>İşletim sistemi ve sürüm (e.g. Windows 10/11, Ubuntu 22.04, macOS 13)</li>
+<li>URL IIIF sorunlara neden oluyor</li>
+<li>Hata Ekranı (eğer görüntülenen)</li>
+</ul>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">← Mod.08 – GEDCOM Dışa Aktarımı</a>
+<a class="nav-button" href="guida.html">e Main index</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>
