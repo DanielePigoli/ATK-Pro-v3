@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Mô-đun 07: Dịch OCR</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 Mô-đun 07: Dịch OCR</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_06_ocr_avanzato.html">thể hiện lòng trắc ẩn</a>
+<a class="nav-button" href="guida.html">chỉ mục e Main</a>
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">Mod.08 — Xuất GEDCOM</a>
+</div>
+<div class="section">
+<h2>Toàn cảnh Panoramica</h2>
+<p>Mô- đun <strong>Dịch cổ tự học có hỗ trợ (LLM)</strong> dịch các bản sao, văn bản cổ, ghi chú hay tập tin <code>.txt</code> trong ngôn ngữ hiện đại được người dùng chọn.</p>
+<p>Mở từ thực đơn <em>Dịch vụ</em>. Môđun sử dụng các nhà cung cấp IA được cấu hình trong ATK-Pro, với cùng logic của các phím và sở thích cũng được sử dụng bởi các dịch vụ phả hệ.</p>
+<p>Bản dịch này vẫn còn là nguồn hỗ trợ cho việc đọc: phải luôn luôn sửa đổi kết quả, nhất là khi văn bản gốc chứa đựng những công thức cổ xưa, tiếng La - tinh, công thức văn chương, cách viết tắt, phương ngữ hoặc tên thích hợp.</p>
+</div>
+<div class="section">
+<h2>Giao diện điều khiểnName</h2>
+<p>Cửa sổ được sắp xếp trong một thanh cấu hình, một khu vực văn bản nguồn, một trường hướng dẫn ngữ cảnh và một khu vực cho kết quả.</p>
+<div class="section-box">
+<h3>Thanh cấu hình</h3>
+<ul>
+<li><strong>IA</strong>▪ Chọn dịch vụ để sử dụng trong số những người có mặt ở đó, chẳng hạn như Song Tử, OpenAI, Claude, Mistral, CIA, DeepSek, Groq, Hug face hay Ollama.</li>
+<li><strong>Mô hình</strong>: Trường tùy chọn chỉ ra một mô hình cụ thể do nhà cung cấp hỗ trợ. Nếu bạn để trống, ATK-Pro sử dụng mô hình cấu hình mặc định.</li>
+<li><strong>Kiểu tài liệu</strong>: Chọn kiểu tài liệu hay văn bản cần dịch. Bạn có thể tạo và gỡ bỏ các kiểu tự chọn; đối với các kiểu tích hợp, bạn có thể thay đổi dấu nhắc bằng cách ghi đè, nhưng không xoá chúng.</li>
+<li><strong>Phím ADI và an toàn</strong>: Hãy nhập khóa nhà cung cấp đã chọn hoặc mở tập tin <em>Két sắt</em> để tư vấn hoặc chỉnh sửa hầm CSV.</li>
+<li><strong>Ngôn ngữ đích</strong>: Chọn ngôn ngữ hiện đại mà bạn muốn có bản dịch.</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>Nguồn</h3>
+<ul>
+<li><strong>Nguồn văn bản</strong>: Lưu bản sao để dịch hay tải lên tập tin <code>.txt</code> tạo ra trước đó.</li>
+<li><strong>Tải tệp TXT</strong>: Mở tập tin văn bản và chèn nó vào khu vực mã nguồn.</li>
+<li><strong>&amp; Văn cảnh chú giải</strong>: Cho phép đưa ra chỉ dẫn cho mô hình trước khi dịch.</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>Kết quả được dịch</h3>
+<ul>
+<li>Bấm <strong>Dịch văn bản NGAY</strong> để bắt đầu xử lý.</li>
+<li>Trong quá trình xử lý bảng kết quả cho thấy thông điệp chờ đợi.</li>
+<li>Kết quả là có thể sửa đổi: sửa trực tiếp bản dịch trước khi lưu nó.</li>
+<li><strong>Lưu bản dịch (TXT)</strong> xuất khẩu văn bản đơn giản.</li>
+<li><strong>Xuất sang Word (DOCX)</strong> tạo một tài liệu sửa được.</li>
+</ul>
+</div>
+</div>
+<div class="section">
+<h2>hội nghị địa hạt</h2>
+<p>Trường này cho phép bạn giáo dục mô hình về các tính năng văn bản trước khi bạn bắt đầu xử lý. Đó là điểm đúng để làm sáng tỏ các chữ viết tắt, công thức, ngôn ngữ gốc, cung cấp tiêu chuẩn và từ ngữ không được dịch.</p>
+<div class="section-box">
+<h3>Khi nào sử dụng nó</h3>
+<p>Trường này đặc biệt hữu ích khi văn bản chứa:</p>
+<ul>
+<li><strong>Thuyết vạn vật học và từ lỗi thời</strong> mà một dịch giả hiện đại có thể giải thích khác</li>
+<li><strong>Điều kiện ngữ pháp</strong> (sicilian, veneto, Tuscan etc.) không có trong từ điển chuẩn</li>
+<li><strong>Hình thức pháp lý hoặc công chứng hiện thời</strong> với ý nghĩa kỹ thuật cụ thể</li>
+<li><strong>Tên</strong> không nên dịch nhưng chép lại một cách trung thành</li>
+<li><strong>Chữ viết tắt</strong> với ý nghĩa thông thường trong tài liệu này</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>Những ví dụ thực tiễn</h3>
+<p><strong>Thí dụ 1 — Giáo xứ thế kỷ 19 đóng vai trò trong tiếng địa phương của người Ni - giê - ri:</strong></p>
+<pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">f. = figlio/a di
+fu = già defunto/a
+q. = quondam (già defunto/a)
+vid. = vedova/o
+I mesi sono scritti in dialetto (Jinnaru, Frivaru, Marzu...).
+Non tradurre i nomi propri (Nunzio, Rosaria, Salvatore...).
+Gli appellativi 'don' e 'donna' indicano persone di rango elevato, mantenerli.</pre>
+<p style="margin-top:1rem;"><strong>Thí dụ 2 — Luật công chứng trong tiếng La - tinh thời Trung cổ:</strong></p>
+<pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Il testo è in latino notarile. Traduci in italiano moderno.
+Mantieni le formule giuridiche standard (rogatio, instrumentum, actum...).
+'lib.' = libbre (moneta, non peso). 'sol.' = soldi.
+I toponimi in genitivo latino vanno sempre resi con il nome italiano corrente.</pre>
+<p style="margin-top:1rem;"><strong>Thí dụ 3 — Lá thư cá nhân trong thế kỷ 19 của Ý:</strong></p>
+<pre style="background:#f5f0e8;padding:10px;border-radius:4px;font-size:0.9em;border-left:3px solid #a67c52;">Testo in italiano ottocentesco formale. Traduci in inglese moderno.
+Mantieni il tono formale, senza renderlo colloquiale.
+'Pregiatissimo' e 'Esimio' sono formule di cortesia: rendi con equivalenti inglesi appropriati.
+Non tradurre i nomi propri.</pre>
+</div>
+<div class="section-box">
+<h3>Chiến thuật gợi ý</h3>
+<ul>
+<li>Xây dựng thư mục <strong>Dần dần</strong>: thực hiện một bản dịch đầu tiên, định vị những lỗi lặp đi lặp lại, thêm chỉ dẫn và thử lại.</li>
+<li>Đối với các bộ sưu tập khác nhau, lưu trữ các bản sao riêng biệt và dán chúng trong trường trước khi xử lý.</li>
+<li>Luôn luôn ghi rõ <strong>Ngôn ngữ văn bản nguồn</strong>Đặc biệt đối với tiếng La - tinh, thổ ngữ, ngôn ngữ địa phương hoặc văn bản đa ngôn ngữ.</li>
+<li>Chỉ ra khi nào cần phải giữ đúng tên, tên, tước hiệu hoặc công thức, chứ không phải hiện đại hóa.</li>
+</ul>
+</div>
+</div>
+<div class="section">
+<h2>di ngôn ngữ đích</h2>
+<div class="section-box">
+<p>Lựa chọn này tương ứng với 20 ngôn ngữ được hỗ trợ bởi giao diện và đa ngôn ngữ của ATK-Pro.</p>
+<table>
+<thead><tr><th>Ngôn ngữ</th><th>Tự động</th><th>Ngôn ngữ</th><th>Tự động</th></tr></thead>
+<tbody>
+<tr><td>ÝName</td><td>Italiano</td><td>NgaName</td><td>Русский</td></tr>
+<tr><td>Tiếng Anh</td><td>English</td><td>Ả Rập</td><td>العربية</td></tr>
+<tr><td>Tây Ban Nha</td><td>Español</td><td>Hoà Lan</td><td>Nederlands</td></tr>
+<tr><td>PhápName</td><td>Français</td><td>Do Thái</td><td>עברית</td></tr>
+<tr><td>ĐứcName</td><td>Deutsch</td><td>Nhật Bản</td><td>日本語</td></tr>
+<tr><td>Bồ Đào Nha</td><td>Português</td><td>Trẻ</td><td>中文</td></tr>
+<tr><td>Ba Lan</td><td>Polski</td><td>Thổ Nhĩ Kỳ</td><td>Türkçe</td></tr>
+<tr><td>Đan Mạch</td><td>Dansk</td><td>Na Uy</td><td>Norsk</td></tr>
+<tr><td>Việt Nam</td><td>Tiếng Việt</td><td>Hy Lạp</td><td>Ελληνικά</td></tr>
+<tr><td>Ru- ma- niName</td><td>Română</td><td>Thuỵ Điển</td><td>Svenska</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section">
+<h2>Ghi chú thao tác   nền</h2>
+<div class="section-box">
+<ul>
+<li>Quá trình xử lý không đều: nút dịch bị tắt khi yêu cầu, trong khi cửa sổ vẫn còn đáp ứng. Những thay đổi trong lúc chờ đợi không thay đổi yêu cầu đã được gửi.</li>
+<li>Đối với những văn bản dài hoặc phức tạp, có thể dùng nhiều thì giờ hơn và nhiều bản hiệu đính bằng tay hơn.</li>
+<li>Chìa khóa có thể đến từ các hầm chung; nhà cung cấp, mô hình, ngôn ngữ và ngữ cảnh được lưu giữ như sở thích đặc biệt của mô-đun dịch thuật.</li>
+<li>Dịch thuật tạo ra kết xuất văn bản trong TXT hoặc DOCX: nó không tạo ra ảnh, siêu dữ liệu, cây phả hệ hay tập tin GEDCOM.</li>
+<li>Không gửi các nhà cung cấp bên ngoài các văn bản bí mật hoặc đối tượng bị hạn chế nếu bạn chưa kiểm tra các điều khoản sử dụng, quyền riêng tư và quyền hạn.</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_06_ocr_avanzato.html">thể hiện lòng trắc ẩn</a>
+<a class="nav-button" href="guida.html">chỉ mục e Main</a>
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">Mod.08 — Xuất GEDCOM</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati công cụ Pro  Tổ tiên.tykit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>

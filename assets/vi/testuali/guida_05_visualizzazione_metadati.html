@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 04: Visualizzazione Metadati JSON</title>
-    <meta name="description" content="ATK-Pro — Visualizzazione Metadati JSON">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Mô-đun 05: Xem siêu dữ liệu JSON</title>
+<meta content="ATK-Pro — Xem siêu dữ liệu JSON" name="description"/>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -13,14 +14,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -31,7 +32,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -41,12 +42,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -55,21 +56,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 3px solid #a67c52;
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -78,13 +79,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -97,12 +98,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             border: 2px solid #a67c52;
@@ -111,33 +112,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -145,39 +146,39 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +186,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +194,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +216,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +231,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +240,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +263,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             border: 1px solid #a67c52;
             padding: 12px 8px;
@@ -271,7 +272,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +282,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             border: 2px solid #a67c52;
@@ -297,15 +298,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -326,60 +327,53 @@
 </head>
 <body>
 <div class="container">
-    <header>
-        <h1>📚 Modulo 04: Visualizzazione Metadati JSON</h1>
-    </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_03_visualizzazione_immagini.html" class="nav-button">⬅️ Mod.03 — Visualizzazione Immagini</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_05_ocr_avanzato.html" class="nav-button">Mod.05 — Funzioni Avanzate OCR ➡️</a>
-        </div>
-
-    <div class="section">
-        <h2>&#128204; Panoramica</h2>
-        <p>Il <strong>Viewer Metadati JSON</strong> di ATK-Pro &egrave; dedicato alla visualizzazione dei file JSON generati durante l&apos;elaborazione dei documenti. Si apre dal menu <em>Strumenti</em> dell&apos;applicazione.</p>
-        <p>Il viewer apre qualsiasi file <code>.json</code>. Cerca automaticamente un&apos;immagine con lo stesso nome nella stessa cartella (estensioni: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tif</code>, <code>.tiff</code>) e, se la trova, la mostra nel pannello destro.</p>
-    </div>
-
-    <div class="section">
-        <h2>&#127795;&#65039; Interfaccia</h2>
-        <p>La finestra &egrave; divisa in due pannelli affiancati:</p>
-
-        <div class="section-box">
-            <h3>Pannello Sinistro &mdash; Tabella Metadati</h3>
-            <p>I dati del file JSON vengono visualizzati come una <strong>tabella a due colonne</strong>:</p>
-            <ul>
-                <li><strong>Campo</strong>: il nome della chiave JSON</li>
-                <li><strong>Valore metadato</strong>: il valore corrispondente</li>
-            </ul>
-            <p style="margin-top:0.8rem;">Vengono visualizzati solo i campi di <strong>primo livello</strong> del JSON. I campi il cui nome inizia con <code>_</code> (underscore) sono omessi perch&eacute; riservati all&apos;uso interno. Strutture annidate (oggetti o array) appaiono come rappresentazione testuale nella colonna Valore.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>Pannello Destro &mdash; Anteprima Immagine</h3>
-            <p>Se viene trovata un&apos;immagine abbinata, questa viene caricata con le stesse funzionalit&agrave; del Viewer Immagini (zoom con rotella, pulsanti +/&minus;, Adatta alla finestra, 1:1, pan con trascinamento).</p>
-            <p style="margin-top:0.8rem;">Se non viene trovata alcuna immagine abbinata, il pannello mostra <em>&ldquo;Nessuna immagine abbinata trovata&rdquo;</em>.</p>
-        </div>
-
-        <div class="section-box">
-            <h3>Toggle Pannelli</h3>
-            <ul>
-                <li><strong>Pulsante &ldquo;&#9668; Nascondi metadati&rdquo;</strong>: Nasconde il pannello sinistro con i metadati</li>
-                <li><strong>Pulsante &ldquo;&#9658; Mostra metadati&rdquo;</strong>: Ripristina il pannello metadati</li>
-            </ul>
-        </div>
-    </div>
-
-     <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-        <a href="guida_03_visualizzazione_immagini.html" class="nav-button">⬅️ Mod.03 — Visualizzazione Immagini</a>
-            <a href="guida.html" class="nav-button">🏠 Indice Principale</a>
-            <a href="guida_05_ocr_avanzato.html" class="nav-button">Mod.05 — Funzioni Avanzate OCR ➡️</a>
-        </div>
-
-    <footer>
-        <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-    </footer>
+<header>
+<h1>📚 Mô-đun 05: Xem siêu dữ liệu JSON</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_04_visualizzazione_immagini.html">@ info: credit</a>
+<a class="nav-button" href="guida.html">chỉ mục e Main</a>
+<a class="nav-button" href="guida_06_ocr_avanzato.html">Mod.06 — Hàm Cấp cao OCR zioni</a>
+</div>
+<div class="section">
+<h2>Toàn cảnh Panoramica</h2>
+<p>Hạt <strong>Trình xem siêu dữ liệu JSON</strong> ATK-Pro được dành cho việc hiển thị tập tin JSON tạo ra trong quá trình xử lý tài liệu. Mở từ thực đơn <em>Dịch vụ</em> của đơn xin.</p>
+<p>Người xem mở tập tin JSON hợp lệ được cấu trúc là đối tượng, bao gồm cả xe phụ được tạo ra bởi ATK-Pro. Tự động tìm kiếm một ảnh có cùng tên trong cùng một thư mục ( món quà: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.tif</code>, <code>.tiff</code>Và, nếu bạn tìm thấy nó, hiển thị nó trong bảng bên phải.</p>
+<p>Nếu tập tin không chứa hợp lệ JSON hoặc không thể đọc, thông điệp sẽ được hiển thị <em>“ Không thể đọc tập tin JSON</em>.</p>
+</div>
+<div class="section">
+<h2>Giao diện điều khiểnName</h2>
+<p>Cửa sổ được chia làm hai mặt:</p>
+<div class="section-box">
+<h3>Bảng bên trái — Bảng siêu dữ liệu</h3>
+<p>Dữ liệu JSON được hiển thị như là một <strong>bảng hai cột</strong>:</p>
+<ul>
+<li><strong>Trường</strong>: tên khóa JSON</li>
+<li><strong>Giá trị</strong>: giá trị tương ứng</li>
+</ul>
+<p style="margin-top:0.8rem;">Chỉ hiển thị trường <strong>tầng một</strong> của JSON. Những cánh đồng có tên bắt đầu với <code>_</code> (bên dưới) bị bỏ qua vì dành riêng cho việc sử dụng nội bộ. Các cấu trúc lồng nhau, chẳng hạn như đồ vật hoặc các dãy, xuất hiện như văn bản trong cột giá trị và không phải là mức độ có thể mở rộng.</p>
+</div>
+<div class="section-box">
+<h3>Bảng bên phải — xem thử ảnh</h3>
+<p>Nếu bạn tìm thấy một ảnh tương ứng, nó được nạp với các tính năng tương tự như bộ xem ảnh (zoom với bánh xe, +/ », vừa khít với cửa sổ, 1:1, pan với kéo).</p>
+<p style="margin-top:0.8rem;">Nếu không tìm thấy ảnh tương ứng, bảng điều khiển hiển thị <em>“ Không tìm thấy hình ảnh nào khớp với hình ảnh này</em>.</p>
+</div>
+<div class="section-box">
+<h3>Hiển thị và ẩn bảng</h3>
+<ul>
+<li><strong>“ Giấu nút Siêu dữ liệu</strong>: Ẩn bảng trái với siêu dữ liệu</li>
+<li><strong>“ Hiển thị nút hiển thị siêu dữ liệu</strong>: Phục hồi siêu dữ liệu</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_04_visualizzazione_immagini.html">@ info: credit</a>
+<a class="nav-button" href="guida.html">chỉ mục e Main</a>
+<a class="nav-button" href="guida_06_ocr_avanzato.html">Mod.06 — Hàm Cấp cao OCR zioni</a>
+</div>
+<footer>
+<p>© 2026 Antenati công cụ Pro  Tổ tiên.tykit.pro@gmail.com</p>
+</footer>
 </div>
 </body>
 </html>

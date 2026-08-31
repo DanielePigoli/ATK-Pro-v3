@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="vi" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 02: Operazioni di base</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Mô-đun 02: Thao tác cơ bản</title>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -12,14 +13,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -30,7 +31,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -40,12 +41,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -54,21 +55,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             /* border-bottom: 3px solid #a67c52; */
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -77,13 +78,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -96,12 +97,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             /* border: 2px solid #a67c52; */
@@ -110,33 +111,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -144,40 +145,40 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
             /* border: 2px solid #a67c52; */
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +186,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +194,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +216,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +231,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +240,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +263,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             /* border: 1px solid #a67c52; */
             padding: 12px 8px;
@@ -271,7 +272,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +282,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             /* border: 2px solid #a67c52; */
@@ -297,15 +298,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -325,29 +326,49 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📚 Modulo 02: Operazioni di base</h1>
-        </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-        <div class="section-box">
-            <h3>4. CARICAMENTO RECORD IIIF - FORMATI DI INPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📥 STRUTTURA DELL'INPUT</h4>
-            <p>ATK-Pro accetta file di input con un formato specifico basato su COPPIE: Per OGNI record da elaborare, fornisci:</p>
-            <h3>1. RIGA 1: Modalità + Nome (facoltativo)</h3>
-            <ul>
-                <li>D = Documento singolo (una singola immagine/pagina)</li>
-                <li>R = Registro (collezione completa di pagine/documenti)</li>
-            </ul>
-            <h3>2. RIGA 2: URL del Manifest IIIF</h3>
-            <p><strong>Esempio di file input.txt corretto:</strong></p>
-            <pre class="file-structure"># Commenti iniziano con #
+<div class="container">
+<header>
+<h1>📚 Mô-đun 02: Thao tác cơ bản</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">▪ Mod.01 — Cài đặt, bắt đầu và giao diện</a>
+<a class="nav-button" href="guida.html">chỉ mục e Main</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 — Nghiên cứu được hỗ trợ</a>
+</div>
+<div class="section-box">
+<h3>1. BĂNG TẢI - ĐỊNH DẠNG NHẬP</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>CẤU TRÚC NHẬP VÀ HỖ TRỢ CỔNG</h4>
+<p>ATK-Pro chấp nhận các tập tin nhập với một định dạng riêng dựa trên COPIE: Để ghi chép OGI tiến hành, cung cấp chế độ + URL.</p>
+<p><strong>Các cổng đã hỗ trợ:</strong> Sao chép và dán địa chỉ URL công cộng của trang, xem, poster hoặc PDF tương thích. ATK-Pro nhận ra cánh cổng và áp dụng chế độ kỹ thuật và thận trọng của nó.</p>
+<p><strong>Đã hỗ trợ</strong> ngụ ý sự tương thích kỹ thuật đã xác nhận, không phải sự cho phép để tải về bừa bãi. Nguồn tài nguyên phải được công khai truy cập và người dùng phải tôn trọng quyền, giấy phép, các điều khoản sử dụng và giới hạn của cổng riêng. ATK-Pro không đi vòng đăng nhập, truy cập có tổ chức, tài khoản hoặc đánh dấu <code>nodownload</code>.</p>
+<p>Antenati (Itaati), Gallica (France), DigiVatLib (Vian), Bodleian Libraries (Oxford), Europeana IIIF, Mattricula Online, findbuch (Südturol), e-cedts/e-ra-rae-manuscripta (Swizerland), HeidelbergB, idelbergB, Internet makestense, Brisena, Memoo, Memoo</p>
+<h4>CỔNG Ý ĐƯỢC THÊM VÀO V3</h4>
+<table>
+<thead>
+<tr><th>Cổng</th><th>Nhập và chế độ</th><th>Giới hạn điều hành</th></tr>
+</thead>
+<tbody>
+<tr><td>Biblioteca Digitale Siena</td><td>Trình xem trang IIIF; <code>D</code> hay <code>R</code></td><td>Vì <code>R</code> Cần phải xác minh phạm vi rõ ràng; kiểm tra quyền của đối tượng.</td></tr>
+<tr><td>Biblioteca Digitale Trentina</td><td>Trang công cộng; hình ảnh hoặc trực tiếp PDF</td><td>Để đăng nhập và trình tự sử dụng phạm vi. Nếu chỉ PDF không có phạm vi cần thiết, ATK-Pro sử dụng PDF chính thức khi có sẵn.</td></tr>
+<tr><td>Biblioteca Digitale Lombarda</td><td>Endpoint PDFQZ RST hoặc endpoint Book Reader; <code>D</code> hay <code>R</code></td><td>Nó tái tạo lại toàn bộ chuỗi đa trang từ vải bạt Cantaloupe IIIF và chỉ xem những trang không tồn tại tạm thời. Nếu Book Reader không trả lại bức tranh có giá trị, hãy sử dụng trang web RST PDF trực tiếp.</td></tr>
+<tr><td>Rovereto Digital Library</td><td>Trang thực tế hoặc URL ARI của hàng; <code>D</code> hay <code>R</code></td><td>Tải về chỉ dòng chung được công nhận là trang; cho <code>R</code> Cần một tầm bắn.</td></tr>
+<tr><td>BUB Digitale</td><td>Tuỳ chọn <code>manifest=</code> hoặc poster IIIF BBBUB</td><td>Chỉ có tài nguyên công cộng; cho <code>R</code> Cần phải kiểm tra phạm vi và giấy phép của mỗi đối tượng.</td></tr>
+<tr><td>FICLIT Digital Library</td><td>Item trang Omeka S hoặc poster IIIF FICLIT</td><td>Chỉ hiện các mục công cộng; cho <code>R</code> Cần một tầm bắn. Những hình ảnh được thu thập bởi tài nguyên trực tiếp của bức tranh.</td></tr>
+<tr><td>Archivio Storico UiBO</td><td>Hiển thị IIIF độc giả; <code>D</code> hay <code>R</code></td><td>Tập hợp không được chấp nhận là đầu vào. Vì <code>R</code> Cần phải kiểm tra một phạm vi rõ ràng và quyền cá nhân.</td></tr>
+<tr><td>Đại học PHAIDRA Padua</td><td>Trang công cộng của đối tượng hoặc poster IIIF chính thức; <code>D</code> hay <code>R</code></td><td>Chỉ là những đồ vật công cộng. Vì <code>R</code> một phạm vi là cần thiết; hãy kiểm tra thông báo hoặc giấy phép liên quan đến etherm.</td></tr>
+<tr><td>Đại học DOGGE, thành phố thành lập</td><td>Trang công cộng của đối tượng; <code>D</code> hay <code>R</code></td><td>Chỉ sử dụng nguồn tài nguyên công cộng để tải về thôi. Nguồn tài nguyên gốc hoặc có dấu hiệu bị loại trừ <code>nodownload</code>; cho <code>R</code> Cần một tầm bắn.</td></tr>
+</tbody>
+</table>
+<p><strong>Ghi chú:</strong> EIBC, Ambrosiana và OrienTales không nằm trong danh sách những người tải về: các điểm kết thúc công cộng ổn định chưa được xác định hoặc các hồ sơ được kiểm tra đòi hỏi phải có quyền truy cập. National Archives, SAN, SIAS, SIUSA, BeWeB và Tiino, Grison và diocesan vẫn còn là nguồn hướng dẫn và tư vấn thủ công.</p>
+<h3>1. RIGA 1: Chế độ + tên (tùy chọn)</h3>
+<ul>
+<li>D = tài liệu đơn (một ảnh/ trang)</li>
+<li>Comment</li>
+</ul>
+<h3>2. RIGA 2: Ghi chép công hoặc URL tài nguyên</h3>
+<p><strong>Ví dụ về tập tin nhập đúng.txt:</strong></p>
+<pre class="file-structure"># Commenti iniziano con #
 
 RECORD 1 (coppia di righe):
 D - Lettera Importante
@@ -360,66 +381,67 @@ https://archives.example.org/iiif/reg456/manifest.json
 RECORD 3 (coppia di righe):
 D - Fotografia Singola
 https://collections.example.org/iiif/foto789/manifest.json</pre>
-            <h4>📝 REGOLE FORMATO INPUT:</h4>
-            <ul>
-                <li>Righe vuote: ignorate (puoi usarle per leggibilità)</li>
-                <li>Righe con #: ignorate come commenti</li>
-                <li>Modalità D o R: sono obbligatorie (maiuscole)</li>
-                <li>Nome file: facoltativo dopo modalità (es. "D - Nome" o solo "D")</li>
-                <li>URL: deve iniziare con http:// o https://</li>
-                <li>Coppie: modalità + URL devono stare su righe consecutive</li>
-            </ul>
-            <h4>⚙️ COME CARICARE L'INPUT - 3 OPZIONI DAL MENU:</h4>
-            <p>OPZIONE 1: Visualizza Esempio Input ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Esempio input"</h3>
-            <h3>2. Si apre una finestra che mostra il file di esempio localizzato</h3>
-            <h3>3. Puoi copiare il contenuto come template per il tuo file input</h3>
-            <h3>4. File di esempio: assets/[lingua]/testuali/input_link_base.txt</h3>
-            <p>OPZIONE 2: Apri File Input Pronto ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Apri input"</h3>
-            <h3>2. Si apre un dialog di selezione file</h3>
-            <h3>3. Scegli il tuo file input.txt (deve rispettare il formato coppie)</h3>
-            <h3>4. ATK-Pro carica automaticamente e legge tutti i record</h3>
-            <h3>5. Visualizza numero di record caricati e pronti per l'elaborazione</h3>
-            <p>OPZIONE 3: Modifica Input Già Caricato ──────────────────────────────────────────</p>
-            <h3>1. Dopo aver caricato un file input (OPZIONE 2)</h3>
-            <h3>2. Clicca Menu → "File input" → "Modifica input"</h3>
-            <h3>3. Si apre un editor di testo con il file attualmente caricato</h3>
-            <h3>4. Modifica le coppie (aggiungi, rimuovi, cambia URL)</h3>
-            <h3>5. Clicca "Salva" per aggiornare i record in elaborazione</h3>
-            <h3>6. Il programma reinterpreta il file aggiornato</h3>
-            <h4>📌 DIFFERENZA TRA D E R:</h4>
-            <ul>
-                <li>D (Documento): Gestisce una singola immagine/pagina
+<h4>: LUẬT ĐỊNH DẠNG NHẬP:</h4>
+<ul>
+<li>Hàng trống: bị bỏ qua (bạn có thể dùng chúng để đọc)</li>
+<li>Hàng với #: bị bỏ qua như lời bình luận</li>
+<li>D/d hoặc R/r chế độ: bắt buộc; chữ hoa và chữ thường tương đương</li>
+<li>Tên tệp: tùy chọn sau chế độ (ví dụ: "D - Tên" hoặc chỉ "D")</li>
+<li>Địa chỉ Mạng: nên bắt đầu với http vội hoặc https bật</li>
+<li>Cặp: chế độ + URL phải nằm trên hàng liên tiếp</li>
+</ul>
+<h4>CÁCH NẠP DỮ LIỆU - 3 LỰA CHỌN TỪ TRÌNH ĐƠN:</h4>
+<p>“ HÃY xem những thí dụ nhập cảnh: “Xin mời?</p>
+<h3>1. Nhấn vào Thực đơn  tập tin nhập tập tin</h3>
+<h3>2. Mở một cửa sổ hiển thị tập tin mẫu được cục bộ hoá</h3>
+<h3>3. Bạn có thể sao chép nội dung thành mẫu cho tập tin nhập của bạn</h3>
+<h3>Tập tin 4.</h3>
+<p><strong>Ghi chú trên tên tập tin:</strong> tập tin phân phối được gọi là <code>input_link_base.txt</code>.. Tên đã được thông thường hoá trong v3 để tránh tham khảo các phiên bản trước; dạng thức này phù hợp với việc tải hồ sơ IIIF.</p>
+<p>TÙY CHỌN 2: Mở tệp đầu vào đã chuẩn bị ──────────────────────────────────────</p>
+<h3>1. Nhấn vào thực đơn « Tập tin nhập » « Mở đầu vào »</h3>
+<h3>2. Một hộp thoại chọn tập tin mở</h3>
+<h3>3. Chọn tập tin nhập.txt (phải tôn trọng định dạng cặp)</h3>
+<h3>4. ATK-Pro tự động nạp và đọc tất cả các hồ sơ</h3>
+<h3>Xem số mục ghi đã tải và sẵn sàng để xử lý</h3>
+<p>“ Vị trí 3: Sửa đổi trọng tải.</p>
+<h3>1. Sau khi tải lên một tập tin nhập (PENT 2)</h3>
+<h3>2. Nhấn vào trình đơn  tập tin nhập tập tin</h3>
+<h3>3. Mở một trình soạn thảo văn bản với tập tin đang nạp</h3>
+<h3>4. Sửa đổi cặp ( Thêm, gỡ bỏ, thay đổi URL)</h3>
+<h3>5. Nhấp "Lưu" để cập nhật các bản ghi đang xử lý</h3>
+<h3>6. Chương trình phiên dịch lại tập tin cập nhật</h3>
+<h4>: SỰ KHÁC BIỆT GIỮA D VÀ R:</h4>
+<ul>
+<li>D (Docuent): quản lý một ảnh/ trang
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: file singolo per il documento</li>
-                <li style="margin-top: 12px;">R (Registro): Gestisce collezioni multi-pagina
+<li style="list-style: none; margin-left: 20px;">Kết xuất  hoài công:</li>
+<li style="margin-top: 12px;">R (người nhận): Quản lý bộ sưu tập đa trang
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: cartella con pagine organizzate + PDF (se richiesto dall'utente)</li>
-            </ul>
-            <h4>✅ VALIDAZIONE RECORD</h4>
-            <p>Dopo il caricamento, il programma verifica:</p>
-            <ul>
-                <li>✓ URL accessibile e raggiungibile</li>
-                <li>✓ Formato IIIF valido (questa versione+)</li>
-                <li>✓ Numero immagini e canvas disponibili</li>
-                <li>✓ Metadata (titolo, autore, data)</li>
-            </ul>
-            <h4>❌ ERRORI COMUNI</h4>
-            <ul>
-                <li>"URL non valido": Controlla copia/incolla URL</li>
-                <li>"Manifest non trovato (404)": URL è scaduto o sbagliato</li>
-                <li>"Formato IIIF non supportato": Il server non usa IIIF standard</li>
-                <li>"Timeout connessione": Connessione Internet lenta/assente</li>
-            </ul>
-            <h4>💾 SALVATAGGIO RECORD</h4>
-            <p>Dopo il caricamento del manifest, il programma salva automaticamente i metadati IIIF. DOVE: Nella cartella output che scegli (vedi Sezione 5, PASSO 2) <strong>STRUTTURA CARTELLE DOPO CARICAMENTO (prima dell'elaborazione):</strong></p>
+<li style="list-style: none; margin-left: 20px;">Cấu hình Xuất: thư mục với các trang có tổ chức + PDF (nếu người dùng cần thiết)</li>
+</ul>
+<h4>HỢP LỆ HOÁ GHI CHÉP</h4>
+<p>Sau khi tải, kiểm tra chương trình:</p>
+<ul>
+<li>URL truy cập và truy cập được</li>
+<li>Tài nguyên tương thích: poster IIIF v2/v3, hỗ trợ trang, ảnh hoặc trực tiếp PDF tùy theo cổng</li>
+<li>Số và bức vẽ sẵn sàng</li>
+<li>Tuỳ chọn</li>
+</ul>
+<h4>LỖI CHUNG COMUNI</h4>
+<ul>
+<li>" URL bất thường": kiểm tra URL sao chép/ dán</li>
+<li>" manifest không tìm thấy (404): URL là hết hạn hoặc sai</li>
+<li>Hình thức IIIF không được hỗ trợ: Máy phục vụ không dùng tiêu chuẩn IIIF</li>
+<li>Kết nối thời gian</li>
+</ul>
+<h4>LƯU MỤC GHI</h4>
+<p>Sau khi tải poster, chương trình tự động lưu siêu dữ liệu IIIF. TRONG thư mục bạn chọn (xem mục 2, PSSO 2) <strong>CATQUES (trước khi xử lý):</strong></p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale (livello principale)
  └─ [nome]/                            ← Sottocartella SOLO per metadati
     ├─ [nome]_genealogico.json        ← Metadati genealogici estratti
     └─ [nome]_tecnico.json            ← Metadati tecnici (canvas ID, numero pagine)</pre>
-<p> DOPO L'ELABORAZIONE (quando clicchi Menu → Output → Elabora): Nel livello principale vengono aggiunti i file elaborati:</p>
+<p> DOPO L'ELABORZIONE (Khi nhắp vào Trình đơn   đáp ứng kết xuất: Trong cấp độ chính tập tin được xử lý được thêm:</p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
  ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite dai tile IIIF (una per pagina)
@@ -427,296 +449,300 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
  ├─ [nome]_canvas_N.jpg/.png/.tif       (N = numero totale di pagine/canvas)
  ├─ [nome].json                        ← Sidecar JSON per ogni immagine (metadati EXIF)
  └─ [nome].pdf                         ← PDF completo (vedi spiegazione sotto)</pre>
-
-<p>I metadati rimangono nella sottocartella [nome]/ come salvati al caricamento.</p>
-<p><strong>NOTA IMPORTANTE: Organizzazione file</strong></p>
-            <ul>
-                <li>Manifest IIIF: livello principale della cartella output</li>
-                <li>Immagini (canvas), PDF, Sidecar JSON: livello principale della cartella output</li>
-                <li>SOLO metadati tecnici e genealogici: salvati in sottocartella [nome]/</li>
-                <li>Le cartelle temporanee (tiles_canvas_X/) vengono eliminate automaticamente al termine</li>
-                <li>Questa struttura consente di gestire più record nella stessa cartella senza confusione</li>
-            </ul>
-<p><strong>Esempio:</strong> Se elabori "Registro1", troverai:</p>
-            <ul>
-                <li>manifest_[ID1]_Registro1.json (livello principale)</li>
-                <li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (livello principale)</li>
-                <li>Registro1.pdf (livello principale)</li>
-                <li>Registro1/ (sottocartella SOLO con metadati genealogico e tecnico)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>5. ELABORAZIONE E DOWNLOAD IMMAGINI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>🎯 FLUSSO DI ELABORAZIONE</h4>
-            <p>Il workflow di elaborazione prevede 3 passi:</p>
-            <h4>PASSO 1: SELEZIONA FORMATI IMMAGINE</h4>
-            <p>─────────────────────────────────────</p>
-            <h3>1. Carica un file input (File input → Apri input): la finestra formati si apre automaticamente</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona formati immagine"</h3>
-            <h3>3. Si apre una finestra di dialogo con 3 opzioni:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Formato senza perdita (lossless), migliore qualità, file più grandi</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Formato compresso (lossy), buon compromesso qualità/dimensione</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Formato archiviale, massima qualità, file molto grandi</p>
-            <p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Documento PDF</strong></p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Genera un PDF completo con tutte le pagine del registro o documento, in aggiunta ai formati immagine selezionati (o come unico output se nessun formato immagine è selezionato)</p>
-            <h3>4. Seleziona almeno un formato immagine o PDF (puoi sceglierne più di uno)</h3>
-            <h3>5. Clicca "Conferma"</h3>
-            <p>✅ <strong>I formati scelti vengono memorizzati</strong> e pre-selezionati automaticamente alla prossima apertura del programma.</p>
-            <h4>📝 CONSIGLI:</h4>
-            <ul>
-                <li>Per preview/consultazione: JPG (veloce da aprire, minore spazio)</li>
-                <li>Per archivio conservativo: PNG (lossless, compromesso di spazio) o TIFF (massima qualità)</li>
-                <li>Per entrambi: seleziona sia PNG che TIFF</li>
-                <li>Per PDF: seleziona PDF insieme a uno o più formati immagine, oppure seleziona solo PDF per generare esclusivamente il documento PDF senza file immagine separati</li>
-            </ul>
-            <h4>PASSO 2: SELEZIONA CARTELLE OUTPUT</h4>
-            <p>──────────────────────────────────────</p>
-            <h3>1. La finestra cartelle si apre automaticamente dopo la scelta dei formati (quando carichi un file input)</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona cartelle output"</h3>
-            <h3>3. Scegli la MODALITÀ di organizzazione delle cartelle:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella unica per tutti</span> → un'unica cartella per tutti i record (doc e registri)</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartelle separate doc/reg</span> → una cartella per tutti i documenti, una per tutti i registri</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella per ogni record</span> → una cartella distinta per ciascun record nel file input</p>
-            <h3>4. Dopo la scelta della modalità, seleziona le cartelle richieste (1, 2 o N finestre di dialog)</h3>
-            <h3>5. Al termine mostra il riepilogo delle cartelle scelte</h3>
-            <p>✅ <strong>Modalità e cartelle vengono memorizzate</strong>. Alla prossima apertura di un file input, vengono ripristinate automaticamente se compatibili con il numero di record.</p>
-            <p>⚠️ Se il nuovo file input ha un numero diverso di Documenti/Registri rispetto alle cartelle salvate, viene mostrato un avviso e la selezione viene azzerata per richiedere nuove cartelle.</p>
-            <h4>📌 RIEPILOGO MODALITÀ:</h4>
-            <ul>
-                <li><strong>Cartella unica:</strong> Semplice, tutto in un posto. Adatto per elaborazioni veloci o test</li>
-                <li><strong>Separate doc/reg:</strong> Organizzazione per tipo. Default: <code>output/doc/</code> e <code>output/reg/</code></li>
-                <li><strong>Per ogni record:</strong> Massima flessibilità. Puoi usare drive diversi, NAS, cartelle personalizzate</li>
-            </ul>
-            <h4>PASSO 3: AVVIA ELABORAZIONE</h4>
-            <p>─────────────────────────────</p>
-            <h3>1. Clicca Menu → "Output" → "Elabora"</h3>
-            <h3>2. Verifica che:</h3>
-            <p>✓ Almeno 1 formato immagine selezionato</p>
-            <p>✓ Almeno 1 record caricato</p>
-            <p><strong>Se mancano questi requisiti, appare messaggio di errore:</strong></p>
-            <p>❌ "Nessun formato selezionato" → Vai a PASSO 1</p>
-            <p>❌ "Nessun record caricato" → Vai a Caricamento Input (Sezione 4)</p>
-            <h4>📺 FINESTRA DI ELABORAZIONE</h4>
-            <p>Non appena clicchi "Elabora", si apre una finestra modale con: </p>
-            <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window2.webp" alt="Finestra elaborazione in corso" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
-            </div>
-            <h4>📊 ELEMENTI VISIBILI:</h4>
-            <p>1️⃣ TITOLO FINESTRA: "Elaborazione in corso"</p>
-            <ul>
-                <li>Rimane in primo piano finché l'elaborazione non termina</li>
-                <li>Non puoi interagire con il resto della GUI</li>
-            </ul>
-            <p>2️⃣ ETICHETTA PROGRESSO: "Elaborazione record: 2/5 — Nome File"</p>
-            <ul>
-                <li>Mostra: record attualmente elaborato (2) su totale (5)</li>
-                <li>Mostra anche il nome del file/registro in elaborazione</li>
-                <li>Si aggiorna in tempo reale man mano che processa i record</li>
-                <li>Es: "Elaborazione record: 1/3 — Registro Matrimoni 1850"</li>
-            </ul>
-            <p>3️⃣ BARRA DI PROGRESSO: Avanzamento visuale</p>
-            <ul>
-                <li>Formato numerico: "2/5" (numero attuale / totale)</li>
-                <li>Barra colore che avanza da sinistra a destra</li>
-                <li>Raggiunge il 100% (massima larghezza) quando completo</li>
-                <li>NON mostra percentuale, solo numero</li>
-            </ul>
-            <p>4️⃣ PULSANTE [ANNULLA]</p>
-            <ul>
-                <li>Cliccabile durante elaborazione</li>
-                <li>Chiude la finestra di progresso</li>
-                <li>⚠️ L'elaborazione continua in background (non interrompe il download)</li>
-                <li>I file scaricati rimangono nella cartella output selezionata</li>
-            </ul>
-            <h4>🔄 DURANTE L'ELABORAZIONE</h4>
-            <p><strong>Il programma in background:</strong></p>
-            <pre class="file-structure">├─ Scarica immagini dai server IIIF
+<p>Siêu dữ liệu vẫn còn trong thư mục con [tên]/ như được lưu vào việc tải.</p>
+<p><strong>GHI CHÚ: Tổ chức tập tin</strong></p>
+<ul>
+<li>Hiển thị IIIF: cấp chính của thư mục xuất</li>
+<li>Ảnh (canvas), PDF, Sidecar JSON: cấp chính của thư mục xuất</li>
+<li>Chỉ siêu dữ liệu kỹ thuật và phả hệ: được lưu trong thư mục con [tên]/</li>
+<li>Thư mục tạm (tiles van X/) bị xoá tự động ở cuối</li>
+<li>Cấu trúc này cho phép bạn quản lý nhiều đĩa nhạc trong cùng một thư mục mà không nhầm lẫn</li>
+</ul>
+<p><strong>Ví dụ:</strong> Nếu bạn xử lý "Register1, bạn sẽ thấy:</p>
+<ul>
+<li>poster [ID1] Registro1.json (trên cùng)</li>
+<li>Register 1 vải 1.jpg, Register 1 vải 2.jpg, ... (trên)</li>
+<li>Register1.pdf (ở cấp)</li>
+<li>Register1 / (thư mục SOLO với gia phả và siêu dữ liệu kỹ thuật)</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. XỬ LÝ VÀ TẢI ẢNH</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>DI XỬ LÝ DÒNG CHẢY</h4>
+<p>Dòng xử lý bao gồm 3 bước:</p>
+<h4>BƯỚC 1: CHỌN ĐỊNH DẠNG ẢNH</h4>
+<p>─────────────────────────────────────</p>
+<h3>1. Tải lên một tập tin nhập (tập tin nhập tập tin mở: cửa sổ định dạng mở tự động</h3>
+<h3>2. Thay vào đó: nhấn vào Thực đơn BAR đặt" BAR </h3>
+<h3>3. Mở hộp thoại với 3 tùy chọn:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">▪ PNG</span>  Dạng thức tự do mất tập tin lớn hơn</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">▪ JPG</span>  Dạng thức nén lại ( mấy), tốt thỏa hiệp chất lượng/ định sẵn</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">▪ TIFF</span> Định dạng kho lưu, chất lượng cao nhất, tập tin rất lớn</p>
+<p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Tài liệu PDF</strong></p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">▪ PDF</span> Xoá nhóm</p>
+<h3>4. Chọn ít nhất một ảnh hay định dạng PDF (bạn có thể chọn nhiều hơn một)</h3>
+<h3>Nhấn vào « Xác nhận »</h3>
+<p>✅ <strong>Các định dạng đã chọn được cất giữ</strong> và tự động chọn trước tại chương trình tiếp theo mở.</p>
+<h4>MẸO:</h4>
+<ul>
+<li>Để xem thử/ cấu hình: jPG ( Nhanh để mở, ít không gian)</li>
+<li>Cho kho lưu bảo thủ: PNG (vô hạn, không gian) hay chất lượng máy ảnh)</li>
+<li>Đối với cả hai: chọn cả PNG và PNG</li>
+<li>Đối với PDF: Chọn PDF cùng với một hay nhiều định dạng ảnh, hoặc chọn chỉ PDF để tạo một tài liệu PDF riêng lẻ không có tập tin ảnh</li>
+</ul>
+<h4>BƯỚC 2: CHỌN THƯ MỤC XUẤT</h4>
+<p>──────────────────────────────────────</p>
+<h3>1. Cửa sổ thư mục tự động mở sau khi chọn định dạng (khi bạn tải lên tập tin nhập)</h3>
+<h3>2. Thay vào đó: nhấn vào Thực đơn  vội vàng</h3>
+<h3>3. Chọn tổ chức thư mục MOD:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">Thư mục đơn cho mọi người</span> Chỉ một thư mục cho mọi hồ sơ (doc và đĩa)</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Thư mục riêng cho tài liệu/bản ghi</span> Chọn một thư mục cho mọi tài liệu, một cho mọi bản ghi</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">mỗi thư mục cho mỗi đĩa</span> Chọn một thư mục riêng cho mỗi mục ghi trong tập tin nhập</p>
+<h3>4. Sau khi chọn chế độ, hãy chọn những thư mục cần thiết (1, 2 hay N hộp thoại)</h3>
+<h3>Ở cuối cho thấy tóm tắt các thư mục đã chọn</h3>
+<p>✅ <strong>Chế độ và thư mục đã được lưu</strong>.. Vào lần mở tiếp theo của một tập tin nhập, chúng được phục hồi tự động nếu chúng tương thích với số kỷ lục.</p>
+<p>⚠️ Nếu tệp đầu vào mới có số lượng Tài liệu/Bản ghi khác với các thư mục đã lưu, một cảnh báo sẽ xuất hiện và lựa chọn sẽ được đặt lại để yêu cầu chọn thư mục mới.</p>
+<p>🛡️ <strong>Điều khiển lộ trình ngăn chặn:</strong> trước khi tạo thư mục hay tập tin, ATK-Pro kiểm tra tên và đường dẫn đã mong đợi. Các tên không tương thích của cửa sổ và đoạn dài quá mức chặn kỷ lục ảnh hưởng duy nhất; cảnh báo tương thích được hiển thị trong bản tóm tắt cuối cùng.</p>
+<p>☁️ <strong>OneDrive/sharePoint không được cho là đích đến mặc định.</strong> Giới hạn của nó chỉ được áp dụng khi thư mục đã chọn thực sự nằm dưới gốc OneDrive. Trong những con đường khác, ngưỡng cửa sổ lịch sử gồm 260 chữ cái được xem là lời cảnh báo thận trọng chứ không phải là ổ khóa tự động.</p>
+<h4>: TỔNG QUÁT:</h4>
+<ul>
+<li><strong>Thư mục đơn:</strong> Đơn giản, mọi thứ ở cùng một nơi. Phù hợp để xử lý nhanh hoặc thử nghiệm</li>
+<li><strong>Bác sĩ/reg riêng:</strong> Tổ chức theo kiểu. Mặc định <code>output/doc/</code> và <code>output/reg/</code></li>
+<li><strong>Mỗi lần ghi lại:</strong> Độ linh hoạt tối đa. Bạn có thể dùng đĩa khác, NAS, thư mục tự chọn</li>
+</ul>
+<h4>BƯỚC 3: BẮT ĐẦU XỬ LÝ</h4>
+<p>─────────────────────────────</p>
+<h3>1. Nhấn vào Thực đơn "Ra ngoài" "Process"</h3>
+<h3>2. Kiểm tra xem:</h3>
+<p>▪ Ít nhất 1 định dạng ảnh đã chọn</p>
+<p>✓ Đã tải ít nhất 1 bản ghi</p>
+<p><strong>Nếu các yêu cầu này còn thiếu, thông điệp lỗi xuất hiện:</strong></p>
+<p>❌ "Chưa chọn định dạng" → Đi tới BƯỚC 1</p>
+<p>❌ "Chưa tải bản ghi" → Đi tới Tải dữ liệu đầu vào (Mục 1)</p>
+<h4>DIDI XỬ LÝ CỬA SỔ</h4>
+<p>Ngay khi bạn nhấn "làm việc", một cửa sổ theo phương thức mở ra: </p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="Comment" src="images/window2.webp" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>: YẾU TỐ THẤY ĐƯỢC:</h4>
+<p>"Trong quá trình"</p>
+<ul>
+<li>Ở lại trong hàng đầu cho đến khi xử lý kết thúc</li>
+<li>Bạn không thể tương tác với phần còn lại của GUI</li>
+</ul>
+<p>2️⃣ NHÃN TIẾN TRÌNH: "Đang xử lý bản ghi: 2/5 — Tên tệp"</p>
+<ul>
+<li>Hiện: kỷ lục được xử lý (2) tổng số (5)</li>
+<li>Nó cũng hiển thị tên tập tin/ trở lại</li>
+<li>Nó cập nhật trong thời gian thực khi nó xử lý hồ sơ</li>
+<li>Es:</li>
+</ul>
+<p>3 DI PRIPUNRA: tiến bộ trực quan</p>
+<ul>
+<li>Dạng thức thập phân: "2/5" (hiện thời / tổng số)</li>
+<li>Thanh màu đang tiến tới từ trái sang phải</li>
+<li>Độ rộng maxim khi hoàn tất</li>
+<li>KHÔNG hiển thị phần trăm, chỉ số</li>
+</ul>
+<p>NÚT 4] [KHÔNG CÓ GÌ]</p>
+<ul>
+<li>Có thể nhấp trong khi xử lý</li>
+<li>Cần thiết sự ngắt quãng của toàn bộ mẻ và đóng cửa sổ đang tiến hành</li>
+<li>Bắt giữ đã hợp tác: nó có thể chờ đợi kết thúc của yêu cầu mạng đơn đang được thực hiện</li>
+<li>Không có kết xuất của phiên chạy đã xoá được xuất trong thư mục đã chọn; các tập tin đã có không thay đổi</li>
+</ul>
+<h4>TRONG QUÁ TRÌNH XỬ LÝ</h4>
+<p><strong>Chương trình nền:</strong></p>
+<pre class="file-structure">├─ Scarica immagini dai server IIIF
 ├─ Legge manifest per canvas ID
 ├─ Ricostruisce tile in immagini complete
 ├─ Converte nei formati selezionati (PNG, JPG, TIFF)
 └─ Salva nelle cartelle scelte</pre>
-            <p><strong>La GUI mostra progress in tempo reale:</strong></p>
-            <ul>
-                <li>Ogni 2-3 secondi aggiorna numero record</li>
-                <li>Nessun blocco: interfaccia rimane reattiva</li>
-                <li>Puoi annullare in qualsiasi momento</li>
-            </ul>
-            <h4>⚠️ COMPORTAMENTO SE CLICCHI ANNULLA:</h4>
-            <h3>1. Elaborazione si ferma subito</h3>
-            <h3>2. File parziali vengono rimossi</h3>
-            <h3>3. Finestra si chiude</h3>
-            <h3>4. Puoi ricominciare da Menu → Output → Elabora</h3>
-            <h4>📋 PDF — GENERAZIONE AUTOMATICA DURANTE L'ELABORAZIONE</h4>
-            <p>Se hai selezionato <strong>PDF</strong> nella maschera di scelta formati (PASSO 1), il PDF viene generato automaticamente al termine del download di ogni registro o documento, senza nessuna finestra di conferma aggiuntiva.</p>
-            <h4>📌 COMPORTAMENTO:</h4>
-            <ul>
-                <li>✅ <strong>PDF selezionato nella maschera formati:</strong> il PDF viene generato automaticamente al termine del download; non viene chiesta nessuna conferma aggiuntiva</li>
-                <li>❌ <strong>PDF non selezionato:</strong> solo le immagini nei formati scelti, nessun PDF</li>
-            </ul>
-            <p>Caratteristiche del PDF generato:</p>
-            <ul>
-                <li>Nome file: <code>[nome].pdf</code>, senza suffissi aggiuntivi (es. <code>Registro Matrimoni 1920.pdf</code>)</li>
-                <li>Salvato nella cartella output scelta, allo stesso livello delle immagini</li>
-                <li>Pagine in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N)</li>
-                <li>Se un canvas non è scaricabile, viene inserita una pagina <em>placeholder</em> localizzata con link diretto al canvas originale su Antenati</li>
-                <li>Nessun file temporaneo rimane nella cartella output al termine della generazione</li>
-            </ul>
-            <h4>⚠️ COSA NON FARE DURANTE ELABORAZIONE:</h4>
-            <ul>
-                <li>❌ Non chiudere il programma (perde file parziali)</li>
-                <li>❌ Non staccare disco esterno (errore salvataggio)</li>
-                <li>❌ Non spegnere PC/laptop</li>
-                <li>❌ Non staccare internet (arresta download)</li>
-            </ul>
-            <h4>✅ COSA PUOI FARE:</h4>
-            <ul>
-                <li>✓ Aspettare che finisca (è la procedura normale)</li>
-                <li>✓ Cliccare Annulla se urgente</li>
-                <li>✓ Usare il PC per altre cose normalmente (minimizza solo la finestra)</li>
-            </ul>
-            <h4>🎉 FINE ELABORAZIONE</h4>
-            <p>Quando tutti i record sono stati elaborati:</p>
-            <h3>1. La finestra di progresso si chiude automaticamente</h3>
-            <h3>2. Appare un messaggio: "Operazione completata"</h3>
-            <h3>3. Clicca OK per chiudere il messaggio</h3>
-            <h3>4. La finestra di progresso scompare completamente</h3>
-            <p>Dopo:</p>
-            <ul>
-                <li>Visualizza file output nelle cartelle che hai selezionato al PASSO 2</li>
-                <li>Ogni documento/registro ha propria sottocartella all'interno della cartella da te scelta</li>
-                <li>Immagini sono pronte per uso (visualizzazione, stampa, archiviazione, PDF)</li>
-            </ul>
-            <h4>✅ OUTPUT GENERATO:</h4>
-            <p>Per ogni record elaborato troverai:</p>
-            <ul>
-                <li>Immagini nei formati selezionati (PNG, JPG, TIFF)</li>
-                <li>manifest_[ID]_[nome].json → Manifest IIIF originale con metadati strutturati</li>
-                <li>[nome]_genealogico.json → Metadati genealogici (date, luoghi, nomi, comuni, province)</li>
-                <li>[nome]_tecnico.json → Metadati tecnici (numero canvas, lista canvas ID, diritti, file generati)</li>
-                <li>[nome].json → Sidecar JSON per ogni immagine (metadati EXIF embedded)</li>
-            </ul>
-            <h4>📝 NOTA SUI NOMI FILE:</h4>
-            <ul>
-                <li>Il [nome] base viene preso direttamente dal file input.txt (riga utente)</li>
-                <li>Se scrivi nel file input "Registro Matrimoni 1920", i file saranno:
+<p><strong>Tiến trình triển lãm GUI trong thời gian thực:</strong></p>
+<ul>
+<li>Mỗi 2-3 giây cập nhật số mục ghi</li>
+<li>Không khối: giao diện vẫn còn phản ứng</li>
+<li>Anh có thể hủy bất cứ lúc nào.</li>
+</ul>
+<h4>: ỨNG DỤNG NẾU BẠN NHẮP VÀO THÔI:</h4>
+<h3>Yêu cầu bắt giữ hợp tác cả mẻ lưới.</h3>
+<h3>2. Tất cả các kết xuất tạm thời được tạo bởi mẻ đã hủy bỏ bị xoá</h3>
+<h3>3. Các tập tin đã có trong thư mục xuất trước khi khởi chạy không thay đổi</h3>
+<h3>4. Bạn có thể bắt đầu lại từ trình đơn  hội nghị</h3>
+<h4>' PDFQZ — THẾ HỆ TỰ ĐỘNG TRONG QUÁ TRÌNH XỬ LÝ</h4>
+<p>Nếu bạn đã chọn <strong>PDF</strong> trong mặt nạ lựa chọn định dạng (PSSO 1), PDF tự động được tạo ra ở cuối mỗi bộ nhớ hay tài liệu, mà không cần thêm bất kỳ cửa sổ xác nhận nào.</p>
+<h4>ỨNG XỬ ĐI TRƯỚC:</h4>
+<ul>
+<li>✅ <strong>PDF đã chọn trong mặt nạ định dạng:</strong> PDF tự động được tạo ra ở cuối của việc tải về; không cần xác nhận thêm</li>
+<li>❌ <strong>PDF chưa được chọn:</strong> Chỉ có ảnh theo định dạng đã chọn, không có PDF</li>
+</ul>
+<p>Tính năng của PDF được tạo ra:</p>
+<ul>
+<li>Tên tập tin: <code>[nome].pdf</code>không có hậu quả (v. <code>Registro Matrimoni 1920.pdf</code>)</li>
+<li>Đã lưu trong thư mục xuất đã chọn, cùng cấp độ với ảnh</li>
+<li>Trang theo thứ tự số học.</li>
+<li>Nếu một bức tranh không tải xuống được, một trang sẽ được chèn vào <em>đặt chỗ</em> Địa điểm với liên kết trực tiếp với tấm vải gốc trên Antenati</li>
+<li>Không còn tập tin tạm thời trong thư mục xuất vào cuối thế hệ</li>
+</ul>
+<h4>: NHỮNG GÌ KHÔNG NÊN LÀM TRONG QUÁ TRÌNH XỬ LÝ:</h4>
+<ul>
+<li>❌ Không đóng chương trình (sẽ mất các tệp chưa hoàn tất)</li>
+<li>❌ Không ngắt kết nối ổ đĩa ngoài (gây lỗi lưu)</li>
+<li>❌ Không tắt PC/máy tính xách tay</li>
+<li>❌ Không ngắt kết nối Internet (sẽ dừng tải xuống)</li>
+</ul>
+<h4>ĐIỀU BẠN CÓ THỂ LÀM:</h4>
+<ul>
+<li>Hãy chờ cho nó kết thúc.</li>
+<li>Nhấn vào nút Thôi nếu khẩn cấp</li>
+<li>✓ Có thể dùng PC bình thường cho việc khác (chỉ cần thu nhỏ cửa sổ)</li>
+</ul>
+<h4>ĐƯỢC</h4>
+<p>Khi mọi hồ sơ được xử lý:</p>
+<h3>1. Cửa sổ đang tiến hành đóng tự động</h3>
+<h3>2. Một thông điệp xuất hiện: " Thao tác hoàn chỉnh"</h3>
+<h3>3 Nhấn OK để đóng thông điệp</h3>
+<h3>4. Cửa sổ tiến hành hoàn toàn biến mất</h3>
+<p>Tiếp theo:</p>
+<ul>
+<li>Xem tập tin kết xuất trong thư mục bạn đã chọn tại PSSO 2</li>
+<li>Mỗi tài liệu/thư mục có thư mục con riêng trong thư mục bạn chọn</li>
+<li>Ảnh sẵn sàng để dùng (xem, in, lưu trữ, PDF)</li>
+</ul>
+<h4>TẠO RA KẾT XUẤT  NGẦM:</h4>
+<p>Đối với mỗi kỷ lục phức tạp bạn sẽ tìm thấy:</p>
+<ul>
+<li>Ảnh dạng đã chọn</li>
+<li>bích chương [ID] [tên].json gốc IIIF trình bày với cấu trúc siêu dữ liệu</li>
+<li>Gia phả. json  diệt vi khuẩn siêu dữ liệu (ngày, địa điểm, tên, đô thị, tỉnh)</li>
+<li>Kỹ thuật. json kỹ thuật siêu dữ liệu (số bức tranh, danh sách ID vẽ, quyền, tập tin tạo)</li>
+<li>[tên].json / Bộ bên phụ bản JSON cho mỗi ảnh (các phương pháp nhúng nội dung)</li>
+</ul>
+<h4>&amp; GHI CHÚ TRÊN TÊN TẬP TIN:</h4>
+<ul>
+<li>Cơ sở [tên] được lấy trực tiếp từ tập tin nhập.txt (bản ghi người dùng)</li>
+<li>Nếu bạn viết vào tập tin nhập " chịu trách nhiệm về đám cưới 1920", các tập tin sẽ là:
                     <ul>
-                        <li>Registro Matrimoni 1920_canvas_1.jpg</li>
-                        <li>Registro Matrimoni 1920_genealogico.json</li>
-                        <li>Registro Matrimoni 1920_tecnico.json</li>
-                    </ul>
-                </li>
-                <li>I suffissi JSON rimangono in EN (_genealogico, _tecnico) per compatibilità</li>
-                <li>Puoi usare nomi in qualunque lingua nel file input (IT, EN, misto)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>6. PDF PER REGISTRI E DOCUMENTI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>COME ATTIVARE LA GENERAZIONE PDF</h4>
-            <p>La generazione del PDF si attiva selezionando la casella <strong>PDF</strong> nella maschera di scelta formati (Menu → Impostazioni → "Seleziona formati immagine").</p>
-            <p>Puoi combinare PDF con uno o più formati immagine (es. PDF + PNG), oppure selezionare solo PDF per ottenere esclusivamente il documento senza file immagine separati.</p>
-            <h4>📄 CARATTERISTICHE DEL PDF GENERATO</h4>
-            <ul>
-                <li><strong>Nome file:</strong> il PDF è denominato semplicemente <code>[nome].pdf</code>, senza suffissi aggiuntivi — ad esempio <code>Registro Matrimoni 1920.pdf</code></li>
-                <li><strong>Posizione:</strong> salvato nella cartella output scelta, allo stesso livello delle immagini: <code>[cartella_scelta]\[nome].pdf</code></li>
-                <li><strong>Ordine pagine:</strong> le pagine sono sempre in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N), indipendentemente dall'ordine in cui i tile vengono scaricati</li>
-                <li><strong>Pagine placeholder:</strong> se un canvas non è disponibile (errore di rete o risorsa temporaneamente non raggiungibile), al suo posto viene inserita automaticamente una pagina <em>placeholder</em> localizzata nella lingua selezionata. La pagina placeholder contiene:
+<li>Những đám cưới đăng ký năm 1920 có vẽ 1.</li>
+<li>Đám cưới đăng ký năm 1920 Gia phả.</li>
+<li>Thanh toán cho năm 1920</li>
+</ul>
+</li>
+<li>hậu phương JSON vẫn còn trong EEN (gia phả, kỹ thuật) để tương thích</li>
+<li>Bạn có thể dùng tên trong bất kỳ ngôn ngữ nào trong tập tin nhập (IT, EEN, mix)</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3. PDF ĐỂ ĐĂNG KÝ VÀ TÀI LIỆU</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>LÀM THẾ NÀO ĐỂ KÍCH HOẠT THẾ HỆ PDFQZ</h4>
+<p>Thế hệ PDF được kích hoạt bằng cách chọn hộp <strong>PDF</strong> trong bộ lọc lựa chọn định dạng ( Menu  tuỳ chọn bộ trình bày) « Chọn kích cỡ ảnh ».</p>
+<p>Bạn có thể kết hợp PDF với một hay nhiều định dạng ảnh (v. d. PDF + PNG), hoặc chỉ chọn PDF để lấy tài liệu không có tập tin ảnh riêng.</p>
+<h4>DEL TÍNH CHẤT CỦA PDF TẠO RA</h4>
+<ul>
+<li><strong>Tên tập tin:</strong> PDF đơn giản được gọi là <code>[nome].pdf</code>không có thêm hậu quả — chẳng hạn <code>Registro Matrimoni 1920.pdf</code></li>
+<li><strong>Địa điểm:</strong> được lưu trong thư mục kết xuất đã chọn, cùng cấp độ với ảnh: <code>[cartella_scelta]\[nome].pdf</code></li>
+<li><strong>Thứ tự trang:</strong> trang web luôn luôn được phát triển theo thứ tự số lượng (canvas 1 bức tranh 2 vải N), bất kể thứ tự của các đá lát được tải về</li>
+<li><strong>Bộ giữ chỗ trang:</strong> Nếu một bức vẽ không sẵn sàng (lỗi làm việc mạng hay tài nguyên tạm thời không sẵn sàng), một trang tự động được chèn vào vị trí của nó <em>đặt chỗ</em> nằm trong ngôn ngữ được chọn. Trang giữ chỗ chứa:
                     <ul>
-                        <li>Un testo di avviso localizzato (es. "Immagine non disponibile")</li>
-                        <li>Il link diretto al canvas originale su Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>), così da poter consultare la fonte in modo semplice</li>
-                    </ul>
-                    In questo modo viene sempre generato il PDF, con tutte le informazioni necessarie a completarlo in caso di immagini non scaricate.
+<li>Một văn bản cảnh báo đã được bản địa hóa (ví dụ: "Hình ảnh không khả dụng")</li>
+<li>Liên kết trực tiếp đến tấm vải gốc trên Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>) Để bạn có thể dễ dàng tra cứu nguồn</li>
+</ul>
+                    Bằng cách này, PDF luôn luôn được tạo ra, với tất cả các thông tin cần thiết để hoàn thành nó trong trường hợp của ảnh được gỡ bỏ.
                 </li>
-                <li><strong>Pulizia automatica:</strong> i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine del processo. Nella cartella output rimangono solo le immagini nei formati scelti, il PDF finale, i manifest e i metadati</li>
-            </ul>
-            <h4>🚫 Se PDF non è selezionato:</h4>
-            <ul>
-                <li>Solo le immagini vengono scaricate nei formati selezionati</li>
-                <li>Nessun PDF generato</li>
-            </ul>
-            </div>
-            <div class="section">
-        <h2>&#128204; FUNZIONALIT&#192; DISPONIBILI E PIANIFICATE</h2>
-        <p>Il menu &ldquo;Servizi&rdquo; contiene 5 funzioni: 4 gi&agrave; disponibili, 1 pianificata per versioni future.</p>
-
-        
-
-        <div class="section-box">
-            <h3>1&#65039;&#8419; VISUALIZZAZIONE IMMAGINI &#9989;</h3>
-            <p>Viewer integrato per immagini genealogiche:</p>
-            <ul>
-                <li>Formati supportati: JPG, PNG, TIFF (inclusi TIFF multi-pagina con navigazione avanti/indietro)</li>
-                <li>Zoom con rotella del mouse e pulsanti dedicati</li>
-                <li>Pan con trascinamento del mouse</li>
-                <li>Modalit&agrave; &ldquo;Adatta alla finestra&rdquo; e &ldquo;1:1 pixel&rdquo;</li>
-                <li>Sidecar JSON affiancato all&apos;immagine (EXIF e metadati tecnici)</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_03_visualizzazione_immagini.html">Vedi Guida Visualizzazione Immagini</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>2&#65039;&#8419; VISUALIZZAZIONE METADATI JSON &#9989;</h3>
-            <p>Viewer ad albero per metadati strutturati:</p>
-            <ul>
-                <li>Apertura diretta di file <code>_genealogico.json</code> e <code>_tecnico.json</code></li>
-                <li>Visualizzazione ad albero espandibile</li>
-                <li>Sezioni: dati genealogici, metadati tecnici, EXIF dalle immagini</li>
-                <li>Anteprima immagine abbinata affiancata al pannello metadati</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_04_visualizzazione_metadati.html">Vedi Guida Visualizzazione Metadati JSON</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>3&#65039;&#8419; OCR AVANZATO &#9989;</h3>
-            <p>Trattamento OCR avanzato tramite LLM Vision:</p>
-            <ul>
-                <li>Estrazione testo da documenti antichi (inclusi manoscritti in italiano ottocentesco e latino)</li>
-                <li>Mantenimento della struttura e dei riferimenti del layout (TEI XML)</li>
-                <li>Riconoscimento e pulizia automatica dei dati strutturati (es. tabelle, ruoli)</li>
-                <li>Estrazione di entit&agrave; (nomi, date, relazioni) in formato JSON navigabile</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_05_ocr_avanzato.html">Vedi Guida OCR Avanzato</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>4&#65039;&#8419; TRADUZIONE &#9989;</h3>
-            <p>Traduzione contestuale dei testi estratti:</p>
-            <ul>
-                <li>Traduzione automatica in 20 lingue supportate</li>
-                <li>Gestione della formattazione e del layout originale</li>
-                <li>Possibilit&agrave; di alternare il testo originale e il testo tradotto</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_06_traduzione.html">Vedi Guida Traduzione</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>5&#65039;&#8419; ESPORTAZIONE GEDCOM</h3>
-            <p>Esportazione in formati genealogici:</p>
-            <ul>
-                <li>GEDCOM (standard genealogico internazionale)</li>
-                <li>Interoperabilit&agrave; con software genealogici: Ancestry, Family Historian, Family Tree Maker,
-                Findmypast, FamilySearch, Geni, Geneanet, Gramps, Legacy Family Tree, MyHeritage,
-                Reunion (macOS), RootsMagic, WikiTree</li>
-            </ul>
-            <p style="font-style:italic;color:#7a5c3b;margin-top:0.6rem;">
-            &#128204; <em>Nota: L&apos;elencazione dei software &egrave; puramente indicativa e non
-            vincolante allo sviluppo dell&apos;interoperabilit&agrave; con ciascuna piattaforma.</em></p>
-            <p style="margin-top:0.6rem;"><strong>Status:</strong> &#128302; Pianificata &ndash;
-            <a href="guida_07_esportazione_gedcom.html">Vedi Guida GEDCOM</a></p>
-        </div>
-    </div>
-            <div class="section-box">
-            <h3>9. CARTELLE E FILE OUTPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📂 STRUTTURA OUTPUT</h4>
-            <p>Quando elabori un record IIIF, ATK-Pro salva i file nella cartella che hai scelto nel PASSO 2 (Seleziona cartella output).</p>
-            <h4>STRUTTURA ORGANIZZATA PER RECORD:</h4>
-            <pre class="file-structure">[cartella_output]/
+<li><strong>Tự động làm sạch:</strong> Các tập tin tạm thời dùng cho thế hệ pdf bị xoá tự động vào cuối tiến trình. Trong thư mục xuất chỉ còn lại ảnh trong định dạng đã chọn, PDF cuối cùng, các áp phích và siêu dữ liệu</li>
+</ul>
+<h4>Sê nếu không chọn:</h4>
+<ul>
+<li>Chỉ tải về ảnh theo định dạng đã chọn</li>
+<li>Không tạo ra PDF</li>
+</ul>
+</div>
+<div class="section">
+<h2>4.</h2>
+<p>Menu “Dịch vụ” chứa các chức năng vận hành của v3: nghiên cứu có hỗ trợ AI, xem hình ảnh, xem siêu dữ liệu JSON, OCR nâng cao, dịch OCR và xuất GEDCOM.</p>
+<div class="section-box">
+<h3>1ITA TRỢ GIÚP NGHIÊN CỨU TẠI  VỘI VÀNG</h3>
+<p>Trợ lý để đặt chiến lược nghiên cứu phả hệ:</p>
+<ul>
+<li>Biến tên, nơi, khoảng thời gian và mục tiêu thành dấu vết tìm kiếm</li>
+<li>Đề nghị cổng, bộ lọc và mẫu truy vấn để kiểm tra bằng tay</li>
+<li>Hỗ trợ kịch bản Ý, Ý, Ý và quốc tế</li>
+<li>Cho phép ghi chú cá nhân, so sánh đa ngôn ngữ và lưu kết quả</li>
+</ul>
+<p><strong>Trạng thái:</strong> ▪ Có sẵn —
+            <a href="guida_03_ricerca_assistita_ai.html">Xem sách hướng dẫn nghiên cứu của AI</a></p>
+</div>
+<div class="section-box">
+<h3>2 CỬA SỔ TỚI MÀN HÌNH 0</h3>
+<p>Trình xem tích hợp cho ảnh phả hệ:</p>
+<ul>
+<li>Định dạng được hỗ trợ: JPG, PNG, PNG (bao gồm đa trang PNG)</li>
+<li>Phóng to bằng bánh xe chuột và cái nút dành riêng</li>
+<li>Pan với kéo chuột</li>
+<li>“ Chú ý cửa sổ phần mềm:1 điểm ảnh</li>
+<li>Bên hông xe JSON cạnh ảnh (dữ liệu nội dung và kỹ thuật)</li>
+</ul>
+<p><strong>Trạng thái:</strong> ▪ Có sẵn —
+            <a href="guida_04_visualizzazione_immagini.html">Xem hướng dẫn xem ảnh</a></p>
+</div>
+<div class="section-box">
+<h3>3TI XEM SIÊU DỮ LIỆU JSON  VỘI</h3>
+<p>Bộ xem cây cho siêu dữ liệu có cấu trúc:</p>
+<ul>
+<li>Mở tập tin trực tiếp <code>_genealogico.json</code> và <code>_tecnico.json</code></li>
+<li>Hiển thị cây mở rộng</li>
+<li>Phần: dữ liệu phả hệ, siêu dữ liệu kỹ thuật, EXIF từ ảnh</li>
+<li>Ô xem thử ảnh khớp bên cạnh bảng siêu dữ liệu</li>
+</ul>
+<p><strong>Trạng thái:</strong> ▪ Có sẵn —
+            <a href="guida_05_visualizzazione_metadati.html">Xem Siêu dữ liệu Hướng dẫn JSON</a></p>
+</div>
+<div class="section-box">
+<h3>4 AVANZATO OCCRU CAO CẤP</h3>
+<p>Cách điều trị nhận dạng kí tự cao cấp qua ảo ảnh LM:</p>
+<ul>
+<li>Xuất bản văn bản từ các văn bản cổ (bao gồm các bản chép tay vào thế kỷ 19 và tiếng La - tinh)</li>
+<li>Bảo trì cấu trúc và tham khảo bố trí (TEI XML)</li>
+<li>Tự động công nhận và làm sạch dữ liệu đã cấu trúc (v. d. bảng, vai trò)</li>
+<li>Trích dẫn thực thể (tên, ngày tháng, báo cáo) theo định dạng JSON có thể di chuyển</li>
+</ul>
+<p><strong>Trạng thái:</strong> ▪ Có sẵn —
+            <a href="guida_06_ocr_avanzato.html">Xem ảnh cấp cao OCR Hướng dẫn</a></p>
+</div>
+<div class="section-box">
+<h3>5 HỘI NGHỊ ĐỊA HẠT</h3>
+<p>Bản dịch văn bản được trích hoặc sao chép:</p>
+<ul>
+<li>Dịch văn bản nhận dạng kí tự, bản sao bằng tay và tập tin TXT</li>
+<li>Dùng kiểu tài liệu, ngữ cảnh và bóng loáng</li>
+<li>Nhà cung cấp IA có khả năng cấu hình, mô hình tùy chọn và phím an toàn</li>
+<li>Đầu ra TXT hoặc DOCX có thể chỉnh sửa</li>
+</ul>
+<p><strong>Trạng thái:</strong> ▪ Có sẵn —
+            <a href="guida_07_traduzione.html">Xem Hướng dẫn Dịch kí tự</a></p>
+</div>
+<div class="section-box">
+<h3>6 QUÁI VẬT XUẤT KHẨU GEDCOM</h3>
+<p>Phân tích gia phả và xuất GEDCOM:</p>
+<ul>
+<li>Đầu vào chung với phương pháp tự động, Vision IA hoặc Re wisery LLM</li>
+<li>Khả năng mở rộng cơ sở GEDCOM hoặc CSV hiện có</li>
+<li>Ghi chú và kiểu tài liệu hiện thời để hướng dẫn việc chiết xuất</li>
+<li>Thế hệ của một tập tin <code>genealogia_*.ged</code> để kiểm tra trước khi dùng</li>
+</ul>
+<p style="margin-top:0.6rem;"><strong>Trạng thái:</strong> ▪ Có sẵn —
+            <a href="guida_08_esportazione_gedcom.html">Xem hướng dẫn GEDCOM</a></p>
+</div>
+</div>
+<div class="section-box">
+<h3>THƯ MỤC 5 VÀ TẬP TIN XUẤT</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>COMMENT</h4>
+<p>Khi bạn xử lý một hồ sơ IIIF, ATK-Pro lưu tập tin vào thư mục đã chọn trong PSSO 2 (chọn thư mục xuất).</p>
+<h4>CẤU TRÚC CÓ TỔ CHỨC ĐỂ GHI LẠI:</h4>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
 ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite (una per pagina)
 ├─ [nome]_canvas_2.jpg/.png/.tif
@@ -726,9 +752,9 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ [nome]/                           ← Sottocartella SOLO per metadati
    ├─ [nome]_genealogico.json        ← Metadati genealogici
    └─ [nome]_tecnico.json            ← Metadati tecnici</pre>
-            <h4>MULTI-RECORD NELLA STESSA CARTELLA:</h4>
-            <p>Se elabori 3 record nella stessa cartella, la struttura diventa:</p>
-            <pre class="file-structure">[cartella_output]/
+<h4>SỐ NHIỀU TRONG CÙNG MỘT THƯ MỤC:</h4>
+<p>Nếu bạn xử lý 3 hồ sơ trong cùng một thư mục, cấu trúc sẽ trở thành:</p>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID1]_Registro1.json
 ├─ Registro1_canvas_1.jpg
 ├─ Registro1_canvas_2.jpg
@@ -752,36 +778,30 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ Registro3/
     ├─ Registro3_genealogico.json
     └─ Registro3_tecnico.json</pre>
-            <h4>📌 NOTE SULLA STRUTTURA:</h4>
-            <ul>
-                <li>Manifest IIIF, Immagini, PDF, Sidecar JSON: nel livello principale</li>
-                <li>SOLO metadati tecnici e genealogici: in sottocartelle [nome]/ (uno per record)</li>
-                <li>Le cartelle temporanee (<code>tiles_canvas_X/</code>) e i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine dell'elaborazione: nella cartella output non rimane nessun file di lavoro intermedio</li>
-                <li>Questa organizzazione consente di gestire molteplici record nella stessa cartella senza confusione tra file</li>
-            </ul>
-            <h4>📋 CONVENZIONE DI DENOMINAZIONE:</h4>
-            <ul>
-                <li>Manifest: manifest_[ID]_[nome].json</li>
-                <li>Immagini: [nome]_canvas_1, [nome]_canvas_2, ... [nome]_canvas_N</li>
-                <li>JSON metadati: [nome]_genealogico.json, [nome]_tecnico.json</li>
-                <li>JSON immagini: [nome].json (per ogni canvas)</li>
-                <li>PDF: [nome].pdf</li>
-            </ul>
-            </div>
-            
-        
-                </div>
-        
-    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-
-    <footer style="text-align: center;">
-            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-        </footer>
-    </div>
-    </div>
+<h4>: CẤU TRÚC GHI CHÚ:</h4>
+<ul>
+<li>Hiển thị IIIF, hình ảnh, PDF, Sidecar JSON: ở cấp độ chính</li>
+<li>Chỉ siêu dữ liệu kỹ thuật và phả hệ: trong thư mục con [tên]/ (một đĩa nhạc)</li>
+<li>Thư mục tạm (<code>tiles_canvas_X/</code>) và các tập tin tạm dùng cho thế hệ PDF bị xoá tự động vào cuối tiến trình xử lý: không có tập tin làm việc trung gian nào còn lại trong thư mục xuất</li>
+<li>Tổ chức này cho bạn khả năng quản lý nhiều hồ sơ trong cùng một thư mục mà không bị lẫn lộn giữa các tập tin</li>
+</ul>
+<h4>DANH SÁCH &amp; NHẬP VÀO</h4>
+<ul>
+<li>Hiển thị: Hiển thị [ID] [tên]. json</li>
+<li>Ảnh: [tên] vải 1, [tên] vải 2, ...</li>
+<li>JSON siêu dữ liệu. json, [tên] kỹ thuật. ♪</li>
+<li>Ảnh Jason:</li>
+<li>PDF: pdf</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">▪ Mod.01 — Cài đặt, bắt đầu và giao diện</a>
+<a class="nav-button" href="guida.html">chỉ mục e Main</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 — Nghiên cứu được hỗ trợ</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati công cụ Pro  Tổ tiên.tykit.pro@gmail.com</p>
+</footer>
 </body>
 </html>

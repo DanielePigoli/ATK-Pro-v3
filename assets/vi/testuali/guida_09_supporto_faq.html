@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 Mô-đun 09: Tài liệu, hỗ trợ, khắc phục sự cố và câu hỏi thường gặp</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 Mô-đun 09: Tài liệu, hỗ trợ, khắc phục sự cố và câu hỏi thường gặp</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">← Mod.08 — Xuất GEDCOM</a>
+<a class="nav-button" href="guida.html">chỉ mục e Main</a>
+</div>
+<div class="section-box">
+<h3>1. Trình đơn tài liệu: tài nguyên và hỗ trợ</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>TÀI LIỆU SẴN SÀNG</h4>
+<p>Trong thực đơn <strong>Tài liệu</strong> Tìm 5 lựa chọn để truy cập nguồn thông tin của ứng dụng.</p>
+<p><strong>&amp; Ghi chú:</strong> tài liệu được bao gồm trong việc cài đặt và có thể tham khảo ý kiến mà không cần kết nối Internet.</p>
+<h4>1) DDCLAIMER (Tiếng nói chuyện)</h4>
+<ul>
+<li>Mở văn bản của người tuyên bố hợp pháp bao gồm trong đơn.</li>
+<li>Ngăn chặn: Giới hạn trách nhiệm, điều khoản sử dụng, giấy phép phần mềm</li>
+<li>Đọc quan trọng trước khi sử dụng sâu sắc</li>
+<li>Nó có thể được cập nhật cùng với một phiên bản mới của ứng dụng; khi thay đổi đánh giá pháp lý, cần có một sự chấp nhận mới.</li>
+</ul>
+<h4>TÁC GIẢ BÀI HAI</h4>
+<ul>
+<li>Mở: tác giả trình bày. HTML</li>
+<li>chứa: tiểu sử tác giả ngắn, kinh nghiệm lưu trữ/ số</li>
+<li>Cho phép bạn hiểu bối cảnh của dự án</li>
+</ul>
+<h4>3 DỰ ÁN TRÌNH BÀY</h4>
+<ul>
+<li>Mở: dự án trình bày ATK-Pro.</li>
+<li>chứa:
+                    <ul>
+<li>Mục tiêu chính: Bàn làm việc đa phương tiện và gia đình</li>
+<li>Chính sách cổng: sử dụng các nguồn công cộng tương thích, không cắt đứt việc đăng nhập, tài khoản hay hạn chế kỹ thuật</li>
+<li>v3 chu vi: bản ghi cánh cổng, AI, Nhận dạng kí tự, phiên dịch Nhận dạng kí tự, phân tích phả hệ và xuất khẩu GEDCOM</li>
+<li>Người nhận: Các nhà nghiên cứu gia phả, học giả cao cấp, cộng đồng Ý và Ý trên thế giới</li>
+<li>Multilanguage: 20 ngôn ngữ được hỗ trợ:IT, EE, ES, PT, FR, DE, AR, HE, KL, RA, JA, SV, ZH, RO, EL, PL, DA, NO, TR, VI)</li>
+</ul>
+</li>
+<li>Tài liệu sống, chủ đề của sự kết hợp dần dần</li>
+</ul>
+<h4>4) GUIDA (chỉ mục phụ)</h4>
+<ul>
+<li>Mở: hướng dẫn viên. HTML</li>
+<li>chứa: Chỉ mục danh sách của hướng dẫn tiếng Ý v3</li>
+<li>Từ đây có thể truy cập các phần vận hành chuyên biệt: cài đặt, thao tác cơ bản, trình xem, siêu dữ liệu, OCR, dịch thuật, GEDCOM, hỗ trợ và nghiên cứu có hỗ trợ AI</li>
+</ul>
+<h4>5 THÔNG TIN</h4>
+<ul>
+<li>Hiện cửa sổ có 3 hàng:
+                    <ul>
+<li>1. ATK-Pro vx.x.x (số phiên bản)</li>
+<li>2. © 2026 Daniele Pigoli (bản sao phải và tác giả)</li>
+<li>3. Hỗ trợ thư điện tử (để thông báo/ gởi thông báo)</li>
+</ul>
+</li>
+<li>Dùng email cho các liên lạc chính thức</li>
+<li>Đã cập nhật tự động</li>
+</ul>
+<h4>Có sẵn ngôn ngữ</h4>
+<ul>
+<li>Tác giả trình diễn, dự án trình bày và hướng dẫn được mở bằng ngôn ngữ đã chọn, khi có.</li>
+<li>Người bác bỏ hoạt động sử dụng bản phê bình pháp lý của Ý.</li>
+<li>Nếu tài nguyên cục bộ không sẵn sàng, thông điệp tương đối sẽ được hiển thị.</li>
+<li>Ví dụ như tập tin nhập, tiếng Anh được dùng như một hậu phương.</li>
+</ul>
+<h4>ĐẾN THẾ NÀO ĐỂ LIÊN LẠC HỖ TRỢ</h4>
+<p>Họ</p>
+<ul>
+<li>Để thông báo lỗi: Hãy mô tả vấn đề + ảnh chụp màn hình/log</li>
+<li>Để đề nghị: Ủy nhiệm các hàm mới hoặc cải tiến</li>
+<li>Đối với câu hỏi kỹ thuật: Yêu cầu làm sáng tỏ thao tác</li>
+<li>Để đề nghị những điều ưu tiên phát triển: đề nghị cải tiến, đánh giá các cổng công cộng hoặc chức năng cần hoàn tất.
+                    <ul>
+<li>Các đề xuất sẽ được đánh giá, nhưng sự phát triển được điều chỉnh bởi thực tế là ATK-Pro được quản lý và duy trì ở mức độ nghiệp dư, không phải bởi một nhà phần mềm chuyên nghiệp.</li>
+<li>Thời gian mãn nguyện tùy thuộc vào sự sẵn có và tài nguyên giới hạn.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2. Kết thúc chương trình và hỗ trợ dự án</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>ĐẾN LÀM THẾ NÀO ĐỂ ĐÓNG ATK-PRO</h4>
+<p>Bạn có thể đóng chương trình bằng một trong những cách quản lý của hệ thống:</p>
+<ol>
+<li>Chọn <strong>Thiết lập</strong>;</li>
+<li>sử dụng nút đóng trong thanh tiêu đề;</li>
+<li>Trên cửa sổ, dùng phím tắt chuẩn <strong>Alt+F4</strong>.</li>
+</ol>
+<p>Cửa sổ tùy chọn được hiển thị trong khi đóng <strong>Hỗ trợ dự án</strong>.</p>
+<h4>▪ CỬA SỔ « HỖ TRỢ DỰ ÁN »</h4>
+<p>Sau khi chọn một trong ba phương pháp đóng, một cửa sổ mở ra với:</p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="Comment" src="images/window4.webp" style="max-width: 600px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>Những gì bạn có thể làm trong cửa sổ này</h4>
+<p>Bắt đầu từ đầu.</p>
+<ul>
+<li>Mở trình duyệt của bạn bằng trang PayPal.me chính thức</li>
+<li>Bạn có thể chọn số tiền đóng góp (hoàn toàn miễn phí)</li>
+<li>Chi trả qua PayPal (có hay không có tài khoản, tùy thuộc vào quốc gia)</li>
+<li>Không có ràng buộc: bạn cũng có thể quyết định không đóng góp</li>
+</ul>
+<p>il OPENT 2: quét mã QR</p>
+<ol>
+<li>Mở máy quay điện thoại ra.</li>
+<li>Khung đoạn mã QR.</li>
+<li>Hãy kiểm tra trong trình duyệt địa chỉ đã đề nghị trước khi tiến hành.</li>
+</ol>
+<p>Comment</p>
+<ul>
+<li>Đóng băng cờ</li>
+<li>Kết thúc chương trình vĩnh viễn</li>
+<li>Không có liên kết: bạn có thể đóng mà không cần đóng</li>
+</ul>
+<h4>GHI CHÚ QUAN TRỌNG:</h4>
+<p>NHỮNG đóng góp cá nhân</p>
+<p>▪ Chương trình hoạt động giống hệt với việc đóng góp</p>
+<p>Không theo dõi, không giới hạn chức năng</p>
+<p>▪ Băng cờ mở địa chỉ PayPal được cấu hình bởi dự án; luôn luôn kiểm tra điểm đến mà trình duyệt hiển thị</p>
+<p>▪ Bạn có thể ủng hộ dự án khi bạn muốn</p>
+<h4>HAY ĐÓNG GÓP CÓ MỤC ĐÍCH GÌ:</h4>
+<p>Hỗ trợ phát triển trong tương lai của ATK-Pro:</p>
+<ul>
+<li>Phân phối, cơ sở hạ tầng và dịch vụ liên quan đến dự án</li>
+<li>Phụ thuộc và thành phần phần mềm</li>
+<li>Thời gian phát triển, thử nghiệm, tài liệu và bảo trì các phiên bản sau</li>
+<li>Máy chủ thử ra chứng nhận IIIF</li>
+<li>Tài liệu và sự bảo trì</li>
+</ul>
+<h4>THAY THẾ CHO ĐÓNG GÓP:</h4>
+<p>Nếu bạn không thể đóng góp nhưng muốn hỗ trợ, bạn có thể:</p>
+<ul>
+<li>Chia sẻ ATK-Pro trên mạng xã hội</li>
+<li>Báo cáo sử dụng sáng tạo hoặc nghiên cứu trường hợp thú vị</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3 Trò chơi bắn súng và FAQ</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>THƯỜNG XUYÊN ĐẶT CÂU HỎI</h4>
+<h4>Chương trình này có nằm trong danh sách tải lên không?</h4>
+<p><strong>R:</strong> Nó thường là thời hạn mạng. Kiểm tra:</p>
+<ol>
+<li>Hãy kiểm tra xem kết nối Internet hoạt động được bằng cách mở một trang đáng tin cậy trong trình duyệt của bạn.</li>
+<li>Mở địa chỉ URL IIIF trong trình duyệt và sao chép lại nó từ thanh địa chỉ.</li>
+<li>Kiểm tra rằng tường lửa hoặc phần mềm an ninh cho phép ATK-Pro kết nối.</li>
+<li>Nếu bạn dùng một mạng ủy nhiệm, kiểm tra cấu hình hệ điều hành.</li>
+</ol>
+<p>Nếu vấn đề tiếp tục, hãy thử với địa chỉ Mạng khác để thử ra kết nối IIIF</p>
+<h4>P: "Các tập tin không tìm thấy (404)" - nó có nghĩa là gì?</h4>
+<p><strong>R:</strong> Không thể truy cập URL trên poster. Nguyên nhân:</p>
+<ul>
+<li>URL đã mở (không cập nhật)</li>
+<li>Thư mục homeComment</li>
+<li>Tham số URL sai (sai</li>
+</ul>
+<p>Giải pháp: Kiểm tra URL trong trình duyệt trước khi đánh giá trong ATK-Pro</p>
+<h4>Tải về rất chậm hay ngắt lời?</h4>
+<p><strong>R:</strong> Thử:</p>
+<ol>
+<li>Hãy kiểm tra sự ổn định của mạng Wi-Fi, hoặc dùng một kết nối có dây nếu có.</li>
+<li>Hãy thử một địa chỉ URL khác của công chúng IIIF để xem nếu chậm lại phụ thuộc vào máy chủ.</li>
+<li>Giảm tải bằng cách chọn hồ sơ tài nguyên <strong>Nhẹ</strong>.</li>
+<li>Nếu vấn đề chỉ liên quan đến một cổng, hãy tin cậy và thử lại: dịch vụ từ xa có thể bị chặn hoặc tạm thời không có.</li>
+</ol>
+<h4>Mở lại hình ảnh chậm - làm thế nào để tăng tốc?</h4>
+<p><strong>R:</strong> Tốc độ phụ thuộc chủ yếu vào phản ứng của máy phục vụ IIIF, kích cỡ hình ảnh, kết nối và tài nguyên sẵn có trên máy tính.</p>
+<ul>
+<li>Dùng hồ sơ <strong>Nhẹ</strong> để giảm tiêu dùng tài nguyên hoặc <strong>Nhanh</strong> Chỉ trên hệ thống đầy đủ.</li>
+<li>Bản ghi tiến trình với ít trang hơn cùng một lúc nếu bộ nhớ hoặc mạng bị áp lực.</li>
+<li>Hãy nhớ rằng một số cổng ra vào áp đặt bất kể hồ sơ được chọn.</li>
+</ul>
+<h4>P: kết xuất PDF bị hỏng hay không mở?</h4>
+<p><strong>R:</strong> Thử:</p>
+<ol>
+<li>Giữ một bản sao có ích của chẩn đoán này, sau đó gỡ bỏ hoặc thay đổi tên của PDF không đầy đủ.</li>
+<li>Nạp lại hồ sơ từ <strong>Thông tin nhập tập tin</strong> và tái tạo PDF.</li>
+<li>Hãy đảm bảo điểm đến có thể ghi được và có đủ chỗ để xử lý.</li>
+<li>Kiểm tra mỗi ảnh được tạo ra để xem vấn đề chỉ liên quan đến PDF.</li>
+</ol>
+<h4>Làm thế nào để sử dụng tập tin HTML bằng kho lưu?</h4>
+<p><strong>R:</strong> Ảnh</p>
+<ol>
+<li>Ở đây hãy đặt độ xoay đoạn giữa các định dạng ảnh.</li>
+<li>ATK-Pro tiết kiệm một máy nén LZW không mất gì.</li>
+<li>Hãy lưu một bản sao với một sự hỗ trợ đặc biệt và định kỳ kiểm tra sự toàn vẹn của bản sao lưu.</li>
+<li>Việc lưu trữ theo thời gian cũng tùy thuộc vào phương tiện truyền thông, bản sao và kiểm tra tính trung thực, không chỉ vào định dạng.</li>
+</ol>
+<h4>Tôi có thể xử lý nhiều bản ghi cùng một lúc không?</h4>
+<p><strong>R:</strong> Một đĩa nhạc được xử lý theo trình tự. Trong một hồ sơ, các trang và đá lát có thể được xử lý song song với cổng và hồ sơ tài nguyên.</p>
+<ol>
+<li>Chuẩn bị một tập tin nhập với tất cả các hồ sơ được hỗ trợ, hết tập tin này đến tập tin khác.</li>
+<li>Chọn nó từ <strong>Thông tin nhập tập tin</strong>.</li>
+<li>Bắt đầu một lần <strong>Đầu ra → Xử lý</strong>.</li>
+<li>ATK-Pro tự động tiếp tục với các hồ sơ tiếp theo.</li>
+</ol>
+<p>Ví dụ: Nếu dữ liệu nhập chứa 5 đĩa, tiến trình ATK-Pro tự động:</p>
+<ul>
+<li>Ghi âm 1 (xuống và tái tạo)</li>
+<li>Thu 2 (tải xuống và tái tạo)</li>
+<li>... đến ghi âm 5</li>
+</ul>
+<p>Kết quả được lưu trong các thư mục đã cấu hình; bạn không cần phải tự khởi chạy lại tiến trình xử lý cho mỗi mục ghi.</p>
+<h4>Chính xác là tập tin lưu ở đâu?</h4>
+<p><strong>R:</strong> Đường dẫn mặc định:</p>
+<ul>
+<li><strong>Cài đặt chuẩn:</strong> Thư mục <code>ATK-Pro/output</code> trong tài liệu người dùng.</li>
+<li><strong>Chế độ di chuyển:</strong> Thư mục <code>output</code> cạnh tập tin thực hiện được.</li>
+</ul>
+<p>Bạn có thể thay đổi điểm đến từ <strong>Thiết lập</strong>.. thư mục mặc định được tạo tự động khi có thể.</p>
+<h4>Tại sao tín hiệu ATK-Pro hay chặn đường dẫn ra?</h4>
+<p><strong>R:</strong> Trước khi tạo tập tin, ATK-Pro điều khiển tuyến đường dài nhất được tính toán để ghi nhận. Kết luận sau cùng phân biệt hai trường hợp:</p>
+<ul>
+<li><strong>Lỗi khối:</strong> Tên chứa ký tự không cho phép, dùng tên riêng của Windows, kết thúc với dấu cách hay dấu chấm, hoặc một đoạn nào đó vượt quá giới hạn được hỗ trợ. Chỉ có kỷ lục bị ảnh hưởng mới bị dừng lại và không tạo được cuốn sách tương đối.</li>
+<li><strong>Chú thích tương thích:</strong> con đường gần với ngưỡng thận trọng hoặc có thể gây ra khó khăn với các ứng dụng gần đây của Windows. Tiến trình có thể tiếp tục, nhưng tốt nhất là chọn một điểm đến ngắn hơn.</li>
+</ul>
+<p>Hồ sơ <strong>OneDrive/SharePoint</strong> chỉ áp dụng khi thư mục đã chọn thực sự nằm dưới một người chủ <code>OneDrive</code> hay <code>OneDrive - Organizzazione</code>. Trong trường hợp có lỗi, hãy rút ngắn tên tập tin hoặc chọn thư mục đích gần hơn với người chủ ổ; bạn không cần thay đổi tên hoặc di chuyển tập tin đã được tạo bởi một tiến trình khác.</p>
+<h4>Tôi có thể di chuyển tập tin xuất sau khi xử lý không?</h4>
+<p><strong>R:</strong> Vâng, các tập tin cuối cùng có thể được di chuyển sau khi xử lý.</p>
+<p>Sau khi hoàn tất:</p>
+<ol>
+<li>Chuyển thư mục thu âm sang đích mới.</li>
+<li>PDF cuối cùng là tự động; nó cũng giữ ảnh và siêu dữ liệu nếu chúng là một phần của kho lưu trữ công việc của bạn.</li>
+<li>Nếu bạn muốn làm lại hồ sơ, hãy giữ lại poster và các tập tin nguồn khác.</li>
+</ol>
+<h4>Đột nhiên rơi...</h4>
+<p><strong>R:</strong> Cho dù chương trình sụp đổ:</p>
+<ol>
+<li>Kiểm tra <code>atkpro.log</code> hoặc với chẩn đoán mở rộng, <code>atkpro_debug.log</code>. Vị trí phụ thuộc vào kiểu cài đặt: hãy tìm kiếm bên cạnh tập tin có thể thực hiện được hoặc trong thư mục làm việc ứng dụng.</li>
+<li>Chép thông điệp lỗi hoặc chụp màn hình.</li>
+<li>Khởi động lại chương trình và lặp lại chiến dịch.</li>
+<li>Nếu lỗi lặp lại, hãy thử một hồ sơ khác của IIIF để phân biệt một vấn đề tổng quát với một danh sách cụ thể.</li>
+</ol>
+<h4>E PHỔ BIẾN LỖI VÀ GIẢI PHÁP</h4>
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+<thead style="background-color: #f0f0f0;">
+<tr>
+<th style="text-align: left;">Lỗi</th>
+<th style="text-align: left;">Chọn</th>
+<th style="text-align: left;">Giải pháp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"Không làm việc quá giờ"</td>
+<td>Máy phục vụ IIIFQZ chậm/tắt</td>
+<td>Thử với các URL khác nhau</td>
+</tr>
+<tr>
+<td>Định dạng "Ivald IIIF"</td>
+<td>URL không được hiển thị IIIF</td>
+<td>Kiểm tra URL trong trình duyệt</td>
+</tr>
+<tr>
+<td>"Không gian đông đúc"</td>
+<td>Không đủ chỗ trên đĩa</td>
+<td>Không gian trống trên đơn vị</td>
+</tr>
+<tr>
+<td>"Không nhận"</td>
+<td>Đã bảo vệ thư mục/ chỉ đọc</td>
+<td>Chọn một thư mục thuộc về người dùng của bạn và xác nhận nó có khả năng ghi; tránh thư mục hệ thống hoặc được bảo vệ.</td>
+</tr>
+<tr>
+<td>"Không tìm thấy" (404)</td>
+<td>Hiển thị IIIF hết hạn</td>
+<td>Kiểm tra ID trên cổng</td>
+</tr>
+<tr>
+<td>"Không trả lời"</td>
+<td>Xử lý chậm/nặng</td>
+<td>Đợi hay nhấn nút Thôi</td>
+</tr>
+</tbody>
+</table>
+<h4>Cánh cổng đã được nhận diện nhưng máy tải về bị từ chối. Tại sao?</h4>
+<p><strong>R:</strong> Tương thích kỹ thuật không loại bỏ điều kiện truy cập. ATK-Pro từ chối hoặc giới hạn tài nguyên yêu cầu đăng nhập hoặc truy cập, không phơi bày một điểm kết thúc công cộng ổn định, được đánh dấu <code>nodownload</code> hoặc không có quyền tương thích với thao tác cần thiết. Mở trang công cộng của đối tượng, kiểm tra bằng lái và điều khoản sử dụng và chỉ thử với các URL chính thức hỗ trợ.</p>
+<h4>Tôi có thể lấy lại một mẻ nhận dạng bị gián đoạn không?</h4>
+<p><strong>R:</strong> Kiểm tra thư mục đã chọn cho tập tin OCR <code>*_trascrizione_parziale.txt</code> và siêu dữ liệu của nó. Chúng chứa công việc được lưu từ từ, để kiểm tra và hoàn tất trước khi xem xét nó chắc chắn.</p>
+<h4>HỖ TRỢ VÀ LIÊN LẠC</h4>
+<p>Nếu vấn đề vẫn còn sau khi thử giải quyết:</p>
+<ol>
+<li>Xem trình bày dự án và hướng dẫn này từ thực đơn <strong>Tài liệu</strong>.</li>
+<li>Nếu vấn đề vẫn chưa được giải quyết, hãy viết cho <strong>antenati.toolkit.pro@gmail.com</strong> bao gồm:</li>
+</ol>
+<ul>
+<li>Phiên bản ATK-Pro ( hối lộ tài liệu mật)</li>
+<li>Hệ điều hành và phiên bản (v. d. Windows 10/11, Ubuntu 22.04, macOS 13)</li>
+<li>URL IIIF gây ra vấn đề</li>
+<li>Ảnh chụp màn hình sai (nếu hiển thị)</li>
+</ul>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">← Mod.08 — Xuất GEDCOM</a>
+<a class="nav-button" href="guida.html">chỉ mục e Main</a>
+</div>
+<footer style="text-align: center;">
+<p>© 2026 Antenati công cụ Pro  Tổ tiên.tykit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>
