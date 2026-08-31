@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="ru" dir="ltr">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>&#128302; Modulo 07: Esportazione GEDCOM</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Модуль Modulo 04: Изображение</title>
+<meta content="ATK-Pro — Visualizzazione Immagini" name="description"/>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -12,14 +14,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -30,7 +32,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -40,12 +42,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -54,21 +56,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 3px solid #a67c52;
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -77,13 +79,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -96,12 +98,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             border: 2px solid #a67c52;
@@ -110,33 +112,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -144,40 +146,39 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
-            border: 2px solid #a67c52;
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +186,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +194,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +216,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +231,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +240,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +263,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             border: 1px solid #a67c52;
             padding: 12px 8px;
@@ -271,7 +272,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +282,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             border: 2px solid #a67c52;
@@ -297,15 +298,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -324,84 +325,77 @@
 
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <header>
-            <h1>&#128302; Modulo 07: Esportazione GEDCOM</h1>
-            <p style="text-align:center;margin-top:0.5rem;">
-                <span style="background:#7a5c3b;color:white;padding:4px 14px;
-                border-radius:20px;font-size:.9em;">
-                &#128302; Pianificato per versioni future</span>
-            </p>
-        </header>
-
-        <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_06_traduzione.html" class="nav-button">&#8592; Mod.06 &mdash; Traduzione</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_08_supporto_faq.html" class="nav-button">Mod.08 &mdash; Documentazione, Supporto e FAQ &#8594;</a>
-        </div>
-
-        <div class="section">
-            <h2>&#128204; Panoramica</h2>
-            <p>Il modulo <strong>Esportazione GEDCOM</strong> &egrave; in fase di pianificazione. Permetter&agrave; di esportare le relazioni familiari estratte dai documenti genealogici elaborati da ATK-Pro nel formato <strong>GEDCOM</strong> (GEnealogical Data COMmunication), lo standard internazionale per l&apos;interscambio di dati genealogici.</p>
-            <p>Una volta sviluppato, il modulo si occuper&agrave; di aggregare le entit&agrave; estratte dall&apos;OCR (nomi, date, relazioni di parentela) e di strutturarle in un file GEDCOM compatibile con i principali software genealogici.</p>
-        </div>
-
-        <div class="section">
-            <h2>&#127795;&#65039; Interoperabilit&agrave; Pianificata</h2>
-            <div class="section-box">
-                <h3>Software Genealogici Compatibili (Obiettivo)</h3>
-                <p>L&apos;obiettivo &egrave; garantire la compatibilit&agrave; con i principali software e piattaforme genealogici:</p>
-                <ul>
-                    <li>Ancestry</li>
-                    <li>Family Historian</li>
-                    <li>Family Tree Maker</li>
-                    <li>Findmypast</li>
-                    <li>FamilySearch</li>
-                    <li>Geni</li>
-                    <li>Geneanet</li>
-                    <li>Gramps (open source)</li>
-                    <li>Legacy Family Tree</li>
-                    <li>MyHeritage</li>
-                    <li>Reunion (macOS)</li>
-                    <li>RootsMagic</li>
-                    <li>WikiTree</li>
-                </ul>
-                <p style="margin-top:0.8rem;font-style:italic;color:#7a5c3b;">
-                &#128204; <em>Nota: L&apos;elencazione &egrave; puramente indicativa e non vincolante allo sviluppo
-                dell&apos;interoperabilit&agrave; con ciascuna piattaforma o software.</em></p>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>&#9881;&#65039; Funzionalit&agrave; Previste</h2>
-            <div class="section-box">
-                <p>&#9888;&#65039; <strong>Nota:</strong> Le funzionalit&agrave; descritte di seguito rappresentano
-                una <strong>bozza ipotetica</strong> delle possibili integrazioni future. Non vi &egrave; ancora
-                alcun riscontro di fattibilit&agrave; tecnica n&eacute; alcun impegno di sviluppo. Le specifiche
-                potranno variare o essere abbandonate in qualsiasi momento.</p>
-            </div>
-            <div class="section-box">
-                <ul>
-                    <li>Estrazione automatica di entit&agrave; (nomi, date, relazioni) dai testi OCR tramite LLM</li>
-                    <li>Linkage ed entity extraction tra registri multipli analizzati in blocco</li>
-                    <li>Generazione di file <code>.ged</code> conformi allo standard GEDCOM 5.5.1 e GEDCOM 7.0</li>
-                    <li>Verifica e deduplicazione automatica degli individui identificati</li>
-                    <li>Esportazione con metadati delle fonti (riferimento al documento originale, pagina, data)</li>
-                </ul>
-            </div>
-        </div>
-
-        <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_06_traduzione.html" class="nav-button">&#8592; Mod.06 &mdash; Traduzione</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_08_supporto_faq.html" class="nav-button">Mod.08 &mdash; Documentazione, Supporto e FAQ &#8594;</a>
-        </div>
-
-        <footer style="text-align: center;">
-            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-        </footer>
-    </div>
+<div class="container">
+<header>
+<h1>Модуль Modulo 04: Изображение</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Ita Mod.03 - Вспомогательные исследования</a>
+<a class="nav-button" href="guida.html">e Основной индекс</a>
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">Mod.05 - Просмотр метаданных JSON zione</a>
+</div>
+<div class="section">
+<h2>Обзор Panoramica</h2>
+<p>Встроенное средство <strong>просмотра изображений</strong> ATK-Pro предназначено для анализа оцифрованных генеалогических документов. Оно открывается через меню <em>Сервисы → Просмотр изображений</em> основного приложения. Поддерживаются форматы JPEG, PNG и TIFF (включая многостраничные файлы).</p>
+</div>
+<div class="section">
+<h2>Поддерживаемые форматы</h2>
+<div class="section-box">
+<table>
+<thead><tr><th>Формат</th><th>Продление</th><th>Заметки</th></tr></thead>
+<tbody>
+<tr><td><strong>JPEG</strong></td><td>.jpg, .jpeg</td><td>Полная поддержка</td></tr>
+<tr><td><strong>PNG</strong></td><td>.png</td><td>Полная поддержка</td></tr>
+<tr><td><strong>TIFF</strong></td><td>.tif, .tiff</td><td>Многостраничная поддержка с выделенной навигацией</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section">
+<h2>e Интерфейс и элементы управления</h2>
+<div class="section-box">
+<h3>Зум</h3>
+<ul>
+<li><strong>Мышь Rotella</strong>15-процентное увеличение шага</li>
+<li><strong>Кнопка «+»</strong>Зум вперед на 15%</li>
+<li><strong>Кнопка "-"</strong>Zoom возвращается на 15%</li>
+<li><strong>Кнопка «До окна»</strong>Размер изображения, чтобы занять доступную область (пропорционально)</li>
+<li><strong>Кнопка «1:1»</strong>: Нативный дисплей разрешения (пиксель изображения = пиксель экрана)</li>
+</ul>
+<p style="margin-top:0.8rem;">Текущий уровень зума всегда виден в процентном показателе между кнопками + и −. Диапазон составляет от 5% до 800%.</p>
+</div>
+<div class="section-box">
+<h3>) Пан (установка)</h3>
+<p><strong>Нажмите и перетащите</strong>: Нажмите левую кнопку мыши и перетащите изображение. Слайдер изменяется в закрытой руке во время перетаскивания и в руке, открытой для прохода на области изображения.</p>
+</div>
+<div class="section-box">
+<h3>TIFF многостраничный</h3>
+<p>Для файлов TIFF, содержащих несколько кадров, в панели инструментов появляется дополнительная панель навигации:</p>
+<ul>
+<li><strong>Численное поле (спинбокс)</strong>Введите желаемый номер страницы; зритель немедленно загружает соответствующий кадр</li>
+<li><strong>Показатель "/N"</strong>Показать общее количество страниц рядом с числовым полем</li>
+</ul>
+<p style="margin-top:0.8rem;"><em>Примечание:</em> Каждый кадр файла TIFF управляется как отдельная страница.</p>
+</div>
+<div class="section-box">
+<h3>) Панель метаданных коляски (справа)</h3>
+<p>Если в одной и той же папке изображений находится файл JSON с одинаковым основным именем (например, JSON). <code>documento.jpg</code> Поиск <code>documento.json</code>), правая панель отображает метаданные в виде таблицы.</p>
+<ul>
+<li><strong>Кнопка «Скрыть метаданные»</strong>Скрыть правую панель для расширения области отображения изображения</li>
+<li><strong>Кнопка «Показать метаданные»</strong>: Восстановление панели метаданных</li>
+</ul>
+<p style="margin-top:0.8rem;">Если нет коляски JSON, правая панель показывает <em>«Никакой коляски JSON не найдено»</em>Если файл существует, но не может быть прочитан, панель сообщает об ошибке чтения метаданных.</p>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Ita Mod.03 - Вспомогательные исследования</a>
+<a class="nav-button" href="guida.html">e Основной индекс</a>
+<a class="nav-button" href="guida_05_visualizzazione_metadati.html">Mod.05 - Просмотр метаданных JSON zione</a>
+</div>
+<footer>
+<p>© 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
 </body>
 </html>
