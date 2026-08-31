@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ar" dir="ltr" dir="rtl">
+
+<html dir="ltr" lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Modulo 02: Operazioni di base</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 الوحدة 02: العمليات الأساسية</title>
+<style>
 
         /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
         * {
@@ -12,14 +13,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
             background-size: cover;
             height: 100%;
         }
-        
-        
+
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -30,7 +31,7 @@
             padding: 20px;
             min-height: 100vh;
         }
-        
+
         /* Velatura semi-trasparente over parchment background */
         body::before {
             content: "";
@@ -40,12 +41,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        
+
         body > * {
             position: relative;
             z-index: 1;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -54,21 +55,21 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 2px;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             /* border-bottom: 3px solid #a67c52; */
         }
-        
+
         header h1 {
             font-size: 2.2em;
             color: #4a2c1a;
             margin: 0 0 15px 0;
             font-weight: 700;
         }
-        
+
         header h2 {
             font-size: 1.6em;
             font-weight: 600;
@@ -77,13 +78,13 @@
             padding: 0;
             font-style: normal;
         }
-        
+
         header p {
             font-size: 0.95em;
             margin-top: 10px;
             color: #5a3e2b;
         }
-        
+
         footer {
             width: 100%;
             text-align: center !important;
@@ -96,12 +97,12 @@
             clear: both;
             direction: ltr;
         }
-        
+
         footer p {
             margin: 5px 0;
             text-align: center !important;
         }
-        
+
         .metadata {
             background: rgba(230, 210, 165, 0.55);
             /* border: 2px solid #a67c52; */
@@ -110,33 +111,33 @@
             margin: 15px 0;
             color: #4a2c1a;
         }
-        
+
         .metadata p {
             margin: 8px 0;
             text-align: left;
             line-height: 1.5;
         }
-        
+
         .metadata strong {
             color: #2a1a0a;
         }
-        
+
         h2 {
             font-size: 1.5em;
             color: #4a2c1a;
             margin-top: 30px;
             margin-bottom: 15px;
-            
-            
+
+
         }
-        
+
         h3 {
             font-size: 1.2em;
             color: #5a3e2b;
             margin-top: 20px;
             margin-bottom: 12px;
         }
-        
+
         h4 {
             font-size: 1.05em;
             color: #5a3e2b;
@@ -144,40 +145,40 @@
             margin-bottom: 10px;
             font-weight: 600;
         }
-        
+
         p {
             margin-bottom: 12px;
             line-height: 1.7;
             text-align: justify;
         }
-        
+
         ul, ol {
             margin-left: 30px;
             margin-bottom: 12px;
         }
-        
+
         li {
             margin-bottom: 6px;
             line-height: 1.6;
         }
-        
+
         .section {
             margin: 30px 0;
             padding: 15px;
             background: rgba(230, 210, 165, 0.2);
             border-radius: 5px;
-            
+
         }
-        
+
         .box {
             background: #fafaf5;
             /* border: 2px solid #a67c52; */
             border-radius: 4px;
             padding: 15px;
             margin: 15px 0;
-            
+
         }
-        
+
         .tip {
             background: #d5f4e6;
             border-left: 5px solid #27ae60;
@@ -185,7 +186,7 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning {
             background: #fdecea;
             border-left: 5px solid #e74c3c;
@@ -193,20 +194,20 @@
             margin: 12px 0;
             border-radius: 3px;
         }
-        
+
         .warning-box {
             background: #fff3cd;
-            
+
             padding: 15px 20px;
             margin: 20px 0;
             border-radius: 3px;
             color: #5a3e2b;
         }
-        
+
         .warning-box strong {
             color: #4a2c1a;
         }
-        
+
         .file-path {
             background: #f4ede4;
             padding: 2px 6px;
@@ -215,10 +216,10 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         .command {
             background: #f4ede4;
-            
+
             padding: 12px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
@@ -230,7 +231,7 @@
             word-wrap: break-word;
             color: #4a2c1a;
         }
-        
+
         code {
             background: #f4ede4;
             padding: 2px 6px;
@@ -239,20 +240,20 @@
             font-size: 0.9em;
             color: #4a2c1a;
         }
-        
+
         pre {
             background: #f4ede4;
             padding: 15px;
             border-radius: 3px;
             overflow-x: auto;
-            
+
             white-space: pre-wrap;
             word-break: break-all;
             color: #4a2c1a;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -262,7 +263,7 @@
             table-layout: fixed;
             background: white;
         }
-        
+
         table th, table td {
             /* border: 1px solid #a67c52; */
             padding: 12px 8px;
@@ -271,7 +272,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        
+
         table th {
             background: rgba(230, 210, 165, 0.6);
             color: #4a2c1a;
@@ -281,15 +282,15 @@
             font-size: 0.95em;
             line-height: 1.4;
         }
-        
+
         table td {
             background: rgba(255, 255, 255, 0.5);
         }
-        
+
         table tr:nth-child(even) td {
             background: rgba(230, 210, 165, 0.15);
         }
-        
+
         .toc {
             background: rgba(230, 210, 165, 0.4);
             /* border: 2px solid #a67c52; */
@@ -297,15 +298,15 @@
             padding: 20px;
             margin: 20px 0;
         }
-        
+
         .toc ol {
             margin-left: 30px;
         }
-        
+
         .toc li {
             margin: 8px 0;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -325,29 +326,49 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📚 Modulo 02: Operazioni di base</h1>
-        </header>
-
-    <div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-        <div class="section-box">
-            <h3>4. CARICAMENTO RECORD IIIF - FORMATI DI INPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📥 STRUTTURA DELL'INPUT</h4>
-            <p>ATK-Pro accetta file di input con un formato specifico basato su COPPIE: Per OGNI record da elaborare, fornisci:</p>
-            <h3>1. RIGA 1: Modalità + Nome (facoltativo)</h3>
-            <ul>
-                <li>D = Documento singolo (una singola immagine/pagina)</li>
-                <li>R = Registro (collezione completa di pagine/documenti)</li>
-            </ul>
-            <h3>2. RIGA 2: URL del Manifest IIIF</h3>
-            <p><strong>Esempio di file input.txt corretto:</strong></p>
-            <pre class="file-structure"># Commenti iniziano con #
+<div class="container">
+<header>
+<h1>📚 الوحدة 02: العمليات الأساسية</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">:: Mod.01 - Installation, start and Interface</a>
+<a class="nav-button" href="guida.html">(هـ) المؤشر الرئيسي</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 — البحث بمساعدة الذكاء الاصطناعي →</a>
+</div>
+<div class="section-box">
+<h3>1- تحميل السجلات - أشكال المدخلات</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>هيكل المدخلات و البوابات المدعومة</h4>
+<p>تقبل ATK-Pro ملفات إدخال بتنسيق محدد قائم على الأزواج: لكل سجل يُراد معالجته، قدّم الوضع + عنوان URL.</p>
+<p><strong>البوابات الداعمة:</strong> (ز) نسخ واقية الجمهور URL من الصفحة أو المشاهد أو الملصق أو المطابقة PDF. ATK-Pro recognizes the gate and applies its technical and prudential mode.</p>
+<p><strong>الدعم</strong> ويشير إلى التوافق التقني المتحقق منه، وليس إلى الحصول على إذن عشوائي للتنزيل. ويجب أن يكون المورد متاحاً للجمهور، ويجب على المستعمل أن يحترم حقوق كل بوابة على حدة وتراخيصها وشروط استخدامها وحدودها. لا تتجاوز ATK-Pro عمليات تسجيل الدخول أو صلاحيات الوصول المقيدة أو الجدران المدفوعة أو علامات <code>nodownload</code>.</p>
+<p>Antenati ( Italy), Gallica (France), DigiVatLib (Vatican), Bodleian Libraries (Oxford), Europeana IIIF, Matricula Online, Findbuch (Südtirol), e-codices/e-ra/e-manuscripta (Switzerland), Heidelberg UB, Internet Cultural/Estense</p>
+<h4>مداخل إيطالية مضافة في V3</h4>
+<table>
+<thead>
+<tr><th>البوابة</th><th>المدخلات والطريقة</th><th>حدود التشغيل</th></tr>
+</thead>
+<tbody>
+<tr><td>Biblioteca Digitale Siena</td><td>مشاهد الصفحة IIIF؛ <code>D</code> أو <code>R</code></td><td>بالنسبة إلى <code>R</code> يلزم وجود نطاق صريح؛ ويجب التحقق من حقوق العنصر.</td></tr>
+<tr><td>المكتبة الرقمية</td><td>صفحة عامة؛ صور أو ملامح PDF</td><td>بالنسبة للسجلات والتسلسلات تستخدم نطاق If only PDF without range is required, ATK-Pro uses the official PDF when available.</td></tr>
+<tr><td>Biblioteca Digitale Lombarda</td><td>Endpoint PDF REST or endpoint BookReader; <code>D</code> أو <code>R</code></td><td>It reconstructs the entire multipage sequence from the canvases Cantaloupe IIIF and considers only the temporarily unavailable pages. If BookReader does not return valid canvas, use the direct PDF REST.</td></tr>
+<tr><td>المكتبة الرقمية</td><td>الكيان أو URL API من هذا البند؛ <code>D</code> أو <code>R</code></td><td>تحميل فقط المنافذ العامة المعترف بها في الصفحات؛ <code>R</code> هناك حاجة إلى نطاق.</td></tr>
+<tr><td>BUB Digital</td><td>BUB page with parameter <code>manifest=</code> أو ملصق IIIF BUB</td><td>الموارد العامة فقط؛ <code>R</code> ولا بد من وجود نطاق، ويجب التحقق من ترخيص الجسم الفردي.</td></tr>
+<tr><td>المكتبة الرقمية FICLIT</td><td>البند الصفحة Omeka S أو ملصق IIIF FICLIT</td><td>البنود العامة فقط؛ <code>R</code> هناك حاجة إلى نطاق. يتم الحصول على الصور بواسطة المورد المباشر للقنابل</td></tr>
+<tr><td>Archivio Storico UniBO</td><td>Manifest IIIF single item audience; <code>D</code> أو <code>R</code></td><td>لا تُقبل المجموعات كمدخلات. بالنسبة إلى <code>R</code> يلزم نطاق صريح، ويجب التحقق من حقوق كل عنصر على حدة.</td></tr>
+<tr><td>جامعة بادوا</td><td>صفحة عامة للجسم أو ملصقه الرسمي IIIF؛ <code>D</code> أو <code>R</code></td><td>العناصر العامة فقط. بالنسبة إلى <code>R</code> يلزم نطاق؛ تحقق من إشعار الحقوق أو الترخيص المرتبط بالعنصر.</td></tr>
+<tr><td>جامعة جنوا</td><td>- الصفحة العامة للجسم؛ <code>D</code> أو <code>R</code></td><td>لا تستخدم سوى الموارد العامة التي أعلنت عن تنزيلها من البوابة. الموارد الأصلية أو المؤشر عليها مستبعدة <code>nodownload</code>; for <code>R</code> هناك حاجة إلى نطاق.</td></tr>
+</tbody>
+</table>
+<p><strong>ملاحظة:</strong> ولا تشمل الحاويات الوسيطة للسوائب وأمبروزانا وأوريانتاليس في الحمّل: إذ لم يتم تحديد نقاط نهاية عامة مستقرة أو أن السجلات التي تم فحصها تتطلب وصولاً منتسباً. ولا تزال المحفوظات الوطنية، والشبكة، والرابطة، والمعهد السويدي للاستشارات العلمية، والمعهد السويدي للضمان الاجتماعي، وبويب، وتيشينو، وغريسون، ومصادر الأغبياء، تشكل مصادر للتوجيه والتشاور اليدوي.</p>
+<h3>1. السطر 1: الوضع + الاسم (اختياري)</h3>
+<ul>
+<li>دال = وثيقة واحدة (صورة واحدة/صفحة واحدة)</li>
+<li>م = قلم المحكمة (مجموعة كاملة من الصفحات/الوثائق)</li>
+</ul>
+<h3>2. السطر 2: عنوان URL للسجل أو المورد العام</h3>
+<p><strong>Example of correct input.txt file:</strong></p>
+<pre class="file-structure"># Commenti iniziano con #
 
 RECORD 1 (coppia di righe):
 D - Lettera Importante
@@ -360,66 +381,67 @@ https://archives.example.org/iiif/reg456/manifest.json
 RECORD 3 (coppia di righe):
 D - Fotografia Singola
 https://collections.example.org/iiif/foto789/manifest.json</pre>
-            <h4>📝 REGOLE FORMATO INPUT:</h4>
-            <ul>
-                <li>Righe vuote: ignorate (puoi usarle per leggibilità)</li>
-                <li>Righe con #: ignorate come commenti</li>
-                <li>Modalità D o R: sono obbligatorie (maiuscole)</li>
-                <li>Nome file: facoltativo dopo modalità (es. "D - Nome" o solo "D")</li>
-                <li>URL: deve iniziare con http:// o https://</li>
-                <li>Coppie: modalità + URL devono stare su righe consecutive</li>
-            </ul>
-            <h4>⚙️ COME CARICARE L'INPUT - 3 OPZIONI DAL MENU:</h4>
-            <p>OPZIONE 1: Visualizza Esempio Input ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Esempio input"</h3>
-            <h3>2. Si apre una finestra che mostra il file di esempio localizzato</h3>
-            <h3>3. Puoi copiare il contenuto come template per il tuo file input</h3>
-            <h3>4. File di esempio: assets/[lingua]/testuali/input_link_base.txt</h3>
-            <p>OPZIONE 2: Apri File Input Pronto ──────────────────────────────────────</p>
-            <h3>1. Clicca Menu → "File input" → "Apri input"</h3>
-            <h3>2. Si apre un dialog di selezione file</h3>
-            <h3>3. Scegli il tuo file input.txt (deve rispettare il formato coppie)</h3>
-            <h3>4. ATK-Pro carica automaticamente e legge tutti i record</h3>
-            <h3>5. Visualizza numero di record caricati e pronti per l'elaborazione</h3>
-            <p>OPZIONE 3: Modifica Input Già Caricato ──────────────────────────────────────────</p>
-            <h3>1. Dopo aver caricato un file input (OPZIONE 2)</h3>
-            <h3>2. Clicca Menu → "File input" → "Modifica input"</h3>
-            <h3>3. Si apre un editor di testo con il file attualmente caricato</h3>
-            <h3>4. Modifica le coppie (aggiungi, rimuovi, cambia URL)</h3>
-            <h3>5. Clicca "Salva" per aggiornare i record in elaborazione</h3>
-            <h3>6. Il programma reinterpreta il file aggiornato</h3>
-            <h4>📌 DIFFERENZA TRA D E R:</h4>
-            <ul>
-                <li>D (Documento): Gestisce una singola immagine/pagina
+<h4>: قواعد شكل المدخلات:</h4>
+<ul>
+<li>الصفوف الملونة: متجاهلة (يُمكنك استخدامها للقراءة)</li>
+<li>Rows with #: ignored as comments</li>
+<li>D/d or R/r modes: are mandatory; uppercases and lowercases are equivalent</li>
+<li>اسم الملف: اختياري بعد الوضع (مثل "D - Name" أو "D" فقط</li>
+<li>URL: يجب أن تبدأ في الموقع التالي: // أو https://</li>
+<li>الأزواج: يجب أن يبقى النموذج + URL على التوالي</li>
+</ul>
+<h4>"كيف تُحمّل المُدخلات 3 خيارات من القائمة"</h4>
+<p>&amp;quot; الرأي ١ - مقتطفات فيو &amp;quot; . &amp;quot; Pope: &amp;quot; Pope: &amp;quot; &amp;quot; &amp;quot; Pope: &amp;quot; Pope: &amp;quot; ؟ &amp;quot; Pope: &amp;quot;</p>
+<h3>1. Click Menu " "File input" " "Example input"</h3>
+<h3>2 - يفتح نافذة تبين ملف العينة المحلي</h3>
+<h3>3. You can copy the content as a template for your input file</h3>
+<h3>4. Example file: assets/[language]/testuali/input_link_base.txt</h3>
+<p><strong>ملاحظة حول اسم الملف:</strong> ويسمى الملف الموزع <code>input_link_base.txt</code>- تم تطبيع الاسم في v3 لتجنب الإشارات إلى النسخ السابقة؛ ويظل الشكل متوافقا مع تحميل سجلات IIIF.</p>
+<p>الخيار ٢: &amp;quot; مجموعة المدخلات الالكترونية المفتوحة &amp;quot; . &amp;quot; القوى &amp;quot; . &amp;quot; القوى &amp;quot; &amp;quot; . &amp;quot; القوى &amp;quot; . &amp;quot;</p>
+<h3>1. Click Menu " "File input" " "Open input"</h3>
+<h3>2. A file selection dialog opens</h3>
+<h3>3. Choose your input.txt file (must comply with couples format)</h3>
+<h3>4. ATK-Pro automatically loads and reads all records</h3>
+<h3>5 - عدد القيد في السجلات المحملة والجاهزة للتجهيز</h3>
+<p>&amp;quot; البند ٣: مشروع &amp;quot; ايديت &amp;quot; .</p>
+<h3>1 - بعد تحميل ملف مدخلات (الخيار 2)</h3>
+<h3>2. Click Menu " "File input" " "Edit input"</h3>
+<h3>3 - يفتح محررا للنص مع الملف المحمل حاليا</h3>
+<h3>4. Edit couples (add, remove, change URL)</h3>
+<h3>5 - نقر "ساف" لتحديث سجلاتك</h3>
+<h3>6- يعيد البرنامج تفسير الملف المستكمل</h3>
+<h4>: الفرق بين الـ دي و س:</h4>
+<ul>
+<li>D (Document): Manages a single image/page
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: file singolo per il documento</li>
-                <li style="margin-top: 12px;">R (Registro): Gestisce collezioni multi-pagina
+<li style="list-style: none; margin-left: 20px;">الناتج: ملف واحد للوثيقة</li>
+<li style="margin-top: 12px;">R (Register): Manages multi-page collections
                 </li>
-                <li style="list-style: none; margin-left: 20px;">→ Output: cartella con pagine organizzate + PDF (se richiesto dall'utente)</li>
-            </ul>
-            <h4>✅ VALIDAZIONE RECORD</h4>
-            <p>Dopo il caricamento, il programma verifica:</p>
-            <ul>
-                <li>✓ URL accessibile e raggiungibile</li>
-                <li>✓ Formato IIIF valido (questa versione+)</li>
-                <li>✓ Numero immagini e canvas disponibili</li>
-                <li>✓ Metadata (titolo, autore, data)</li>
-            </ul>
-            <h4>❌ ERRORI COMUNI</h4>
-            <ul>
-                <li>"URL non valido": Controlla copia/incolla URL</li>
-                <li>"Manifest non trovato (404)": URL è scaduto o sbagliato</li>
-                <li>"Formato IIIF non supportato": Il server non usa IIIF standard</li>
-                <li>"Timeout connessione": Connessione Internet lenta/assente</li>
-            </ul>
-            <h4>💾 SALVATAGGIO RECORD</h4>
-            <p>Dopo il caricamento del manifest, il programma salva automaticamente i metadati IIIF. DOVE: Nella cartella output che scegli (vedi Sezione 5, PASSO 2) <strong>STRUTTURA CARTELLE DOPO CARICAMENTO (prima dell'elaborazione):</strong></p>
+<li style="list-style: none; margin-left: 20px;">الناتج: ملف مع صفحات منظمة + PDF (إذا طلب المستخدم)</li>
+</ul>
+<h4>المصادقة على السجلات</h4>
+<p>بعد التحميل، البرنامج يتحقق:</p>
+<ul>
+<li>É URL accessible and accessible</li>
+<li>الموارد القابلة للمقارنة: دعمت شركة IIIF v2/v3 صفحة أو صورة أو PDF مباشرة وفقا للبوابة</li>
+<li>عدد الصور والملفات المتاحة</li>
+<li>É Metadata (title, author, date)</li>
+</ul>
+<h4>أخطاء مشتركة</h4>
+<ul>
+<li>"URLبطلان" "نسخة التحكم/مدفعية URLQZZ"</li>
+<li>"مانيفست) لم يعثر عليه (404))" "زيك كيو"</li>
+<li>"IIIF غير مدعم" الخادم لا يستخدم المعيار IIIF</li>
+<li>"التواصل عبر الزمن"</li>
+</ul>
+<h4>حفظ السجلات</h4>
+<p>بعد تحميل الملصقات، ينقذ البرنامج تلقائياً البيانات الفوقية للزئبق في ملف الناتج الذي تختاره (انظر القسم 2، (باسسو 2 <strong>هيكل كارتيل )قبل التجهيز(:</strong></p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale (livello principale)
  └─ [nome]/                            ← Sottocartella SOLO per metadati
     ├─ [nome]_genealogico.json        ← Metadati genealogici estratti
     └─ [nome]_tecnico.json            ← Metadati tecnici (canvas ID, numero pagine)</pre>
-<p> DOPO L'ELABORAZIONE (quando clicchi Menu → Output → Elabora): Nel livello principale vengono aggiunti i file elaborati:</p>
+<p> دوبو L'ELABORAZIONE (عندما نقر مينو ): الناتج ): تجهيز): وفي المستوى الرئيسي تضاف الملفات المجهزة:</p>
 <pre class="file-structure">[cartella_output]/
  ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
  ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite dai tile IIIF (una per pagina)
@@ -427,296 +449,300 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
  ├─ [nome]_canvas_N.jpg/.png/.tif       (N = numero totale di pagine/canvas)
  ├─ [nome].json                        ← Sidecar JSON per ogni immagine (metadati EXIF)
  └─ [nome].pdf                         ← PDF completo (vedi spiegazione sotto)</pre>
-
-<p>I metadati rimangono nella sottocartella [nome]/ come salvati al caricamento.</p>
-<p><strong>NOTA IMPORTANTE: Organizzazione file</strong></p>
-            <ul>
-                <li>Manifest IIIF: livello principale della cartella output</li>
-                <li>Immagini (canvas), PDF, Sidecar JSON: livello principale della cartella output</li>
-                <li>SOLO metadati tecnici e genealogici: salvati in sottocartella [nome]/</li>
-                <li>Le cartelle temporanee (tiles_canvas_X/) vengono eliminate automaticamente al termine</li>
-                <li>Questa struttura consente di gestire più record nella stessa cartella senza confusione</li>
-            </ul>
-<p><strong>Esempio:</strong> Se elabori "Registro1", troverai:</p>
-            <ul>
-                <li>manifest_[ID1]_Registro1.json (livello principale)</li>
-                <li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (livello principale)</li>
-                <li>Registro1.pdf (livello principale)</li>
-                <li>Registro1/ (sottocartella SOLO con metadati genealogico e tecnico)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>5. ELABORAZIONE E DOWNLOAD IMMAGINI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>🎯 FLUSSO DI ELABORAZIONE</h4>
-            <p>Il workflow di elaborazione prevede 3 passi:</p>
-            <h4>PASSO 1: SELEZIONA FORMATI IMMAGINE</h4>
-            <p>─────────────────────────────────────</p>
-            <h3>1. Carica un file input (File input → Apri input): la finestra formati si apre automaticamente</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona formati immagine"</h3>
-            <h3>3. Si apre una finestra di dialogo con 3 opzioni:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PNG</span>  → Formato senza perdita (lossless), migliore qualità, file più grandi</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ JPG</span>  → Formato compresso (lossy), buon compromesso qualità/dimensione</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ TIFF</span> → Formato archiviale, massima qualità, file molto grandi</p>
-            <p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>Documento PDF</strong></p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">☐ PDF</span> → Genera un PDF completo con tutte le pagine del registro o documento, in aggiunta ai formati immagine selezionati (o come unico output se nessun formato immagine è selezionato)</p>
-            <h3>4. Seleziona almeno un formato immagine o PDF (puoi sceglierne più di uno)</h3>
-            <h3>5. Clicca "Conferma"</h3>
-            <p>✅ <strong>I formati scelti vengono memorizzati</strong> e pre-selezionati automaticamente alla prossima apertura del programma.</p>
-            <h4>📝 CONSIGLI:</h4>
-            <ul>
-                <li>Per preview/consultazione: JPG (veloce da aprire, minore spazio)</li>
-                <li>Per archivio conservativo: PNG (lossless, compromesso di spazio) o TIFF (massima qualità)</li>
-                <li>Per entrambi: seleziona sia PNG che TIFF</li>
-                <li>Per PDF: seleziona PDF insieme a uno o più formati immagine, oppure seleziona solo PDF per generare esclusivamente il documento PDF senza file immagine separati</li>
-            </ul>
-            <h4>PASSO 2: SELEZIONA CARTELLE OUTPUT</h4>
-            <p>──────────────────────────────────────</p>
-            <h3>1. La finestra cartelle si apre automaticamente dopo la scelta dei formati (quando carichi un file input)</h3>
-            <h3>2. In alternativa: Clicca Menu → "Impostazioni" → "Seleziona cartelle output"</h3>
-            <h3>3. Scegli la MODALITÀ di organizzazione delle cartelle:</h3>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella unica per tutti</span> → un'unica cartella per tutti i record (doc e registri)</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartelle separate doc/reg</span> → una cartella per tutti i documenti, una per tutti i registri</p>
-            <p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Cartella per ogni record</span> → una cartella distinta per ciascun record nel file input</p>
-            <h3>4. Dopo la scelta della modalità, seleziona le cartelle richieste (1, 2 o N finestre di dialog)</h3>
-            <h3>5. Al termine mostra il riepilogo delle cartelle scelte</h3>
-            <p>✅ <strong>Modalità e cartelle vengono memorizzate</strong>. Alla prossima apertura di un file input, vengono ripristinate automaticamente se compatibili con il numero di record.</p>
-            <p>⚠️ Se il nuovo file input ha un numero diverso di Documenti/Registri rispetto alle cartelle salvate, viene mostrato un avviso e la selezione viene azzerata per richiedere nuove cartelle.</p>
-            <h4>📌 RIEPILOGO MODALITÀ:</h4>
-            <ul>
-                <li><strong>Cartella unica:</strong> Semplice, tutto in un posto. Adatto per elaborazioni veloci o test</li>
-                <li><strong>Separate doc/reg:</strong> Organizzazione per tipo. Default: <code>output/doc/</code> e <code>output/reg/</code></li>
-                <li><strong>Per ogni record:</strong> Massima flessibilità. Puoi usare drive diversi, NAS, cartelle personalizzate</li>
-            </ul>
-            <h4>PASSO 3: AVVIA ELABORAZIONE</h4>
-            <p>─────────────────────────────</p>
-            <h3>1. Clicca Menu → "Output" → "Elabora"</h3>
-            <h3>2. Verifica che:</h3>
-            <p>✓ Almeno 1 formato immagine selezionato</p>
-            <p>✓ Almeno 1 record caricato</p>
-            <p><strong>Se mancano questi requisiti, appare messaggio di errore:</strong></p>
-            <p>❌ "Nessun formato selezionato" → Vai a PASSO 1</p>
-            <p>❌ "Nessun record caricato" → Vai a Caricamento Input (Sezione 4)</p>
-            <h4>📺 FINESTRA DI ELABORAZIONE</h4>
-            <p>Non appena clicchi "Elabora", si apre una finestra modale con: </p>
-            <div style="text-align: center; margin: 20px 0;">
-                <img src="images/window2.webp" alt="Finestra elaborazione in corso" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
-            </div>
-            <h4>📊 ELEMENTI VISIBILI:</h4>
-            <p>1️⃣ TITOLO FINESTRA: "Elaborazione in corso"</p>
-            <ul>
-                <li>Rimane in primo piano finché l'elaborazione non termina</li>
-                <li>Non puoi interagire con il resto della GUI</li>
-            </ul>
-            <p>2️⃣ ETICHETTA PROGRESSO: "Elaborazione record: 2/5 — Nome File"</p>
-            <ul>
-                <li>Mostra: record attualmente elaborato (2) su totale (5)</li>
-                <li>Mostra anche il nome del file/registro in elaborazione</li>
-                <li>Si aggiorna in tempo reale man mano che processa i record</li>
-                <li>Es: "Elaborazione record: 1/3 — Registro Matrimoni 1850"</li>
-            </ul>
-            <p>3️⃣ BARRA DI PROGRESSO: Avanzamento visuale</p>
-            <ul>
-                <li>Formato numerico: "2/5" (numero attuale / totale)</li>
-                <li>Barra colore che avanza da sinistra a destra</li>
-                <li>Raggiunge il 100% (massima larghezza) quando completo</li>
-                <li>NON mostra percentuale, solo numero</li>
-            </ul>
-            <p>4️⃣ PULSANTE [ANNULLA]</p>
-            <ul>
-                <li>Cliccabile durante elaborazione</li>
-                <li>Chiude la finestra di progresso</li>
-                <li>⚠️ L'elaborazione continua in background (non interrompe il download)</li>
-                <li>I file scaricati rimangono nella cartella output selezionata</li>
-            </ul>
-            <h4>🔄 DURANTE L'ELABORAZIONE</h4>
-            <p><strong>Il programma in background:</strong></p>
-            <pre class="file-structure">├─ Scarica immagini dai server IIIF
+<p>ولا تزال البيانات الفوقية في الملف الفرعي (الاسم)/كما تم توفيره للتحميل.</p>
+<p><strong>ملاحظة: المنظمة المالية</strong></p>
+<ul>
+<li>Manifest IIIF: main level of output folder</li>
+<li>Images (canvas), PDF, Sidecar JSON: main level of output folder</li>
+<li>فقط البيانات الفوقية التقنية والجينية: التي تم توفيرها في مجلدات فرعية [اسمها]/</li>
+<li>تُحذف مجلدات مؤقتة (ستائرة) تلقائيا في النهاية</li>
+<li>هذا الهيكل يسمح لك بإدارة سجلات متعددة في نفس الملف دون خلط</li>
+</ul>
+<p><strong>مثال:</strong> إذا عالجت "السجل 1" ستجد:</p>
+<ul>
+<li>ملصق [ID1]_Registro1.json (الرتبة الرئيسية)</li>
+<li>Registro1_canvas_1.jpg, Registro1_canvas_2.jpg, ... (main level)</li>
+<li>Registro1.pdf (main level)</li>
+<li>السجل)١(</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2 - تجهيز الصور وتحميلها</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>تدفق التجهيزات</h4>
+<p>ويشمل تدفق العمل المتعلق بالتجهيز 3 خطوات:</p>
+<h4>الخطوة 1: اختيار أشكال الصور</h4>
+<p>─────────────────────────────────────</p>
+<h3>1. Upload an input file (File input → Open input): the format window opens automatically</h3>
+<h3>2. Alternatively: Click Menu " "Settings" " "Select image formats"</h3>
+<h3>3- يفتح صندوقاً لهجات له 3 خيارات:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">□ PNGQZ</span>  → Loss-free format (lossless), better quality, larger files</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">□ JPGQZ</span>  → Compressed format (lossy), good compromise quality/dimension</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">□ TIFFQZ</span> → Archive format, highest quality, very large files</p>
+<p style="margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px;"><strong>مستند PDF</strong></p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">□ PDFQZ</span> → Generates a PDF complete with all pages of the registry or document, in addition to the selected image formats (or as the only output if no image format is selected)</p>
+<h3>4. Select at least one image format or PDF (you can choose more than one)</h3>
+<h3>5. Click "Confirm"</h3>
+<p>✅ <strong>الأشكال المختارة مخزنة</strong> و ما قبل الإنتخابات تلقائياً عند افتتاح البرنامج التالي</p>
+<h4>: نصائح:</h4>
+<ul>
+<li>للمراجعة التمهيدية/استشارة: JPG (مفتوحة، أقل مساحة)</li>
+<li>بالنسبة للمحفوظات المتحفظة: PNG (غير مسدود، حل وسط فضائي) أو TIFF (المستوى الأقصى)</li>
+<li>لكل من: اختيار كل من PNG و TIFF</li>
+<li>لإنشاء PDF: حدد PDF مع تنسيق صورة واحد أو أكثر، أو حدد PDF فقط لإنشاء مستند PDF مستقل دون ملفات صور.</li>
+</ul>
+<h4>الخطوة 2: اختيار ملفات النواتج</h4>
+<p>──────────────────────────────────────</p>
+<h3>1. تفتح نافذة المجلدات تلقائياً بعد اختيار التنسيقات (عند تحميل ملف إدخال)</h3>
+<h3>2. Alternatively: Click Menu " "Settings" " "Select Output Folders"</h3>
+<h3>3 - اختيار منظمة الملف:</h3>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">العازب للجميع</span> ) ملف واحد لجميع السجلات (المحفوظات والسجلات)</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">⬤ Separatefolders doc/reg</span> s ملف لجميع الوثائق، واحد لجميع السجلات</p>
+<p><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 3px; font-weight: bold; display: inline-block; margin: 0 4px;">عن كل سجل</span> → ملف منفصل لكل سجل في ملف المدخلات</p>
+<h3>4 - بعد اختيار الطريقة، اختيار الملفات المطلوبة (1، أو 2، أو صناديق رقمية وطنية)</h3>
+<h3>5 - وفي نهاية المطاف، يبيّن موجز مجلدات مختارة</h3>
+<p>✅ <strong>الطوابق والملفات مخزنة</strong>- في الافتتاح التالي لملف للمدخلات، تُستعاد تلقائياً إذا كانت متوافقة مع الرقم القياسي.</p>
+<p>. If the new input file has a different number of Documents/Registers than Save folders, an alert is shown and the selection is reset to request new folders.</p>
+<p>🛡️ <strong>مراقبة الطرق الوقائية:</strong> وقبل إنشاء الملفات أو الملفات، تتحقق شركة ATK-Pro من الأسماء والمسارات المتوقعة. فالأسماء غير المتوافقة مع Windows وقطع طويلة للغاية تحجب السجل الوحيد المتأثر؛ وترد تنبيهات التوافق في الموجز النهائي.</p>
+<p>☁️ <strong>OneDrive/SharePoint is not assumed as a default destination.</strong> ولا تطبق حدودها إلا عندما يكون الملف المختار في الواقع تحت جذر OneDrive. In other routes, the historic Windows threshold of 260 characters is treated as a prudential warning and not as an automatic block.</p>
+<h4>: موجز:</h4>
+<ul>
+<li><strong>ملف واحد:</strong> في مكان واحد مناسب للتجهيز السريع أو الاختبار</li>
+<li><strong>Separate doc/reg:</strong> التنظيم حسب النوع. التقصير: <code>output/doc/</code> و <code>output/reg/</code></li>
+<li><strong>لكل سجل:</strong> أقصى قدر من المرونة يمكنك استخدام محركات مختلفة، ناس، مجلدات تعريفية</li>
+</ul>
+<h4>الخطوة 3: بدء التجهيز</h4>
+<p>─────────────────────────────</p>
+<h3>1. Click Menu " "Output" " "Process"</h3>
+<h3>2 - التحقق من:</h3>
+<p>استمارة واحدة على الأقل منتقاة</p>
+<p>سجل واحد على الأقل محمول</p>
+<p><strong>وإذا كانت هذه المتطلبات غير مستوفية، تظهر رسالة خاطئة:</strong></p>
+<p>❌ "لا نسق مختار" إذهب إلى "باسسو 1"</p>
+<p>) "لا سجل محمول"  Go الذهاب إلى Input Charging (Section 1)</p>
+<h4>نافذة التجهيز</h4>
+<p>بمجرد أن تضغط على (وورك) نوافذ الميدالية تفتح </p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="تجهيز النوافذ الجارية" src="images/window2.webp" style="max-width: 800px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>العناصر المرئية:</h4>
+<p>"متقدم"</p>
+<ul>
+<li>يبقى في المقدمة حتى تنتهي العملية</li>
+<li>لا يمكنك أن تتفاعل مع بقية الـ (جوي)</li>
+</ul>
+<p>2: علامة التقدم: "Record Processing: 2/5 - File Name"</p>
+<ul>
+<li>موضح: سجل مجهز حاليا (2) من المجموع (5)</li>
+<li>كما يبين اسم الملف/السجل في التجهيز</li>
+<li>انه يستكمل في الوقت الحقيقي عندما يجهز السجلات</li>
+<li>Es: "Record processing: 1/3 - Wedding register 1850"</li>
+</ul>
+<p>3 DI PROGRESS BARRA: Visual progress</p>
+<ul>
+<li>الشكل العددي: 2/5 (العدد الحالي/المجموع)</li>
+<li>حانة كولور تتقدم من اليسار إلى اليمين</li>
+<li>الوصول إلى 100 في المائة (الاستعراض الأقصى) عند اكتماله</li>
+<li>لا تظهر النسبة المئوية فقط العدد</li>
+</ul>
+<p>الزر [لا شيء]</p>
+<ul>
+<li>قابل للتنبؤ أثناء التجهيز</li>
+<li>يتطلب انقطاع الدفعة كاملة ويغلق نافذة التقدم</li>
+<li>الإيقاف تعاوني: قد ينتظر اكتمال طلب الشبكة الجاري حالياً</li>
+<li>لا ينشر أي ناتج من نتائج الدورة المحذوفة في الملف المختار؛ ولا تزال الملفات القائمة دون تغيير</li>
+</ul>
+<h4>أثناء التجهيز</h4>
+<p><strong>البرنامج في الخلفية:</strong></p>
+<pre class="file-structure">├─ Scarica immagini dai server IIIF
 ├─ Legge manifest per canvas ID
 ├─ Ricostruisce tile in immagini complete
 ├─ Converte nei formati selezionati (PNG, JPG, TIFF)
 └─ Salva nelle cartelle scelte</pre>
-            <p><strong>La GUI mostra progress in tempo reale:</strong></p>
-            <ul>
-                <li>Ogni 2-3 secondi aggiorna numero record</li>
-                <li>Nessun blocco: interfaccia rimane reattiva</li>
-                <li>Puoi annullare in qualsiasi momento</li>
-            </ul>
-            <h4>⚠️ COMPORTAMENTO SE CLICCHI ANNULLA:</h4>
-            <h3>1. Elaborazione si ferma subito</h3>
-            <h3>2. File parziali vengono rimossi</h3>
-            <h3>3. Finestra si chiude</h3>
-            <h3>4. Puoi ricominciare da Menu → Output → Elabora</h3>
-            <h4>📋 PDF — GENERAZIONE AUTOMATICA DURANTE L'ELABORAZIONE</h4>
-            <p>Se hai selezionato <strong>PDF</strong> nella maschera di scelta formati (PASSO 1), il PDF viene generato automaticamente al termine del download di ogni registro o documento, senza nessuna finestra di conferma aggiuntiva.</p>
-            <h4>📌 COMPORTAMENTO:</h4>
-            <ul>
-                <li>✅ <strong>PDF selezionato nella maschera formati:</strong> il PDF viene generato automaticamente al termine del download; non viene chiesta nessuna conferma aggiuntiva</li>
-                <li>❌ <strong>PDF non selezionato:</strong> solo le immagini nei formati scelti, nessun PDF</li>
-            </ul>
-            <p>Caratteristiche del PDF generato:</p>
-            <ul>
-                <li>Nome file: <code>[nome].pdf</code>, senza suffissi aggiuntivi (es. <code>Registro Matrimoni 1920.pdf</code>)</li>
-                <li>Salvato nella cartella output scelta, allo stesso livello delle immagini</li>
-                <li>Pagine in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N)</li>
-                <li>Se un canvas non è scaricabile, viene inserita una pagina <em>placeholder</em> localizzata con link diretto al canvas originale su Antenati</li>
-                <li>Nessun file temporaneo rimane nella cartella output al termine della generazione</li>
-            </ul>
-            <h4>⚠️ COSA NON FARE DURANTE ELABORAZIONE:</h4>
-            <ul>
-                <li>❌ Non chiudere il programma (perde file parziali)</li>
-                <li>❌ Non staccare disco esterno (errore salvataggio)</li>
-                <li>❌ Non spegnere PC/laptop</li>
-                <li>❌ Non staccare internet (arresta download)</li>
-            </ul>
-            <h4>✅ COSA PUOI FARE:</h4>
-            <ul>
-                <li>✓ Aspettare che finisca (è la procedura normale)</li>
-                <li>✓ Cliccare Annulla se urgente</li>
-                <li>✓ Usare il PC per altre cose normalmente (minimizza solo la finestra)</li>
-            </ul>
-            <h4>🎉 FINE ELABORAZIONE</h4>
-            <p>Quando tutti i record sono stati elaborati:</p>
-            <h3>1. La finestra di progresso si chiude automaticamente</h3>
-            <h3>2. Appare un messaggio: "Operazione completata"</h3>
-            <h3>3. Clicca OK per chiudere il messaggio</h3>
-            <h3>4. La finestra di progresso scompare completamente</h3>
-            <p>Dopo:</p>
-            <ul>
-                <li>Visualizza file output nelle cartelle che hai selezionato al PASSO 2</li>
-                <li>Ogni documento/registro ha propria sottocartella all'interno della cartella da te scelta</li>
-                <li>Immagini sono pronte per uso (visualizzazione, stampa, archiviazione, PDF)</li>
-            </ul>
-            <h4>✅ OUTPUT GENERATO:</h4>
-            <p>Per ogni record elaborato troverai:</p>
-            <ul>
-                <li>Immagini nei formati selezionati (PNG, JPG, TIFF)</li>
-                <li>manifest_[ID]_[nome].json → Manifest IIIF originale con metadati strutturati</li>
-                <li>[nome]_genealogico.json → Metadati genealogici (date, luoghi, nomi, comuni, province)</li>
-                <li>[nome]_tecnico.json → Metadati tecnici (numero canvas, lista canvas ID, diritti, file generati)</li>
-                <li>[nome].json → Sidecar JSON per ogni immagine (metadati EXIF embedded)</li>
-            </ul>
-            <h4>📝 NOTA SUI NOMI FILE:</h4>
-            <ul>
-                <li>Il [nome] base viene preso direttamente dal file input.txt (riga utente)</li>
-                <li>Se scrivi nel file input "Registro Matrimoni 1920", i file saranno:
+<p><strong>ويعرض المشروع التقدم المحرز في الوقت الحقيقي:</strong></p>
+<ul>
+<li>كل 2-3 ثانية تحديث الرقم القياسي</li>
+<li>No block: interface remains reactive</li>
+<li>يمكنك أن تلغيه في أي وقت</li>
+</ul>
+<h4>: السلوك إذا ضغطت الغاء:</h4>
+<h3>1 - يُطلب القبض التعاوني على الدفعة بأكملها</h3>
+<h3>2 - حذفت جميع النواتج المؤقتة التي أنتجتها الدفعة الملغومة</h3>
+<h3>3 - ظلت الملفات الموجودة بالفعل في ملفات النواتج قبل بدء التشغيل دون تغيير</h3>
+<h3>4. You can start again from Menu   Output →</h3>
+<h4>PDFQZ</h4>
+<p>إذا اخترت <strong>PDF</strong> وفي قناع الاختيار الشكلي (الخطوة 1)، تولد تلقائياً الـ PDF عند نهاية تحميل كل سجل أو وثيقة، دون أي نافذة إضافية للتأكيد.</p>
+<h4>السلوك المختلط:</h4>
+<ul>
+<li>✅ <strong>PDF selected in the format mask:</strong> يولد تلقائيا في نهاية التحميل PDF؛ ولا يلزم تأكيد إضافي</li>
+<li>❌ <strong>PDF not selected:</strong> فقط صور في أشكال مختارة، لا يوجد PDF</li>
+</ul>
+<p>Features of PDF generated:</p>
+<ul>
+<li>اسم الملف: <code>[nome].pdf</code>(مثلاً) <code>Registro Matrimoni 1920.pdf</code>)</li>
+<li>محتفظ بها في ملف النواتج المختارة، على نفس مستوى الصور</li>
+<li>عدد الصفحات التي تنمو في النظام الرقمي (يُمكن أن تُغطّى 2 →...</li>
+<li>إذا لم يكن بالإمكان تنزيل العلبة، تُدرج صفحة <em>مالك مكان</em> التي تقع على صلة مباشرة بالكانتفاس الأصلية في أنتيناتي</li>
+<li>لا توجد ملفات مؤقتة في ملف النواتج في نهاية الجيل</li>
+</ul>
+<h4>: ما لا ينبغي القيام به أثناء التجهيز:</h4>
+<ul>
+<li>لا تغلق البرنامج (فقد الملفات الجزئية)</li>
+<li>لا تفصل الأقراص الخارجية (خطأ إنقاذ)</li>
+<li>❌ لا تغلق</li>
+<li>❌ لا تفصل الإنترنت (الإنزال الثابت)</li>
+</ul>
+<h4>ما يمكنك القيام به:</h4>
+<ul>
+<li>É wait for it to end (it is normal procedure)</li>
+<li>Élick Cancel if urgent</li>
+<li>É Use your PC for other things normally (just minimize the window)</li>
+</ul>
+<h4>حسناً</h4>
+<p>عندما تم تجهيز جميع السجلات:</p>
+<h3>1. تُغلق نافذة التقدم تلقائياً</h3>
+<h3>2. A message appears: "عملية كاملة"</h3>
+<h3>3. Click OK to close the message</h3>
+<h3>4. تختفي نافذة التقدم بالكامل</h3>
+<p>التالي:</p>
+<ul>
+<li>الملفات التي اخترتها في "باسسو 2"</li>
+<li>كل مستند/سجل لديه ملفه الخاص داخل الملف الذي تختاره</li>
+<li>الصور جاهزة للاستخدام (الاستعراض، الطباعة، التخزين، PDF)</li>
+</ul>
+<h4>الناتج المتولد:</h4>
+<p>لكل سجل مفصّل ستجده:</p>
+<ul>
+<li>Images in selected formats (PNG, JPG, TIFF)</li>
+<li>بيان [ID] [اسم]. json   بيان IIIF الأصلي مع بيانات وصفية منظمة</li>
+<li>[الاسم]_genealogico.json ) Genealogical metadata (dates, places, names, municipalities, provinces)</li>
+<li>[الاسم] _tecnico.json ) Technical metadata (number canvas, list canvas ID, rights, generated files)</li>
+<li>[الاسم]. json ) Sidecar JSON for each image (EXIF embedded methods)</li>
+</ul>
+<h4>: NOTE ON FILE NAMES:</h4>
+<ul>
+<li>يُؤخذ الأساس [nome] مباشرةً من ملف input.txt (سجل المستخدم)</li>
+<li>إذا كتبت في ملف المُدخلات "الزيارات المُسجلة 1920" ستكون الملفات:
                     <ul>
-                        <li>Registro Matrimoni 1920_canvas_1.jpg</li>
-                        <li>Registro Matrimoni 1920_genealogico.json</li>
-                        <li>Registro Matrimoni 1920_tecnico.json</li>
-                    </ul>
-                </li>
-                <li>I suffissi JSON rimangono in EN (_genealogico, _tecnico) per compatibilità</li>
-                <li>Puoi usare nomi in qualunque lingua nel file input (IT, EN, misto)</li>
-            </ul>
-            </div>
-            <div class="section-box">
-            <h3>6. PDF PER REGISTRI E DOCUMENTI</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>COME ATTIVARE LA GENERAZIONE PDF</h4>
-            <p>La generazione del PDF si attiva selezionando la casella <strong>PDF</strong> nella maschera di scelta formati (Menu → Impostazioni → "Seleziona formati immagine").</p>
-            <p>Puoi combinare PDF con uno o più formati immagine (es. PDF + PNG), oppure selezionare solo PDF per ottenere esclusivamente il documento senza file immagine separati.</p>
-            <h4>📄 CARATTERISTICHE DEL PDF GENERATO</h4>
-            <ul>
-                <li><strong>Nome file:</strong> il PDF è denominato semplicemente <code>[nome].pdf</code>, senza suffissi aggiuntivi — ad esempio <code>Registro Matrimoni 1920.pdf</code></li>
-                <li><strong>Posizione:</strong> salvato nella cartella output scelta, allo stesso livello delle immagini: <code>[cartella_scelta]\[nome].pdf</code></li>
-                <li><strong>Ordine pagine:</strong> le pagine sono sempre in ordine numerico crescente (canvas 1 → canvas 2 → … → canvas N), indipendentemente dall'ordine in cui i tile vengono scaricati</li>
-                <li><strong>Pagine placeholder:</strong> se un canvas non è disponibile (errore di rete o risorsa temporaneamente non raggiungibile), al suo posto viene inserita automaticamente una pagina <em>placeholder</em> localizzata nella lingua selezionata. La pagina placeholder contiene:
+<li>1920_canvas_1.jpg</li>
+<li>1920_genealogico.json</li>
+<li>1920_tecnico.json</li>
+</ul>
+</li>
+<li>JSON suffixes remain in EN ( genealogical, technical) for compatibility</li>
+<li>يمكنك استخدام الأسماء بأي لغة في ملف المدخلات</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3. PDF FOR REGISTERS AND DOCUMENTS</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>كَيفَ يُشغّلُ التوليدَ</h4>
+<p>يُفعَّل إنشاء ملف PDF بتحديد مربع <strong>PDF</strong> في قناع الاختيار الشكلي (Menu ). Settings ). "Select Image Sizes)</p>
+<p>ويمكن أن تجمع بين PDF ونموذج واحد أو أكثر من أشكال الصور (مثل PDF + PNG)، أو أن تختار فقط PDF للحصول على الوثيقة دون ملفات صور منفصلة.</p>
+<h4>DEL CHARACTERISTICS OF PDF GENERATED</h4>
+<ul>
+<li><strong>اسم الملف:</strong> PDF تسمى ببساطة <code>[nome].pdf</code>دون أكياس إضافية - على سبيل المثال <code>Registro Matrimoni 1920.pdf</code></li>
+<li><strong>الموقع:</strong> تم توفيرها في ملف النواتج المختار، على نفس مستوى الصور: <code>[cartella_scelta]\[nome].pdf</code></li>
+<li><strong>الصفحة</strong> الصفحات دائماً ما تكون في نظام رقمي متزايد (الغطاسات 1  of كانفاس 2 → canvas N) بغض النظر عن ترتيب تحميل البلاط</li>
+<li><strong>حائزة الصفحات:</strong> إذا لم يكن هناك غطاء (خطأ في الشبكة أو مورد غير متاح مؤقتا)، تُدرج الصفحة تلقائيا في مكانها <em>مالك مكان</em> يقع في اللغة المختارة. تتضمن صفحة العنصر النائب:
                     <ul>
-                        <li>Un testo di avviso localizzato (es. "Immagine non disponibile")</li>
-                        <li>Il link diretto al canvas originale su Antenati (<code>https://antenati.cultura.gov.it/ark:/…</code>), così da poter consultare la fonte in modo semplice</li>
-                    </ul>
-                    In questo modo viene sempre generato il PDF, con tutte le informazioni necessarie a completarlo in caso di immagini non scaricate.
+<li>نص إنذار محلي (مثلاً "لم يكن متاحاً"</li>
+<li>الصلة المباشرة بالقنابل الأصلية في أنتيناتي<code>https://antenati.cultura.gov.it/ark:/…</code>"لذا يمكنك أن تستشير المصدر بسهولة"</li>
+</ul>
+                    وبهذه الطريقة يتم دائما توليد PDF، مع جميع المعلومات اللازمة لإكمالها في حالة الصور المفرغة.
                 </li>
-                <li><strong>Pulizia automatica:</strong> i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine del processo. Nella cartella output rimangono solo le immagini nei formati scelti, il PDF finale, i manifest e i metadati</li>
-            </ul>
-            <h4>🚫 Se PDF non è selezionato:</h4>
-            <ul>
-                <li>Solo le immagini vengono scaricate nei formati selezionati</li>
-                <li>Nessun PDF generato</li>
-            </ul>
-            </div>
-            <div class="section">
-        <h2>&#128204; FUNZIONALIT&#192; DISPONIBILI E PIANIFICATE</h2>
-        <p>Il menu &ldquo;Servizi&rdquo; contiene 5 funzioni: 4 gi&agrave; disponibili, 1 pianificata per versioni future.</p>
-
-        
-
-        <div class="section-box">
-            <h3>1&#65039;&#8419; VISUALIZZAZIONE IMMAGINI &#9989;</h3>
-            <p>Viewer integrato per immagini genealogiche:</p>
-            <ul>
-                <li>Formati supportati: JPG, PNG, TIFF (inclusi TIFF multi-pagina con navigazione avanti/indietro)</li>
-                <li>Zoom con rotella del mouse e pulsanti dedicati</li>
-                <li>Pan con trascinamento del mouse</li>
-                <li>Modalit&agrave; &ldquo;Adatta alla finestra&rdquo; e &ldquo;1:1 pixel&rdquo;</li>
-                <li>Sidecar JSON affiancato all&apos;immagine (EXIF e metadati tecnici)</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_03_visualizzazione_immagini.html">Vedi Guida Visualizzazione Immagini</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>2&#65039;&#8419; VISUALIZZAZIONE METADATI JSON &#9989;</h3>
-            <p>Viewer ad albero per metadati strutturati:</p>
-            <ul>
-                <li>Apertura diretta di file <code>_genealogico.json</code> e <code>_tecnico.json</code></li>
-                <li>Visualizzazione ad albero espandibile</li>
-                <li>Sezioni: dati genealogici, metadati tecnici, EXIF dalle immagini</li>
-                <li>Anteprima immagine abbinata affiancata al pannello metadati</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_04_visualizzazione_metadati.html">Vedi Guida Visualizzazione Metadati JSON</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>3&#65039;&#8419; OCR AVANZATO &#9989;</h3>
-            <p>Trattamento OCR avanzato tramite LLM Vision:</p>
-            <ul>
-                <li>Estrazione testo da documenti antichi (inclusi manoscritti in italiano ottocentesco e latino)</li>
-                <li>Mantenimento della struttura e dei riferimenti del layout (TEI XML)</li>
-                <li>Riconoscimento e pulizia automatica dei dati strutturati (es. tabelle, ruoli)</li>
-                <li>Estrazione di entit&agrave; (nomi, date, relazioni) in formato JSON navigabile</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_05_ocr_avanzato.html">Vedi Guida OCR Avanzato</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>4&#65039;&#8419; TRADUZIONE &#9989;</h3>
-            <p>Traduzione contestuale dei testi estratti:</p>
-            <ul>
-                <li>Traduzione automatica in 20 lingue supportate</li>
-                <li>Gestione della formattazione e del layout originale</li>
-                <li>Possibilit&agrave; di alternare il testo originale e il testo tradotto</li>
-            </ul>
-            <p><strong>Status:</strong> &#9989; Disponibile &ndash;
-            <a href="guida_06_traduzione.html">Vedi Guida Traduzione</a></p>
-        </div>
-
-        <div class="section-box">
-            <h3>5&#65039;&#8419; ESPORTAZIONE GEDCOM</h3>
-            <p>Esportazione in formati genealogici:</p>
-            <ul>
-                <li>GEDCOM (standard genealogico internazionale)</li>
-                <li>Interoperabilit&agrave; con software genealogici: Ancestry, Family Historian, Family Tree Maker,
-                Findmypast, FamilySearch, Geni, Geneanet, Gramps, Legacy Family Tree, MyHeritage,
-                Reunion (macOS), RootsMagic, WikiTree</li>
-            </ul>
-            <p style="font-style:italic;color:#7a5c3b;margin-top:0.6rem;">
-            &#128204; <em>Nota: L&apos;elencazione dei software &egrave; puramente indicativa e non
-            vincolante allo sviluppo dell&apos;interoperabilit&agrave; con ciascuna piattaforma.</em></p>
-            <p style="margin-top:0.6rem;"><strong>Status:</strong> &#128302; Pianificata &ndash;
-            <a href="guida_07_esportazione_gedcom.html">Vedi Guida GEDCOM</a></p>
-        </div>
-    </div>
-            <div class="section-box">
-            <h3>9. CARTELLE E FILE OUTPUT</h3>
-            <p>────────────────────────────────────────────────────────────────────────────────</p>
-            <h4>📂 STRUTTURA OUTPUT</h4>
-            <p>Quando elabori un record IIIF, ATK-Pro salva i file nella cartella che hai scelto nel PASSO 2 (Seleziona cartella output).</p>
-            <h4>STRUTTURA ORGANIZZATA PER RECORD:</h4>
-            <pre class="file-structure">[cartella_output]/
+<li><strong>التنظيف الآلي:</strong> وتحذف تلقائيا في نهاية العملية الملفات المؤقتة التي تستخدم لتوليد منطقة PDF. وفي ملف النواتج، لا تزال الصور في الأشكال المختارة، والصورة النهائية PDF، والملصقات والبيانات الفوقية</li>
+</ul>
+<h4>Se If PDF is not selected:</h4>
+<ul>
+<li>لا يتم تحميل الصور إلا في أشكال مختارة</li>
+<li>No PDF generated</li>
+</ul>
+</div>
+<div class="section">
+<h2>4. 📌 FEATURES AVAILABLE</h2>
+<p>تتضمن قائمة «الخدمات» وظائف الإصدار v3: البحث بمساعدة الذكاء الاصطناعي، عرض الصور، عرض بيانات JSON، OCR متقدم، ترجمة OCR وتصدير GEDCOM.</p>
+<div class="section-box">
+<h3>1️⃣ البحث بمساعدة الذكاء الاصطناعي ✅</h3>
+<p>مساعد لوضع استراتيجيات بحثية في مجال علم الجينات:</p>
+<ul>
+<li>تحويل الأسماء والأماكن والفترات والأهداف إلى مسارات بحث</li>
+<li>البوابات المقترحة والمرشحات واستفسارات العينات للتحقق يدويا</li>
+<li>دعم السيناريوهات الإيطالية والإيطالية والدولية</li>
+<li>يسمح بالمذكرات الشخصية، والمقارنة بين العرضين المتعددين، وإنقاذ النتائج</li>
+</ul>
+<p><strong>الحالة:</strong> متاح
+            <a href="guida_03_ricerca_assistita_ai.html">انظر دليل البحث بمساعدة الذكاء الاصطناعي</a></p>
+</div>
+<div class="section-box">
+<h3>2  IMAGE DISPLAY ✅</h3>
+<p>المشاهد المتكامل للصور الجيني:</p>
+<ul>
+<li>الأشكال الداعمة: JPG, PNG, TIFF (بما في ذلك الصفحات المتعددة TIFF with forward/back navigation)</li>
+<li>زوم مع عجلة الفأر والأزرار المخصصة</li>
+<li>(بان) مع جرة الفأر</li>
+<li>&amp;quot; الإضافة إلى النافذة &amp;quot; و &amp;quot; 1:1 بيكس &amp;quot;</li>
+<li>Sidecar JSON along the image (EXIF and technical metadata)</li>
+</ul>
+<p><strong>الحالة:</strong> متاح
+            <a href="guida_04_visualizzazione_immagini.html">انظر دليل الرؤية الصورية</a></p>
+</div>
+<div class="section-box">
+<h3>3️⃣ عرض بيانات JSON ✅</h3>
+<p>تري فيوير من أجل البيانات الوصفية المنظمة:</p>
+<ul>
+<li>فتح ملف مباشر <code>_genealogico.json</code> و <code>_tecnico.json</code></li>
+<li>عرض شجرة واسع النطاق</li>
+<li>الأقسام: البيانات الجينية، والبيانات الوصفية التقنية، والإطار المتكامل المتعدد المؤشرات من الصور</li>
+<li>صورة متطابقة مع ما قبل العرض إلى جانب فريق البيانات الوصفية</li>
+</ul>
+<p><strong>الحالة:</strong> متاح
+            <a href="guida_05_visualizzazione_metadati.html">عرض دليل بيانات JSON</a></p>
+</div>
+<div class="section-box">
+<h3>4  OCR ADVANCED ✅</h3>
+<p>Advanced OCR treatment through LLM Vision:</p>
+<ul>
+<li>نص استخراج من الوثائق القديمة (بما في ذلك المخطوطات في التاسعة عشرة والإيطالية اللاتينية)</li>
+<li>صيانة هيكل التصميم والمراجع (TEI XML)</li>
+<li>الاعتراف الآلي للبيانات المنظمة وتنظيفها (مثل الجداول والأدوار)</li>
+<li>تسليم الكيانات (الأسماء والتواريخ والتقارير) في شكل JSON</li>
+</ul>
+<p><strong>الحالة:</strong> متاح
+            <a href="guida_06_ocr_avanzato.html">View Advanced OCR الدليل</a></p>
+</div>
+<div class="section-box">
+<h3>ترجمة</h3>
+<p>ترجمة مستمرة للنصوص المستخرجة أو المستنسخة:</p>
+<ul>
+<li>ترجمة النصوص OCR, manual transcriptions and TXT files</li>
+<li>استخدام أنواع الوثائق والمسرد والسياق</li>
+<li>مقدِّم خدمات مؤمنة، نموذج اختياري ومفاتيح آمنة</li>
+<li>الناتج TXT أو DOCX</li>
+</ul>
+<p><strong>الحالة:</strong> متاح
+            <a href="guida_07_traduzione.html">انظر OCR دليل الترجمة التحريرية</a></p>
+</div>
+<div class="section-box">
+<h3>6️⃣ EXPORT GEDCOM</h3>
+<p>مساعدة التحليل الجيني والتصدير GEDCOM:</p>
+<ul>
+<li>Global input with Auto-Discovery method, Vision IA or Refinery LLM</li>
+<li>إمكانية زيادة قاعدة GEDCOM أو CSV القائمة</li>
+<li>Paleographic notes and document types to guide the extraction</li>
+<li>تكوين ملف <code>genealogia_*.ged</code> التحقق قبل الاستخدام</li>
+</ul>
+<p style="margin-top:0.6rem;"><strong>الحالة:</strong> متاح
+            <a href="guida_08_esportazione_gedcom.html">انظر GEDCOM الدليل</a></p>
+</div>
+</div>
+<div class="section-box">
+<h3>5 - الملفات وملفات النواتج</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>هيكل النواتج</h4>
+<p>عندما تُعالجُ a IIIF سجّل، ATK-Pro يُوفّرُ الملفاتَ في الملفِ أنت إختارتَ في الخطوة 2 (مجلدِ النواتجِ المنتخبِ).</p>
+<h4>الهيكل المنظم للتسجيل:</h4>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID]_[nome].json         ← Manifest IIIF originale
 ├─ [nome]_canvas_1.jpg/.png/.tif     ← Immagini ricostruite (una per pagina)
 ├─ [nome]_canvas_2.jpg/.png/.tif
@@ -726,9 +752,9 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ [nome]/                           ← Sottocartella SOLO per metadati
    ├─ [nome]_genealogico.json        ← Metadati genealogici
    └─ [nome]_tecnico.json            ← Metadati tecnici</pre>
-            <h4>MULTI-RECORD NELLA STESSA CARTELLA:</h4>
-            <p>Se elabori 3 record nella stessa cartella, la struttura diventa:</p>
-            <pre class="file-structure">[cartella_output]/
+<h4>سجل متعدد في نفس الملف:</h4>
+<p>إذا جهزت 3 سجلات في نفس الملف، يصبح الهيكل:</p>
+<pre class="file-structure">[cartella_output]/
 ├─ manifest_[ID1]_Registro1.json
 ├─ Registro1_canvas_1.jpg
 ├─ Registro1_canvas_2.jpg
@@ -752,36 +778,30 @@ https://collections.example.org/iiif/foto789/manifest.json</pre>
 └─ Registro3/
     ├─ Registro3_genealogico.json
     └─ Registro3_tecnico.json</pre>
-            <h4>📌 NOTE SULLA STRUTTURA:</h4>
-            <ul>
-                <li>Manifest IIIF, Immagini, PDF, Sidecar JSON: nel livello principale</li>
-                <li>SOLO metadati tecnici e genealogici: in sottocartelle [nome]/ (uno per record)</li>
-                <li>Le cartelle temporanee (<code>tiles_canvas_X/</code>) e i file temporanei utilizzati per la generazione del PDF vengono eliminati automaticamente al termine dell'elaborazione: nella cartella output non rimane nessun file di lavoro intermedio</li>
-                <li>Questa organizzazione consente di gestire molteplici record nella stessa cartella senza confusione tra file</li>
-            </ul>
-            <h4>📋 CONVENZIONE DI DENOMINAZIONE:</h4>
-            <ul>
-                <li>Manifest: manifest_[ID]_[nome].json</li>
-                <li>Immagini: [nome]_canvas_1, [nome]_canvas_2, ... [nome]_canvas_N</li>
-                <li>JSON metadati: [nome]_genealogico.json, [nome]_tecnico.json</li>
-                <li>JSON immagini: [nome].json (per ogni canvas)</li>
-                <li>PDF: [nome].pdf</li>
-            </ul>
-            </div>
-            
-        
-                </div>
-        
-    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-            <a href="guida_01_installazione_configurazione.html" class="nav-button">&#8592; Mod.01 &mdash; Installazione, Avvio e Interfaccia</a>
-            <a href="guida.html" class="nav-button">&#127968; Indice Principale</a>
-            <a href="guida_03_visualizzazione_immagini.html" class="nav-button">Mod.03 &mdash; Visualizzazione Immagini &#8594;</a>
-        </div>
-
-    <footer style="text-align: center;">
-            <p>&copy; 2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
-        </footer>
-    </div>
-    </div>
+<h4>: ملاحظات الهيكل:</h4>
+<ul>
+<li>Manifest IIIF, Images, PDF, Sidecar JSON: in the main level</li>
+<li>البيانات الوصفية التقنية والجينية فقط: في الملفات الفرعية [الاسم]/ (واحد لكل سجل)</li>
+<li>الملفات المؤقتة<code>tiles_canvas_X/</code>() والملفات المؤقتة المستخدمة لتوليد PDF تُحذف تلقائيا في نهاية التجهيز: لا توجد ملفات عمل وسيطة في ملف النواتج</li>
+<li>هذه المنظمة تسمح لك بإدارة سجلات متعددة في نفس الملف دون خلط بين الملفات</li>
+</ul>
+<h4>اتفاقية التسمية:</h4>
+<ul>
+<li>Manifest: manifest [ID] [nome]. json</li>
+<li>الصور: [الاسم] كانفا 1، [الاسم] كانفاس 2، [الاسم]</li>
+<li>البيانات الوصفية JSON: [nome]_genealogico.json و [nome]_tecnico.json</li>
+<li>JSON images: [nome]. json (for each canvas)</li>
+<li>PDF: [nome]. pdf</li>
+</ul>
+</div>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_01_installazione_configurazione.html">:: Mod.01 - Installation, start and Interface</a>
+<a class="nav-button" href="guida.html">(هـ) المؤشر الرئيسي</a>
+<a class="nav-button" href="guida_03_ricerca_assistita_ai.html">Mod.03 — البحث بمساعدة الذكاء الاصطناعي →</a>
+</div>
+<footer style="text-align: center;">
+<p>2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
 </body>
 </html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>📚 الوحدة 09: التوثيق والدعم واستكشاف الأخطاء والأسئلة الشائعة</title>
+<style>
+
+        /* ATK-Pro HTML Styling with Parchment Background - matches glossario.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            background: url('../../common/grafici/Sfondo.webp') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #4a2c1a;
+            background: transparent;
+            position: relative;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Velatura semi-trasparente over parchment background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 2px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #a67c52;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            color: #4a2c1a;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 0;
+            font-style: normal;
+        }
+
+        header p {
+            font-size: 0.95em;
+            margin-top: 10px;
+            color: #5a3e2b;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center !important;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid #a67c52;
+            font-size: 0.9em;
+            color: #555;
+            box-sizing: border-box;
+            clear: both;
+            direction: ltr;
+        }
+
+        footer p {
+            margin: 5px 0;
+            text-align: center !important;
+        }
+
+        .metadata {
+            background: rgba(230, 210, 165, 0.55);
+            border: 2px solid #a67c52;
+            border-radius: 8px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            color: #4a2c1a;
+        }
+
+        .metadata p {
+            margin: 8px 0;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .metadata strong {
+            color: #2a1a0a;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #4a2c1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #5a3e2b;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 1.05em;
+            color: #5a3e2b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(230, 210, 165, 0.2);
+            border-radius: 5px;
+
+        }
+
+        .box {
+            background: #fafaf5;
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+
+        }
+
+        .tip {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning {
+            background: #fdecea;
+            border-left: 5px solid #e74c3c;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 3px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 3px;
+            color: #5a3e2b;
+        }
+
+        .warning-box strong {
+            color: #4a2c1a;
+        }
+
+        .file-path {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        .command {
+            background: #f4ede4;
+
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 12px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-wrap: break-word;
+            color: #4a2c1a;
+        }
+
+        code {
+            background: #f4ede4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a2c1a;
+        }
+
+        pre {
+            background: #f4ede4;
+            padding: 15px;
+            border-radius: 3px;
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #4a2c1a;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 2px solid #a67c52;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            table-layout: fixed;
+            background: white;
+        }
+
+        table th, table td {
+            border: 1px solid #a67c52;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        table th {
+            background: rgba(230, 210, 165, 0.6);
+            color: #4a2c1a;
+            font-weight: 700;
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        table td {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        table tr:nth-child(even) td {
+            background: rgba(230, 210, 165, 0.15);
+        }
+
+        .toc {
+            background: rgba(230, 210, 165, 0.4);
+            border: 2px solid #a67c52;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc ol {
+            margin-left: 30px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.6em;
+            }
+            header h2 {
+                font-size: 1.2em;
+            }
+            table th, table td {
+                font-size: 0.85em;
+                padding: 8px 4px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 الوحدة 09: التوثيق والدعم واستكشاف الأخطاء والأسئلة الشائعة</h1>
+</header>
+<div style="text-align:center;margin:1.5rem 0 2rem;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">□ الوحدة 08 - تصدير GEDCOM</a>
+<a class="nav-button" href="guida.html">(هـ) المؤشر الرئيسي</a>
+</div>
+<div class="section-box">
+<h3>1 - قائمة الوثائق: الموارد والدعم</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>الوثائق المتاحة</h4>
+<p>في القائمة <strong>وثائق</strong> العثور على خمسة خيارات للحصول على موارد معلومات الطلب.</p>
+<p><strong>ملاحظة:</strong> وتُدرج الوثائق في المنشأة ويمكن الرجوع إليها دون اتصال بالإنترنت.</p>
+<h4>1) DISCLAIMER (Legal Use)</h4>
+<ul>
+<li>ويفتح باب التسجيل القانوني الرسمي في الطلب.</li>
+<li>الموضوع: حدود المسؤولية، وشروط الاستخدام، وتراخيص البرمجيات</li>
+<li>قراءة هامة قبل الاستخدام المكثف</li>
+<li>ويمكن تحديثه مع نسخة جديدة من الطلب؛ وعند تغيير الاستعراض القانوني، يلزم قبول جديد.</li>
+</ul>
+<h4>صاحب العرض الثاني</h4>
+<ul>
+<li>الافتتاح: presentazione_autore.html</li>
+<li>الحاويات: السيرة الذاتية للمؤلفين المختصين بوثائق موجزة، وتجربة المحفوظات/الرقمية</li>
+<li>يسمح لك بفهم خلفية المشروع</li>
+</ul>
+<h4>3 - عرض المشاريع</h4>
+<ul>
+<li>الافتتاح: presentazione_progetto_ATK-Pro.html</li>
+<li>الحاويات:
+                    <ul>
+<li>الأهداف الرئيسية: مكتب العمل المتعدد الوسائط والأسرة</li>
+<li>السياسة العامة للموانئ: استخدام مصادر عامة متوافقة، دون التحايل على الدخول أو الجدران أو القيود التقنية</li>
+<li>نطاق v3: سجل البوابات، والبحث بمساعدة الذكاء الاصطناعي، وOCR، وترجمة OCR، والتحليل الجيني، وتصدير GEDCOM</li>
+<li>المستفيدون: الباحثون الجينيون، وعلماء المحفوظات، والمجتمعات الإيطالية والإيطالية في العالم</li>
+<li>Multilanguage: 20 supported languages (IT, EN, ES, PT, FR, DE, AR, HE, NL, RU, JA, SV, ZH, RO, EL, PL, DA, NO, TR, VI)</li>
+</ul>
+</li>
+<li>وثيقة حية، رهناً بالتكامل التدريجي</li>
+</ul>
+<h4>4) GUIDA (main index)</h4>
+<ul>
+<li>الافتتاح: guida.html</li>
+<li>Contains: Modular index of the Italian guide v3</li>
+<li>من هنا يمكنك الوصول إلى أقسام التشغيل المخصصة: التركيب، والعمليات الأساسية، والمشاهدين، والبيانات الفوقية، و OCR، والترجمة، و GEDCOM، والدعم، والمساعدة في البحوث</li>
+</ul>
+<h4>5 معلومات إعلامية</h4>
+<ul>
+<li>نافذة العرض مع 3 صفوف:
+                    <ul>
+<li>1. ATK-Pro vx.x.x (version number)</li>
+<li>2 - 2026 دانييل بيغولي (صحيفة ومؤلف)</li>
+<li>3 - دعم البريد الإلكتروني (للتقارير/التوصية)</li>
+</ul>
+</li>
+<li>استخدام البريد الإلكتروني للاتصالات الرسمية</li>
+<li>Updated automatically</li>
+</ul>
+<h4>توافر اللغات</h4>
+<ul>
+<li>ويُفتح مقدم العرض ومشروع العرض والدليل بلغة مختارة، عند توافره.</li>
+<li>يستخدم إخلاء المسؤولية التشغيلي المراجعة القانونية الإيطالية الرسمية.</li>
+<li>وإذا لم يكن هناك مورد محلي، ترد الرسالة النسبية.</li>
+<li>في ملف الإدخال النموذجي، تُستخدم الإنجليزية كلغة احتياطية.</li>
+</ul>
+<h4>تأتي كيفية الاتصال بالدعم</h4>
+<p>Email: antenati.toolkit.pro@gmail.com</p>
+<ul>
+<li>الإبلاغ عن حشرات: وصف المشكلة + الشاشة/اللوائح</li>
+<li>للاقتراحات: اقتراح وظائف أو تحسينات جديدة</li>
+<li>فيما يتعلق بالمسائل التقنية: طلب توضيح بشأن التشغيل</li>
+<li>اقتراح الأولويات الإنمائية: اقتراح إدخال تحسينات، وبوابات عامة يمكن تقييمها، أو مهام يتعين الانتهاء منها.
+                    <ul>
+<li>وسيجري تقييم هذه المقترحات، غير أن التطوير مشروط بإدارة وصيانة ATK-Pro على مستوى الهواة، وليس على يد مركز برامجيات مهني.</li>
+<li>وتتوقف أوقات التنفيذ على محدودية التوافر والموارد.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>2- إقفال البرامج ودعم المشاريع</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>كيف تغلق ATK-PRO</h4>
+<p>يمكنك إغلاق البرنامج بإحدى الطرق التي يديرها النظام</p>
+<ol>
+<li>مختارة <strong>يغلق</strong>;</li>
+<li>(أ) استخدام زر الإغلاق في حانة اللقب؛</li>
+<li>على Windows, Use standard shortcut <strong>Alt+F4</strong>.</li>
+</ol>
+<p>تم عرض النافذة الاختيارية خلال الإغلاق <strong>ادعم المشروع</strong>.</p>
+<h4>نافذة "دعم المشروع"</h4>
+<p>بعد اختيار واحد من 3 طرق إغلاق، يفتح النافذة مع:</p>
+<div style="text-align: center; margin: 20px 0;">
+<img alt="مشروع دعم النافذة" src="images/window4.webp" style="max-width: 600px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/>
+</div>
+<h4>ما يمكنك القيام به في هذه النافذة</h4>
+<p>الخيار 1: كليك بانر (أي جزء من الصورة)</p>
+<ul>
+<li>افتحي مصففك مع الصفحة الرسمية</li>
+<li>يمكنك اختيار كمية التبرعات (مجانية كاملة)</li>
+<li>الدفع عن طريق &amp;quot; بيبول &amp;quot; (بحساب أو بدون حساب، حسب البلد)</li>
+<li>لا قيود: يمكنك أيضا أن تقرر عدم التبرع</li>
+</ul>
+<p>il OPTION 2: scans QR code</p>
+<ol>
+<li>افتح الكاميرا</li>
+<li>خُطِفْ رمزَ رايةِ QR.</li>
+<li>تحقق من العنوان المقترح قبل المضي قدماً</li>
+</ol>
+<p>الخيار 3: الزر المغلق</p>
+<ul>
+<li>اغلق اللافتة</li>
+<li>انهي البرنامج بشكل دائم</li>
+<li>لا رابطة: يمكنك إغلاق دون التبرع</li>
+</ul>
+<h4>ملاحظات هامة:</h4>
+<p>التبرعات</p>
+<p>البرنامج يعمل بشكل متطابق مع الهبة أو بدونها</p>
+<p>عدم التتبع، وعدم تحديد المهام</p>
+<p>يفتتح الشعار عنوان &amp;quot; بي بال &amp;quot; الذي يتكون من المشروع؛ ويتحقق دائما من الوجهة التي يعرضها المصفح.</p>
+<p>يمكنك دعم المشروع عندما تفضل</p>
+<h4>يُقصد بالتبرعات ما يلي:</h4>
+<p>Support future development of ATK-Pro:</p>
+<ul>
+<li>التوزيع والهياكل الأساسية والخدمات المتصلة بالمشروع</li>
+<li>عناصر التبعية والبرمجيات</li>
+<li>وقت التطوير والاختبار والتوثيق وصيانة النسخ اللاحقة</li>
+<li>IIIF</li>
+<li>الوثائق والصيانة</li>
+</ul>
+<h4>بديل للتبرعات:</h4>
+<p>إذا كنت لا يمكن التبرع ولكن تريد الدعم، يمكنك:</p>
+<ul>
+<li>Share ATK-Pro on social media</li>
+<li>الإبلاغ عن الاستخدامات الابتكارية أو الدراسات الإفرادية المثيرة للاهتمام</li>
+</ul>
+</div>
+<div class="section-box">
+<h3>3. Problemubleshooting and FAQ</h3>
+<p>────────────────────────────────────────────────────────────────────────────────</p>
+<h4>كثيرا ما تطرح أسئلة</h4>
+<h4>هل يلتزم البرنامج بتحميل البيانات؟</h4>
+<p><strong>R:</strong> وعادة ما يكون توقيت الشبكة. تحقق:</p>
+<ol>
+<li>تحقق من أن وصلة الإنترنت تعمل من خلال فتح صفحة موثوق بها في جهازك</li>
+<li>افتحي الباب الثالث في الرصيف ونسخيه من حانة العنوان</li>
+<li>تحقق من جدران الحريق أو البرمجيات الأمنية تسمح بربطات ATK-Pro</li>
+<li>إذا كنت تستخدم شبكة محترفة، تحقق من تشكيل شبكة نظام التشغيل.</li>
+</ol>
+<p>إذا استمرت المشكلة، حاول أن تختبر شركة URL مختلفة لاختبار وصلة IIIF</p>
+<h4>? P: "File not found (404)" - ماذا يعني؟</h4>
+<p><strong>R:</strong> تعذر الوصول إلى عنوان URL للبيان. الأسباب:</p>
+<ul>
+<li>URL expired (repository not updated)</li>
+<li>المستودع غير المباشر</li>
+<li>البارامترات غير الصحيحة من طراز URL</li>
+</ul>
+<p>Solution: check URL in your browser before gluing in ATK-Pro</p>
+<h4>تحميل بطيء جداً أو انقطاع؟</h4>
+<p><strong>R:</strong> حاول:</p>
+<ol>
+<li>تحقق من استقرار شبكة (واي فاي) أو تستخدم اتصالاً سلكياً إذا كان متاحاً</li>
+<li>جرّب سحاب عام آخر من طراز URLQZ IIIF لمعرفة ما إذا كان التباطؤ يعتمد على الخادم.</li>
+<li>خفض الحمولة باختيار موجز الموارد <strong>خفيف</strong>.</li>
+<li>وإذا كانت المشكلة تتعلق ببوّابة واحدة فقط، فالثقة والمحاولة مرة أخرى: فالخدمة النائية قد تكون مكتظة أو غير متاحة مؤقتا.</li>
+</ol>
+<h4>? P: إعادة بناء الصور البطيئة - كيف تتسارع؟</h4>
+<p><strong>R:</strong> وتتوقف هذه السرعة أساسا على استجابة خادم IIIF، وحجم الصور، والوصلات والموارد المتاحة على الحاسوب.</p>
+<ul>
+<li>بيانات الاستخدام <strong>خفيف</strong> تخفيض استهلاك الموارد أو <strong>سريع</strong> فقط على النظم المناسبة.</li>
+<li>:: سجلات العمليات التي يقل عدد صفحاتها في كل مرة إذا تعرضت الذاكرة أو الشبكة للضغط.</li>
+<li>وتذكر أن بعض البوابات تفرض وصولا متسلسلا بغض النظر عن الصورة التي تم اختيارها.</li>
+</ul>
+<h4>? P: PDFنتاج فاسد أم غير مفتوح؟</h4>
+<p><strong>R:</strong> حاول:</p>
+<ol>
+<li>احتفظ بنسخة مفيدة من التشخيص، ثم ازالة أو إعادة تسمية الـ PDF.</li>
+<li>إعادة تحميل السجل من <strong>مدخلات ملفية</strong> وتجديد PDF.</li>
+<li>التأكد من أن الوجهة قابلة للكتابة ولديها مساحة كافية لتجهيزها.</li>
+<li>تحقق من الصور الفردية التي تولدت لمعرفة ما إذا كانت المشكلة تتعلق فقط بز.</li>
+</ol>
+<h4>? P: How do I use TIFF files for archive?</h4>
+<p><strong>R:</strong> TIFF is lossless format, perfect for storage:</p>
+<ol>
+<li>اختيار TIFF بين أشكال الصور.</li>
+<li>ATK-Pro saves TIFF with lossless compression LZW.</li>
+<li>تخزين نسخة من الدعم المتميز والتحقق بشكل دوري من سلامة الدعم.</li>
+<li>ويتوقف التخزين مع مرور الوقت أيضا على وسائط الإعلام والنسخ وفحص النزاهة، ليس فقط على الشكل.</li>
+</ol>
+<h4>هَلّ بالإمكان أَنْ أُعالجُ سجلاتَ متعددةَ في وقت واحد (بالتوازي) ؟</h4>
+<p><strong>R:</strong> سجلات الدفعة مجهزة بالتسلسل وفي إطار السجل الوحيد، يمكن تجهيز الصفحات والأعمدة بالتوازي وفقا للبوابة وموجز الموارد.</p>
+<ol>
+<li>جهز ملفاً للمدخلات مع جميع السجلات المدعومة، واحد بعد الآخر.</li>
+<li>بيعها من <strong>مدخلات ملفية</strong>.</li>
+<li>ابدأ مرة واحدة <strong>الناتج</strong>.</li>
+<li>ATK-Pro continues automatically with subsequent records.</li>
+</ol>
+<p>Example: If input contains 5 records, ATK-Pro automatically processes:</p>
+<ul>
+<li>السجل 1 (التحميل + التعمير)</li>
+<li>السجل 2 (التحميل + التعمير)</li>
+<li>حتى التسجيل 5</li>
+</ul>
+<p>ويتم توفير النتائج في الملفات المجهزة؛ ولا تحتاج إلى إعادة التجهيز يدويا لكل سجل.</p>
+<h4>الملفات تنقذ أين بالضبط؟</h4>
+<p><strong>R:</strong> الطريق الافتراضي:</p>
+<ul>
+<li><strong>التركيب الموحد:</strong> الملف <code>ATK-Pro/output</code> في وثائق المستعمل</li>
+<li><strong>طريقة محمولة:</strong> الملف <code>output</code> بجانب التنفيذ</li>
+</ul>
+<p>يمكنك تغيير وجهتك <strong>المخرج المختار</strong>- تُنشأ الملفات الافتراضية تلقائيا عند الإمكان.</p>
+<h4>? P: Why does ATK-Pro signal or block an output path?</h4>
+<p><strong>R:</strong> وقبل إنشاء الملفات، تراقب شركة ATK-Pro أطول طريق للتسجيل. ويميز الموجز النهائي بين حالتين:</p>
+<ul>
+<li><strong>خطأ القفل:</strong> ويحتوي الاسم على خصائص غير مسموح بها، أو يستخدم اسما محجوزا هو Windows، أو ينتهي بحيز أو نقطة، أو أن جزءا يتجاوز الحد المدعم. ويتوقف السجل المتأثر فقط ولا يُنشأ كتاب العمل النسبي.</li>
+<li><strong>إشعار بالتوافق:</strong> ويقترب الطريق من عتبة حكيمة أو يمكن أن يخلق صعوبات في تطبيقات أقل حداثة من طراز Windows. ويمكن للمعالجة أن تستمر، ولكن من الأفضل اختيار وجهة أقصر.</li>
+</ul>
+<p>الملف <strong>OneDrive/SharePoint</strong> لا يطبق إلا عندما يكون الملف المختار في الواقع تحت الجذر <code>OneDrive</code> أو <code>OneDrive - Organizzazione</code>- في حالة الخطأ، اختصار الاسم القياسي أو اختيار ملف الوجهة أقرب إلى الجذر الصلب؛ ولا تحتاج إلى إعادة تسمية أو نقل الملفات التي تنتجها بالفعل عملية تجهيز أخرى.</p>
+<h4>هل يمكنني نقل ملفات النواتج بعد التجهيز؟</h4>
+<p><strong>R:</strong> نعم، الملفات النهائية يمكن نقلها بعد التجهيز</p>
+<p>بعد الإنجاز:</p>
+<ol>
+<li>نقل ملف السجلات إلى الوجهة الجديدة.</li>
+<li>ملف PDF النهائي مستقل؛ كما يحتفظ بالصور والبيانات الوصفية إذا كانت جزءاً من أرشيف عملك.</li>
+<li>إذا كنت تتوقّع إعادة صياغة السجل، الاحتفاظ بالملصقات وملفات المصدر الأخرى.</li>
+</ol>
+<h4>â TM ھ â TM â TM ھ فجأة - ماذا تفعل؟</h4>
+<p><strong>R:</strong> ما إذا كان البرنامج ينهار:</p>
+<ol>
+<li>تحقق <code>atkpro.log</code> أو بتشخيصات مطولة نشطة <code>atkpro_debug.log</code>- ويتوقف الموقع على نوع التركيب: البحث بجوار دليل العمل القابل للتنفيذ أو في دليل العمل التطبيقي.</li>
+<li>عُلم رسالة الخطأ أو إلتقط صورة</li>
+<li>أعيدي تشغيل البرنامج وكرري العملية</li>
+<li>إذا تكرر الخطأ، فجرّب سجلاً آخر من IIIF للتمييز بين مشكلة عامة ومشكلة في بيان محدد.</li>
+</ol>
+<h4>الأخطاء والحلول المشتركة</h4>
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+<thead style="background-color: #f0f0f0;">
+<tr>
+<th style="text-align: left;">خطأ</th>
+<th style="text-align: left;">القضية</th>
+<th style="text-align: left;">الحلول</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"انتهى الوقت"</td>
+<td>بطيئة/خطية</td>
+<td>حاول مرة أخرى مع مختلف URL</td>
+</tr>
+<tr>
+<td>"الشكل غير الرسمي لـ "زكس كيب-ت.م</td>
+<td>عنوان URL ليس بيان IIIF</td>
+<td>تفقّدْ URL في بروزر</td>
+</tr>
+<tr>
+<td>"المكان الحريري ممتلئ"</td>
+<td>مساحة غير كافية من الأقراص</td>
+<td>فضاء مجاني على الوحدات</td>
+</tr>
+<tr>
+<td>"رفض الإذن"</td>
+<td>الملف المحمي/الإعادة فقط</td>
+<td>اختر ملفاً يخص مستعملك وتحقق من أنه قابل للكتابة وتجنب ملفات النظام أو حمايته</td>
+</tr>
+<tr>
+<td>"URL لم يعثر عليه"</td>
+<td>Manifest IIIF expired</td>
+<td>التحقق من الهوية في الميناء</td>
+</tr>
+<tr>
+<td>"لا يستجيب"</td>
+<td>التجهيز البطيء/الثقيف</td>
+<td>انتظروا أو انقروا</td>
+</tr>
+</tbody>
+</table>
+<h4>. س: تم التعرف على البوابة لكن رُفض التنزيل. لماذا؟</h4>
+<p><strong>R:</strong> والتوافق التقني لا يلغي شروط الوصول. ATK-Pro refuses or limits resources requiring affiliate login or access, do not expose a stable public endpoint, are marked <code>nodownload</code> أو ليس لها حقوق تتفق مع العملية المطلوبة. افتح الصفحة العامة للموضوع، ورخصة التحقق وشروط الاستخدام، واختبار فقط مع المسؤول المدعوم URL.</p>
+<h4>هَلّ بالإمكان أَنْ أَستعيدُ a كسر OCRQZ؟</h4>
+<p><strong>R:</strong> تحقق من الملف المختار لملف OCR <code>*_trascrizione_parziale.txt</code> و بياناته وهي تتضمن العمل الذي تم إنقاذه تدريجيا، للتحقق منه وإتمامه قبل النظر فيه نهائيا.</p>
+<h4>الدعم والاتصالات</h4>
+<p>إذا استمرت المشكلة بعد محاولة الحلول:</p>
+<ol>
+<li>انظر عرض المشروع وهذا الدليل من القائمة <strong>وثائق</strong>.</li>
+<li>إذا بقيت المشكلة بدون حل، أكتب <strong>antenati.toolkit.pro@gmail.com</strong> بما فيها:</li>
+</ol>
+<ul>
+<li>Version ATK-Pro (menu Documents ) Information)</li>
+<li>نظام التشغيل ونسخته (مثل Windows 10/11، Ubuntu 22.04، macOS 13)</li>
+<li>URL IIIF causing problem</li>
+<li>Error Screenshot (if displayed)</li>
+</ul>
+</div>
+<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+<a class="nav-button" href="guida_08_esportazione_gedcom.html">□ الوحدة 08 - تصدير GEDCOM</a>
+<a class="nav-button" href="guida.html">(هـ) المؤشر الرئيسي</a>
+</div>
+<footer style="text-align: center;">
+<p>2026 Antenati Toolkit Pro | antenati.toolkit.pro@gmail.com</p>
+</footer>
+</div>
+</body>
+</html>
