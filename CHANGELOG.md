@@ -2,6 +2,27 @@
 
 Tutte le modifiche rilevanti al progetto ATK-Pro saranno documentate in questo file.
 
+## [3.0.0-rc3] - 2026-09-01
+
+### Funzionalita e compatibilita
+
+- Completata la documentazione modulare nelle 20 lingue supportate.
+- Aggiunto il supporto multipagina per Biblioteca Digitale Lombarda tramite
+  BookReader REST e immagini Cantaloupe IIIF, con PDF ricostruito da tutti i
+  canvas e fallback al PDF REST diretto.
+- Consolidati registry, policy e adapter per 28 portali pubblici supportati.
+- Aggiunto il preflight adattivo dei percorsi di output e resa transazionale la
+  cancellazione dei batch.
+
+### Verifiche e correzioni
+
+- Esteso lo smoke live con decodifica di immagini equidistanti, dimensioni e
+  hash per rilevare placeholder o pagine ripetute.
+- Corrette le verifiche end-to-end di BDL, DOGE e degli header Antenati.
+- Allineato il fallback headless al rilevamento portale e ai range canvas del
+  worker GUI.
+- Aggiornate le GitHub Actions alle runtime Node correnti.
+
 ## [3.0.0] - 2026-05-10
 Questa release trasforma profondamente ATK-Pro, facendolo evolvere da un downloader specifico per il Portale Antenati a un **Motore Genealogico Universale** (sia per il download di immagini IIIF da archivi internazionali, sia per l'estrazione AI multi-provider).
 

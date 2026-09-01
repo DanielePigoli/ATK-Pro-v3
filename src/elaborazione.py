@@ -21,9 +21,9 @@ try:
 except ImportError:
     from src.resource_profile import get_canvas_max_workers
 try:
-    from portal_registry import get_portal_referer, get_portal_tile_download_policy, normalize_portal_key
+    from portal_registry import detect_portal_from_url, get_portal_referer, get_portal_tile_download_policy, normalize_portal_key
 except ImportError:
-    from src.portal_registry import get_portal_referer, get_portal_tile_download_policy, normalize_portal_key
+    from src.portal_registry import detect_portal_from_url, get_portal_referer, get_portal_tile_download_policy, normalize_portal_key
 from canvas_id_extractor import extract_canvas_id_from_url, extract_ud_canvas_id_from_infojson_xhr
 from browser_setup import setup_selenium, setup_playwright
 try:
@@ -1781,6 +1781,7 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
     output_folders_doc = state.get("output_folders_doc", [])
     output_folders_reg = state.get("output_folders_reg", [])
     resource_profile = state.get("resource_profile", "bilanciato")
+    active_portal = state.get("portale_attivo", "antenati")
     logger.info(f"[STATO] output_folder: {output_folder}")
     logger.info(f"[STATO] output_folders_doc: {output_folders_doc}")
     logger.info(f"[STATO] output_folders_reg: {output_folders_reg}")
@@ -1878,15 +1879,22 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
                 logger.warning("[Path preflight] %s — %s", issue.message, issue.path)
             # ...existing code...
             # Esegui elaborazione con classe Elaborazione
+            detected_portal = detect_portal_from_url(url)
+            record_portal = detected_portal or active_portal
             elab = Elaborazione(
                 modalita.lower(),
                 url,
                 out_dir,
                 glossario_data,
                 lingua,
+                portale=record_portal,
                 resource_profile=resource_profile,
             )
             elab.set_nome_file(nome_file)
+            elab.canvas_da = record.get("canvas_da") or None
+            elab.canvas_a = record.get("canvas_a") or None
+            if "gen_pdf" in record:
+                elab.force_gen_pdf = bool(record.get("gen_pdf"))
             success = elab.run(formats=formats)
 
             # Aggiorna dialog di progresso (se presente)
