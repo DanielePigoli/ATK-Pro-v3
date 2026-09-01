@@ -95,6 +95,52 @@ def test_esegui_elaborazione_passes_resource_profile(tmp_path, monkeypatch):
     assert captured["resource_profile"] == "veloce"
 
 
+
+def test_esegui_elaborazione_detects_record_portal_and_passes_range(tmp_path, monkeypatch):
+    captured = {}
+
+    class CapturingElab(FakeElab):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            captured["portale"] = kwargs.get("portale")
+
+        def run(self, formats=None):
+            captured["canvas_da"] = self.canvas_da
+            captured["canvas_a"] = self.canvas_a
+            captured["force_gen_pdf"] = self.force_gen_pdf
+            return True
+
+    out = tmp_path / "out"
+    out.mkdir()
+    records = [{
+        "modalita": "R",
+        "url": "https://www.bdl.servizirl.it/bdl/public/rest/srv/item/12404/pdf",
+        "nome_file": "registro_bdl",
+        "canvas_da": 2,
+        "canvas_a": 4,
+        "gen_pdf": True,
+    }]
+    state = {
+        "records": records,
+        "formats": ["PDF"],
+        "output_folder": str(out),
+        "output_folders_doc": [],
+        "output_folders_reg": [str(out)],
+        "portale_attivo": "antenati",
+    }
+    monkeypatch.setattr(elab_mod, "Elaborazione", CapturingElab)
+
+    result = elab_mod.esegui_elaborazione(state, records=records, formats=["PDF"])
+
+    assert result[0]["status"] == "SUCCESS"
+    assert captured == {
+        "portale": "biblioteca_digitale_lombarda",
+        "canvas_da": 2,
+        "canvas_a": 4,
+        "force_gen_pdf": True,
+    }
+
+
 def test_esegui_elaborazione_reports_path_preflight_error_before_processing(tmp_path, monkeypatch):
     records = [{"modalita": "R", "url": "ark:/dummy/1", "nome_file": "registro:1901"}]
     out = tmp_path / "out"

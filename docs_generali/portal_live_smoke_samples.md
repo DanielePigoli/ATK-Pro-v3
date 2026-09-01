@@ -5,6 +5,25 @@ implementati. Gli URL campione devono essere pubblici, no-login e coerenti con
 la policy legale del singolo portale. I test live non sostituiscono le fixture
 offline e non devono essere eseguiti come suite automatica ordinaria.
 
+Verifica dei manifest:
+
+```powershell
+python verify_portal_live_smoke.py --fetch-manifest --strict
+```
+
+Verifica pre-release raccomandata, con decodifica di immagini equidistanti per
+ogni volume e rilevamento di campioni identici:
+
+```powershell
+python verify_portal_live_smoke.py --fetch-images --strict
+```
+
+Il secondo comando usa per impostazione predefinita inizio, centro e fine del
+volume (`--image-samples` consente di cambiare il numero). Il report CSV include
+dimensioni, byte e hash dei campioni. Il controllo resta un audit di trasporto
+e decodifica rappresentativo: non sostituisce lo smoke degli artefatti delle
+singole piattaforme ne' autorizza download massivi.
+
 | portal_key | label | roadmap_priority | technical_family | record_mode_policy | policy_checked_at | sample_url | release_status | notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | antenati | Antenati (Cultura.gov.it) | maintain_with_warning | iiif_discovery | r_ok | 2026-05-26 | https://antenati.cultura.gov.it/ark:/12657/an_ud16591873/ | SAMPLE | Registro pubblico Antenati; verifica discovery manifest, non diritti di riuso. |

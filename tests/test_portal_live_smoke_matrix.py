@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from urllib.parse import urlparse
 
+from PIL import Image
+
 from src.portal_registry import PORTAL_REGISTRY, detect_portal_from_url, portal_keys
 import verify_portal_live_smoke as smoke
 
@@ -148,6 +150,99 @@ def test_live_smoke_fetch_uses_synthetic_builder_for_synthetic_portals(monkeypat
     assert result.status == "PASS"
     assert result.manifest_url == "synthetic://museogalileo/test"
     assert result.canvas_count == 1
+
+
+def test_live_smoke_uses_end_to_end_builders_for_bdl_and_doge():
+    assert (
+        smoke.LIVE_SYNTHETIC_BUILDERS["biblioteca_digitale_lombarda"]
+        is smoke.build_biblioteca_digitale_lombarda_synthetic_manifest
+    )
+    assert (
+        smoke.LIVE_SYNTHETIC_BUILDERS["doge_unige"]
+        is smoke.build_doge_synthetic_manifest
+    )
+
+
+
+def test_image_sample_positions_cover_start_middle_end():
+    assert smoke._sample_positions(1, 3) == [0]
+    assert smoke._sample_positions(12, 3) == [0, 6, 11]
+    assert smoke._sample_positions(4, 10) == [0, 1, 2, 3]
+
+
+
+def test_image_request_reuses_antenati_tile_headers(monkeypatch):
+    from io import BytesIO
+
+    image = Image.new("RGB", (20, 30), "white")
+    payload = BytesIO()
+    image.save(payload, format="PNG")
+    captured = {}
+
+    class Response:
+        ok = True
+        status_code = 200
+        content = payload.getvalue()
+        url = "https://iiif-antenati.cultura.gov.it/iiif/2/test/full/512,/0/default.jpg"
+
+    def fake_get(url, **kwargs):
+        captured.update(kwargs["headers"])
+        return Response()
+
+    monkeypatch.setattr(smoke.requests, "get", fake_get)
+
+    probe = smoke._request_image(1, Response.url, None)
+
+    assert probe.status == "PASS"
+    assert captured["Referer"] == "https://antenati.cultura.gov.it/"
+    assert captured["Origin"] == "https://antenati.cultura.gov.it"
+
+
+def test_image_probe_rejects_identical_samples(monkeypatch):
+    image = Image.new("RGB", (20, 30), "white")
+
+    def fake_probe(_portal_key, _sample_url, _canvas, position):
+        from io import BytesIO
+
+        buffer = BytesIO()
+        image.save(buffer, format="PNG")
+        return smoke._decode_image(position, buffer.getvalue(), "test")
+
+    monkeypatch.setattr(smoke, "_probe_canvas_image", fake_probe)
+    manifest = {"sequences": [{"canvases": [{}, {}, {}]}]}
+
+    status, sampled, unique, detail = smoke._probe_manifest_images("antenati", "https://example.test", manifest, 3)
+
+    assert status == "FAIL"
+    assert sampled == 3
+    assert unique == 1
+    assert "byte-identical" in detail
+
+
+def test_run_case_fetch_images_uses_resolved_synthetic_manifest(monkeypatch, tmp_path):
+    manifest = {"@id": "synthetic://test", "sequences": [{"canvases": [{"@id": "canvas-1"}]}]}
+    monkeypatch.setitem(smoke.LIVE_SYNTHETIC_BUILDERS, "museogalileo", lambda _url: manifest)
+    monkeypatch.setattr(
+        smoke,
+        "_probe_manifest_images",
+        lambda *args: ("PASS", 1, 1, "p1:PASS:20x30:100B:abc"),
+    )
+
+    result = smoke.run_case(
+        {
+            "portal_key": "museogalileo",
+            "label": PORTAL_REGISTRY["museogalileo"].label,
+            "sample_url": "https://bibdig.museogalileo.it/Teca/Viewer?an=000000006600",
+        },
+        fetch_manifest=True,
+        output_dir=tmp_path,
+        fetch_images=True,
+    )
+
+    assert result.status == "PASS"
+    assert result.sampled_images == 1
+    assert result.unique_images == 1
+    assert result.image_detail.startswith("p1:PASS")
 
 
 def test_live_smoke_fetch_retries_transient_resolution_failure(monkeypatch, tmp_path):

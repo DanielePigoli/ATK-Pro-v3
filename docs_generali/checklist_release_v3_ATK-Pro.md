@@ -1,6 +1,6 @@
 # Checklist release ATK-Pro v3.0.0
 
-Data snapshot: 2026-06-23
+Data snapshot: 2026-09-01
 
 Questa checklist raccoglie i criteri minimi per decidere se ATK-Pro puo' passare
 da baseline pre-release a RC tecnica v3.0.0, e distingue quel passaggio da una
@@ -10,8 +10,8 @@ release pubblica multilingue completa.
 
 | Stato | Esito | Motivazione |
 | --- | --- | --- |
-| RC tecnica v3.0.0 | RC2 in preparazione | Localizzazione, glossario, documenti menu, guida italiana v3, portali italiani/italofoni, suite tecnica, smoke manuale Windows portable e build multipiattaforma risultano verificati a livello RC; RC2 incorpora i primi fix da riscontro esterno su Ricerca Assistita AI e OCR Gemini. |
-| Release pubblica multilingue completa | Non ancora | La guida italiana e' la fonte v3 primaria, ma la propagazione multilingue completa va eseguita dopo il consolidamento del perimetro finale. |
+| RC tecnica v3.0.0 | RC3 in preparazione | Il codice sorgente, le 20 lingue, il supporto BDL multipagina e l’audit live rappresentativo dei 28 portali sono pronti; restano build multipiattaforma e smoke degli artefatti RC3. |
+| Release pubblica multilingue completa | Go dopo RC3 | Le guide e i documenti previsti sono allineati nelle 20 lingue supportate; la promozione stabile resta subordinata allo smoke degli artefatti RC3. |
 | Nuove integrazioni portali | Non bloccanti per RC | La roadmap portali e il registro tecnico sono pronti per evoluzioni progressive senza bloccare la prima RC. |
 
 ## Criteri go/no-go per RC tecnica
@@ -23,12 +23,12 @@ release pubblica multilingue completa.
 | Glossario HTML | Go | Ogni modifica al glossario JSON deve avere HTML allineato oppure nota esplicita di follow-up prima del merge release. |
 | Documenti menu | Go | `verify_document_assets.py` deve confermare presenza e link locali per disclaimer, presentazioni e guida. |
 | Guida italiana | Go con rilettura finale | La guida italiana e' la baseline v3; Ricerca assistita AI, Traduzione OCR, GEDCOM e capability dei nuovi portali italiani sono documentate. Resta consigliata una rilettura editoriale di OCR Avanzato e FAQ. |
-| Altre lingue | Go solo con dichiarazione | Per RC tecnica e' accettabile dichiarare che la guida italiana e' la fonte v3 primaria. Per release pubblica multilingue serve propagazione o nota visibile di stato. |
+| Altre lingue | Go | Il ciclo documentale e' completato nelle 20 lingue supportate e verificato dagli audit asset/localizzazione. |
 | Disclaimer e policy portali | Go con consenso revisionato | Il disclaimer esclude scraping massivo, aggiramento login/paywall e portali commerciali chiusi; la revisione v3 deve essere accettata esplicitamente prima di installazione, aggiornamento automatico o avvio portable/bundle. Fino alla propagazione multilingue, il testo legale vincolante e' quello italiano. |
 | Policy runtime D/R portali | Go con re-check periodico | `src/portal_registry.py` applica `R_OK`, `R_LIMITED`, `D_ONLY` e `VARIABLE`; `verify_portal_policy.py` controlla scadenza delle policy e genera `portal_policy_overrides.json` per aggiornamenti locali senza nuova release. |
-| Portali esistenti | Go offline; smoke live separato | Registry e policy comprendono 28 capability, tutte collegate alla matrice tecnica/legale e coperte dalla matrice smoke offline. Il controllo live resta manuale e non sostituisce le fixture. |
-| Test tecnici | Go | Gate release del 2026-08-01: 799 test passati e 38 skip attesi; verificatori di localizzazione, glossario, disclaimer, documenti, guida italiana, matrice e policy superati. |
-| Packaging | Go RC2 dopo build | Build PyInstaller onedir Windows RC1 generata, avviata e provata manualmente; installer Windows RC1 generato con Inno Setup; workflow macOS e Linux superati e artefatti caricati nella pre-release RC1. Per RC2 il perimetro tecnico dei fix AI/OCR e dei portali sensibili e' stato rieseguito; eventuali conferme manuali esterne sui casi Gemini restano utili ma non bloccanti. |
+| Portali esistenti | Go sorgente | Le 28 capability passano risoluzione manifest e decodifica live di immagini rappresentative; il controllo resta manuale e va completato con smoke sugli artefatti RC3. |
+| Test tecnici | Go | Gate release del 2026-09-01: 834 test passati e 38 skip attesi; tutti gli 11 step di localizzazione, documenti, policy, igiene, compilazione e pytest sono verdi. |
+| Packaging | In attesa RC3 | I workflow Windows, macOS Intel/Apple Silicon e Linux sono disponibili; tag, build, hash e smoke degli artefatti RC3 devono ancora essere completati. |
 | File temporanei | Go | Audit automatico del 2026-08-01: 78.241 artefatti generati locali inventariati e ignorati; nessun artefatto generato tracciato o non coperto da `.gitignore`. |
 
 ## Suite smoke pre-RC
@@ -48,7 +48,7 @@ python scripts\quality_gate.py release
 Controllo live portali, manuale e non sostitutivo dei test offline:
 
 ```powershell
-python verify_portal_live_smoke.py --fetch-manifest --strict
+python verify_portal_live_smoke.py --fetch-images --strict
 ```
 
 Il comando richiede rete, usa `docs_generali/portal_live_smoke_samples.md` e
@@ -150,17 +150,21 @@ Documento collegato: `docs_generali/note_release_v3.0.0-rc2_ATK-Pro.md`.
 Registro riscontri tester collegato:
 `docs_generali/registro_riscontri_tester_v3.0.0-rc2_ATK-Pro.md`.
 
-## Bloccanti per release pubblica completa
+## Preparazione RC3 e bloccanti per la stabile
 
-- Propagazione multilingue della guida v3 oppure avviso chiaro e coerente nelle
-  lingue non ancora riallineate.
-- Propagazione multilingue del disclaimer legale v3; fino al completamento
-  delle traduzioni, le build pubbliche devono mostrare e richiedere
-  l'accettazione del testo legale italiano come fonte primaria.
-- Verifica delle build pubbliche Windows, Linux e macOS, con note specifiche per
-  eventuali piattaforme non testate su hardware reale.
-- Aggiornamento changelog o note di rilascio v3.0.0.
-- Tag e pacchetti generati da `main` pulito, dopo suite smoke verde.
+Il consolidamento RC3 include BDL multipagina via BookReader/Cantaloupe con
+fallback PDF REST, completamento delle 20 lingue, preflight adattivo dei
+percorsi, correzioni di resilienza e audit live con immagini reali. Il
+2026-09-01 l'audit ha verificato 28/28 portali: manifest valido e campioni
+inizio/centro/fine decodificabili e distinti quando il volume e' multipagina.
+
+Restano bloccanti per la promozione a `v3.0.0` stabile:
+
+- build RC3 Windows installer/portable, macOS Intel/Apple Silicon e Linux;
+- hash e smoke degli artefatti, con nota esplicita per piattaforme non provate
+  su hardware reale;
+- tag e pacchetti generati da `main` pulito dopo CI verde;
+- nessun regressivo bloccante emerso nel ciclo di prova RC3.
 
 ## Documenti collegati
 
@@ -174,3 +178,4 @@ Registro riscontri tester collegato:
 - `tests/roadmap_tests.md`
 - `docs_generali/note_release_v3.0.0-rc1_ATK-Pro.md`
 - `docs_generali/note_release_v3.0.0-rc2_ATK-Pro.md`
+- `docs_generali/note_release_v3.0.0-rc3_ATK-Pro.md`
