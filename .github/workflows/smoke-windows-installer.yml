@@ -30,10 +30,6 @@ jobs:
       TARGET_TAG: ${{ inputs.tag }}
       EXPECTED_SHA256: ${{ inputs.sha256 }}
       DISCLAIMER_REVISION: ${{ inputs.disclaimer_revision }}
-      INSTALLER_PATH: ${{ runner.temp }}\ATK-Pro-installer-smoke\ATK-Pro-Setup.exe
-      INSTALL_DIR: ${{ runner.temp }}\ATK-Pro-installer-smoke\installed
-      INSTALL_LOG: ${{ runner.temp }}\ATK-Pro-installer-smoke\install.log
-      UNINSTALL_LOG: ${{ runner.temp }}\ATK-Pro-installer-smoke\uninstall.log
 
     steps:
       - name: Download and verify release installer
@@ -42,17 +38,27 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $ErrorActionPreference = 'Stop'
-          $smokeRoot = Split-Path -Parent $env:INSTALLER_PATH
+          $smokeRoot = Join-Path $env:RUNNER_TEMP 'ATK-Pro-installer-smoke'
+          $installerPath = Join-Path $smokeRoot 'ATK-Pro-Setup.exe'
+          $installDir = Join-Path $smokeRoot 'installed'
+          $installLog = Join-Path $smokeRoot 'install.log'
+          $uninstallLog = Join-Path $smokeRoot 'uninstall.log'
           New-Item -ItemType Directory -Path $smokeRoot -Force | Out-Null
+          @(
+            "INSTALLER_PATH=$installerPath"
+            "INSTALL_DIR=$installDir"
+            "INSTALL_LOG=$installLog"
+            "UNINSTALL_LOG=$uninstallLog"
+          ) | Add-Content -LiteralPath $env:GITHUB_ENV -Encoding utf8
 
           $assetName = "ATK-Pro-Setup-$($env:TARGET_TAG).exe"
           gh release download $env:TARGET_TAG `
             --repo $env:GITHUB_REPOSITORY `
             --pattern $assetName `
             --dir $smokeRoot
-          Move-Item -LiteralPath (Join-Path $smokeRoot $assetName) -Destination $env:INSTALLER_PATH
+          Move-Item -LiteralPath (Join-Path $smokeRoot $assetName) -Destination $installerPath
 
-          $actualHash = (Get-FileHash -LiteralPath $env:INSTALLER_PATH -Algorithm SHA256).Hash.ToLowerInvariant()
+          $actualHash = (Get-FileHash -LiteralPath $installerPath -Algorithm SHA256).Hash.ToLowerInvariant()
           $expectedHash = $env:EXPECTED_SHA256.Trim().ToLowerInvariant()
           if ($actualHash -ne $expectedHash) {
             throw "Installer SHA-256 mismatch: expected $expectedHash, got $actualHash"
@@ -171,7 +177,7 @@ jobs:
         with:
           name: windows-installer-smoke-logs-${{ inputs.tag }}
           path: |
-            ${{ env.INSTALL_LOG }}
-            ${{ env.UNINSTALL_LOG }}
+            ${{ runner.temp }}\ATK-Pro-installer-smoke\install.log
+            ${{ runner.temp }}\ATK-Pro-installer-smoke\uninstall.log
           if-no-files-found: ignore
           retention-days: 14
