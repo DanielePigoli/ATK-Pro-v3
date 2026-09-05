@@ -51,6 +51,16 @@ release, lo SHA-256 atteso dell'installer e la revisione del disclaimer. In
 questo modo viene collaudato l'asset pubblicato esatto senza interferire con
 installazioni locali.
 
+### 4. Smoke pacchetti Linux (`smoke-linux-release.yml`)
+
+Verifica i pacchetti gia pubblicati su una release usando un runner Ubuntu
+effimero: controlla gli SHA-256, estrae il tarball, installa il DEB con consenso
+legale esplicito, avvia entrambe le distribuzioni con Xvfb, esegue il purge e
+controlla la pulizia dei file e della configurazione di sistema.
+
+Il workflow e solo manuale (`workflow_dispatch`) e richiede il tag, i due
+SHA-256 attesi e la revisione del disclaimer.
+
 ## 🚀 Rilascio Automatico
 
 Per creare una release con installer automatici:
