@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "purge" ]; then
+    # These files are created by postinst rather than shipped in the data
+    # archive, so dpkg cannot remove them automatically during purge.
+    rm -f \
+        /etc/atk-pro/disclaimer_revision \
+        /etc/atk-pro/defaults.json
+    rmdir /etc/atk-pro 2>/dev/null || true
+
+    rm -f \
+        /var/tmp/atk-pro-install-lang \
+        /var/tmp/atk-pro-install.log
+
+    if [ -f /usr/share/debconf/confmodule ]; then
+        . /usr/share/debconf/confmodule
+        db_purge || true
+    fi
+fi
+
+exit 0
