@@ -69,7 +69,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $productKey = 'HKLM:\Software\Antenati ToolKit Pro'
+          $productKey = 'HKLM:\Software\ATK-Pro'
           $uninstallKeys = @(
             'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{8C7A9D5E-2A1B-3C4D-4E5E-8D3A2B1C4F9E}_is1',
             'HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{8C7A9D5E-2A1B-3C4D-4E5E-8D3A2B1C4F9E}_is1'
@@ -154,7 +154,7 @@ jobs:
               throw "Uninstall left $($leftovers.Count) item(s) in $env:INSTALL_DIR"
             }
           }
-          if (Test-Path -LiteralPath 'HKLM:\Software\Antenati ToolKit Pro') {
+          if (Test-Path -LiteralPath 'HKLM:\Software\ATK-Pro') {
             throw 'Uninstall left the HKLM product registry key.'
           }
           $uninstallKeys = @(
