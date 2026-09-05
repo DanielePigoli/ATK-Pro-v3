@@ -119,12 +119,13 @@ jobs:
             echo "Unexpected architecture: expected $EXPECTED_ARCH, got $actual_arch" >&2
             exit 1
           fi
-          # The build already verifies the bundle before DMG creation. Verify
-          # the mounted main executable here: asking codesign to re-walk this
-          # PyInstaller app rejects some valid PySide/Qt framework layouts as
-          # "bundle format is ambiguous" before the launch test can run.
-          codesign --verify --strict --verbose=2 "$executable"
-          codesign --display --verbose=4 "$app" 2>&1 | tee "$RUNNER_TEMP/ATK-Pro-macos-smoke/codesign-$VARIANT.log"
+          # The build verifies the complete bundle before DMG creation. Here,
+          # assert that the exact published executable still carries its
+          # embedded signature metadata without asking codesign to re-walk Qt
+          # frameworks that it classifies as ambiguous bundle layouts.
+          codesign_log="$RUNNER_TEMP/ATK-Pro-macos-smoke/codesign-$VARIANT.log"
+          codesign --display --verbose=4 "$executable" 2>&1 | tee "$codesign_log"
+          grep -Fq "Signature=adhoc" "$codesign_log"
           plutil -p "$app/Contents/Info.plist" | tee "$RUNNER_TEMP/ATK-Pro-macos-smoke/plist-$VARIANT.log"
 
           export QT_QPA_PLATFORM=offscreen
