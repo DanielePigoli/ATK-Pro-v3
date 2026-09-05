@@ -63,6 +63,16 @@ SHA-256 attesi e la revisione del disclaimer per gli asset pubblicati, oppure
 l'ID di un run `Build Linux App` per collaudare i relativi artifact prima
 della pubblicazione.
 
+### 5. Smoke DMG macOS (`smoke-macos-release.yml`)
+
+Verifica i DMG gia pubblicati in parallelo su runner macOS nativi Intel e Apple
+Silicon: controlla gli SHA-256, verifica e monta le immagini, controlla
+architettura e firma ad-hoc, avvia l'applicazione per 20 secondi e smonta sempre
+il volume.
+
+Il workflow e solo manuale (`workflow_dispatch`) e richiede il tag e i due
+SHA-256 attesi.
+
 ## 🚀 Rilascio Automatico
 
 Per creare una release con installer automatici:

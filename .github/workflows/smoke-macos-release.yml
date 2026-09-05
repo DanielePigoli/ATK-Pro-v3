@@ -1,0 +1,158 @@
+name: Smoke macOS Release DMGs
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag containing the DMGs to test
+        required: true
+        default: v3.0.0-rc3
+        type: string
+      intel_sha256:
+        description: Expected SHA-256 of the Intel DMG
+        required: true
+        default: ec2d089cc850d732f7c479683b95d213c8ee3d2cf042d836316bc30a4886bf2c
+        type: string
+      silicon_sha256:
+        description: Expected SHA-256 of the Apple Silicon DMG
+        required: true
+        default: 09db09ddbea014a1e2648fdb8afb4746aafe14282479bbbb971f4969c075e5ca
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-dmg:
+    name: Smoke DMG (${{ matrix.variant }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: Intel
+            runner: macos-15-intel
+            expected_arch: x86_64
+          - variant: AppleSilicon
+            runner: macos-latest
+            expected_arch: arm64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    env:
+      TARGET_TAG: ${{ inputs.tag }}
+      INTEL_SHA256: ${{ inputs.intel_sha256 }}
+      SILICON_SHA256: ${{ inputs.silicon_sha256 }}
+      VARIANT: ${{ matrix.variant }}
+      EXPECTED_ARCH: ${{ matrix.expected_arch }}
+
+    steps:
+      - name: Download and verify published DMG
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          smoke_root="$RUNNER_TEMP/ATK-Pro-macos-smoke"
+          mkdir -p "$smoke_root"
+
+          if [ "$VARIANT" = "Intel" ]; then
+            asset_name="ATK-Pro-macOS-Intel-$TARGET_TAG.dmg"
+            expected_sha="$INTEL_SHA256"
+          else
+            asset_name="ATK-Pro-macOS-AppleSilicon-$TARGET_TAG.dmg"
+            expected_sha="$SILICON_SHA256"
+          fi
+          dmg_path="$smoke_root/$asset_name"
+          launch_log="$smoke_root/launch-$VARIANT.log"
+          {
+            echo "DMG_PATH=$dmg_path"
+            echo "LAUNCH_LOG=$launch_log"
+          } >> "$GITHUB_ENV"
+
+          gh release download "$TARGET_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "$asset_name" \
+            --dir "$smoke_root"
+
+          actual_sha=$(shasum -a 256 "$dmg_path" | awk '{print $1}')
+          expected_sha=$(printf '%s' "$expected_sha" | tr '[:upper:]' '[:lower:]')
+          if [ "$actual_sha" != "$expected_sha" ]; then
+            echo "DMG SHA-256 mismatch: expected $expected_sha, got $actual_sha" >&2
+            exit 1
+          fi
+          echo "Verified $VARIANT DMG SHA-256: $actual_sha"
+
+      - name: Verify, mount and launch DMG application
+        run: |
+          set -euo pipefail
+          hdiutil verify "$DMG_PATH"
+
+          mount_dir=$(mktemp -d "$RUNNER_TEMP/ATK-Pro-mount.XXXXXX")
+          app_pid=""
+          cleanup() {
+            if [ -n "$app_pid" ] && kill -0 "$app_pid" 2>/dev/null; then
+              kill -TERM "$app_pid" 2>/dev/null || true
+              wait "$app_pid" 2>/dev/null || true
+            fi
+            hdiutil detach "$mount_dir" -force >/dev/null 2>&1 || true
+            rmdir "$mount_dir" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+
+          if ! hdiutil attach "$DMG_PATH" \
+            -nobrowse -readonly -mountpoint "$mount_dir" -acceptlicense
+          then
+            hdiutil detach "$mount_dir" -force >/dev/null 2>&1 || true
+            printf 'Y\n' | PAGER=cat hdiutil attach "$DMG_PATH" \
+              -nobrowse -readonly -mountpoint "$mount_dir"
+          fi
+
+          app="$mount_dir/ATK-Pro.app"
+          executable="$app/Contents/MacOS/ATK-Pro"
+          test -d "$app"
+          test -x "$executable"
+          test -f "$mount_dir/LICENSE"
+          test -f "$mount_dir/LICENSE-DOCUMENTATION"
+          test -f "$mount_dir/THIRD-PARTY-NOTICES"
+          test -f "$mount_dir/TRADEMARKS"
+
+          actual_arch=$(lipo -archs "$executable")
+          if [ "$actual_arch" != "$EXPECTED_ARCH" ]; then
+            echo "Unexpected architecture: expected $EXPECTED_ARCH, got $actual_arch" >&2
+            exit 1
+          fi
+          codesign --verify --deep --strict --verbose=2 "$app"
+          codesign --display --verbose=4 "$app" 2>&1 | tee "$RUNNER_TEMP/ATK-Pro-macos-smoke/codesign-$VARIANT.log"
+          plutil -p "$app/Contents/Info.plist" | tee "$RUNNER_TEMP/ATK-Pro-macos-smoke/plist-$VARIANT.log"
+
+          export QT_QPA_PLATFORM=offscreen
+          export QTWEBENGINE_DISABLE_SANDBOX=1
+          export QTWEBENGINE_CHROMIUM_FLAGS=--no-sandbox
+          "$executable" >"$LAUNCH_LOG" 2>&1 &
+          app_pid=$!
+          sleep 20
+          if ! kill -0 "$app_pid" 2>/dev/null; then
+            set +e
+            wait "$app_pid"
+            exit_code=$?
+            set -e
+            echo "$VARIANT application exited before the 20-second smoke window (code $exit_code)." >&2
+            tail -100 "$LAUNCH_LOG" >&2 || true
+            exit 1
+          fi
+          echo "$VARIANT application remained running for the 20-second smoke window."
+          kill -TERM "$app_pid"
+          wait "$app_pid" 2>/dev/null || true
+          app_pid=""
+
+          hdiutil detach "$mount_dir"
+          rmdir "$mount_dir"
+          trap - EXIT
+
+      - name: Upload smoke logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg-smoke-logs-${{ matrix.variant }}-${{ inputs.tag }}
+          path: |
+            ${{ runner.temp }}/ATK-Pro-macos-smoke/*.log
+          if-no-files-found: ignore
+          retention-days: 14
