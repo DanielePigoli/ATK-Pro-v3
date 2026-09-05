@@ -120,10 +120,13 @@ jobs:
             exit 1
           fi
           # The build already verifies the bundle before DMG creation. Verify
-          # the mounted main executable here: asking codesign to re-walk this
-          # PyInstaller app rejects some valid PySide/Qt framework layouts as
-          # "bundle format is ambiguous" before the launch test can run.
-          codesign --verify --strict --verbose=2 "$executable"
+          # the main Mach-O signature on an isolated copy: codesign otherwise
+          # walks back up into this PyInstaller app and rejects some valid
+          # PySide/Qt framework layouts as "bundle format is ambiguous".
+          signature_probe="$RUNNER_TEMP/ATK-Pro-macos-smoke/ATK-Pro-$VARIANT-signature-probe"
+          cp "$executable" "$signature_probe"
+          codesign --verify --strict --verbose=2 "$signature_probe"
+          rm "$signature_probe"
           codesign --display --verbose=4 "$app" 2>&1 | tee "$RUNNER_TEMP/ATK-Pro-macos-smoke/codesign-$VARIANT.log"
           plutil -p "$app/Contents/Info.plist" | tee "$RUNNER_TEMP/ATK-Pro-macos-smoke/plist-$VARIANT.log"
 
