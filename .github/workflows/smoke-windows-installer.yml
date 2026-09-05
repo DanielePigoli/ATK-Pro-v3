@@ -78,17 +78,19 @@ jobs:
             throw 'The hosted runner is not clean: an ATK-Pro installation is already registered.'
           }
 
-          & $env:INSTALLER_PATH `
-            /VERYSILENT `
-            /SUPPRESSMSGBOXES `
-            /NORESTART `
-            /SP- `
-            /LANG=it `
-            "/ATKACCEPTDISCLAIMER=$env:DISCLAIMER_REVISION" `
-            "/DIR=$env:INSTALL_DIR" `
-            "/LOG=$env:INSTALL_LOG"
-          if ($LASTEXITCODE -ne 0) {
-            throw "Installer exited with code $LASTEXITCODE"
+          $installerArgs = @(
+            '/VERYSILENT'
+            '/SUPPRESSMSGBOXES'
+            '/NORESTART'
+            '/SP-'
+            '/LANG=it'
+            "/ATKACCEPTDISCLAIMER=$env:DISCLAIMER_REVISION"
+            "/DIR=`"$env:INSTALL_DIR`""
+            "/LOG=`"$env:INSTALL_LOG`""
+          )
+          $installerProcess = Start-Process -FilePath $env:INSTALLER_PATH -ArgumentList $installerArgs -Wait -PassThru
+          if ($installerProcess.ExitCode -ne 0) {
+            throw "Installer exited with code $($installerProcess.ExitCode)"
           }
 
           $app = Join-Path $env:INSTALL_DIR 'ATK-Pro.exe'
@@ -134,9 +136,15 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $uninstaller = Join-Path $env:INSTALL_DIR 'unins000.exe'
-          & $uninstaller /VERYSILENT /SUPPRESSMSGBOXES /NORESTART "/LOG=$env:UNINSTALL_LOG"
-          if ($LASTEXITCODE -ne 0) {
-            throw "Uninstaller exited with code $LASTEXITCODE"
+          $uninstallerArgs = @(
+            '/VERYSILENT'
+            '/SUPPRESSMSGBOXES'
+            '/NORESTART'
+            "/LOG=`"$env:UNINSTALL_LOG`""
+          )
+          $uninstallerProcess = Start-Process -FilePath $uninstaller -ArgumentList $uninstallerArgs -Wait -PassThru
+          if ($uninstallerProcess.ExitCode -ne 0) {
+            throw "Uninstaller exited with code $($uninstallerProcess.ExitCode)"
           }
 
           Start-Sleep -Seconds 3
@@ -168,7 +176,21 @@ jobs:
             ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
           $uninstaller = Join-Path $env:INSTALL_DIR 'unins000.exe'
           if (Test-Path -LiteralPath $uninstaller) {
-            & $uninstaller /VERYSILENT /SUPPRESSMSGBOXES /NORESTART "/LOG=$env:UNINSTALL_LOG" | Out-Null
+            try {
+              $cleanupArgs = @(
+                '/VERYSILENT'
+                '/SUPPRESSMSGBOXES'
+                '/NORESTART'
+                "/LOG=`"$env:UNINSTALL_LOG`""
+              )
+              $cleanupProcess = Start-Process -FilePath $uninstaller -ArgumentList $cleanupArgs -Wait -PassThru
+              if ($cleanupProcess.ExitCode -ne 0) {
+                Write-Warning "Emergency uninstaller exited with code $($cleanupProcess.ExitCode)."
+              }
+            }
+            catch {
+              Write-Warning "Emergency cleanup failed: $_"
+            }
           }
 
       - name: Upload installer logs
