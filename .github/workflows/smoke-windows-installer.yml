@@ -1,0 +1,177 @@
+name: Smoke Windows Release Installer
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag containing the installer to test
+        required: true
+        default: v3.0.0-rc3
+        type: string
+      sha256:
+        description: Expected SHA-256 of the installer asset
+        required: true
+        default: 0bc81d631a6fe58e953567a8c5afeac585c4e85fa6969c12f386beec3253529d
+        type: string
+      disclaimer_revision:
+        description: Legal disclaimer revision accepted by the silent installer
+        required: true
+        default: v3.0.0-legal-disclaimer-2026-08-02
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-installer:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      TARGET_TAG: ${{ inputs.tag }}
+      EXPECTED_SHA256: ${{ inputs.sha256 }}
+      DISCLAIMER_REVISION: ${{ inputs.disclaimer_revision }}
+      INSTALLER_PATH: ${{ runner.temp }}\ATK-Pro-installer-smoke\ATK-Pro-Setup.exe
+      INSTALL_DIR: ${{ runner.temp }}\ATK-Pro-installer-smoke\installed
+      INSTALL_LOG: ${{ runner.temp }}\ATK-Pro-installer-smoke\install.log
+      UNINSTALL_LOG: ${{ runner.temp }}\ATK-Pro-installer-smoke\uninstall.log
+
+    steps:
+      - name: Download and verify release installer
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $smokeRoot = Split-Path -Parent $env:INSTALLER_PATH
+          New-Item -ItemType Directory -Path $smokeRoot -Force | Out-Null
+
+          $assetName = "ATK-Pro-Setup-$($env:TARGET_TAG).exe"
+          gh release download $env:TARGET_TAG `
+            --repo $env:GITHUB_REPOSITORY `
+            --pattern $assetName `
+            --dir $smokeRoot
+          Move-Item -LiteralPath (Join-Path $smokeRoot $assetName) -Destination $env:INSTALLER_PATH
+
+          $actualHash = (Get-FileHash -LiteralPath $env:INSTALLER_PATH -Algorithm SHA256).Hash.ToLowerInvariant()
+          $expectedHash = $env:EXPECTED_SHA256.Trim().ToLowerInvariant()
+          if ($actualHash -ne $expectedHash) {
+            throw "Installer SHA-256 mismatch: expected $expectedHash, got $actualHash"
+          }
+          Write-Host "Verified installer SHA-256: $actualHash"
+
+      - name: Assert clean runner and install
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $productKey = 'HKLM:\Software\Antenati ToolKit Pro'
+          $uninstallKeys = @(
+            'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{8C7A9D5E-2A1B-3C4D-4E5E-8D3A2B1C4F9E}_is1',
+            'HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{8C7A9D5E-2A1B-3C4D-4E5E-8D3A2B1C4F9E}_is1'
+          )
+          if ((Test-Path -LiteralPath $productKey) -or ($uninstallKeys | Where-Object { Test-Path -LiteralPath $_ })) {
+            throw 'The hosted runner is not clean: an ATK-Pro installation is already registered.'
+          }
+
+          & $env:INSTALLER_PATH `
+            /VERYSILENT `
+            /SUPPRESSMSGBOXES `
+            /NORESTART `
+            /SP- `
+            /LANG=it `
+            "/ATKACCEPTDISCLAIMER=$env:DISCLAIMER_REVISION" `
+            "/DIR=$env:INSTALL_DIR" `
+            "/LOG=$env:INSTALL_LOG"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Installer exited with code $LASTEXITCODE"
+          }
+
+          $app = Join-Path $env:INSTALL_DIR 'ATK-Pro.exe'
+          $uninstaller = Join-Path $env:INSTALL_DIR 'unins000.exe'
+          if (-not (Test-Path -LiteralPath $app)) { throw "Missing installed executable: $app" }
+          if (-not (Test-Path -LiteralPath $uninstaller)) { throw "Missing uninstaller: $uninstaller" }
+
+          $registration = Get-ItemProperty -LiteralPath $productKey
+          $expectedVersion = $env:TARGET_TAG -replace '^v', ''
+          if ($registration.Version -ne $expectedVersion) {
+            throw "Unexpected registered version: $($registration.Version)"
+          }
+          if ([IO.Path]::GetFullPath($registration.InstallDir) -ne [IO.Path]::GetFullPath($env:INSTALL_DIR)) {
+            throw "Unexpected registered install directory: $($registration.InstallDir)"
+          }
+          Write-Host "Installed ATK-Pro $($registration.Version) in $($registration.InstallDir)"
+
+      - name: Launch installed application
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $env:QT_QPA_PLATFORM = 'offscreen'
+          $env:ATKPRO_ENV = 'production'
+          $app = Join-Path $env:INSTALL_DIR 'ATK-Pro.exe'
+          $process = Start-Process -FilePath $app -PassThru
+          try {
+            Start-Sleep -Seconds 20
+            $process.Refresh()
+            if ($process.HasExited) {
+              throw "Installed application exited early with code $($process.ExitCode)"
+            }
+            Write-Host "Installed application remained running for 20 seconds (PID $($process.Id))."
+          }
+          finally {
+            if (-not $process.HasExited) {
+              Stop-Process -Id $process.Id -Force
+              Wait-Process -Id $process.Id -ErrorAction SilentlyContinue
+            }
+          }
+
+      - name: Uninstall and verify cleanup
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $uninstaller = Join-Path $env:INSTALL_DIR 'unins000.exe'
+          & $uninstaller /VERYSILENT /SUPPRESSMSGBOXES /NORESTART "/LOG=$env:UNINSTALL_LOG"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Uninstaller exited with code $LASTEXITCODE"
+          }
+
+          Start-Sleep -Seconds 3
+          if (Test-Path -LiteralPath $env:INSTALL_DIR) {
+            $leftovers = @(Get-ChildItem -LiteralPath $env:INSTALL_DIR -Force -ErrorAction SilentlyContinue)
+            if ($leftovers.Count -gt 0) {
+              throw "Uninstall left $($leftovers.Count) item(s) in $env:INSTALL_DIR"
+            }
+          }
+          if (Test-Path -LiteralPath 'HKLM:\Software\Antenati ToolKit Pro') {
+            throw 'Uninstall left the HKLM product registry key.'
+          }
+          $uninstallKeys = @(
+            'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{8C7A9D5E-2A1B-3C4D-4E5E-8D3A2B1C4F9E}_is1',
+            'HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{8C7A9D5E-2A1B-3C4D-4E5E-8D3A2B1C4F9E}_is1'
+          )
+          if ($uninstallKeys | Where-Object { Test-Path -LiteralPath $_ }) {
+            throw 'Uninstall left an ATK-Pro uninstall registry entry.'
+          }
+          Write-Host 'Installer smoke passed: install, launch and uninstall completed cleanly.'
+
+      - name: Emergency cleanup
+        if: always()
+        shell: pwsh
+        run: |
+          $installRoot = [IO.Path]::GetFullPath($env:INSTALL_DIR)
+          Get-CimInstance Win32_Process -Filter "Name='ATK-Pro.exe'" -ErrorAction SilentlyContinue |
+            Where-Object { $_.ExecutablePath -and [IO.Path]::GetFullPath($_.ExecutablePath).StartsWith($installRoot, [StringComparison]::OrdinalIgnoreCase) } |
+            ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+          $uninstaller = Join-Path $env:INSTALL_DIR 'unins000.exe'
+          if (Test-Path -LiteralPath $uninstaller) {
+            & $uninstaller /VERYSILENT /SUPPRESSMSGBOXES /NORESTART "/LOG=$env:UNINSTALL_LOG" | Out-Null
+          }
+
+      - name: Upload installer logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer-smoke-logs-${{ inputs.tag }}
+          path: |
+            ${{ env.INSTALL_LOG }}
+            ${{ env.UNINSTALL_LOG }}
+          if-no-files-found: ignore
+          retention-days: 14
