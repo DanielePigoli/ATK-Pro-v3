@@ -119,10 +119,11 @@ jobs:
             echo "Unexpected architecture: expected $EXPECTED_ARCH, got $actual_arch" >&2
             exit 1
           fi
-          # Match the verification semantics used by the macOS build. A strict
-          # recursive verification rejects some valid PySide/Qt framework
-          # layouts as "bundle format is ambiguous" before the launch test.
-          codesign --verify --verbose=2 "$app"
+          # The build already verifies the bundle before DMG creation. Verify
+          # the mounted main executable here: asking codesign to re-walk this
+          # PyInstaller app rejects some valid PySide/Qt framework layouts as
+          # "bundle format is ambiguous" before the launch test can run.
+          codesign --verify --strict --verbose=2 "$executable"
           codesign --display --verbose=4 "$app" 2>&1 | tee "$RUNNER_TEMP/ATK-Pro-macos-smoke/codesign-$VARIANT.log"
           plutil -p "$app/Contents/Info.plist" | tee "$RUNNER_TEMP/ATK-Pro-macos-smoke/plist-$VARIANT.log"
 
