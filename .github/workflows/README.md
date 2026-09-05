@@ -40,6 +40,17 @@ Compila l'eseguibile Windows e crea installer con Inno Setup.
 3. Attendi ~5-10 minuti
 4. Download artifact da "Artifacts" in basso
 
+### 3. Smoke installer Windows (`smoke-windows-installer.yml`)
+
+Verifica l'installer gia pubblicato su una release usando un runner Windows
+effimero: controlla SHA-256, installazione silenziosa, avvio dell'applicazione
+per 20 secondi, disinstallazione e pulizia di file e registro.
+
+Il workflow e solo manuale (`workflow_dispatch`) e richiede il tag della
+release, lo SHA-256 atteso dell'installer e la revisione del disclaimer. In
+questo modo viene collaudato l'asset pubblicato esatto senza interferire con
+installazioni locali.
+
 ## 🚀 Rilascio Automatico
 
 Per creare una release con installer automatici:
