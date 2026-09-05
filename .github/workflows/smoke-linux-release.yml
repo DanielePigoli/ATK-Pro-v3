@@ -1,0 +1,194 @@
+name: Smoke Linux Release Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag containing the Linux packages to test
+        required: true
+        default: v3.0.0-rc3
+        type: string
+      deb_sha256:
+        description: Expected SHA-256 of ATK-Pro-Linux.deb
+        required: true
+        default: f6ec76724ca5da789a4515492e909b25737abc95c5830ae554a8f8338b32c8ab
+        type: string
+      tar_sha256:
+        description: Expected SHA-256 of ATK-Pro-Linux.tar.gz
+        required: true
+        default: 0449e1e83093173df09a994aa7c319c7bdc330eecc72e225b0c243e519be41ab
+        type: string
+      disclaimer_revision:
+        description: Legal disclaimer revision expected after package installation
+        required: true
+        default: v3.0.0-legal-disclaimer-2026-08-02
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-packages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TARGET_TAG: ${{ inputs.tag }}
+      EXPECTED_DEB_SHA256: ${{ inputs.deb_sha256 }}
+      EXPECTED_TAR_SHA256: ${{ inputs.tar_sha256 }}
+      DISCLAIMER_REVISION: ${{ inputs.disclaimer_revision }}
+
+    steps:
+      - name: Download and verify release packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          smoke_root="$RUNNER_TEMP/ATK-Pro-linux-smoke"
+          mkdir -p "$smoke_root"
+          deb_path="$smoke_root/ATK-Pro-Linux.deb"
+          tar_path="$smoke_root/ATK-Pro-Linux.tar.gz"
+          install_log="$smoke_root/deb-install.log"
+          remove_log="$smoke_root/deb-remove.log"
+          tar_launch_log="$smoke_root/tar-launch.log"
+          deb_launch_log="$smoke_root/deb-launch.log"
+          {
+            echo "SMOKE_ROOT=$smoke_root"
+            echo "DEB_PATH=$deb_path"
+            echo "TAR_PATH=$tar_path"
+            echo "INSTALL_LOG=$install_log"
+            echo "REMOVE_LOG=$remove_log"
+            echo "TAR_LAUNCH_LOG=$tar_launch_log"
+            echo "DEB_LAUNCH_LOG=$deb_launch_log"
+          } >> "$GITHUB_ENV"
+
+          gh release download "$TARGET_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "ATK-Pro-Linux.deb" \
+            --pattern "ATK-Pro-Linux.tar.gz" \
+            --dir "$smoke_root"
+
+          actual_deb_sha=$(sha256sum "$deb_path" | awk '{print $1}')
+          actual_tar_sha=$(sha256sum "$tar_path" | awk '{print $1}')
+          if [ "$actual_deb_sha" != "${EXPECTED_DEB_SHA256,,}" ]; then
+            echo "DEB SHA-256 mismatch: expected $EXPECTED_DEB_SHA256, got $actual_deb_sha" >&2
+            exit 1
+          fi
+          if [ "$actual_tar_sha" != "${EXPECTED_TAR_SHA256,,}" ]; then
+            echo "tar.gz SHA-256 mismatch: expected $EXPECTED_TAR_SHA256, got $actual_tar_sha" >&2
+            exit 1
+          fi
+          echo "Verified DEB SHA-256: $actual_deb_sha"
+          echo "Verified tar.gz SHA-256: $actual_tar_sha"
+
+      - name: Inspect and extract tarball
+        run: |
+          set -euo pipefail
+          tar_root="$SMOKE_ROOT/tar"
+          mkdir -p "$tar_root"
+          tar -tzf "$TAR_PATH" | tee "$SMOKE_ROOT/tar-contents.log"
+          tar -xzf "$TAR_PATH" -C "$tar_root"
+
+          for required in \
+            ATK-Pro README_LINUX.txt LICENSE LICENSE-DOCUMENTATION \
+            THIRD-PARTY-NOTICES TRADEMARKS
+          do
+            test -f "$tar_root/$required"
+          done
+          chmod +x "$tar_root/ATK-Pro"
+          file "$tar_root/ATK-Pro"
+          echo "Tarball structure is complete."
+
+      - name: Preseed disclaimer and install DEB
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          printf '%s\n' \
+            'atk-pro atk-pro/language select en' \
+            'atk-pro atk-pro/accept-disclaimer boolean true' |
+            sudo debconf-set-selections
+
+          sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y "$DEB_PATH" \
+            2>&1 | tee "$INSTALL_LOG"
+
+          expected_version="${TARGET_TAG#v}"
+          installed_version=$(dpkg-query -W -f='${Version}' atk-pro)
+          installed_status=$(dpkg-query -W -f='${Status}' atk-pro)
+          test "$installed_version" = "$expected_version"
+          test "$installed_status" = 'install ok installed'
+          test -x /opt/ATK-Pro/ATK-Pro
+          test -f /usr/share/applications/atk-pro.desktop
+          test -f /usr/share/pixmaps/atk-pro.png
+          test "$(cat /etc/atk-pro/disclaimer_revision)" = "$DISCLAIMER_REVISION"
+          echo "Installed atk-pro $installed_version successfully."
+
+      - name: Launch installed and tarball applications
+        env:
+          QT_QPA_PLATFORM: offscreen
+          QTWEBENGINE_DISABLE_SANDBOX: "1"
+          QTWEBENGINE_CHROMIUM_FLAGS: "--no-sandbox"
+        run: |
+          set -euo pipefail
+
+          smoke_launch() {
+            local executable="$1"
+            local log_file="$2"
+            local label="$3"
+            set +e
+            timeout 20s xvfb-run \
+              --auto-servernum \
+              --server-args="-screen 0 1280x720x24" \
+              "$executable" >"$log_file" 2>&1
+            local exit_code=$?
+            set -e
+            if [ "$exit_code" -ne 124 ]; then
+              echo "$label exited before the 20-second smoke window (code $exit_code)." >&2
+              tail -100 "$log_file" >&2 || true
+              return 1
+            fi
+            echo "$label remained running for the 20-second smoke window."
+          }
+
+          smoke_launch /opt/ATK-Pro/ATK-Pro "$DEB_LAUNCH_LOG" "Installed DEB application"
+          smoke_launch "$SMOKE_ROOT/tar/ATK-Pro" "$TAR_LAUNCH_LOG" "Extracted tarball application"
+
+      - name: Purge DEB and verify cleanup
+        run: |
+          set -euo pipefail
+          sudo env DEBIAN_FRONTEND=noninteractive apt-get purge -y atk-pro \
+            2>&1 | tee "$REMOVE_LOG"
+
+          if dpkg-query -W -f='${Status}' atk-pro >/dev/null 2>&1; then
+            echo "Package atk-pro is still registered after purge." >&2
+            exit 1
+          fi
+          for removed in \
+            /opt/ATK-Pro \
+            /usr/share/applications/atk-pro.desktop \
+            /usr/share/pixmaps/atk-pro.png \
+            /etc/atk-pro
+          do
+            if [ -e "$removed" ]; then
+              echo "Package purge left behind: $removed" >&2
+              find "$removed" -maxdepth 2 -print 2>/dev/null || true
+              exit 1
+            fi
+          done
+          echo "DEB purge removed package files and system configuration cleanly."
+
+      - name: Emergency package cleanup
+        if: always()
+        run: |
+          set +e
+          sudo env DEBIAN_FRONTEND=noninteractive apt-get purge -y atk-pro >/dev/null 2>&1
+          exit 0
+
+      - name: Upload smoke logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-release-smoke-logs-${{ inputs.tag }}
+          path: |
+            ${{ runner.temp }}/ATK-Pro-linux-smoke/*.log
+          if-no-files-found: ignore
+          retention-days: 14
