@@ -23,8 +23,14 @@ on:
         required: true
         default: v3.0.0-legal-disclaimer-2026-08-02
         type: string
+      build_run_id:
+        description: Optional Build Linux App run ID (uses its artifacts instead of release assets)
+        required: false
+        default: ""
+        type: string
 
 permissions:
+  actions: read
   contents: read
 
 jobs:
@@ -36,6 +42,7 @@ jobs:
       EXPECTED_DEB_SHA256: ${{ inputs.deb_sha256 }}
       EXPECTED_TAR_SHA256: ${{ inputs.tar_sha256 }}
       DISCLAIMER_REVISION: ${{ inputs.disclaimer_revision }}
+      BUILD_RUN_ID: ${{ inputs.build_run_id }}
 
     steps:
       - name: Download and verify release packages
@@ -61,20 +68,41 @@ jobs:
             echo "DEB_LAUNCH_LOG=$deb_launch_log"
           } >> "$GITHUB_ENV"
 
-          gh release download "$TARGET_TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --pattern "ATK-Pro-Linux.deb" \
-            --pattern "ATK-Pro-Linux.tar.gz" \
-            --dir "$smoke_root"
+          if [ -n "$BUILD_RUN_ID" ]; then
+            deb_artifact="$smoke_root/deb-artifact"
+            tar_artifact="$smoke_root/tar-artifact"
+            gh run download "$BUILD_RUN_ID" \
+              --repo "$GITHUB_REPOSITORY" \
+              --name "ATK-Pro-Linux-deb" \
+              --dir "$deb_artifact"
+            gh run download "$BUILD_RUN_ID" \
+              --repo "$GITHUB_REPOSITORY" \
+              --name "ATK-Pro-Linux-tarball" \
+              --dir "$tar_artifact"
+            mv "$deb_artifact/ATK-Pro-Linux.deb" "$deb_path"
+            mv "$tar_artifact/ATK-Pro-Linux.tar.gz" "$tar_path"
+            expected_deb_sha=$(awk '{print tolower($1); exit}' "$deb_artifact/ATK-Pro-Linux.deb.sha256")
+            expected_tar_sha=$(awk '{print tolower($1); exit}' "$tar_artifact/ATK-Pro-Linux.tar.gz.sha256")
+            echo "Testing artifacts from build run $BUILD_RUN_ID."
+          else
+            gh release download "$TARGET_TAG" \
+              --repo "$GITHUB_REPOSITORY" \
+              --pattern "ATK-Pro-Linux.deb" \
+              --pattern "ATK-Pro-Linux.tar.gz" \
+              --dir "$smoke_root"
+            expected_deb_sha="${EXPECTED_DEB_SHA256,,}"
+            expected_tar_sha="${EXPECTED_TAR_SHA256,,}"
+            echo "Testing published assets from release $TARGET_TAG."
+          fi
 
           actual_deb_sha=$(sha256sum "$deb_path" | awk '{print $1}')
           actual_tar_sha=$(sha256sum "$tar_path" | awk '{print $1}')
-          if [ "$actual_deb_sha" != "${EXPECTED_DEB_SHA256,,}" ]; then
-            echo "DEB SHA-256 mismatch: expected $EXPECTED_DEB_SHA256, got $actual_deb_sha" >&2
+          if [ "$actual_deb_sha" != "$expected_deb_sha" ]; then
+            echo "DEB SHA-256 mismatch: expected $expected_deb_sha, got $actual_deb_sha" >&2
             exit 1
           fi
-          if [ "$actual_tar_sha" != "${EXPECTED_TAR_SHA256,,}" ]; then
-            echo "tar.gz SHA-256 mismatch: expected $EXPECTED_TAR_SHA256, got $actual_tar_sha" >&2
+          if [ "$actual_tar_sha" != "$expected_tar_sha" ]; then
+            echo "tar.gz SHA-256 mismatch: expected $expected_tar_sha, got $actual_tar_sha" >&2
             exit 1
           fi
           echo "Verified DEB SHA-256: $actual_deb_sha"

@@ -10,6 +10,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 DEB_SCRIPTS = ROOT / ".github" / "deb-scripts"
 BUILD_WORKFLOW = ROOT / ".github" / "workflows" / "build-linux.yml"
+SMOKE_WORKFLOW = ROOT / ".github" / "workflows" / "smoke-linux-release.yml"
 
 
 def test_postrm_removes_only_system_state_on_purge() -> None:
@@ -43,3 +44,13 @@ def test_postrm_has_valid_posix_shell_syntax() -> None:
         capture_output=True,
         text=True,
     )
+
+
+
+def test_linux_smoke_can_validate_fresh_build_artifacts() -> None:
+    workflow = SMOKE_WORKFLOW.read_text(encoding="utf-8")
+
+    assert "build_run_id:" in workflow
+    assert 'gh run download "$BUILD_RUN_ID"' in workflow
+    assert '--name "ATK-Pro-Linux-deb"' in workflow
+    assert '--name "ATK-Pro-Linux-tarball"' in workflow

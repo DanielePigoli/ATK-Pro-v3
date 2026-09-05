@@ -58,8 +58,10 @@ effimero: controlla gli SHA-256, estrae il tarball, installa il DEB con consenso
 legale esplicito, avvia entrambe le distribuzioni con Xvfb, esegue il purge e
 controlla la pulizia dei file e della configurazione di sistema.
 
-Il workflow e solo manuale (`workflow_dispatch`) e richiede il tag, i due
-SHA-256 attesi e la revisione del disclaimer.
+Il workflow e solo manuale (`workflow_dispatch`). Puo' usare il tag, i due
+SHA-256 attesi e la revisione del disclaimer per gli asset pubblicati, oppure
+l'ID di un run `Build Linux App` per collaudare i relativi artifact prima
+della pubblicazione.
 
 ## 🚀 Rilascio Automatico
 
