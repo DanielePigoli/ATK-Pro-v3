@@ -221,8 +221,9 @@ jobs:
         cp .github/deb-scripts/preinst   "$PKG_DIR/DEBIAN/preinst"
         cp .github/deb-scripts/postinst  "$PKG_DIR/DEBIAN/postinst"
         cp .github/deb-scripts/prerm     "$PKG_DIR/DEBIAN/prerm"
-        chmod 755 "$PKG_DIR/DEBIAN/config" "$PKG_DIR/DEBIAN/preinst" "$PKG_DIR/DEBIAN/postinst" "$PKG_DIR/DEBIAN/prerm"
-        echo "✓ scripts DEBIAN copiati (templates, config, preinst, postinst, prerm)"
+        cp .github/deb-scripts/postrm    "$PKG_DIR/DEBIAN/postrm"
+        chmod 755 "$PKG_DIR/DEBIAN/config" "$PKG_DIR/DEBIAN/preinst" "$PKG_DIR/DEBIAN/postinst" "$PKG_DIR/DEBIAN/prerm" "$PKG_DIR/DEBIAN/postrm"
+        echo "✓ scripts DEBIAN copiati (templates, config, preinst, postinst, prerm, postrm)"
 
         # Verifica che i file siano corretti
         echo "--- templates ---"; cat "$PKG_DIR/DEBIAN/templates"
