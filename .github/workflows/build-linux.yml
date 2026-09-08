@@ -269,31 +269,11 @@ jobs:
     - name: Upload to GitHub Release (if tagged)
       if: startsWith(github.ref, 'refs/tags/v')
       run: |
-        # Assicura che la release esista e non sia draft
-        # (gh release upload fallisce con 404 su release draft)
-        REPO="$GITHUB_REPOSITORY"
-        REL_ID=$(gh api "repos/$REPO/releases" \
-          --jq "[.[] | select(.tag_name==\"${{ github.ref_name }}\")][0].id // empty" 2>/dev/null || true)
-        if [ -n "$REL_ID" ]; then
-          gh api "repos/$REPO/releases/$REL_ID" --method PATCH \
-            --field draft=false > /dev/null 2>&1 || true
-        else
-          if [[ "${{ github.ref_name }}" == *"rc"* ]]; then
-            gh release create "${{ github.ref_name }}" \
-              --title "ATK-Pro ${{ github.ref_name }}" \
-              --notes "" --draft=false --prerelease 2>/dev/null || true
-          else
-            gh release create "${{ github.ref_name }}" \
-              --title "ATK-Pro ${{ github.ref_name }}" \
-              --notes "" --draft=false 2>/dev/null || true
-          fi
-        fi
-        gh release upload "${{ github.ref_name }}" \
+        bash .github/scripts/upload_release_assets.sh "${{ github.ref_name }}" \
           dist/ATK-Pro-Linux.tar.gz \
           dist/ATK-Pro-Linux.tar.gz.sha256 \
           dist/ATK-Pro-Linux.deb \
-          dist/ATK-Pro-Linux.deb.sha256 \
-          --clobber
+          dist/ATK-Pro-Linux.deb.sha256
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
