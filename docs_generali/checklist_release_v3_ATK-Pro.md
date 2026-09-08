@@ -196,3 +196,4 @@ emersi dagli smoke.
 - `docs_generali/note_release_v3.0.0-rc1_ATK-Pro.md`
 - `docs_generali/note_release_v3.0.0-rc2_ATK-Pro.md`
 - `docs_generali/note_release_v3.0.0-rc3_ATK-Pro.md`
+- `docs_generali/note_release_v3.0.0-rc4_ATK-Pro.md`
