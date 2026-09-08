@@ -81,8 +81,8 @@ Per creare una release con installer automatici:
 
 ```bash
 # 1. Tag la versione
-git tag v3.0.0-rc4
-git push origin v3.0.0-rc4
+git tag v3.0.0
+git push origin v3.0.0
 
 # 2. GitHub Actions compilerà automaticamente gli artifact taggati
 # 3. Gli installer saranno allegati alla release su GitHub
