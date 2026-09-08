@@ -1,4 +1,4 @@
-name: Smoke Windows Release Installer
+name: Smoke Windows Release Artifacts
 
 on:
   workflow_dispatch:
@@ -6,12 +6,17 @@ on:
       tag:
         description: Release tag containing the installer to test
         required: true
-        default: v3.0.0-rc3
+        default: v3.0.0-rc4
         type: string
       sha256:
         description: Expected SHA-256 of the installer asset
         required: true
-        default: 0bc81d631a6fe58e953567a8c5afeac585c4e85fa6969c12f386beec3253529d
+        default: eb57b2dc933dc106db79352d3e9f89f3b451ee902f28dd1ebe5b23311eef57cf
+        type: string
+      portable_sha256:
+        description: Expected SHA-256 of the portable ZIP asset
+        required: true
+        default: 204333d2aeab38d67ad937fd54cd2a4c83aa7b220275594f2ea7c695357acb33
         type: string
       disclaimer_revision:
         description: Legal disclaimer revision accepted by the silent installer
@@ -201,5 +206,124 @@ jobs:
           path: |
             ${{ runner.temp }}\ATK-Pro-installer-smoke\install.log
             ${{ runner.temp }}\ATK-Pro-installer-smoke\uninstall.log
+          if-no-files-found: ignore
+          retention-days: 14
+
+  smoke-portable:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      TARGET_TAG: ${{ inputs.tag }}
+      EXPECTED_PORTABLE_SHA256: ${{ inputs.portable_sha256 }}
+
+    steps:
+      - name: Download, verify and inspect portable ZIP
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $smokeRoot = Join-Path $env:RUNNER_TEMP 'ATK-Pro-portable-smoke'
+          $extractRoot = Join-Path $smokeRoot 'extracted'
+          New-Item -ItemType Directory -Path $smokeRoot -Force | Out-Null
+
+          $assetName = "ATK-Pro-$($env:TARGET_TAG)-Windows-Portable.zip"
+          gh release download $env:TARGET_TAG --repo $env:GITHUB_REPOSITORY --pattern $assetName --dir $smokeRoot
+          $zipPath = Join-Path $smokeRoot $assetName
+          $actualHash = (Get-FileHash -LiteralPath $zipPath -Algorithm SHA256).Hash.ToLowerInvariant()
+          $expectedHash = $env:EXPECTED_PORTABLE_SHA256.Trim().ToLowerInvariant()
+          if ($actualHash -ne $expectedHash) {
+            throw "Portable SHA-256 mismatch: expected $expectedHash, got $actualHash"
+          }
+
+          Expand-Archive -LiteralPath $zipPath -DestinationPath $extractRoot
+          $appRoot = Join-Path $extractRoot 'ATK-Pro'
+          $app = Join-Path $appRoot 'ATK-Pro.exe'
+          if (-not (Test-Path -LiteralPath $app -PathType Leaf)) {
+            throw "Missing portable executable: $app"
+          }
+
+          $languages = @(
+            'it', 'en', 'es', 'pt', 'fr', 'de', 'nl', 'da', 'no', 'sv',
+            'ro', 'pl', 'el', 'ru', 'tr', 'vi', 'zh', 'ja', 'ar', 'he'
+          )
+          foreach ($language in $languages) {
+            $assetDir = Join-Path $appRoot "_internal/assets/$language"
+            $localeDir = Join-Path $appRoot "_internal/locales/$language"
+            if (-not (Test-Path -LiteralPath $assetDir -PathType Container)) {
+              throw "Missing portable language assets: $language"
+            }
+            if (-not (Test-Path -LiteralPath $localeDir -PathType Container)) {
+              throw "Missing portable locale: $language"
+            }
+          }
+
+          @(
+            "PORTABLE_EXE=$app"
+            "PORTABLE_STDOUT=$(Join-Path $smokeRoot 'portable.stdout.log')"
+            "PORTABLE_STDERR=$(Join-Path $smokeRoot 'portable.stderr.log')"
+          ) | Add-Content -LiteralPath $env:GITHUB_ENV -Encoding utf8
+          Write-Host "Verified portable SHA-256 and $($languages.Count) languages/locales."
+
+      - name: Launch portable application
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $env:QT_QPA_PLATFORM = 'offscreen'
+          $env:QTWEBENGINE_DISABLE_SANDBOX = '1'
+          $env:QTWEBENGINE_CHROMIUM_FLAGS = '--no-sandbox'
+          $process = Start-Process -FilePath $env:PORTABLE_EXE -PassThru -RedirectStandardOutput $env:PORTABLE_STDOUT -RedirectStandardError $env:PORTABLE_STDERR
+          try {
+            Start-Sleep -Seconds 20
+            $process.Refresh()
+            if ($process.HasExited) {
+              $errorText = if (Test-Path -LiteralPath $env:PORTABLE_STDERR) {
+                Get-Content -LiteralPath $env:PORTABLE_STDERR -Raw
+              } else { '' }
+              throw "Portable application exited early with code $($process.ExitCode): $errorText"
+            }
+            Write-Host "Portable application remained running for 20 seconds (PID $($process.Id))."
+          }
+          finally {
+            $exePath = [IO.Path]::GetFullPath($env:PORTABLE_EXE)
+            Get-CimInstance Win32_Process -Filter "Name='ATK-Pro.exe'" -ErrorAction SilentlyContinue |
+              Where-Object {
+                $_.ExecutablePath -and
+                [IO.Path]::GetFullPath($_.ExecutablePath).Equals($exePath, [StringComparison]::OrdinalIgnoreCase)
+              } |
+              ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+            Start-Sleep -Seconds 2
+            $remaining = Get-CimInstance Win32_Process -Filter "Name='ATK-Pro.exe'" -ErrorAction SilentlyContinue |
+              Where-Object {
+                $_.ExecutablePath -and
+                [IO.Path]::GetFullPath($_.ExecutablePath).Equals($exePath, [StringComparison]::OrdinalIgnoreCase)
+              }
+            if ($remaining) {
+              throw 'Portable smoke left an ATK-Pro process running.'
+            }
+          }
+
+      - name: Emergency portable cleanup
+        if: always()
+        shell: pwsh
+        run: |
+          if ($env:PORTABLE_EXE) {
+            $exePath = [IO.Path]::GetFullPath($env:PORTABLE_EXE)
+            Get-CimInstance Win32_Process -Filter "Name='ATK-Pro.exe'" -ErrorAction SilentlyContinue |
+              Where-Object {
+                $_.ExecutablePath -and
+                [IO.Path]::GetFullPath($_.ExecutablePath).Equals($exePath, [StringComparison]::OrdinalIgnoreCase)
+              } |
+              ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+          }
+
+      - name: Upload portable logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-portable-smoke-logs-${{ inputs.tag }}
+          path: |
+            ${{ runner.temp }}\ATK-Pro-portable-smoke\portable.stdout.log
+            ${{ runner.temp }}\ATK-Pro-portable-smoke\portable.stderr.log
           if-no-files-found: ignore
           retention-days: 14
