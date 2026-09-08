@@ -11,7 +11,7 @@ release pubblica multilingue completa.
 | Stato | Esito | Motivazione |
 | --- | --- | --- |
 | RC tecnica v3.0.0 | RC3 pubblicata e collaudata | Sei pacchetti verificati su Windows, Linux, macOS Intel e Apple Silicon; individuato un difetto circoscritto nel purge del DEB RC3. |
-| Release pubblica multilingue completa | No-go alla promozione diretta RC3; go per RC4 | Le 20 lingue e gli smoke multipiattaforma sono completi. Il fix DEB e' verde su nuovi artefatti da `main`; occorre ricostruire e provare una nuova candidata. |
+| Release pubblica multilingue completa | Go alla preparazione stabile | RC4 e i sei asset hanno superato build, digest e smoke Windows/Linux/macOS. La stabile va ricostruita con versione finale e ricollaudata sugli asset esatti. |
 | Nuove integrazioni portali | Non bloccanti per RC | La roadmap portali e il registro tecnico sono pronti per evoluzioni progressive senza bloccare la prima RC. |
 
 ## Criteri go/no-go per RC tecnica
@@ -28,7 +28,7 @@ release pubblica multilingue completa.
 | Policy runtime D/R portali | Go con re-check periodico | `src/portal_registry.py` applica `R_OK`, `R_LIMITED`, `D_ONLY` e `VARIABLE`; `verify_portal_policy.py` controlla scadenza delle policy e genera `portal_policy_overrides.json` per aggiornamenti locali senza nuova release. |
 | Portali esistenti | Go sorgente | Le 28 capability passano risoluzione manifest e immagini rappresentative; BDL/DOGE sono verificati live e il portable Windows si avvia correttamente. |
 | Test tecnici | Go | Gate release ripetuto il 2026-09-08 su `main`: 837 test passati e 39 skip attesi; tutti gli 11 step di localizzazione, documenti, policy, igiene, compilazione e pytest sono verdi. |
-| Packaging | Go multipiattaforma con rebuild | Installer/portable Windows, tar Linux e DMG Intel/ARM passano gli smoke completi. Il DEB RC3 installa e si avvia ma lascia due file dopo purge; fix e nuovi artefatti da `main` sono verdi. |
+| Packaging | Go RC4 multipiattaforma | Installer e portable Windows, DEB e tar Linux, DMG Intel e ARM RC4 passano hash, installazione/estrazione, avvio e pulizia applicabile. |
 | File temporanei | Go | Gate del 2026-09-01: oltre 78.000 artefatti generati locali ignorati; nessun artefatto generato committabile. |
 
 ## Suite smoke pre-RC
@@ -177,11 +177,25 @@ Windows [`33986729587`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs
 [`33987692717`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/33987692717), smoke Linux corretto [`33988091039`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/33988091039), macOS canonico da `main`
 [`33989794600`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/33989794600).
 
-Decisione: gli asset RC3 non devono essere promossi invariati. Il passo
-successivo e' produrre RC4 da `main`, ripetere gli smoke sugli asset esatti e,
-se tutti verdi, procedere alla build/tag `v3.0.0` stabile. La firma macOS
-ad-hoc e la mancata notarizzazione restano limitazioni esplicite, non errori
-emersi dagli smoke.
+Decisione RC3: gli asset non devono essere promossi invariati; il difetto
+Debian richiede una nuova candidata. La firma macOS ad-hoc e la mancata
+notarizzazione restano limitazioni esplicite, non errori emersi dagli smoke.
+
+## Validazione RC4
+
+RC4 e' pubblicata come pre-release dal tag `v3.0.0-rc4` sul commit
+`598124f`. Tutti i criteri sono soddisfatti:
+
+- build Windows [`34222899141`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34222899141), Linux [`34222899176`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34222899176) e macOS [`34222899126`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34222899126): PASS;
+- smoke installer e portable Windows [`34226761186`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34226761186): PASS;
+- smoke DEB e tar Linux [`34224910666`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34224910666): PASS, incluso purge pulito;
+- smoke DMG Intel e Apple Silicon [`34224913543`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34224913543): PASS su runner nativi;
+- sei asset e relativi digest: presenti e coerenti;
+- gate release: 837 passati, 39 skip attesi, 11/11 step verdi.
+
+Decisione RC4: go tecnico alla preparazione di `v3.0.0` stabile. La versione
+finale deve essere ricostruita e sottoposta agli stessi smoke; non e' ammessa
+la semplice rinomina degli asset RC4.
 
 ## Documenti collegati
 
