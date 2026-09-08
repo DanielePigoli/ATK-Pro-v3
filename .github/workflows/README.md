@@ -40,15 +40,17 @@ Compila l'eseguibile Windows e crea installer con Inno Setup.
 3. Attendi ~5-10 minuti
 4. Download artifact da "Artifacts" in basso
 
-### 3. Smoke installer Windows (`smoke-windows-installer.yml`)
+### 3. Smoke artefatti Windows (`smoke-windows-installer.yml`)
 
-Verifica l'installer gia pubblicato su una release usando un runner Windows
-effimero: controlla SHA-256, installazione silenziosa, avvio dell'applicazione
-per 20 secondi, disinstallazione e pulizia di file e registro.
+Verifica installer e ZIP portable gia pubblicati usando due runner Windows
+effimeri. Per l'installer controlla SHA-256, installazione silenziosa, avvio per
+20 secondi, disinstallazione e pulizia di file e registro. Per il portable
+controlla SHA-256, struttura, asset/locales delle 20 lingue, avvio per 20
+secondi e arresto di tutti i processi del solo eseguibile estratto.
 
-Il workflow e solo manuale (`workflow_dispatch`) e richiede il tag della
-release, lo SHA-256 atteso dell'installer e la revisione del disclaimer. In
-questo modo viene collaudato l'asset pubblicato esatto senza interferire con
+Il workflow e solo manuale (`workflow_dispatch`) e richiede il tag, gli
+SHA-256 attesi dei due asset e la revisione del disclaimer. In questo modo
+vengono collaudati gli asset pubblicati esatti senza interferire con
 installazioni locali.
 
 ### 4. Smoke pacchetti Linux (`smoke-linux-release.yml`)
