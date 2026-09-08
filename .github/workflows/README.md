@@ -88,6 +88,11 @@ git push origin v3.0.0
 # 3. Gli installer saranno allegati alla release su GitHub
 ```
 
+Se il tag dispone gia di una release draft, i workflow caricano gli asset
+senza pubblicarla; gli smoke autenticati possono verificarli prima della
+promozione finale. Se la release non esiste, il comportamento automatico resta
+invariato.
+
 Per tag contenenti `rc`, i workflow devono mantenere la release come
 pre-release e non promuoverla a release stabile.
 

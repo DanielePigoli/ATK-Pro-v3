@@ -67,10 +67,22 @@ jobs:
             echo "LAUNCH_LOG=$launch_log"
           } >> "$GITHUB_ENV"
 
-          gh release download "$TARGET_TAG" \
-            --repo "$GITHUB_REPOSITORY" \
-            --pattern "$asset_name" \
-            --dir "$smoke_root"
+          release_id=$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" \
+            --jq ".[] | select(.tag_name == \"$TARGET_TAG\") | .id" | head -n 1)
+          if [ -z "$release_id" ]; then
+            echo "Release not found: $TARGET_TAG" >&2
+            exit 1
+          fi
+          asset_url=$(gh api "repos/$GITHUB_REPOSITORY/releases/$release_id/assets?per_page=100" \
+            --jq ".[] | select(.name == \"$asset_name\") | .url" | head -n 1)
+          if [ -z "$asset_url" ]; then
+            echo "Release asset not found: $asset_name" >&2
+            exit 1
+          fi
+          curl --location --fail-with-body --retry 3 --retry-all-errors \
+            --header "Accept: application/octet-stream" \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --output "$dmg_path" "$asset_url"
 
           actual_sha=$(shasum -a 256 "$dmg_path" | awk '{print $1}')
           expected_sha=$(printf '%s' "$expected_sha" | tr '[:upper:]' '[:lower:]')
