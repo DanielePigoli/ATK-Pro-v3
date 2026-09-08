@@ -1,6 +1,6 @@
 # Checklist release ATK-Pro v3.0.0
 
-Data snapshot: 2026-09-02
+Data snapshot: 2026-09-08
 
 Questa checklist raccoglie i criteri minimi per decidere se ATK-Pro puo' passare
 da baseline pre-release a RC tecnica v3.0.0, e distingue quel passaggio da una
@@ -10,8 +10,8 @@ release pubblica multilingue completa.
 
 | Stato | Esito | Motivazione |
 | --- | --- | --- |
-| RC tecnica v3.0.0 | RC3 pubblicata | Tag, pre-release e sei pacchetti multipiattaforma pubblicati; workflow verdi, portable Windows avviato e binario Linux provato in CI. |
-| Release pubblica multilingue completa | No-go temporaneo | Le 20 lingue sono complete; restano installazione Windows/Linux e avvio DMG su hardware macOS prima della decisione stabile. |
+| RC tecnica v3.0.0 | RC3 pubblicata e collaudata | Sei pacchetti verificati su Windows, Linux, macOS Intel e Apple Silicon; individuato un difetto circoscritto nel purge del DEB RC3. |
+| Release pubblica multilingue completa | No-go alla promozione diretta RC3; go per RC4 | Le 20 lingue e gli smoke multipiattaforma sono completi. Il fix DEB e' verde su nuovi artefatti da `main`; occorre ricostruire e provare una nuova candidata. |
 | Nuove integrazioni portali | Non bloccanti per RC | La roadmap portali e il registro tecnico sono pronti per evoluzioni progressive senza bloccare la prima RC. |
 
 ## Criteri go/no-go per RC tecnica
@@ -27,8 +27,8 @@ release pubblica multilingue completa.
 | Disclaimer e policy portali | Go con consenso revisionato | Il disclaimer esclude scraping massivo, aggiramento login/paywall e portali commerciali chiusi; la revisione v3 deve essere accettata esplicitamente prima di installazione, aggiornamento automatico o avvio portable/bundle. Le traduzioni sono allineate; il testo italiano resta fonte prevalente in caso di discrepanza interpretativa. |
 | Policy runtime D/R portali | Go con re-check periodico | `src/portal_registry.py` applica `R_OK`, `R_LIMITED`, `D_ONLY` e `VARIABLE`; `verify_portal_policy.py` controlla scadenza delle policy e genera `portal_policy_overrides.json` per aggiornamenti locali senza nuova release. |
 | Portali esistenti | Go sorgente | Le 28 capability passano risoluzione manifest e immagini rappresentative; BDL/DOGE sono verificati live e il portable Windows si avvia correttamente. |
-| Test tecnici | Go | Gate release del 2026-09-01: 834 test passati e 38 skip attesi; tutti gli 11 step di localizzazione, documenti, policy, igiene, compilazione e pytest sono verdi. |
-| Packaging | Go RC3, smoke parziale | Sei pacchetti pubblicati con digest; portable Windows e binario Linux passano lo smoke. Restano installazione installer/DEB e avvio DMG su hardware. |
+| Test tecnici | Go | Gate release ripetuto il 2026-09-08 su `main`: 837 test passati e 39 skip attesi; tutti gli 11 step di localizzazione, documenti, policy, igiene, compilazione e pytest sono verdi. |
+| Packaging | Go multipiattaforma con rebuild | Installer/portable Windows, tar Linux e DMG Intel/ARM passano gli smoke completi. Il DEB RC3 installa e si avvia ma lascia due file dopo purge; fix e nuovi artefatti da `main` sono verdi. |
 | File temporanei | Go | Gate del 2026-09-01: oltre 78.000 artefatti generati locali ignorati; nessun artefatto generato committabile. |
 
 ## Suite smoke pre-RC
@@ -150,7 +150,7 @@ Documento collegato: `docs_generali/note_release_v3.0.0-rc2_ATK-Pro.md`.
 Registro riscontri tester collegato:
 `docs_generali/registro_riscontri_tester_v3.0.0-rc2_ATK-Pro.md`.
 
-## Preparazione RC3 e bloccanti per la stabile
+## Preparazione RC3 ed esito verso la stabile
 
 Il consolidamento RC3 include BDL multipagina via BookReader/Cantaloupe con
 fallback PDF REST, completamento delle 20 lingue, preflight adattivo dei
@@ -158,14 +158,30 @@ percorsi, correzioni di resilienza e audit live con immagini reali. Il
 2026-09-01 l'audit ha verificato 28/28 portali: manifest valido e campioni
 inizio/centro/fine decodificabili e distinti quando il volume e' multipagina.
 
-Il tag `v3.0.0-rc3`, i sei pacchetti, i digest e i workflow sono completati.
-Restano bloccanti per la promozione a `v3.0.0` stabile:
+Il tag `v3.0.0-rc3`, i sei pacchetti e i digest sono completati. Il ciclo di
+smoke post-pubblicazione ha verificato:
 
-- installazione reale dell'installer Windows RC3;
-- installazione DEB o verifica equivalente del pacchetto Linux RC3;
-- avvio dei DMG Intel e Apple Silicon su hardware macOS compatibile, oppure
-  accettazione esplicita della limitazione come piattaforma non provata;
-- nessun regressivo bloccante emerso nel ciclo di prova RC3.
+- installer Windows: installazione, consenso, registro/versione, avvio 20 s,
+  disinstallazione e pulizia;
+- portable Windows: estrazione, contenuti e avvio;
+- tar Linux: struttura e avvio 20 s con Xvfb;
+- DEB RC3: installazione e avvio 20 s; rilevato residuo di
+  `/etc/atk-pro/defaults.json` e `/etc/atk-pro/disclaimer_revision` dopo
+  purge;
+- DMG Intel e Apple Silicon: hash, integrita', mount, architettura, firma
+  embedded, plist e avvio 20 s su runner nativi.
+
+Il difetto DEB e' corretto su `main` con `.github/deb-scripts/postrm`, test
+mirati e nuovi artefatti verificati fino al purge pulito. Evidenze principali:
+Windows [`33986729587`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/33986729587), Linux RC3 [`33987191663`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/33987191663), build Linux corretta
+[`33987692717`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/33987692717), smoke Linux corretto [`33988091039`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/33988091039), macOS canonico da `main`
+[`33989794600`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/33989794600).
+
+Decisione: gli asset RC3 non devono essere promossi invariati. Il passo
+successivo e' produrre RC4 da `main`, ripetere gli smoke sugli asset esatti e,
+se tutti verdi, procedere alla build/tag `v3.0.0` stabile. La firma macOS
+ad-hoc e la mancata notarizzazione restano limitazioni esplicite, non errori
+emersi dagli smoke.
 
 ## Documenti collegati
 
