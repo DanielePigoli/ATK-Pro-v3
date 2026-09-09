@@ -22,6 +22,8 @@ def test_release_uploader_preserves_existing_draft_state():
     assert "release_is_draft" in script
     assert r'select(.tag_name == \"$tag\")' in script
     assert r'select(.name == \"$asset_name\")' in script
+    assert '--upload-file "$asset_path"' in script
+    assert "--data-binary" not in script
     assert "--field draft=false" not in script
     assert 'gh api --method DELETE "repos/$repo/releases/assets/$existing_id"' in script
 
