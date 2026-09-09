@@ -1,6 +1,6 @@
 # Note release ATK-Pro v3.0.0
 
-Data snapshot: 2026-09-08
+Data snapshot: 2026-09-09
 
 ATK-Pro v3.0.0 e' la prima release stabile della serie 3. Nasce dalla RC4,
 validata sui sei artefatti Windows, Linux e macOS, e viene ricostruita con
@@ -30,7 +30,7 @@ versione finale prima della pubblicazione.
 
 ## Baseline verificata
 
-Il sorgente stabile ha superato il gate release locale: 838 test passati,
+Il sorgente stabile ha superato il gate release locale: 841 test passati,
 39 skip attesi e 11/11 step verdi.
 
 RC4 ha inoltre superato:
@@ -47,9 +47,32 @@ Rapporto completo:
 
 ## Artefatti stabili
 
-La release resta draft fino al completamento di build e smoke degli asset
-`v3.0.0`. Nomi, SHA-256 e collegamenti ai run saranno aggiunti prima della
-pubblicazione.
+La release `v3.0.0` e' stata costruita dal commit
+`a992f76470f1ab2aa8fd1ebcfa6a7bd1a1ed6c17`.
+
+| Piattaforma | Asset | SHA-256 |
+|---|---|---|
+| Windows | `ATK-Pro-Setup-v3.0.0.exe` | `c62d9df0c52e0c183db5dd1ccb6154066ba12ee0e360062e8b62fdefac5a7832` |
+| Windows | `ATK-Pro-v3.0.0-Windows-Portable.zip` | `fa96d34a99524b8eb51d75686b7d54d39a108b9e7d983dbd2885f4295022f23f` |
+| Linux | `ATK-Pro-Linux.deb` | `b34a55db75339085464e885e53d0b1300e0dc771276feafef268be2fa8f684d6` |
+| Linux | `ATK-Pro-Linux.tar.gz` | `0e1f8c3179f7e7344d8c0adf0bd260eff42d03220caa68bc7ed42e07c5fb9ded` |
+| macOS Intel | `ATK-Pro-macOS-Intel-v3.0.0.dmg` | `35688882ff5db2937f4d4eb979188d11e21dbc08dedec04309df3bb9e8c53481` |
+| macOS Apple Silicon | `ATK-Pro-macOS-AppleSilicon-v3.0.0.dmg` | `9d40f7f7a4cdc050ac76e46f17fe9f07b899b85acd37edffb72b658b18652a4d` |
+
+Build:
+
+- Windows: [run 34332390873](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34332390873);
+- Linux: [run 34332391022](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34332391022);
+- macOS Intel e Apple Silicon: [run 34332390761, tentativo 2](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34332390761).
+
+Smoke pre-pubblicazione sugli artifact esatti dei run:
+
+- installer e portable Windows: [run 34337670295](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34337670295);
+- DEB e tar Linux, incluso purge pulito: [run 34337673289](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34337673289);
+- DMG Intel e Apple Silicon su runner nativi: [run 34337676543](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34337676543).
+
+La release resta draft fino all'allineamento di queste note. Dopo la
+pubblicazione, gli stessi smoke saranno ripetuti sugli asset della release.
 
 ## Limitazioni note
 
