@@ -1,6 +1,6 @@
 # Checklist release ATK-Pro v3.0.0
 
-Data snapshot: 2026-09-08
+Data snapshot: 2026-09-09
 
 Questa checklist raccoglie i criteri minimi per decidere se ATK-Pro puo' passare
 da baseline pre-release a RC tecnica v3.0.0, e distingue quel passaggio da una
@@ -11,7 +11,7 @@ release pubblica multilingue completa.
 | Stato | Esito | Motivazione |
 | --- | --- | --- |
 | RC tecnica v3.0.0 | RC3 pubblicata e collaudata | Sei pacchetti verificati su Windows, Linux, macOS Intel e Apple Silicon; individuato un difetto circoscritto nel purge del DEB RC3. |
-| Release pubblica multilingue completa | Go alla preparazione stabile | RC4 e i sei asset hanno superato build, digest e smoke Windows/Linux/macOS. La stabile va ricostruita con versione finale e ricollaudata sugli asset esatti. |
+| Release pubblica multilingue completa | Pubblicata e collaudata | `v3.0.0` e i sei asset hanno superato build, digest, smoke pre-pubblicazione e smoke post-pubblicazione su Windows, Linux e macOS. |
 | Nuove integrazioni portali | Non bloccanti per RC | La roadmap portali e il registro tecnico sono pronti per evoluzioni progressive senza bloccare la prima RC. |
 
 ## Criteri go/no-go per RC tecnica
@@ -200,7 +200,9 @@ la semplice rinomina degli asset RC4.
 ## Validazione v3.0.0 stabile
 
 Il tag `v3.0.0` punta al commit
-`a992f76470f1ab2aa8fd1ebcfa6a7bd1a1ed6c17`; la release e' ancora draft.
+`a992f76470f1ab2aa8fd1ebcfa6a7bd1a1ed6c17`. La
+[release stabile](https://github.com/DanielePigoli/ATK-Pro-v3/releases/tag/v3.0.0)
+e' stata pubblicata il 9 settembre 2026.
 
 - build Windows [`34332390873`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34332390873): PASS;
 - build Linux [`34332391022`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34332391022): PASS;
@@ -208,11 +210,14 @@ Il tag `v3.0.0` punta al commit
 - smoke pre-pubblicazione Windows [`34337670295`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34337670295): PASS;
 - smoke pre-pubblicazione Linux [`34337673289`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34337673289): PASS;
 - smoke pre-pubblicazione macOS [`34337676543`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34337676543): PASS;
+- smoke post-pubblicazione Windows [`34338686481`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34338686481): PASS al primo tentativo;
+- smoke post-pubblicazione Linux [`34338689472`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34338689472): PASS al primo tentativo;
+- smoke post-pubblicazione macOS [`34338692849`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34338692849): PASS al primo tentativo;
 - sei asset stabili presenti con digest registrati nelle note di release;
 - gate release aggiornato: 841 passati, 39 skip attesi, 11/11 step verdi.
 
-Decisione: GO alla pubblicazione di `v3.0.0`, seguita dallo smoke finale
-degli asset pubblicati prima di dichiarare chiuso il ciclo.
+Decisione: `v3.0.0` stabile pubblicata e ciclo di release chiuso. Gli asset
+pubblicati coincidono con quelli validati e tutti gli smoke finali sono verdi.
 
 ## Documenti collegati
 
