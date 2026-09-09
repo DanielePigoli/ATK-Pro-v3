@@ -39,6 +39,11 @@ def test_build_workflows_use_draft_safe_uploader():
 def test_release_smokes_download_assets_through_authenticated_api():
     for workflow in SMOKE_WORKFLOWS:
         text = workflow.read_text(encoding="utf-8")
+        assert "actions: read" in text
+        assert "contents: read" in text
+        assert "contents: write" not in text
+        assert "build_run_id:" in text
+        assert "gh run download" in text
         assert "releases?per_page=100" in text
         assert "Accept: application/octet-stream" in text
         assert "gh release download" not in text
