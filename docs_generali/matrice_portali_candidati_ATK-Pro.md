@@ -268,3 +268,16 @@ Portali da non automatizzare in questa fase:
   l'integrazione diretta.
 - Riprendere Uruguay, Venezuela, Canada, Regno Unito e altre piste diaspora solo
   dopo questo passaggio italiano/italofono.
+
+## Addendum Svizzera italiana e retica - 2026-09-09
+
+La verifica tecnica successiva ha individuato superfici pubbliche concrete che
+superano la precedente classificazione puramente orientativa di SAG e ASTi.
+Endpoint, campioni, vincoli giuridici e priorita' di implementazione sono
+registrati in
+`docs_generali/candidati_svizzeri_prossima_release_SAG_ASTi.md`.
+
+Le righe storiche della tabella sopra e il workbook canonico non vengono
+riscritti durante la certificazione di `v3.0.0`: l'eventuale promozione a
+capability supportata dovra' avvenire insieme, in una release successiva, con
+adapter, policy, campioni stabili, test e aggiornamento della matrice XLSX.

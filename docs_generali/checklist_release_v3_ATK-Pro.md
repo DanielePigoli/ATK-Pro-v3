@@ -234,3 +234,5 @@ pubblicati coincidono con quelli validati e tutti gli smoke finali sono verdi.
 - `docs_generali/note_release_v3.0.0-rc3_ATK-Pro.md`
 - `docs_generali/note_release_v3.0.0-rc4_ATK-Pro.md`
 - `docs_generali/note_release_v3.0.0_ATK-Pro.md`
+- `docs_generali/certificazione_pratica_post_release_v3.0.0_ATK-Pro.md`
+- `docs_generali/candidati_svizzeri_prossima_release_SAG_ASTi.md`
