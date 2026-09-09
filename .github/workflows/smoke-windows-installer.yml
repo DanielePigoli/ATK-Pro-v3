@@ -23,8 +23,14 @@ on:
         required: true
         default: v3.0.0-legal-disclaimer-2026-08-02
         type: string
+      build_run_id:
+        description: Optional Build Windows Installer run ID (uses artifacts instead of release assets)
+        required: false
+        default: ""
+        type: string
 
 permissions:
+  actions: read
   contents: read
 
 jobs:
@@ -33,6 +39,7 @@ jobs:
     timeout-minutes: 30
     env:
       TARGET_TAG: ${{ inputs.tag }}
+      BUILD_RUN_ID: ${{ inputs.build_run_id }}
       EXPECTED_SHA256: ${{ inputs.sha256 }}
       DISCLAIMER_REVISION: ${{ inputs.disclaimer_revision }}
 
@@ -57,18 +64,29 @@ jobs:
           ) | Add-Content -LiteralPath $env:GITHUB_ENV -Encoding utf8
 
           $assetName = "ATK-Pro-Setup-$($env:TARGET_TAG).exe"
-          $releases = gh api "repos/$env:GITHUB_REPOSITORY/releases?per_page=100" | ConvertFrom-Json
-          $release = $releases | Where-Object { $_.tag_name -eq $env:TARGET_TAG } | Select-Object -First 1
-          if (-not $release) { throw "Release not found: $env:TARGET_TAG" }
-          $asset = $release.assets | Where-Object { $_.name -eq $assetName } | Select-Object -First 1
-          if (-not $asset) { throw "Release asset not found: $assetName" }
           $downloadPath = Join-Path $smokeRoot $assetName
-          curl.exe --location --fail-with-body --retry 3 --retry-all-errors `
-            --header "Accept: application/octet-stream" `
-            --header "Authorization: Bearer $env:GH_TOKEN" `
-            --output $downloadPath `
-            $asset.url
-          if ($LASTEXITCODE -ne 0) { throw "Asset download failed: $assetName" }
+          if ($env:BUILD_RUN_ID) {
+            $artifactDir = Join-Path $smokeRoot 'installer-artifact'
+            gh run download $env:BUILD_RUN_ID `
+              --repo $env:GITHUB_REPOSITORY `
+              --name 'ATK-Pro-Windows-installer' `
+              --dir $artifactDir
+            if ($LASTEXITCODE -ne 0) { throw "Build artifact download failed" }
+            Move-Item -LiteralPath (Join-Path $artifactDir $assetName) -Destination $downloadPath
+          }
+          else {
+            $releases = gh api "repos/$env:GITHUB_REPOSITORY/releases?per_page=100" | ConvertFrom-Json
+            $release = $releases | Where-Object { $_.tag_name -eq $env:TARGET_TAG } | Select-Object -First 1
+            if (-not $release) { throw "Release not found: $env:TARGET_TAG" }
+            $asset = $release.assets | Where-Object { $_.name -eq $assetName } | Select-Object -First 1
+            if (-not $asset) { throw "Release asset not found: $assetName" }
+            curl.exe --location --fail-with-body --retry 3 --retry-all-errors `
+              --header "Accept: application/octet-stream" `
+              --header "Authorization: Bearer $env:GH_TOKEN" `
+              --output $downloadPath `
+              $asset.url
+            if ($LASTEXITCODE -ne 0) { throw "Asset download failed: $assetName" }
+          }
           Move-Item -LiteralPath $downloadPath -Destination $installerPath
 
           $actualHash = (Get-FileHash -LiteralPath $installerPath -Algorithm SHA256).Hash.ToLowerInvariant()
@@ -222,6 +240,7 @@ jobs:
     timeout-minutes: 30
     env:
       TARGET_TAG: ${{ inputs.tag }}
+      BUILD_RUN_ID: ${{ inputs.build_run_id }}
       EXPECTED_PORTABLE_SHA256: ${{ inputs.portable_sha256 }}
 
     steps:
@@ -236,18 +255,29 @@ jobs:
           New-Item -ItemType Directory -Path $smokeRoot -Force | Out-Null
 
           $assetName = "ATK-Pro-$($env:TARGET_TAG)-Windows-Portable.zip"
-          $releases = gh api "repos/$env:GITHUB_REPOSITORY/releases?per_page=100" | ConvertFrom-Json
-          $release = $releases | Where-Object { $_.tag_name -eq $env:TARGET_TAG } | Select-Object -First 1
-          if (-not $release) { throw "Release not found: $env:TARGET_TAG" }
-          $asset = $release.assets | Where-Object { $_.name -eq $assetName } | Select-Object -First 1
-          if (-not $asset) { throw "Release asset not found: $assetName" }
           $zipPath = Join-Path $smokeRoot $assetName
-          curl.exe --location --fail-with-body --retry 3 --retry-all-errors `
-            --header "Accept: application/octet-stream" `
-            --header "Authorization: Bearer $env:GH_TOKEN" `
-            --output $zipPath `
-            $asset.url
-          if ($LASTEXITCODE -ne 0) { throw "Asset download failed: $assetName" }
+          if ($env:BUILD_RUN_ID) {
+            $artifactDir = Join-Path $smokeRoot 'portable-artifact'
+            gh run download $env:BUILD_RUN_ID `
+              --repo $env:GITHUB_REPOSITORY `
+              --name 'ATK-Pro-Windows-portable' `
+              --dir $artifactDir
+            if ($LASTEXITCODE -ne 0) { throw "Build artifact download failed" }
+            Move-Item -LiteralPath (Join-Path $artifactDir $assetName) -Destination $zipPath
+          }
+          else {
+            $releases = gh api "repos/$env:GITHUB_REPOSITORY/releases?per_page=100" | ConvertFrom-Json
+            $release = $releases | Where-Object { $_.tag_name -eq $env:TARGET_TAG } | Select-Object -First 1
+            if (-not $release) { throw "Release not found: $env:TARGET_TAG" }
+            $asset = $release.assets | Where-Object { $_.name -eq $assetName } | Select-Object -First 1
+            if (-not $asset) { throw "Release asset not found: $assetName" }
+            curl.exe --location --fail-with-body --retry 3 --retry-all-errors `
+              --header "Accept: application/octet-stream" `
+              --header "Authorization: Bearer $env:GH_TOKEN" `
+              --output $zipPath `
+              $asset.url
+            if ($LASTEXITCODE -ne 0) { throw "Asset download failed: $assetName" }
+          }
           $actualHash = (Get-FileHash -LiteralPath $zipPath -Algorithm SHA256).Hash.ToLowerInvariant()
           $expectedHash = $env:EXPECTED_PORTABLE_SHA256.Trim().ToLowerInvariant()
           if ($actualHash -ne $expectedHash) {
