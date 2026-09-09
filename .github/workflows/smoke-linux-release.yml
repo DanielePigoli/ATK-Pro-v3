@@ -6,17 +6,17 @@ on:
       tag:
         description: Release tag containing the Linux packages to test
         required: true
-        default: v3.0.0-rc4
+        default: v3.0.0
         type: string
       deb_sha256:
         description: Expected SHA-256 of ATK-Pro-Linux.deb
         required: true
-        default: 56c16950576487fa7b7a3117b063d2b42ac87275c03e252fab0ae7f821286d3e
+        default: b34a55db75339085464e885e53d0b1300e0dc771276feafef268be2fa8f684d6
         type: string
       tar_sha256:
         description: Expected SHA-256 of ATK-Pro-Linux.tar.gz
         required: true
-        default: 799a6eb8daff1bb287d25d76f014d9535ca709dd107d774c1df400116be4a65d
+        default: 0e1f8c3179f7e7344d8c0adf0bd260eff42d03220caa68bc7ed42e07c5fb9ded
         type: string
       disclaimer_revision:
         description: Legal disclaimer revision expected after package installation

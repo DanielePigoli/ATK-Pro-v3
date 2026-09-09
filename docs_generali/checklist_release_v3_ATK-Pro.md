@@ -197,6 +197,23 @@ Decisione RC4: go tecnico alla preparazione di `v3.0.0` stabile. La versione
 finale deve essere ricostruita e sottoposta agli stessi smoke; non e' ammessa
 la semplice rinomina degli asset RC4.
 
+## Validazione v3.0.0 stabile
+
+Il tag `v3.0.0` punta al commit
+`a992f76470f1ab2aa8fd1ebcfa6a7bd1a1ed6c17`; la release e' ancora draft.
+
+- build Windows [`34332390873`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34332390873): PASS;
+- build Linux [`34332391022`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34332391022): PASS;
+- build macOS [`34332390761`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34332390761), tentativo 2: PASS Intel e Apple Silicon;
+- smoke pre-pubblicazione Windows [`34337670295`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34337670295): PASS;
+- smoke pre-pubblicazione Linux [`34337673289`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34337673289): PASS;
+- smoke pre-pubblicazione macOS [`34337676543`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/34337676543): PASS;
+- sei asset stabili presenti con digest registrati nelle note di release;
+- gate release aggiornato: 841 passati, 39 skip attesi, 11/11 step verdi.
+
+Decisione: GO alla pubblicazione di `v3.0.0`, seguita dallo smoke finale
+degli asset pubblicati prima di dichiarare chiuso il ciclo.
+
 ## Documenti collegati
 
 - `docs_generali/audit_contenuti_guida_v3_ATK-Pro.md`

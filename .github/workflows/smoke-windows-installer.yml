@@ -6,17 +6,17 @@ on:
       tag:
         description: Release tag containing the installer to test
         required: true
-        default: v3.0.0-rc4
+        default: v3.0.0
         type: string
       sha256:
         description: Expected SHA-256 of the installer asset
         required: true
-        default: eb57b2dc933dc106db79352d3e9f89f3b451ee902f28dd1ebe5b23311eef57cf
+        default: c62d9df0c52e0c183db5dd1ccb6154066ba12ee0e360062e8b62fdefac5a7832
         type: string
       portable_sha256:
         description: Expected SHA-256 of the portable ZIP asset
         required: true
-        default: 204333d2aeab38d67ad937fd54cd2a4c83aa7b220275594f2ea7c695357acb33
+        default: fa96d34a99524b8eb51d75686b7d54d39a108b9e7d983dbd2885f4295022f23f
         type: string
       disclaimer_revision:
         description: Legal disclaimer revision accepted by the silent installer

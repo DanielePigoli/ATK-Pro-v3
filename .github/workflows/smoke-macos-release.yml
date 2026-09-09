@@ -6,17 +6,17 @@ on:
       tag:
         description: Release tag containing the DMGs to test
         required: true
-        default: v3.0.0-rc4
+        default: v3.0.0
         type: string
       intel_sha256:
         description: Expected SHA-256 of the Intel DMG
         required: true
-        default: a3b9a31111c82bcf2147bfd39bec9b305ecf69d213e31fa3986f65a7c967a38a
+        default: 35688882ff5db2937f4d4eb979188d11e21dbc08dedec04309df3bb9e8c53481
         type: string
       silicon_sha256:
         description: Expected SHA-256 of the Apple Silicon DMG
         required: true
-        default: 4381d4547ccebfcaf56aef8aa2741253dac9d8a0a89958e142babd261c358ab2
+        default: 9d40f7f7a4cdc050ac76e46f17fe9f07b899b85acd37edffb72b658b18652a4d
         type: string
       build_run_id:
         description: Optional Build macOS App run ID (uses artifacts instead of release assets)
