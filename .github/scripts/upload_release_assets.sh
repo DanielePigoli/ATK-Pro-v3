@@ -71,6 +71,6 @@ for asset_path in "$@"; do
     --header "Authorization: Bearer $token" \
     --header "X-GitHub-Api-Version: 2022-11-28" \
     --header "Content-Type: $(content_type_for "$asset_name")" \
-    --data-binary "@$asset_path" \
+    --upload-file "$asset_path" \
     "https://uploads.github.com/repos/$repo/releases/$release_id/assets?name=$asset_name"
 done
