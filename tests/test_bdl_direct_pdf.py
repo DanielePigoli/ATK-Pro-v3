@@ -136,7 +136,7 @@ def test_bdl_register_second_pass_retries_only_failed_placeholders(monkeypatch, 
 
     elab = Elaborazione("R", BDL_PDF_URL, str(tmp_path), portale="biblioteca_digitale_lombarda")
     elab.set_nome_file("BDL_12404")
-    elab.formats = ["PDF"]
+    elab.formats = ["PNG", "PDF"]
     elab.manifest = {"sequences": [{"canvases": canvases}]}
     generated = []
     monkeypatch.setattr(elab, "_generate_register_pdf", lambda names, image_dir=None: generated.extend(names) or str(tmp_path / "BDL_12404.pdf"))
@@ -145,3 +145,8 @@ def test_bdl_register_second_pass_retries_only_failed_placeholders(monkeypatch, 
     assert adapter.calls[urls[0]] == 1
     assert adapter.calls[urls[1]] == 2
     assert generated == ["BDL_12404_canvas_1_pdftmp.png", "BDL_12404_canvas_2_pdftmp.png"]
+    recovered_path = tmp_path / "BDL_12404_canvas_2.png"
+    with Image.open(recovered_path) as recovered:
+        assert recovered.size == (4, 4)
+        assert recovered.getpixel((0, 0)) == (255, 0, 0)
+    assert not list(tmp_path.glob("BDL_12404_canvas_2_rec*.png"))

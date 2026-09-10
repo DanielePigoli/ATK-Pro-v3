@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from io import BytesIO
 import re
 import time
+from urllib.parse import urlparse
 
 import requests
 from PIL import Image
@@ -371,6 +372,22 @@ def resolve_direct_image_download(portal_key: str | None, canvas: dict, service_
         image_url = adapter.extract_image_from_canvas(canvas, service_id) if adapter else None
         if adapter and image_url:
             return adapter, image_url
+
+    resource_url = str(resource.get("@id") or resource.get("id") or "").strip()
+    resource_format = str(resource.get("format") or "").lower()
+    resource_path = urlparse(resource_url).path.lower()
+    is_direct_image = resource_format.startswith("image/") or resource_path.endswith(
+        (".jpg", ".jpeg", ".png", ".tif", ".tiff", ".webp")
+    )
+    if not service_id and resource_url.startswith(("http://", "https://")) and is_direct_image:
+        parsed = urlparse(resource_url)
+        referer = get_portal_referer(portal_key, resource_url)
+        if not referer:
+            referer = f"{parsed.scheme}://{parsed.netloc}/"
+        return DirectImagePortalAdapter(
+            portal_label="IIIF direct image",
+            referer=referer,
+        ), resource_url
 
     return None, None
 

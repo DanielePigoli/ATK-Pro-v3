@@ -13,12 +13,12 @@ riproduzione.
 | Area | Stato | Evidenza |
 | --- | --- | --- |
 | Release pubblicata | PASS | Tag `v3.0.0`, sei asset e digest presenti nella release GitHub. |
-| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 841 test passati e 39 skip attesi. |
+| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 843 test passati e 39 skip attesi. |
 | Portali live con immagini reali | PASS | `python verify_portal_live_smoke.py --fetch-images --strict`: 28/28 capability; immagini di inizio, centro e fine decodificabili e distinte nei documenti multipagina. |
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
 | Artefatti multipiattaforma | PASS in CI | Smoke post-pubblicazione Windows, Linux e macOS completati sui sei asset esatti, come registrato nella checklist release. |
 | Uso pratico locale Windows | PASS avvio isolato | Portable stabile riscaricato, SHA-256 verificato, estratto e mantenuto in esecuzione offscreen per 20 secondi; chiusura e pulizia del solo processo di prova riuscite, senza aggiornare ATK-Pro 2.0. |
-| Percorsi funzionali utente | PARZIALE con anomalie | BDT PDF diretto, Rovereto DSpace, BDL BookReader/Cantaloupe e IIIF v2 producono output reali; restano due difetti riproducibili su cleanup BDL e IIIF v3 diretto. OCR, traduzione e GEDCOM restano da provare. |
+| Percorsi funzionali utente | PASS download; verifiche applicative residue | BDT PDF diretto, Rovereto DSpace, BDL BookReader/Cantaloupe, IIIF v2 e IIIF v3 con immagine diretta producono output reali. I due difetti emersi il 2026-09-10 sono corretti e controverificati; OCR, traduzione e GEDCOM restano da provare. |
 
 ## Esito del controllo live 2026-09-09
 
@@ -83,7 +83,7 @@ Il PASS dello smoke live 28/28 non e' contraddetto: quel controllo valida
 risoluzione, trasporto e decodifica delle immagini campione, mentre questa prova
 attraversa anche salvataggio, retry, cleanup, PDF e valore di ritorno finale.
 
-### Difetti riproducibili da correggere
+### Difetti riproducibili rilevati
 
 1. Nel recupero BDL, il salvataggio univoco crea `_rec2` invece di sostituire
    il placeholder con il nome canonico. Il PDF usa la pagina recuperata, ma il
@@ -93,21 +93,38 @@ attraversa anche salvataggio, retry, cleanup, PDF e valore di ritorno finale.
    `_process_register()` deve inoltre restituire fallimento e rimuovere le
    directory temporanee vuote.
 
+### Correzione verificata 2026-09-10
+
+Entrambi i difetti sono stati corretti e sottoposti a controverifica:
+
+- il secondo passaggio BDL sostituisce ora il placeholder usando il nome
+  canonico, senza creare suffissi `_rec*`; la prova forzata copre il retry e la
+  prova live sull'item `12404`, pagine 1-3, ha prodotto tre PNG reali da
+  2681 x 3987 pixel e un PDF di tre pagine, senza placeholder o directory
+  vuote residue;
+- i canvas IIIF v3 con corpo immagine diretto e senza Image Service sono gestiti
+  dal relativo adapter; il Cookbook `0001-mvm-image` ha prodotto un PNG reale
+  da 1200 x 1800 pixel e un PDF di una pagina, senza directory residue;
+- se mancano gli output richiesti il percorso registro restituisce ora
+  fallimento; gli spazi temporanei completamente vuoti vengono rimossi.
+
+La suite mirata ha concluso con `126 passed`. Il gate release completo ha
+concluso con `843 passed, 39 skipped` e tutti gli 11 step superati.
+
 ## Sequenza pratica residua
 
-1. Correggere i due difetti riproducibili sopra e aggiungere test mirati.
-2. Avviare visibilmente il portable dalla copia temporanea gia' verificata e
+1. Avviare visibilmente il portable dalla copia temporanea gia' verificata e
    controllare consenso legale, lingua, apertura dei documenti e chiusura
    pulita senza interferire con ATK-Pro 2.0 installato.
-3. Ripetere IIIF v3 e BDL; completare il quinto percorso con un manifest
-   sintetico da HTML. Per ciascun output ricontrollare numero di file, pagine,
-   apertura PDF, placeholder e cartelle vuote residue.
-4. Eseguire un OCR breve, una traduzione breve e un'esportazione GEDCOM con dati
+2. Completare il quinto percorso con un manifest sintetico da HTML. Per ciascun
+   output ricontrollare numero di file, pagine, apertura PDF, placeholder e
+   cartelle vuote residue.
+3. Eseguire un OCR breve, una traduzione breve e un'esportazione GEDCOM con dati
    non sensibili; riaprire i file prodotti e verificarne il contenuto.
-5. Provare errori controllati: URL non riconosciuto, pagina inesistente,
+4. Provare errori controllati: URL non riconosciuto, pagina inesistente,
    interruzione rete e annullamento. L'app deve conservare gli output validi e
    mostrare un messaggio utile.
-6. Registrare qui data, artefatto, campione, risultato e anomalie. Le anomalie
+5. Registrare qui data, artefatto, campione, risultato e anomalie. Le anomalie
    riproducibili vanno corrette in una release successiva, salvo problema di
    sicurezza o perdita dati che richieda una patch urgente.
 

@@ -243,8 +243,9 @@ def _normalize_format(fmt):
     return fmt_upper
 
 
-def save_image_variants(image: Image.Image, output_folder: str, base_filename: str, 
-                       formats=['PNG', 'JPEG', 'TIFF'], meta: dict = None):
+def save_image_variants(image: Image.Image, output_folder: str, base_filename: str,
+                       formats=['PNG', 'JPEG', 'TIFF'], meta: dict = None,
+                       overwrite: bool = False):
     """
     Salva immagine in più formati con metadati embed.
     Supporta PNG, JPEG (JPG), TIFF (TIF) con sidecar JSON.
@@ -279,6 +280,9 @@ def save_image_variants(image: Image.Image, output_folder: str, base_filename: s
 
     def get_unique_filename_session(folder, filename, ext):
         used = session_filenames[os.path.abspath(folder)]
+        if overwrite:
+            used.add(f"{filename}.{ext}")
+            return filename
         candidate = filename
         i = 2
         while f"{candidate}.{ext}" in used:
@@ -361,6 +365,16 @@ def _save_direct_image_outputs(
 def _finalize_temp_pdf_workspace(temp_pdf_dir: str, output_dir: str, base_name: str, pdf_created: bool):
     """Pulisce la cartella temp PDF su successo, altrimenti la conserva come recovery."""
     if not temp_pdf_dir or not os.path.exists(temp_pdf_dir):
+        return
+
+    try:
+        temp_has_files = any(os.scandir(temp_pdf_dir))
+    except OSError:
+        temp_has_files = True
+
+    if not temp_has_files:
+        shutil.rmtree(temp_pdf_dir, ignore_errors=True)
+        logger.info(f"[Cleanup] Cartella temp PDF vuota eliminata: {temp_pdf_dir}")
         return
 
     if pdf_created:
@@ -889,7 +903,7 @@ class Elaborazione:
             atk_version=VERSION,
         )
 
-    def _save_direct_canvas_outputs(self, image, canvas, image_url, canvas_id: str, base_filename: str, formats, image_formats, pdf_in_formats, temp_pdf_dir=None):
+    def _save_direct_canvas_outputs(self, image, canvas, image_url, canvas_id: str, base_filename: str, formats, image_formats, pdf_in_formats, temp_pdf_dir=None, overwrite=False):
         meta = self._build_direct_canvas_metadata(canvas, canvas_id)
         output_image = image if image is not None else _make_placeholder_image(
             image_url,
@@ -898,7 +912,14 @@ class Elaborazione:
             canvas_url=canvas.get('@id') or canvas.get('id'),
         )
         if image_formats:
-            save_image_variants(output_image, self.output_dir, base_filename, image_formats, meta=meta)
+            save_image_variants(
+                output_image,
+                self.output_dir,
+                base_filename,
+                image_formats,
+                meta=meta,
+                overwrite=overwrite,
+            )
         if pdf_in_formats and temp_pdf_dir:
             pdf_png_path = os.path.join(temp_pdf_dir, f"{base_filename}_pdftmp.png")
             try:
@@ -981,13 +1002,19 @@ class Elaborazione:
                 else:
                     logger.error(f"[Error] Canvas {target_canvas_id} non trovato nel manifest")
                     return False
-            service_info = canvas['images'][0]['resource'].get('service')
-            service_id = service_info[0].get('@id') if isinstance(service_info, list) else service_info.get('@id')
-            image_info_url = service_id.rstrip('/') + '/info.json'
+            resource = canvas.get('images', [{}])[0].get('resource', {})
+            service_info = resource.get('service') or {}
+            if isinstance(service_info, list):
+                svc = service_info[0] if service_info else {}
+            elif isinstance(service_info, dict):
+                svc = service_info
+            else:
+                svc = {}
+            service_id = svc.get('@id') or svc.get('id')
+            image_info_url = service_id.rstrip('/') + '/info.json' if service_id else None
             logger.info(f"[Canvas] Service ID: {service_id}")
             logger.info(f"[Canvas] Info URL: {image_info_url}")
 
-            svc = canvas.get('images', [{}])[0].get('resource', {}).get('service', {})
             # --- Biblioteca Digitale Lombarda: solo PDF REST diretto, niente immagini ---
             direct_pdf_adapter, direct_pdf_url = resolve_direct_pdf_download(
                 self._portal_key(),
@@ -1066,6 +1093,9 @@ class Elaborazione:
                     formats,
                 )
                 return True
+            if not service_id:
+                logger.error("[Error] Canvas senza Image Service e senza risorsa immagine diretta supportata")
+                return False
             # --- IIIF normale ---
             info = download_info_json(image_info_url)
             if not info:
@@ -1265,9 +1295,16 @@ class Elaborazione:
                 except Exception:
                     pass
 
-                service_info = canvas['images'][0]['resource'].get('service')
-                service_id = service_info[0].get('@id') if isinstance(service_info, list) else service_info.get('@id')
-                image_info_url = service_id.rstrip('/') + '/info.json'
+                resource = canvas.get('images', [{}])[0].get('resource', {})
+                service_info = resource.get('service') or {}
+                if isinstance(service_info, list):
+                    _svc = service_info[0] if service_info else {}
+                elif isinstance(service_info, dict):
+                    _svc = service_info
+                else:
+                    _svc = {}
+                service_id = _svc.get('@id') or _svc.get('id')
+                image_info_url = service_id.rstrip('/') + '/info.json' if service_id else None
                 nome_base = f"{self.nome_file}_canvas_{idx}"
                 tile_dir = os.path.join(self.output_dir, f"tiles_canvas_{idx}")
 
@@ -1322,7 +1359,6 @@ class Elaborazione:
                                     logger.error(f"[PDF] Errore PNG BNCF JPEG diretto canvas {idx}: {_e}")
                             return  # nessuna cartella tile da pulire
                         # Se il diretto fallisce, prosegue su IIIF tiles (logica sotto)
-                    _svc = canvas.get('images', [{}])[0].get('resource', {}).get('service', {})
                     direct_adapter, _img_url = resolve_direct_image_download(self._portal_key(), canvas, service_id)
                     if direct_adapter and _img_url:
                         final_img, _status, _size = direct_adapter.download_image(_img_url)
@@ -1416,6 +1452,11 @@ class Elaborazione:
                             except Exception as _e:
                                 logger.error(f"[PDF] Errore PNG Findbuch canvas {idx}: {_e}")
                         return  # nessuna cartella tile da pulire
+                    if not service_id:
+                        logger.error(
+                            f"[Error] Canvas {idx} senza Image Service e senza risorsa immagine diretta supportata"
+                        )
+                        return
                     # --- IIIF normale ---
                     info = download_info_json(image_info_url)
                     if callable(getattr(self, 'cancel_cb', None)) and self.cancel_cb():
@@ -1520,6 +1561,7 @@ class Elaborazione:
                         image_formats,
                         pdf_in_formats,
                         temp_pdf_dir=temp_pdf_dir,
+                        overwrite=True,
                     )
                     logger.info(f"[BDL] Canvas {idx} recuperato al secondo passaggio: {size} byte")
                 if still_failed:
@@ -1601,8 +1643,8 @@ class Elaborazione:
                         gen_pdf = False
 
             # Genera PDF
+            pdf_path = None
             if gen_pdf:
-                pdf_path = None
                 if pdf_in_formats:
                     if only_pdf:
                         # Usa immagini temporanee da temp_pdf_dir (ordinate per idx)
@@ -1649,6 +1691,15 @@ class Elaborazione:
                             immagini_generate.append(os.path.basename(pdf_path))
             if temp_pdf_dir:
                 _finalize_temp_pdf_workspace(temp_pdf_dir, self.output_dir, self.nome_file, bool(pdf_path))
+
+            if mancanti:
+                logger.error(
+                    f"[Elaborazione] Registro incompleto: {len(mancanti)} immagini richieste non generate"
+                )
+                return False
+            if pdf_in_formats and not pdf_path:
+                logger.error("[Elaborazione] Registro incompleto: PDF richiesto ma non generato")
+                return False
 
             # Aggiorna metadati finali
             if self.manifest_path and os.path.exists(self.manifest_path):
