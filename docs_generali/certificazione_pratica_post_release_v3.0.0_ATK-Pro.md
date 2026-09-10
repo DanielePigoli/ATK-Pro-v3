@@ -1,6 +1,6 @@
 # Certificazione pratica post-release ATK-Pro v3.0.0
 
-Data snapshot: 2026-09-09
+Data snapshot: 2026-09-10
 
 Questo registro separa la validazione tecnica gia' conclusa per la release
 stabile dalle prove pratiche svolte dopo la pubblicazione. Le prove usano solo
@@ -18,7 +18,7 @@ riproduzione.
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
 | Artefatti multipiattaforma | PASS in CI | Smoke post-pubblicazione Windows, Linux e macOS completati sui sei asset esatti, come registrato nella checklist release. |
 | Uso pratico locale Windows | PASS avvio isolato | Portable stabile riscaricato, SHA-256 verificato, estratto e mantenuto in esecuzione offscreen per 20 secondi; chiusura e pulizia del solo processo di prova riuscite, senza aggiornare ATK-Pro 2.0. |
-| Percorsi funzionali utente | Da completare | Download reale controllato, apertura output, OCR, traduzione ed esportazione GEDCOM su campioni piccoli. |
+| Percorsi funzionali utente | PARZIALE con anomalie | BDT PDF diretto, Rovereto DSpace, BDL BookReader/Cantaloupe e IIIF v2 producono output reali; restano due difetti riproducibili su cleanup BDL e IIIF v3 diretto. OCR, traduzione e GEDCOM restano da provare. |
 
 ## Esito del controllo live 2026-09-09
 
@@ -65,16 +65,43 @@ Git.
 Questo smoke prova integrita', estraibilita' e avvio dell'artefatto stabile.
 L'interazione grafica reale resta una prova manuale distinta.
 
+## Prove end-to-end da sorgente 2026-09-10
+
+Le prove sono state limitate a campioni pubblici e a range minimi. Gli output
+sono stati scritti sotto `.codex_tmp/postrelease-e2e-20260910/`, escluso da
+Git.
+
+| Famiglia | Campione | Esito | Evidenza |
+| --- | --- | --- | --- |
+| BDL BookReader/Cantaloupe | Item `12404`, pagine 1-3, PNG + PDF | PARZIALE | Un HTTP 502 sulla prima pagina e' stato recuperato al secondo passaggio. Il PDF finale contiene tre pagine reali, ma nella cartella resta anche il PNG placeholder iniziale accanto al recupero `_rec2`. |
+| PDF REST diretto | BDT `Testi-a-stampa/113` | PASS | PDF da 45.944.018 byte, 510 pagine; apertura e rendering riusciti su pagina 1, 256 e 510. |
+| DSpace-GLAM | Rovereto item `e4199e9b-c79b-4c3d-b157-be2dcfc0407f`, pagine 1-2 | PASS | Due PNG reali e PDF di due pagine, senza cartelle temporanee vuote. |
+| IIIF v2 | Archivio Storico UniBo `0131.016.003`, pagina 1 | PASS | PNG reale e PDF di una pagina generati e renderizzati. |
+| IIIF v3 con immagine diretta | IIIF Cookbook `0001-mvm-image`, pagina 1 | FAIL | Manifest normalizzato correttamente, ma il canvas senza `service` causa tre retry falliti; nessuna immagine o PDF, due directory vuote residue e ritorno errato `True`. |
+
+Il PASS dello smoke live 28/28 non e' contraddetto: quel controllo valida
+risoluzione, trasporto e decodifica delle immagini campione, mentre questa prova
+attraversa anche salvataggio, retry, cleanup, PDF e valore di ritorno finale.
+
+### Difetti riproducibili da correggere
+
+1. Nel recupero BDL, il salvataggio univoco crea `_rec2` invece di sostituire
+   il placeholder con il nome canonico. Il PDF usa la pagina recuperata, ma il
+   placeholder rimane visibile all'utente.
+2. I manifest IIIF v3 con una risorsa immagine diretta e priva di Image Service
+   non sono gestiti dal percorso registro. Se non viene prodotto alcun output,
+   `_process_register()` deve inoltre restituire fallimento e rimuovere le
+   directory temporanee vuote.
+
 ## Sequenza pratica residua
 
-1. Avviare visibilmente il portable dalla copia temporanea gia' verificata e
+1. Correggere i due difetti riproducibili sopra e aggiungere test mirati.
+2. Avviare visibilmente il portable dalla copia temporanea gia' verificata e
    controllare consenso legale, lingua, apertura dei documenti e chiusura
    pulita senza interferire con ATK-Pro 2.0 installato.
-2. Eseguire download end-to-end piccoli su almeno cinque famiglie tecniche:
-   IIIF nativo, manifest sintetico da HTML, PDF diretto, DSpace bitstream e BDL
-   BookReader/Cantaloupe.
-3. Per ciascun output controllare numero di file, pagine iniziale/intermedia/
-   finale, apertura del PDF, assenza di placeholder e cartelle vuote residue.
+3. Ripetere IIIF v3 e BDL; completare il quinto percorso con un manifest
+   sintetico da HTML. Per ciascun output ricontrollare numero di file, pagine,
+   apertura PDF, placeholder e cartelle vuote residue.
 4. Eseguire un OCR breve, una traduzione breve e un'esportazione GEDCOM con dati
    non sensibili; riaprire i file prodotti e verificarne il contenuto.
 5. Provare errori controllati: URL non riconosciuto, pagina inesistente,
