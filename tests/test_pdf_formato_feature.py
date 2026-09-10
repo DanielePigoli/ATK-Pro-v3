@@ -11,6 +11,7 @@ Copre:
 """
 
 import os
+from pathlib import Path
 import pytest
 from unittest.mock import MagicMock, patch, call
 from PIL import Image
@@ -403,8 +404,17 @@ class TestProcessRegisterPDF:
                             lambda info, tile_dir, **kwargs: img)
         monkeypatch.setattr('src.elaborazione.build_image_metadata',
                             lambda **kw: {'_json': {}})
+        def _fake_save_image_variants(img, outdir, basename, formats, meta=None, **kwargs):
+            for fmt in formats:
+                normalized = str(fmt).upper()
+                if normalized == 'PNG':
+                    img.save(Path(outdir) / f'{basename}.png', format='PNG')
+                elif normalized in {'JPG', 'JPEG'}:
+                    img.save(Path(outdir) / f'{basename}.jpg', format='JPEG')
+                elif normalized in {'TIF', 'TIFF'}:
+                    img.save(Path(outdir) / f'{basename}.tif', format='TIFF')
         monkeypatch.setattr('src.elaborazione.save_image_variants',
-                            lambda *a, **k: None)
+                            _fake_save_image_variants)
         monkeypatch.setattr('src.elaborazione.estrai_metadati_da_manifest',
                             lambda *a, **k: None)
         def _fake_create_pdf(paths, out, **k):
@@ -444,7 +454,7 @@ class TestProcessRegisterPDF:
         result = elab._process_register(tiles_info, {})
 
         recovery_dir = tmp_path / '_regtest_pdf_recovery_images'
-        assert result is True
+        assert result is False
         assert recovery_dir.exists()
         assert any(p.name.endswith('_pdftmp.png') for p in recovery_dir.iterdir())
         assert not (tmp_path / '_tmp_pdf_images').exists()
@@ -454,8 +464,11 @@ class TestProcessRegisterPDF:
         elab = _make_register_elab(tmp_path, ['PNG', 'PDF'])
 
         saved_formats = []
-        def fake_save(img, outdir, basename, formats, meta=None):
+        def fake_save(img, outdir, basename, formats, meta=None, **kwargs):
             saved_formats.extend(formats)
+            for fmt in formats:
+                if str(fmt).upper() == 'PNG':
+                    img.save(Path(outdir) / f'{basename}.png', format='PNG')
         monkeypatch.setattr('src.elaborazione.save_image_variants', fake_save)
 
         tiles_info = FAKE_REGISTER_MANIFEST['sequences'][0]['canvases']
