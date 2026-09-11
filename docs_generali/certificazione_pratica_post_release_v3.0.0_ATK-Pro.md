@@ -17,7 +17,7 @@ riproduzione.
 | Portali live con immagini reali | PASS | `python verify_portal_live_smoke.py --fetch-images --strict`: 28/28 capability; immagini di inizio, centro e fine decodificabili e distinte nei documenti multipagina. |
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
 | Artefatti multipiattaforma | PASS in CI | Smoke post-pubblicazione Windows, Linux e macOS completati sui sei asset esatti, come registrato nella checklist release. |
-| Uso pratico locale Windows | PASS avvio isolato | Portable stabile riscaricato, SHA-256 verificato, estratto e mantenuto in esecuzione offscreen per 20 secondi; chiusura e pulizia del solo processo di prova riuscite, senza aggiornare ATK-Pro 2.0. |
+| Uso pratico locale Windows | PASS avvio e smoke grafico | Portable stabile riscaricato, SHA-256 verificato, avviato prima offscreen e poi visibilmente. Finestra, disclaimer, interfaccia italiana, menu, guida e chiusura sono stati verificati; resta una difformita' estetica non bloccante nel disclaimer aperto dal menu Documenti. |
 | Percorsi funzionali utente | PASS download; verifiche applicative residue | BDT PDF diretto, Rovereto DSpace, BDL BookReader/Cantaloupe, IIIF v2 e IIIF v3 con immagine diretta producono output reali. I due difetti emersi il 2026-09-10 sono corretti e controverificati; OCR, traduzione e GEDCOM restano da provare. |
 
 ## Esito del controllo live 2026-09-09
@@ -63,7 +63,25 @@ Git.
   ATK-Pro 2.0 esistente.
 
 Questo smoke prova integrita', estraibilita' e avvio dell'artefatto stabile.
-L'interazione grafica reale resta una prova manuale distinta.
+
+## Smoke grafico manuale del portable stabile 2026-09-11
+
+Esito complessivo: **PASS**.
+
+- eseguibile:
+  `.codex_tmp/postrelease-v3.0.0/portable/ATK-Pro/ATK-Pro.exe`;
+- finestra principale `ATK-Pro` aperta e reattiva;
+- disclaimer visualizzato, interfaccia italiana e menu utilizzabili;
+- guida aperta correttamente;
+- chiusura regolare, senza interferenze con ATK-Pro 2.0.
+
+Osservazione non bloccante: il disclaimer richiamato dal menu Documenti non ha
+lo stesso stile ATK-Pro degli altri documenti. La causa e' circoscritta al
+percorso di presentazione: `mostra_disclaimer()` carica il file testuale tramite
+`_mostra_testo_lungo()`, che usa esplicitamente sfondo bianco e testo scuro,
+mentre presentazione autore, presentazione progetto e guida usano le rispettive
+pagine HTML. Il contenuto e la consultabilita' del disclaimer non risultano
+compromessi.
 
 ## Prove end-to-end da sorgente 2026-09-10
 
@@ -113,17 +131,16 @@ concluso con `843 passed, 39 skipped` e tutti gli 11 step superati.
 
 ## Sequenza pratica residua
 
-1. Avviare visibilmente il portable dalla copia temporanea gia' verificata e
-   controllare consenso legale, lingua, apertura dei documenti e chiusura
-   pulita senza interferire con ATK-Pro 2.0 installato.
-2. Completare il quinto percorso con un manifest sintetico da HTML. Per ciascun
+1. Completare il quinto percorso con un manifest sintetico da HTML. Per ciascun
    output ricontrollare numero di file, pagine, apertura PDF, placeholder e
    cartelle vuote residue.
-3. Eseguire un OCR breve, una traduzione breve e un'esportazione GEDCOM con dati
+2. Eseguire un OCR breve, una traduzione breve e un'esportazione GEDCOM con dati
    non sensibili; riaprire i file prodotti e verificarne il contenuto.
-4. Provare errori controllati: URL non riconosciuto, pagina inesistente,
+3. Provare errori controllati: URL non riconosciuto, pagina inesistente,
    interruzione rete e annullamento. L'app deve conservare gli output validi e
    mostrare un messaggio utile.
+4. Uniformare il disclaimer del menu Documenti allo stile degli altri documenti
+   senza modificare il testo legale o il flusso di consenso iniziale.
 5. Registrare qui data, artefatto, campione, risultato e anomalie. Le anomalie
    riproducibili vanno corrette in una release successiva, salvo problema di
    sicurezza o perdita dati che richieda una patch urgente.
