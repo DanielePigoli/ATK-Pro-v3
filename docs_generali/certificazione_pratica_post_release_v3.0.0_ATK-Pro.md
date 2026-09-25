@@ -13,12 +13,12 @@ riproduzione.
 | Area | Stato | Evidenza |
 | --- | --- | --- |
 | Release pubblicata | PASS | Tag `v3.0.0`, sei asset e digest presenti nella release GitHub. |
-| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 849 test passati e 39 skip attesi. |
+| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 850 test passati e 39 skip attesi. |
 | Portali live con immagini reali | PASS | `python verify_portal_live_smoke.py --fetch-images --strict`: 28/28 capability; immagini di inizio, centro e fine decodificabili e distinte nei documenti multipagina. |
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
 | Artefatti multipiattaforma | PASS in CI | Smoke post-pubblicazione Windows, Linux e macOS completati sui sei asset esatti, come registrato nella checklist release. |
-| Uso pratico locale Windows | PASS avvio e smoke grafico | Portable stabile riscaricato, SHA-256 verificato, avviato prima offscreen e poi visibilmente. Finestra, disclaimer, interfaccia italiana, menu, guida e chiusura sono stati verificati; resta una difformita' estetica non bloccante nel disclaimer aperto dal menu Documenti. |
-| Percorsi funzionali utente | PASS | Download, manifest sintetico da HTML, OCR, traduzione, GEDCOM ed errori controllati sono verificati. Resta soltanto la difformita' estetica non bloccante del disclaimer richiamato dal menu Documenti. |
+| Uso pratico locale Windows | PASS avvio e smoke grafico | Portable stabile riscaricato, SHA-256 verificato, avviato prima offscreen e poi visibilmente. Finestra, disclaimer, interfaccia italiana, menu, guida e chiusura sono stati verificati. |
+| Percorsi funzionali utente | PASS | Download, manifest sintetico da HTML, OCR, traduzione, GEDCOM ed errori controllati sono verificati. Il disclaimer del menu Documenti usa ora lo stile ATK-Pro condiviso. |
 
 ## Esito del controllo live 2026-09-09
 
@@ -75,13 +75,12 @@ Esito complessivo: **PASS**.
 - guida aperta correttamente;
 - chiusura regolare, senza interferenze con ATK-Pro 2.0.
 
-Osservazione non bloccante: il disclaimer richiamato dal menu Documenti non ha
-lo stesso stile ATK-Pro degli altri documenti. La causa e' circoscritta al
-percorso di presentazione: `mostra_disclaimer()` carica il file testuale tramite
-`_mostra_testo_lungo()`, che usa esplicitamente sfondo bianco e testo scuro,
-mentre presentazione autore, presentazione progetto e guida usano le rispettive
-pagine HTML. Il contenuto e la consultabilita' del disclaimer non risultano
-compromessi.
+La difformita' estetica inizialmente osservata nel disclaimer richiamato dal
+menu Documenti e' stata corretta il 2026-09-25. Il visualizzatore testuale usa
+ora tema scuro, cornice e pulsante ATK-Pro condivisi, mantenendo invariati testo
+legale e flusso di consenso iniziale. La regressione UI e la verifica dedicata
+del consenso sono passate; il gate release completo ha concluso con
+`850 passed, 39 skipped`.
 
 ## Prove end-to-end da sorgente 2026-09-10
 
@@ -173,8 +172,7 @@ Entrambi i difetti IA sono stati corretti e sottoposti a controverifica:
 
 ## Attivita' pratica residua
 
-1. Uniformare il disclaimer del menu Documenti allo stile degli altri documenti
-   senza modificare il testo legale o il flusso di consenso iniziale.
+Nessuna anomalia funzionale o estetica nota resta aperta nelle prove registrate.
 
 ## Confini della certificazione
 
