@@ -1,6 +1,6 @@
 # Certificazione pratica post-release ATK-Pro v3.0.0
 
-Data snapshot: 2026-09-10
+Data snapshot: 2026-09-25
 
 Questo registro separa la validazione tecnica gia' conclusa per la release
 stabile dalle prove pratiche svolte dopo la pubblicazione. Le prove usano solo
@@ -18,7 +18,7 @@ riproduzione.
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
 | Artefatti multipiattaforma | PASS in CI | Smoke post-pubblicazione Windows, Linux e macOS completati sui sei asset esatti, come registrato nella checklist release. |
 | Uso pratico locale Windows | PASS avvio e smoke grafico | Portable stabile riscaricato, SHA-256 verificato, avviato prima offscreen e poi visibilmente. Finestra, disclaimer, interfaccia italiana, menu, guida e chiusura sono stati verificati; resta una difformita' estetica non bloccante nel disclaimer aperto dal menu Documenti. |
-| Percorsi funzionali utente | PASS download; verifiche applicative residue | BDT PDF diretto, Rovereto DSpace, BDL BookReader/Cantaloupe, IIIF v2 e IIIF v3 con immagine diretta producono output reali. I due difetti emersi il 2026-09-10 sono corretti e controverificati; OCR, traduzione e GEDCOM restano da provare. |
+| Percorsi funzionali utente | PARZIALE con due anomalie IA | I percorsi di download, il manifest sintetico da HTML, la traduzione e gli errori controllati sono verificati. L'OCR duplica l'intestazione su un'immagine orizzontale semplice; il percorso GEDCOM testo-only perde la struttura semantica `atti`. |
 
 ## Esito del controllo live 2026-09-09
 
@@ -129,21 +129,42 @@ Entrambi i difetti sono stati corretti e sottoposti a controverifica:
 La suite mirata ha concluso con `126 passed`. Il gate release completo ha
 concluso con `843 passed, 39 skipped` e tutti gli 11 step superati.
 
+## Prove pratiche successive 2026-09-25
+
+Gli output sono stati scritti sotto
+`.codex_tmp/postrelease-e2e-20260925/`, escluso da Git. I test dei servizi IA
+hanno usato esclusivamente dati sintetici non sensibili; nessuna credenziale e'
+stata registrata nei report.
+
+| Percorso | Campione | Esito | Evidenza |
+| --- | --- | --- | --- |
+| Manifest sintetico da HTML | Findbuch pubblico, 221 canvas rilevati; range 1-2, PNG + PDF | PASS | Due PNG reali e distinti da 6416 x 4640 e 6432 x 4656 pixel; PDF di due pagine; nessun placeholder, suffisso `_rec`, temporaneo o directory vuota. |
+| OCR breve | Gemini, immagine sintetica con tre righe | PARZIALE | File TXT prodotto e riaperto; nomi, data e luogo sono corretti, ma `ATTO DI PROVA` compare due volte. Il rapporto 1600 x 500 attiva impropriamente lo split doppia pagina basato su aspect ratio. |
+| Traduzione breve | Gemini, italiano verso inglese | PASS | Traduzione corretta di tre righe, nomi e data preservati; file TXT salvato e riaperto senza differenze. |
+| Esportazione GEDCOM | Gemini, trascrizione sintetica di un atto di nascita | FAIL | `.ged` e due CSV formalmente prodotti e riapribili, ma contengono un individuo `SCONOSCIUTO`. La diagnostica IA contiene correttamente `atti`, soggetto e genitori: l'handler Gemini testo-only restituisce solo la prima lista e perde la chiave radice `atti` prima di `GedcomGenerator.process_ai_json()`. |
+| Errori controllati | URL non valido, timeout/rete, annullamento e rollback | PASS | Suite mirata: `54 passed`. Una prova live Findbuch con range 999-1000 restituisce `False`, non crea PNG/PDF/placeholder/temporanei e conserva soltanto il manifest diagnostico valido. |
+
+### Difetti riproducibili rilevati il 2026-09-25
+
+1. `AdvancedOCRWorker` considera doppia pagina ogni immagine Gemini con rapporto
+   larghezza/altezza almeno 1,6. Su un documento orizzontale semplice lo split
+   sovrapposto puo' duplicare l'intestazione nel merge finale.
+2. `GeminiHandler._extract_text_only_gemini()` usa `_parse_rows_from_text()` e
+   restituisce una lista anche quando la risposta e' un oggetto semantico con
+   chiave `atti`. `GenealogyWorker` avvolge poi la lista in `righe`, impedendo al
+   generatore GEDCOM di usare il dispatcher `_process_atti()` gia' disponibile.
+
 ## Sequenza pratica residua
 
-1. Completare il quinto percorso con un manifest sintetico da HTML. Per ciascun
-   output ricontrollare numero di file, pagine, apertura PDF, placeholder e
-   cartelle vuote residue.
-2. Eseguire un OCR breve, una traduzione breve e un'esportazione GEDCOM con dati
-   non sensibili; riaprire i file prodotti e verificarne il contenuto.
-3. Provare errori controllati: URL non riconosciuto, pagina inesistente,
-   interruzione rete e annullamento. L'app deve conservare gli output validi e
-   mostrare un messaggio utile.
+1. Conservare la struttura semantica completa nelle risposte genealogiche
+   testo-only e aggiungere una regressione mirata per il formato `atti`.
+2. Restringere il riconoscimento OCR delle doppie pagine o rendere il merge
+   robusto alle intestazioni duplicate, con test per immagini orizzontali non
+   tabellari.
+3. Ripetere le prove pratiche OCR e GEDCOM sui dati sintetici dopo le correzioni.
 4. Uniformare il disclaimer del menu Documenti allo stile degli altri documenti
    senza modificare il testo legale o il flusso di consenso iniziale.
-5. Registrare qui data, artefatto, campione, risultato e anomalie. Le anomalie
-   riproducibili vanno corrette in una release successiva, salvo problema di
-   sicurezza o perdita dati che richieda una patch urgente.
+5. Rieseguire il gate completo e registrare qui le controverifiche finali.
 
 ## Confini della certificazione
 
