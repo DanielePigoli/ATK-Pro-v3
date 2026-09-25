@@ -36,6 +36,27 @@ GITHUB_REPO = "DanielePigoli/ATK-Pro-v3"
 DISCLAIMER_REVISION = "v3.0.0-legal-disclaimer-2026-08-02"
 DISCLAIMER_ACCEPT_PARAM = f"/ATKACCEPTDISCLAIMER={DISCLAIMER_REVISION}"
 DISCLAIMER_SOURCE_LANGUAGE = "it"
+_ATK_DOCUMENT_DIALOG_STYLESHEET = """
+    QDialog {
+        background-color: #181818;
+        color: #fff;
+        border: 2px solid #a67c52;
+    }
+    QLabel, QPushButton {
+        color: #fff;
+        font-size: 15px;
+    }
+    QPushButton {
+        background-color: #222;
+        border: 1px solid #a67c52;
+        padding: 6px 18px;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+    QPushButton:hover {
+        background-color: #333;
+    }
+"""
 
 
 def _build_initial_state() -> dict:
@@ -2289,7 +2310,8 @@ class MainWindow(QMainWindow):
         try:
             msg = get_msg(self.glossario_data, "Disclaimer non disponibile", self.lingua)
             testo = carica_testo_asset(percorso_txt) or msg or "Disclaimer non disponibile."
-            self._mostra_testo_lungo("Disclaimer", testo)
+            titolo = get_msg(self.glossario_data, "Disclaimer", self.lingua) or "Disclaimer"
+            self._mostra_testo_lungo(titolo, testo)
         except Exception as e:
             from PySide6.QtWidgets import QMessageBox
             msg = get_msg(self.glossario_data, "Impossibile aprire il disclaimer", self.lingua)
@@ -2417,24 +2439,8 @@ class MainWindow(QMainWindow):
         layout.addWidget(label)
         dlg.exec()
     def _mostra_testo_lungo(self, titolo, testo):
-        from PySide6.QtGui import QIcon
-        dlg = QDialog(self)
-        dlg.setWindowTitle(titolo)
-        dlg.setWindowIcon(QIcon(get_pixmap_cached(asset_path("assets/common/grafici/ATK-Pro.ico"))))
-        dlg.resize(700, 500)
-        dlg.setMinimumSize(400, 300)
-        dlg.setSizeGripEnabled(True)
-        dlg.setWindowFlags(Qt.Window | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint | Qt.WindowCloseButtonHint)
-        dlg.setStyleSheet("QDialog { background: #fff; } QTextEdit { background: #fff; color: #222; font-size: 15px; }")
-        layout = QVBoxLayout(dlg)
-        text = QTextEdit()
-        text.setReadOnly(True)
-        text.setPlainText(testo)
-        layout.addWidget(text)
-        btn = QPushButton(get_msg(self.glossario_data, "Chiudi", self.lingua) or "Chiudi")
-        btn.clicked.connect(dlg.accept)
-        layout.addWidget(btn)
-        dlg.setLayout(layout)
+        close_label = get_msg(self.glossario_data, "Chiudi", self.lingua) or "Chiudi"
+        dlg = _build_atk_text_document_dialog(self, titolo, testo, close_label)
         dlg.exec()
 
     def seleziona_formati_immagine(self):
@@ -2538,6 +2544,37 @@ def _styled_text_edit(read_only=True, initial_text=""):
     return text
 
 
+def _build_atk_text_document_dialog(parent, title, text_content, close_label):
+    """Crea il visualizzatore testuale coerente con lo stile ATK-Pro."""
+    dlg = QDialog(parent)
+    dlg.setWindowTitle(title)
+    dlg.setWindowIcon(QIcon(get_pixmap_cached(asset_path("assets/common/grafici/ATK-Pro.ico"))))
+    dlg.resize(900, 650)
+    dlg.setMinimumSize(600, 400)
+    dlg.setSizeGripEnabled(True)
+    dlg.setWindowFlags(
+        Qt.Window
+        | Qt.WindowMinimizeButtonHint
+        | Qt.WindowMaximizeButtonHint
+        | Qt.WindowCloseButtonHint
+    )
+    dlg.setStyleSheet(_ATK_DOCUMENT_DIALOG_STYLESHEET)
+
+    layout = QVBoxLayout(dlg)
+    layout.setContentsMargins(16, 16, 16, 16)
+    layout.setSpacing(12)
+    text = _styled_text_edit(read_only=True, initial_text=text_content)
+    layout.addWidget(text)
+
+    button_row = QHBoxLayout()
+    button_row.addStretch()
+    close_button = QPushButton(close_label)
+    close_button.clicked.connect(dlg.accept)
+    button_row.addWidget(close_button)
+    layout.addLayout(button_row)
+    return dlg
+
+
 def mostra_disclaimer(glossario_data, lingua):
     msg = get_msg(glossario_data, "Disclaimer non disponibile", lingua.upper())
     disclaimer_text = _load_current_disclaimer_text() or msg or "Disclaimer non disponibile"
@@ -2545,26 +2582,7 @@ def mostra_disclaimer(glossario_data, lingua):
     dlg = QDialog()
     dlg.setWindowTitle(get_msg(glossario_data, "Disclaimer", lingua.upper()))
     dlg.setWindowIcon(QIcon(get_pixmap_cached(asset_path("assets/common/grafici/ATK-Pro.ico"))))
-    dlg.setStyleSheet("""
-        QDialog {
-            background-color: #181818;
-            color: #fff;
-            border: 2px solid #a67c52;
-        }
-        QLabel, QPushButton {
-            color: #fff;
-            font-size: 15px;
-        }
-        QPushButton {
-            background-color: #222;
-            border: 1px solid #a67c52;
-            padding: 6px 18px;
-            border-radius: 6px;
-        }
-        QPushButton:hover {
-            background-color: #333;
-        }
-    """)
+    dlg.setStyleSheet(_ATK_DOCUMENT_DIALOG_STYLESHEET)
     dlg.resize(900, 650)
 
     layout = QVBoxLayout(dlg)
