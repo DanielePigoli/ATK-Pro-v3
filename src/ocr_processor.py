@@ -345,7 +345,7 @@ class AdvancedOCRWorker:
 
     def _transcribe_image(self, img_path, api_key):
         """Dispatcher: instrada al provider corretto.
-        Per immagini a doppia pagina affiancata (aspect ratio > 1.6) con Gemini,
+        Per i tipi documentali che dichiarano una doppia pagina con Gemini,
         esegue lo split TOP/BOTTOM per aumentare l'accuratezza OCR su tabelle lunghe."""
         prompt   = self._build_prompt()
         provider = (self.provider or "Gemini").strip()
@@ -407,13 +407,10 @@ class AdvancedOCRWorker:
         if "Transkribus" in provider:
             return self._transcribe_transkribus(api_key, img_path)
 
-        # Default: Gemini con eventuale split doppia pagina
-        with Image.open(img_path) as _probe:
-            w, h = _probe.size
-        is_double_page = (
-            "DOPPIA PAGINA" in prompt
-            or ((w / h) >= 1.6 if h > 0 else False)
-        )
+        # Lo split e il relativo merge sono specifici dei prompt tabellari che
+        # dichiarano una doppia pagina. Il solo aspect ratio non basta: anche
+        # documenti orizzontali semplici possono essere molto larghi.
+        is_double_page = "DOPPIA PAGINA" in prompt.upper()
         if is_double_page:
             return self._transcribe_gemini_split(img_path, api_key, prompt)
         return self._transcribe_gemini(api_key, self._prepare_image_b64(img_path), prompt, model=self.custom_model)

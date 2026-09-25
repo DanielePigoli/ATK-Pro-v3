@@ -132,6 +132,39 @@ class AIProviderHandler:
 
         return self._parse_markdown_table(raw_text)
 
+    def _parse_genealogy_payload_from_text(self, raw_text: str):
+        """Preserva gli oggetti genealogici semantici; ripiega sulle righe legacy."""
+        sanitized = self._sanitize_json_text(raw_text or "")
+        try:
+            payload = json.loads(sanitized.strip())
+            if isinstance(payload, (dict, list)):
+                return payload
+        except Exception:
+            pass
+
+        candidates = []
+        obj_match = re.search(r"{.*}", sanitized, re.DOTALL)
+        arr_match = re.search(r"\[.*\]", sanitized, re.DOTALL)
+        if obj_match:
+            candidates.append((obj_match.start(), "dict", obj_match.group(0)))
+        if arr_match:
+            candidates.append((arr_match.start(), "list", arr_match.group(0)))
+
+        for _, payload_type, candidate in sorted(candidates):
+            try:
+                if payload_type == "dict":
+                    candidate = self._cleanup_json_response(candidate)
+                payload = json.loads(candidate)
+                if (
+                    (payload_type == "dict" and isinstance(payload, dict))
+                    or (payload_type == "list" and isinstance(payload, list))
+                ):
+                    return payload
+            except Exception:
+                pass
+
+        return self._parse_rows_from_text(raw_text)
+
 class GeminiHandler(AIProviderHandler):
     """Sincronia v15.3: Implementazione Ufficiale Google-GenerativeAI"""
     def _get_available_models(self):
@@ -157,7 +190,7 @@ class GeminiHandler(AIProviderHandler):
             logging.warning(f"[AUTO-DISCOVERY] Fallito: {e}")
         return ['models/gemini-1.5-flash', 'models/gemini-flash-latest']
 
-    def _extract_text_only_gemini(self, prompt: str, debug_dir=None) -> list:
+    def _extract_text_only_gemini(self, prompt: str, debug_dir=None):
         """
         PIPELINE DUE FASI — MODALITÀ TESTO: chiamata diretta a Gemini senza
         pipeline immagine.
@@ -196,9 +229,9 @@ class GeminiHandler(AIProviderHandler):
                                 f.write(raw_text)
                         except Exception:
                             pass
-                    rows = self._parse_rows_from_text(raw_text)
-                    logging.info(f"[TEXT-MODE] Righe estratte: {len(rows)}")
-                    return rows
+                    payload = self._parse_genealogy_payload_from_text(raw_text)
+                    logging.info("[TEXT-MODE] Payload genealogico estratto: %s", type(payload).__name__)
+                    return payload
             except Exception as e:
                 logging.warning(f"[TEXT-MODE] Errore con {m_name}: {e}")
                 err_lower = str(e).lower()
@@ -422,9 +455,9 @@ class OpenAIHandler(AIProviderHandler):
                         f.write(raw_text)
                 except Exception:
                     pass
-            rows = self._parse_rows_from_text(raw_text)
-            logging.info(f"[OpenAI] Righe estratte: {len(rows)}")
-            return rows
+            payload = self._parse_genealogy_payload_from_text(raw_text)
+            logging.info("[OpenAI] Payload genealogico estratto: %s", type(payload).__name__)
+            return payload
         except Exception as e:
             raise e
 
@@ -482,9 +515,9 @@ class ClaudeHandler(AIProviderHandler):
                         f.write(raw_text)
                 except Exception:
                     pass
-            rows = self._parse_rows_from_text(raw_text)
-            logging.info(f"[Claude] Righe estratte: {len(rows)}")
-            return rows
+            payload = self._parse_genealogy_payload_from_text(raw_text)
+            logging.info("[Claude] Payload genealogico estratto: %s", type(payload).__name__)
+            return payload
         except Exception as e:
             raise e
 
@@ -530,9 +563,9 @@ class OpenAICompatibleHandler(AIProviderHandler):
                         f.write(raw_text)
                 except Exception:
                     pass
-            rows = self._parse_rows_from_text(raw_text)
-            logging.info(f"[{self.provider}] Righe estratte: {len(rows)}")
-            return rows
+            payload = self._parse_genealogy_payload_from_text(raw_text)
+            logging.info("[%s] Payload genealogico estratto: %s", self.provider, type(payload).__name__)
+            return payload
         except Exception as e:
             raise e
 
@@ -582,9 +615,9 @@ class OllamaHandler(AIProviderHandler):
                         f.write(raw_text)
                 except Exception:
                     pass
-            rows = self._parse_rows_from_text(raw_text)
-            logging.info(f"[Ollama:{model}] Righe estratte: {len(rows)}")
-            return rows
+            payload = self._parse_genealogy_payload_from_text(raw_text)
+            logging.info("[Ollama:%s] Payload genealogico estratto: %s", model, type(payload).__name__)
+            return payload
         except Exception as e:
             raise e
 
@@ -638,9 +671,9 @@ class HuggingFaceHandler(AIProviderHandler):
                         f.write(raw_text)
                 except Exception:
                     pass
-            rows = self._parse_rows_from_text(raw_text)
-            logging.info(f"[HuggingFace:{model}] Righe estratte: {len(rows)}")
-            return rows
+            payload = self._parse_genealogy_payload_from_text(raw_text)
+            logging.info("[HuggingFace:%s] Payload genealogico estratto: %s", model, type(payload).__name__)
+            return payload
         except Exception as e:
             raise e
 
