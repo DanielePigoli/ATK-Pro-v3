@@ -13,12 +13,12 @@ riproduzione.
 | Area | Stato | Evidenza |
 | --- | --- | --- |
 | Release pubblicata | PASS | Tag `v3.0.0`, sei asset e digest presenti nella release GitHub. |
-| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 843 test passati e 39 skip attesi. |
+| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 849 test passati e 39 skip attesi. |
 | Portali live con immagini reali | PASS | `python verify_portal_live_smoke.py --fetch-images --strict`: 28/28 capability; immagini di inizio, centro e fine decodificabili e distinte nei documenti multipagina. |
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
 | Artefatti multipiattaforma | PASS in CI | Smoke post-pubblicazione Windows, Linux e macOS completati sui sei asset esatti, come registrato nella checklist release. |
 | Uso pratico locale Windows | PASS avvio e smoke grafico | Portable stabile riscaricato, SHA-256 verificato, avviato prima offscreen e poi visibilmente. Finestra, disclaimer, interfaccia italiana, menu, guida e chiusura sono stati verificati; resta una difformita' estetica non bloccante nel disclaimer aperto dal menu Documenti. |
-| Percorsi funzionali utente | PARZIALE con due anomalie IA | I percorsi di download, il manifest sintetico da HTML, la traduzione e gli errori controllati sono verificati. L'OCR duplica l'intestazione su un'immagine orizzontale semplice; il percorso GEDCOM testo-only perde la struttura semantica `atti`. |
+| Percorsi funzionali utente | PASS | Download, manifest sintetico da HTML, OCR, traduzione, GEDCOM ed errori controllati sono verificati. Resta soltanto la difformita' estetica non bloccante del disclaimer richiamato dal menu Documenti. |
 
 ## Esito del controllo live 2026-09-09
 
@@ -139,9 +139,9 @@ stata registrata nei report.
 | Percorso | Campione | Esito | Evidenza |
 | --- | --- | --- | --- |
 | Manifest sintetico da HTML | Findbuch pubblico, 221 canvas rilevati; range 1-2, PNG + PDF | PASS | Due PNG reali e distinti da 6416 x 4640 e 6432 x 4656 pixel; PDF di due pagine; nessun placeholder, suffisso `_rec`, temporaneo o directory vuota. |
-| OCR breve | Gemini, immagine sintetica con tre righe | PARZIALE | File TXT prodotto e riaperto; nomi, data e luogo sono corretti, ma `ATTO DI PROVA` compare due volte. Il rapporto 1600 x 500 attiva impropriamente lo split doppia pagina basato su aspect ratio. |
+| OCR breve | Gemini, immagine sintetica con tre righe | PASS dopo correzione | File TXT prodotto e riaperto; nomi, data e luogo sono corretti e `ATTO DI PROVA` compare una sola volta. Lo split viene ora attivato soltanto dai prompt che dichiarano esplicitamente `DOPPIA PAGINA`. |
 | Traduzione breve | Gemini, italiano verso inglese | PASS | Traduzione corretta di tre righe, nomi e data preservati; file TXT salvato e riaperto senza differenze. |
-| Esportazione GEDCOM | Gemini, trascrizione sintetica di un atto di nascita | FAIL | `.ged` e due CSV formalmente prodotti e riapribili, ma contengono un individuo `SCONOSCIUTO`. La diagnostica IA contiene correttamente `atti`, soggetto e genitori: l'handler Gemini testo-only restituisce solo la prima lista e perde la chiave radice `atti` prima di `GedcomGenerator.process_ai_json()`. |
+| Esportazione GEDCOM | Gemini, trascrizione sintetica di un atto di nascita | PASS dopo correzione | Il payload semantico `atti` e' preservato fino a `GedcomGenerator`; il GEDCOM contiene Giovanni Rossi, Luigi Rossi, Maria Bianchi e Trento, con conteggio estratto pari a 1. |
 | Errori controllati | URL non valido, timeout/rete, annullamento e rollback | PASS | Suite mirata: `54 passed`. Una prova live Findbuch con range 999-1000 restituisce `False`, non crea PNG/PDF/placeholder/temporanei e conserva soltanto il manifest diagnostico valido. |
 
 ### Difetti riproducibili rilevati il 2026-09-25
@@ -154,17 +154,27 @@ stata registrata nei report.
    chiave `atti`. `GenealogyWorker` avvolge poi la lista in `righe`, impedendo al
    generatore GEDCOM di usare il dispatcher `_process_atti()` gia' disponibile.
 
-## Sequenza pratica residua
+### Correzione verificata 2026-09-25
 
-1. Conservare la struttura semantica completa nelle risposte genealogiche
-   testo-only e aggiungere una regressione mirata per il formato `atti`.
-2. Restringere il riconoscimento OCR delle doppie pagine o rendere il merge
-   robusto alle intestazioni duplicate, con test per immagini orizzontali non
-   tabellari.
-3. Ripetere le prove pratiche OCR e GEDCOM sui dati sintetici dopo le correzioni.
-4. Uniformare il disclaimer del menu Documenti allo stile degli altri documenti
+Entrambi i difetti IA sono stati corretti e sottoposti a controverifica:
+
+- il dispatcher OCR usa lo split Gemini soltanto quando il prompt dichiara
+  esplicitamente `DOPPIA PAGINA`; la prova reale sull'immagine sintetica
+  1600 x 500 ha prodotto tre righe non vuote con una sola occorrenza
+  dell'intestazione;
+- i parser genealogici preservano l'oggetto JSON semantico completo, incluso
+  `atti`, mantenendo il fallback per le tabelle legacy; il contatore del worker
+  riconosce `atti`, `righe`, `records` e `famiglie`;
+- la controprova Gemini testo-only ha prodotto un GEDCOM con soggetto, entrambi
+  i genitori e luogo attesi, e conteggio estratto pari a 1;
+- la suite mirata ha concluso con `33 passed, 14 skipped`, la suite IA estesa
+  con `53 passed` e il gate release completo con `849 passed, 39 skipped`;
+  tutti gli 11 step del gate sono stati superati.
+
+## Attivita' pratica residua
+
+1. Uniformare il disclaimer del menu Documenti allo stile degli altri documenti
    senza modificare il testo legale o il flusso di consenso iniziale.
-5. Rieseguire il gate completo e registrare qui le controverifiche finali.
 
 ## Confini della certificazione
 

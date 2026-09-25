@@ -76,6 +76,29 @@ def _enrich_prompt_with_text(prompt: str, text_content: str) -> str:
         "--- FINE TRASCRIZIONE ---\n"
     )
 
+
+def _count_genealogy_records(payload):
+    """Conta le unita' semantiche estratte nei formati supportati."""
+    if isinstance(payload, list):
+        return len(payload)
+    if not isinstance(payload, dict):
+        return 0
+
+    for key in ("atti", "righe", "records"):
+        value = payload.get(key)
+        if isinstance(value, list):
+            return len(value)
+
+    families = payload.get("famiglie")
+    if isinstance(families, list):
+        return sum(
+            len(family.get("componenti", []))
+            for family in families
+            if isinstance(family, dict)
+        )
+    return 0
+
+
 class GenealogyWorker(QThread):
     progress = Signal(int, str)
     finished = Signal(str, int)
@@ -202,9 +225,7 @@ class GenealogyWorker(QThread):
                             generator.set_canvas_image(effective_image_path)
 
                         generator.process_ai_json(js)
-                        c_count = len(js.get('righe', js.get('records', [])))
-                        if 'famiglie' in js:
-                            c_count = sum(len(f.get('componenti', [])) for f in js['famiglie'])
+                        c_count = _count_genealogy_records(js)
                         extracted_count += c_count
                         success = True
                         

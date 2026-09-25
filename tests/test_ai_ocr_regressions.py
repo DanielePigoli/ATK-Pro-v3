@@ -255,6 +255,118 @@ def test_gemini_split_merge_deduplicates_fuzzy_rows_without_progressive():
     assert "Verdi | Carla" in merged
 
 
+def test_genealogy_payload_parser_preserves_semantic_atti(tmp_path):
+    from src.gedcom_factory import GedcomGenerator
+    from src.multi_provider_handlers import AIProviderHandler
+
+    raw = """
+    {
+      "metadata": {"comunita": "Trento", "anno": "1880"},
+      "atti": [{
+        "tipo": "nascita",
+        "soggetto": {
+          "nome": "Giovanni",
+          "cognome": "Rossi",
+          "sesso": "M",
+          "data_nascita": "12 maggio 1880",
+          "luogo_nascita": "Trento"
+        },
+        "padre": {"nome": "Luigi", "cognome": "Rossi"},
+        "madre": {"nome": "Maria", "cognome_nubile": "Bianchi"}
+      }]
+    }
+    """
+    handler = AIProviderHandler("Gemini", "fake-key")
+
+    payload = handler._parse_genealogy_payload_from_text(raw)
+
+    assert isinstance(payload, dict)
+    assert payload["atti"][0]["soggetto"]["nome"] == "Giovanni"
+    generator = GedcomGenerator(source_system="ATK-Pro_Test")
+    generator.process_ai_json(payload)
+    output = tmp_path / "semantic.ged"
+    generator.save_to_file(str(output))
+    gedcom = output.read_text(encoding="utf-8")
+    assert "1 NAME Giovanni /Rossi/" in gedcom
+    assert "1 NAME Luigi /Rossi/" in gedcom
+    assert "1 NAME Maria /Bianchi/" in gedcom
+
+
+def test_genealogy_payload_parser_keeps_legacy_markdown_rows():
+    from src.multi_provider_handlers import AIProviderHandler
+
+    handler = AIProviderHandler("Gemini", "fake-key")
+    payload = handler._parse_genealogy_payload_from_text(
+        "| Casa | Famiglia | Persona | Cognome | Nome |\n"
+        "| --- | --- | --- | --- | --- |\n"
+        "| 1 | 2 | 3 | Rossi | Anna |"
+    )
+
+    assert isinstance(payload, list)
+    assert payload[0]["4"] == "Rossi"
+    assert payload[0]["5"] == "Anna"
+
+
+def test_genealogy_payload_parser_preserves_root_json_array():
+    from src.multi_provider_handlers import AIProviderHandler
+
+    handler = AIProviderHandler("Gemini", "fake-key")
+    payload = handler._parse_genealogy_payload_from_text(
+        'Risposta IA:\n[{"cognome": "Rossi", "nome": "Anna"}]'
+    )
+
+    assert payload == [{"cognome": "Rossi", "nome": "Anna"}]
+
+
+def test_genealogy_record_counter_supports_all_payload_shapes():
+    from src.genealogy_dialog import _count_genealogy_records
+
+    assert _count_genealogy_records({"atti": [{"tipo": "nascita"}]}) == 1
+    assert _count_genealogy_records({"righe": [{}, {}]}) == 2
+    assert _count_genealogy_records({"records": [{}]}) == 1
+    assert _count_genealogy_records(
+        {"famiglie": [{"componenti": [{}, {}]}, {"componenti": [{}]}]}
+    ) == 3
+
+
+def test_ocr_wide_image_without_double_page_prompt_uses_single_pass(monkeypatch, tmp_path):
+    from PIL import Image
+    from src.ocr_processor import AdvancedOCRWorker
+
+    source = tmp_path / "wide-note.png"
+    Image.new("RGB", (1600, 500), "white").save(source)
+    worker = object.__new__(AdvancedOCRWorker)
+    worker.provider = "Gemini"
+    worker.custom_model = None
+    monkeypatch.setattr(worker, "_build_prompt", lambda: "Trascrivi esattamente il testo.")
+    monkeypatch.setattr(worker, "_prepare_image_b64", lambda path: "encoded")
+    monkeypatch.setattr(worker, "_transcribe_gemini", lambda *args, **kwargs: "single")
+    monkeypatch.setattr(worker, "_transcribe_gemini_split", lambda *args, **kwargs: "split")
+
+    assert worker._transcribe_image(str(source), "fake-key") == "single"
+
+
+def test_ocr_explicit_double_page_prompt_uses_split(monkeypatch, tmp_path):
+    from PIL import Image
+    from src.ocr_processor import AdvancedOCRWorker
+
+    source = tmp_path / "register.png"
+    Image.new("RGB", (1600, 500), "white").save(source)
+    worker = object.__new__(AdvancedOCRWorker)
+    worker.provider = "Gemini"
+    worker.custom_model = None
+    monkeypatch.setattr(
+        worker,
+        "_build_prompt",
+        lambda: "DOPPIA PAGINA: trascrivi le righe del registro.",
+    )
+    monkeypatch.setattr(worker, "_prepare_image_b64", lambda path: "encoded")
+    monkeypatch.setattr(worker, "_transcribe_gemini", lambda *args, **kwargs: "single")
+    monkeypatch.setattr(worker, "_transcribe_gemini_split", lambda *args, **kwargs: "split")
+
+    assert worker._transcribe_image(str(source), "fake-key") == "split"
+
+
 def test_ocr_logs_do_not_include_key_prefixes():
     source = Path("src/ocr_processor.py").read_text(encoding="utf-8")
 
