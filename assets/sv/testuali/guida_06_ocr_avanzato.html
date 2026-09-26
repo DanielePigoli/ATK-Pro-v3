@@ -363,9 +363,9 @@
             <table>
                 <thead><tr><th>Leverantör</th><th>Tjänsttyp</th><th>Inloggningsuppgifter</th><th>Praktiska anteckningar</th></tr></thead>
                 <tbody>
-                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Fjärrtjänster</td><td>Leverantörens API-nyckel</td><td>Modeller och tillgänglighet beror på kontot och leverantörens aktuella villkor.</td></tr>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Fjärrtjänster</td><td>Leverantörens API-nyckel</td><td>OpenAI OCR använder <code>gpt-4.1</code> som standard; modeller och tillgänglighet beror på kontot och leverantörens aktuella villkor.</td></tr>
                     <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Kompatibla fjärrslutpunkter</td><td>Leverantörens API-nyckel</td><td>Välj en modell som kan bearbeta bilder; inte alla textmodeller stöder visuell OCR.</td></tr>
-                    <tr><td><strong>DeepSeek</strong></td><td>Fjärrslutpunkt endast för text i aktuell konfiguration</td><td>Leverantörens API-nyckel</td><td>Den är inte lämplig för visuell OCR förrän en slutpunkt och en modell som stöder bilder har konfigurerats.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Kompatibel multimodal fjärrslutpunkt</td><td>Leverantörens API-nyckel</td><td>Standardmodellen <code>deepseek-flash</code> tar emot bilden direkt; tillgänglighet och kvalitet beror på den aktuella tjänsten.</td></tr>
                     <tr><td><strong>KramarFace</strong></td><td>Remote Inference API</td><td>HuggingFace Token</td><td>Kompatibilitet och resultat beror på den konfigurerade modellen.</td></tr>
                     <tr><td><strong>Transkribera buss</strong></td><td>Fjärr-HTR-tjänst</td><td><code>email:password</code> eller bärartoken</td><td>Kräver ett konto och minst en tillgänglig samling.</td></tr>
                     <tr><td><strong>Ollama</strong></td><td>Lokal tjänst</td><td>Ingen extern API-nyckel</td><td>Kräver att Ollama är igång och en kompatibel visuell modell installerad lokalt.</td></tr>

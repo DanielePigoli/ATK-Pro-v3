@@ -359,9 +359,9 @@
 <table>
 <thead><tr><th>Sağlayıcı</th><th>Hizmet Türü</th><th>Credentials</th><th>İşletim notları</th></tr></thead>
 <tbody>
-<tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Uzak hizmetler</td><td>API sağlayıcı anahtarı</td><td>Modeller ve kullanılabilirlik, sağlayıcının hesap ve mevcut koşullarına bağlıdır.</td></tr>
+<tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Uzak hizmetler</td><td>API sağlayıcı anahtarı</td><td>OpenAI OCR varsayılan olarak <code>gpt-4.1</code> kullanır; modeller ve kullanılabilirlik hesaba ve sağlayıcının güncel koşullarına bağlıdır.</td></tr>
 <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Uyumlu uzaktan uç noktaları</td><td>API sağlayıcı anahtarı</td><td>Görüntüleri işlemek için bir şablon seçin; tüm metin modelleri OCR görselini desteklemez.</td></tr>
-<tr><td><strong>DeepSeek</strong></td><td>Uzak uç noktası sadece mevcut konfigürasyonda metin</td><td>API sağlayıcı anahtarı</td><td>Son nokta ve görüntü uyumlu modeli yapılandırıncaya kadar görsel OCR için uygun değildir.</td></tr>
+<tr><td><strong>DeepSeek</strong></td><td>Uyumlu çok modlu uzak uç nokta</td><td>API sağlayıcı anahtarı</td><td>Varsayılan <code>deepseek-flash</code> modeli görüntüyü doğrudan alır; kullanılabilirlik ve kalite mevcut hizmete bağlıdır.</td></tr>
 <tr><td><strong>HuggingFace</strong></td><td>Uzak API Inference</td><td>Hediye HuggingFace</td><td>Uyumluluk ve sonuçlar yapısal modele bağlıdır.</td></tr>
 <tr><td><strong>Transkribus</strong></td><td>Uzak HTR hizmeti</td><td><code>email:password</code> or Bearer token</td><td>Bir hesap ve en azından mevcut bir koleksiyon gerektirir.</td></tr>
 <tr><td><strong>Ollama</strong></td><td>Yerel servis</td><td>API uzaktan anahtar</td><td>Aktif Ollama ve yerel olarak yüklenen uyumlu bir görsel model gerektirir.</td></tr>

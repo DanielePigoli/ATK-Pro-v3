@@ -363,9 +363,9 @@
             <table>
                 <thead><tr><th>Provider</th><th>Service type</th><th>Credentials</th><th>Operational notes</th></tr></thead>
                 <tbody>
-                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Remote services</td><td>Provider API key</td><td>Models and availability depend on the account and the provider's current terms.</td></tr>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Remote services</td><td>Provider API key</td><td>OpenAI OCR uses <code>gpt-4.1</code> by default; models and availability depend on the account and the provider&apos;s current terms.</td></tr>
                     <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Compatible remote endpoints</td><td>Provider API key</td><td>Select a model capable of processing images; not all text models support visual OCR.</td></tr>
-                    <tr><td><strong>DeepSeek</strong></td><td>Text-only remote endpoint in the current configuration</td><td>Provider API key</td><td>It is not suitable for visual OCR unless an image-compatible endpoint and model are configured.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Compatible multimodal remote endpoint</td><td>Provider API key</td><td>The default <code>deepseek-flash</code> model receives the image directly; availability and quality depend on the current service.</td></tr>
                     <tr><td><strong>HuggingFace</strong></td><td>Remote inference API</td><td>HuggingFace token</td><td>Compatibility and results depend on the configured model.</td></tr>
                     <tr><td><strong>Transkribus</strong></td><td>Remote HTR service</td><td><code>email:password</code> or Bearer token</td><td>Requires an account and at least one available collection.</td></tr>
                     <tr><td><strong>Ollama</strong></td><td>Local service</td><td>No remote API key</td><td>Requires Ollama to be running and a compatible vision model installed locally.</td></tr>

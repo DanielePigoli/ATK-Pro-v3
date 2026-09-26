@@ -523,7 +523,7 @@ class ClaudeHandler(AIProviderHandler):
 
 class OpenAICompatibleHandler(AIProviderHandler):
     """Handler generico per provider con API compatibile OpenAI (Mistral, Groq, DeepSeek, xAI)."""
-    _NO_VISION = {"DeepSeek"}
+    _NO_VISION = set()
 
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI

@@ -77,7 +77,7 @@ SERVICE_PROVIDER_UI_LABELS = {
     ),
     "ocr": (
         "Anthropic / Claude (Miglior Vision)",
-        "OpenAI (GPT-4o Vision)",
+        "OpenAI (Vision)",
         "Google Gemini (Vision)",
         "Transkribus (Italian Handwriting HTR)",
         "Hugging Face (Modelli Specializzati OCR)",
@@ -85,7 +85,7 @@ SERVICE_PROVIDER_UI_LABELS = {
         "Mistral (Pixtral Vision)",
         "Groq (Llama Vision)",
         "Ollama (Locale/Privato)",
-        "DeepSeek (Solo Testo)",
+        "DeepSeek",
     ),
 }
 
@@ -94,16 +94,16 @@ PROVIDER_RUNTIME_DEFAULTS = {
         "base_url": "https://api.openai.com/v1",
         "default_models": {
             "translation": "gpt-4o",
-            "ocr": "gpt-4o",
+            "ocr": "gpt-4.1",
             "ai_search": "gpt-4o",
         },
     },
     "Claude": {
         "base_url": "https://api.anthropic.com/v1",
         "default_models": {
-            "translation": "claude-3-5-sonnet-latest",
-            "ocr": "claude-3-5-sonnet-latest",
-            "ai_search": "claude-opus-4-5",
+            "translation": "claude-sonnet-4-6",
+            "ocr": "claude-sonnet-4-6",
+            "ai_search": "claude-sonnet-4-6",
         },
     },
     "Mistral": {
@@ -125,9 +125,9 @@ PROVIDER_RUNTIME_DEFAULTS = {
     "DeepSeek": {
         "base_url": "https://api.deepseek.com",
         "default_models": {
-            "translation": "deepseek-chat",
-            "ocr": "deepseek-chat",
-            "ai_search": "deepseek-chat",
+            "translation": "deepseek-flash",
+            "ocr": "deepseek-flash",
+            "ai_search": "deepseek-flash",
         },
     },
     "xAI": {

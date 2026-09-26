@@ -363,9 +363,9 @@
             <table>
                 <thead><tr><th>Provider</th><th>Type dienst</th><th>Inloggegevens</th><th>Operationele opmerkingen</th></tr></thead>
                 <tbody>
-                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Externe diensten</td><td>API key van de provider</td><td>Modellen en beschikbaarheid zijn afhankelijk van het account en de actuele voorwaarden van de provider.</td></tr>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Externe diensten</td><td>API key van de provider</td><td>OpenAI OCR gebruikt standaard <code>gpt-4.1</code>; modellen en beschikbaarheid zijn afhankelijk van het account en de actuele voorwaarden van de provider.</td></tr>
                     <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Compatibele externe endpoints</td><td>API key van de provider</td><td>Selecteer een model dat afbeeldingen kan verwerken; niet alle tekstmodellen ondersteunen visuele OCR.</td></tr>
-                    <tr><td><strong>DeepSeek</strong></td><td>Alleen-tekst extern endpoint in de huidige configuratie</td><td>API key van de provider</td><td>Niet geschikt voor visuele OCR zolang er geen endpoint en model zijn geconfigureerd die afbeeldingen ondersteunen.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Compatibel multimodaal extern endpoint</td><td>API key van de provider</td><td>Het standaardmodel <code>deepseek-flash</code> ontvangt de afbeelding rechtstreeks; beschikbaarheid en kwaliteit hangen af van de actuele dienst.</td></tr>
                     <tr><td><strong>HuggingFace</strong></td><td>Externe Inference API</td><td>HuggingFace-token</td><td>Compatibiliteit en resultaten zijn afhankelijk van het geconfigureerde model.</td></tr>
                     <tr><td><strong>Transkribus</strong></td><td>Externe HTR-dienst</td><td><code>email:password</code> of Bearer token</td><td>Vereist een account en ten minste één beschikbare collection.</td></tr>
                     <tr><td><strong>Ollama</strong></td><td>Lokale dienst</td><td>Geen externe API key</td><td>Vereist dat Ollama actief is en dat lokaal een compatibel visueel model is geïnstalleerd.</td></tr>

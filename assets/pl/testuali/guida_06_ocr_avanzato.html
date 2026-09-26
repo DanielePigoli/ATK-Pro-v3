@@ -359,9 +359,9 @@
 <table>
 <thead><tr><th>Dostawca</th><th>Rodzaj usługi</th><th>Poświadczenia</th><th>Notatki operacyjne</th></tr></thead>
 <tbody>
-<tr><td><strong>Bliźnięta, OpenAI, Claude</strong></td><td>Usługi zdalne</td><td>Klucz dostawcy API</td><td>Modele i dostępność zależą od Twojego konta i aktualnych warunków dostawcy.</td></tr>
+<tr><td><strong>Bliźnięta, OpenAI, Claude</strong></td><td>Usługi zdalne</td><td>Klucz dostawcy API</td><td>OCR OpenAI domyślnie używa <code>gpt-4.1</code>; modele i dostępność zależą od konta oraz aktualnych warunków dostawcy.</td></tr>
 <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Kompatybilne zdalne punkty końcowe</td><td>Klucz dostawcy API</td><td>Wybierz model zdolny do przetwarzania obrazów; Nie wszystkie modele tekstowe obsługują wizualizację OCR.</td></tr>
-<tr><td><strong>DeepSeek</strong></td><td>Zdalny punkt końcowy zawierający tylko tekst w bieżącej konfiguracji</td><td>Klucz dostawcy API</td><td>Nie nadaje się do wizualizacji OCR, dopóki nie zostanie skonfigurowany punkt końcowy i szablon zgodny z obrazem.</td></tr>
+<tr><td><strong>DeepSeek</strong></td><td>Zgodny multimodalny zdalny punkt końcowy</td><td>Klucz dostawcy API</td><td>Domyślny model <code>deepseek-flash</code> otrzymuje obraz bezpośrednio; dostępność i jakość zależą od bieżącej usługi.</td></tr>
 <tr><td><strong>Przytulana twarz</strong></td><td>Zdalne wnioskowanie API</td><td>Żeton Przytulającej Twarzy</td><td>Kompatybilność i wyniki zależą od skonfigurowanego modelu.</td></tr>
 <tr><td><strong>Transkrybus</strong></td><td>Zdalna usługa HTR</td><td><code>email:password</code> lub żeton okaziciela</td><td>Wymaga konta i co najmniej jednej dostępnej kolekcji.</td></tr>
 <tr><td><strong>Ollama</strong></td><td>Lokalny serwis</td><td>Brak zdalnego klucza API</td><td>Wymaga aktywnego Ollama i kompatybilnego modelu wizualnego zainstalowanego lokalnie.</td></tr>

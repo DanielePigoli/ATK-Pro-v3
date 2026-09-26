@@ -363,9 +363,9 @@
             <table>
                 <thead><tr><th>Proveedor</th><th>Tipo de servicio</th><th>Credenciales</th><th>Notas operativas</th></tr></thead>
                 <tbody>
-                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Servicios remotos</td><td>Clave de API del proveedor</td><td>Los modelos y su disponibilidad dependen de la cuenta y de las condiciones vigentes del proveedor.</td></tr>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Servicios remotos</td><td>Clave de API del proveedor</td><td>El OCR de OpenAI usa <code>gpt-4.1</code> de forma predeterminada; los modelos y su disponibilidad dependen de la cuenta y de las condiciones vigentes del proveedor.</td></tr>
                     <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Endpoints remotos compatibles</td><td>Clave de API del proveedor</td><td>Selecciona un modelo capaz de procesar im&aacute;genes; no todos los modelos de texto admiten OCR visual.</td></tr>
-                    <tr><td><strong>DeepSeek</strong></td><td>Endpoint remoto de solo texto en la configuraci&oacute;n actual</td><td>Clave de API del proveedor</td><td>No es adecuado para el OCR visual mientras no se configuren un endpoint y un modelo compatibles con im&aacute;genes.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Endpoint remoto multimodal compatible</td><td>Clave de API del proveedor</td><td>El modelo predeterminado <code>deepseek-flash</code> recibe directamente la imagen; la disponibilidad y la calidad dependen del servicio actual.</td></tr>
                     <tr><td><strong>HuggingFace</strong></td><td>Inference API remota</td><td>Token de HuggingFace</td><td>La compatibilidad y los resultados dependen del modelo configurado.</td></tr>
                     <tr><td><strong>Transkribus</strong></td><td>Servicio HTR remoto</td><td><code>email:password</code> o bien token Bearer</td><td>Requiere una cuenta y al menos una colección disponible.</td></tr>
                     <tr><td><strong>Ollama</strong></td><td>Servicio local</td><td>Sin clave API remota</td><td>Requiere que Ollama esté activo y que haya un modelo visual compatible instalado localmente.</td></tr>

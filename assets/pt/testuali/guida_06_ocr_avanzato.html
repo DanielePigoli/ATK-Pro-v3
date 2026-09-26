@@ -363,9 +363,9 @@
             <table>
                 <thead><tr><th>Provedor</th><th>Tipo de serviço</th><th>Credenciais</th><th>Notas operacionais</th></tr></thead>
                 <tbody>
-                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Serviços remotos</td><td>Chave de API do provedor</td><td>Os modelos e a disponibilidade dependem da conta e das condições atuais do provedor.</td></tr>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Serviços remotos</td><td>Chave de API do provedor</td><td>O OCR da OpenAI usa <code>gpt-4.1</code> por padrão; os modelos e a disponibilidade dependem da conta e das condições atuais do provedor.</td></tr>
                     <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Endpoints remotos compatíveis</td><td>Chave de API do provedor</td><td>Selecione um modelo capaz de processar imagens; nem todos os modelos de texto oferecem suporte a OCR visual.</td></tr>
-                    <tr><td><strong>DeepSeek</strong></td><td>Endpoint remoto somente de texto na configuração atual</td><td>Chave de API do provedor</td><td>Não é adequado para OCR visual enquanto não forem configurados um endpoint e um modelo compatíveis com imagens.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Endpoint remoto multimodal compatível</td><td>Chave de API do provedor</td><td>O modelo padrão <code>deepseek-flash</code> recebe a imagem diretamente; a disponibilidade e a qualidade dependem do serviço atual.</td></tr>
                     <tr><td><strong>HuggingFace</strong></td><td>API de inferência remota</td><td>Token do HuggingFace</td><td>A compatibilidade e os resultados dependem do modelo configurado.</td></tr>
                     <tr><td><strong>Transkribus</strong></td><td>Serviço HTR remoto</td><td><code>email:password</code> ou Bearer token</td><td>Requer uma conta e pelo menos uma coleção disponível.</td></tr>
                     <tr><td><strong>Ollama</strong></td><td>Serviço local</td><td>Nenhuma chave API remota</td><td>Requer que o Ollama esteja ativo e que um modelo visual compatível esteja instalado localmente.</td></tr>

@@ -50,7 +50,7 @@ def test_ai_search_dialog_uses_runtime_default_model_hint(qtbot):
     qtbot.addWidget(dlg)
 
     dlg.combo_provider.setCurrentText("Claude")
-    assert "claude-opus-4-5" in dlg.inp_custom_model.placeholderText()
+    assert "claude-sonnet-4-6" in dlg.inp_custom_model.placeholderText()
 
     dlg.combo_provider.setCurrentText("Gemini")
     assert dlg.inp_custom_model.placeholderText() == "Modello custom (opzionale)"
@@ -439,6 +439,13 @@ def test_ai_search_logs_do_not_dump_query_or_result_payload():
     assert "query='" not in source
 
 
+def test_genealogy_logs_never_expose_api_key_prefixes():
+    source = Path("src/genealogy_dialog.py").read_text(encoding="utf-8")
+
+    assert "current_key[:6]" not in source
+    assert 'key_hint = f"slot {key_slot}"' in source
+
+
 def test_provider_runtime_defaults_are_not_duplicated_in_runtime_modules():
     translation_source = Path("src/translation_processor.py").read_text(encoding="utf-8")
     ocr_source = Path("src/ocr_processor.py").read_text(encoding="utf-8")
@@ -454,17 +461,82 @@ def test_provider_runtime_defaults_are_not_duplicated_in_runtime_modules():
         "pixtral-large-latest",
         "llama-3.3-70b-versatile",
         "llama-3.2-90b-vision-preview",
-        "deepseek-chat",
+        "deepseek-flash",
         "grok-3-mini",
         "grok-2-vision-1212",
         "Qwen/Qwen2.5-72B-Instruct",
         "Qwen/Qwen2.5-VL-7B-Instruct",
-        "claude-opus-4-5",
+        "claude-sonnet-4-6",
+        "gpt-4.1",
     ]
 
     for literal in duplicated_literals:
         assert literal not in translation_source
         assert literal not in ocr_source
+
+
+def test_deepseek_ocr_sends_the_image_to_current_vision_model(tmp_path):
+    from src.ocr_processor import AdvancedOCRWorker
+
+    image_path = tmp_path / "atto.jpg"
+    image_path.write_bytes(b"synthetic-image")
+    worker = object.__new__(AdvancedOCRWorker)
+    worker.provider = "DeepSeek"
+    worker.custom_model = None
+    worker._build_prompt = lambda: "Trascrivi il testo."
+    captured = {}
+
+    def fake_transcribe(api_key, passed_image, prompt, base_url, model):
+        captured.update(
+            image=passed_image,
+            prompt=prompt,
+            base_url=base_url,
+            model=model,
+        )
+        return "ATTO DI PROVA"
+
+    worker._transcribe_openai_compat = fake_transcribe
+
+    assert worker._transcribe_image(str(image_path), "fake-key") == "ATTO DI PROVA"
+    assert captured["image"] == str(image_path)
+    assert captured["model"] == "deepseek-flash"
+
+
+def test_deepseek_genealogy_handler_keeps_vision_input(monkeypatch, tmp_path):
+    import sys
+    import types
+
+    from src.multi_provider_handlers import OpenAICompatibleHandler
+
+    image_path = tmp_path / "atto.jpg"
+    image_path.write_bytes(b"synthetic-image")
+    captured = {}
+
+    class FakeCompletions:
+        @staticmethod
+        def create(**kwargs):
+            captured.update(kwargs)
+            message = types.SimpleNamespace(content='[{"nome": "Giovanni"}]')
+            return types.SimpleNamespace(choices=[types.SimpleNamespace(message=message)])
+
+    class FakeOpenAI:
+        def __init__(self, **kwargs):
+            captured["client"] = kwargs
+            self.chat = types.SimpleNamespace(completions=FakeCompletions())
+
+    monkeypatch.setitem(sys.modules, "openai", types.SimpleNamespace(OpenAI=FakeOpenAI))
+    handler = OpenAICompatibleHandler("DeepSeek", "fake-key")
+
+    payload = handler.extract_genealogy(
+        "Estrai i dati.",
+        str(image_path),
+        model="deepseek-flash",
+    )
+
+    content = captured["messages"][0]["content"]
+    assert content[0]["type"] == "image_url"
+    assert content[1] == {"type": "text", "text": "Estrai i dati."}
+    assert payload == [{"nome": "Giovanni"}]
 
 
 def test_ocr_pdf_keeps_partial_progress_when_later_page_fails(monkeypatch, tmp_path):

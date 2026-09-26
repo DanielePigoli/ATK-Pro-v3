@@ -359,9 +359,9 @@
 <table>
 <thead><tr><th>المزوّد</th><th>نوع الخدمة</th><th>وثائق التفويض</th><th>مذكرات التشغيل</th></tr></thead>
 <tbody>
-<tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>الخدمات عن بعد</td><td>API</td><td>وتتوقف النماذج والتوافر على حساب مقدِّم الخدمات وعلى الظروف الراهنة.</td></tr>
+<tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>الخدمات عن بعد</td><td>API</td><td>يستخدم OCR من OpenAI النموذج <code>gpt-4.1</code> افتراضيًا؛ وتعتمد النماذج والتوافر على حساب مقدّم الخدمة وشروطه الحالية.</td></tr>
 <tr><td><strong>Mistral, Groq, xAI</strong></td><td>نقاط النهاية البعيدة القابلة للمقارنة</td><td>API</td><td>(ب) اختيار نموذج يمكن أن يجهز الصور؛ وليس جميع النماذج النصية تدعم صورة OCR.</td></tr>
-<tr><td><strong>DeepSeek</strong></td><td>Remote endpoint only text in current formation</td><td>API</td><td>وهو غير مناسب للزجاج البصري OCR إلى أن يتم تشكيل نموذج متوافق مع النقطتين النهائية والصورة.</td></tr>
+<tr><td><strong>DeepSeek</strong></td><td>نقطة نهاية بعيدة متعددة الوسائط ومتوافقة</td><td>API</td><td>يستقبل النموذج الافتراضي <code>deepseek-flash</code> الصورة مباشرة؛ ويعتمد التوافر والجودة على الخدمة الحالية.</td></tr>
 <tr><td><strong>HuggingFace</strong></td><td>Remote API Inference</td><td>Token HuggingFace</td><td>ويتوقف التوافق والنتائج على النموذج المكون.</td></tr>
 <tr><td><strong>المعاملات</strong></td><td>خدمات الاتصالات السلكية واللاسلكية</td><td><code>email:password</code> أو الدب المكسور</td><td>ويشترط وجود حساب وما لا يقل عن مجموعة واحدة متاحة.</td></tr>
 <tr><td><strong>Ollama</strong></td><td>الخدمة المحلية</td><td>No API remote key</td><td>(ب) يتطلب تشغيلاً من طراز Ollama ونموذجاً مرئياً متوافقاً يتم تركيبه محلياً.</td></tr>

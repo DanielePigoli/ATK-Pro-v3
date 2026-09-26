@@ -40,7 +40,7 @@ def test_genealogy_dialog_uses_provider_catalog_and_runtime_default_hint(monkeyp
     assert providers == list(get_service_providers("ai_search"))
 
     dlg.combo_provider.setCurrentText("Claude")
-    assert "claude-opus-4-5" in dlg.inp_custom_model.placeholderText()
+    assert "claude-sonnet-4-6" in dlg.inp_custom_model.placeholderText()
 
     dlg.combo_provider.setCurrentText("Gemini")
     assert not dlg.inp_custom_model.isVisible()

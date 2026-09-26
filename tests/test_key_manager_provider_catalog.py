@@ -66,11 +66,11 @@ def test_ui_provider_labels_are_known_by_key_manager():
         "Anthropic / Claude (Miglior Testo)",
         "Anthropic / Claude (Miglior Vision)",
         "OpenAI (GPT-4o)",
-        "OpenAI (GPT-4o Vision)",
+        "OpenAI (Vision)",
         "Google Gemini",
         "Google Gemini (Vision)",
         "DeepSeek (Economico/Testo)",
-        "DeepSeek (Solo Testo)",
+        "DeepSeek",
         "Mistral",
         "Mistral (Pixtral Vision)",
         "xAI / Grok",
@@ -143,4 +143,7 @@ def test_provider_runtime_defaults_are_centralized_by_service():
     assert get_provider_default_host("Ollama") == "http://localhost:11434"
     assert get_provider_default_model("Mistral", "translation") == "mistral-large-latest"
     assert get_provider_default_model("Mistral", "ocr") == "pixtral-large-latest"
-    assert get_provider_default_model("Claude", "ai_search") == "claude-opus-4-5"
+    assert get_provider_default_model("Claude", "ai_search") == "claude-sonnet-4-6"
+    assert get_provider_default_model("OpenAI", "ocr") == "gpt-4.1"
+    assert get_provider_default_model("DeepSeek", "translation") == "deepseek-flash"
+    assert get_provider_default_model("DeepSeek", "ocr") == "deepseek-flash"

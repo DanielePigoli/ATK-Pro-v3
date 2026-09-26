@@ -359,9 +359,9 @@
 <table>
 <thead><tr><th>プロバイダー</th><th>サービスの種類</th><th>資格情報</th><th>操作ノート</th></tr></thead>
 <tbody>
-<tr><td><strong>Gemini, OpenAI, クロード</strong></td><td>リモートサービス</td><td>APIプロバイダキー</td><td>モデルと可用性は、プロバイダーのアカウントと現在の条件によって異なります。</td></tr>
+<tr><td><strong>Gemini, OpenAI, クロード</strong></td><td>リモートサービス</td><td>APIプロバイダキー</td><td>OpenAI の OCR は既定で <code>gpt-4.1</code> を使用します。モデルと可用性は、アカウントとプロバイダーの現在の条件によって異なります。</td></tr>
 <tr><td><strong>ミストラル、グロク、XAI</strong></td><td>互換性のあるリモートエンドポイント</td><td>APIプロバイダキー</td><td>OCRのビジュアルをサポートするすべてのテキストモデルではなく、画像を処理することができるテンプレートを選択します。</td></tr>
-<tr><td><strong>イマラチオ</strong></td><td>リモートエンドポイントは、現在の設定のテキストのみ</td><td>APIプロバイダキー</td><td>エンドポイントと画像互換性モデルが設定されるまで、ビジュアルOCRには適していません。</td></tr>
+<tr><td><strong>DeepSeek</strong></td><td>互換性のあるマルチモーダル・リモートエンドポイント</td><td>APIプロバイダキー</td><td>既定の <code>deepseek-flash</code> モデルは画像を直接受信します。可用性と品質は現在のサービスに依存します。</td></tr>
 <tr><td><strong>フォグレース</strong></td><td>リモート API インフェレンス</td><td>トークン HuggingFace</td><td>互換性と結果は、設定されたモデルによって異なります。</td></tr>
 <tr><td><strong>トランスクリバス</strong></td><td>リモートHTRサービス</td><td><code>email:password</code> またはベアアートークン</td><td>利用可能なアカウントと少なくとも1つのコレクションが必要です。</td></tr>
 <tr><td><strong>Ollama</strong></td><td>ローカルサービス</td><td>APIのリモート キー無し</td><td>アクティブな Ollama とローカルにインストールされている互換性のあるビジュアルモデルが必要です。</td></tr>
