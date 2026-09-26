@@ -456,7 +456,7 @@ def test_provider_runtime_defaults_are_not_duplicated_in_runtime_modules():
         "https://api.groq.com/openai/v1",
         "https://api.deepseek.com",
         "https://api.x.ai/v1",
-        "https://api-inference.huggingface.co/v1/",
+        "https://router.huggingface.co/v1",
         "mistral-large-latest",
         "pixtral-large-latest",
         "llama-3.3-70b-versatile",
@@ -486,12 +486,13 @@ def test_deepseek_ocr_sends_the_image_to_current_vision_model(tmp_path):
     worker._build_prompt = lambda: "Trascrivi il testo."
     captured = {}
 
-    def fake_transcribe(api_key, passed_image, prompt, base_url, model):
+    def fake_transcribe(api_key, passed_image, prompt, base_url, model, **kwargs):
         captured.update(
             image=passed_image,
             prompt=prompt,
             base_url=base_url,
             model=model,
+            provider=kwargs.get("provider"),
         )
         return "ATTO DI PROVA"
 
@@ -499,7 +500,8 @@ def test_deepseek_ocr_sends_the_image_to_current_vision_model(tmp_path):
 
     assert worker._transcribe_image(str(image_path), "fake-key") == "ATTO DI PROVA"
     assert captured["image"] == str(image_path)
-    assert captured["model"] == "deepseek-flash"
+    assert captured["model"] is None
+    assert captured["provider"] == "DeepSeek"
 
 
 def test_deepseek_genealogy_handler_keeps_vision_input(monkeypatch, tmp_path):

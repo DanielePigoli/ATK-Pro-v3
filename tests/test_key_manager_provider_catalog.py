@@ -140,6 +140,7 @@ def test_service_supports_provider_uses_normalized_names():
 
 def test_provider_runtime_defaults_are_centralized_by_service():
     assert get_provider_base_url("Groq") == "https://api.groq.com/openai/v1"
+    assert get_provider_base_url("HuggingFace") == "https://router.huggingface.co/v1"
     assert get_provider_default_host("Ollama") == "http://localhost:11434"
     assert get_provider_default_model("Mistral", "translation") == "mistral-large-latest"
     assert get_provider_default_model("Mistral", "ocr") == "pixtral-large-latest"

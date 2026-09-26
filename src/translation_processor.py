@@ -7,6 +7,7 @@ except ImportError:
 import openai
 import os
 from ai_error_utils import classify_ai_runtime_error
+from ai_model_resolver import execute_with_model_fallback
 from key_manager import (
     get_provider_base_url,
     require_provider_default_host,
@@ -82,54 +83,56 @@ class TranslationWorker(QThread):
                         translated_text = self._call_gemini_model(gemini_model, prompt)
                     elif self.provider == "OpenAI":
                         self.openai_client = openai.OpenAI(api_key=key)
-                        translated_text = self._call_openai(prompt, model=self.custom_model)
+                        translated_text = execute_with_model_fallback(
+                            self.provider,
+                            "translation",
+                            key,
+                            lambda model: self._call_openai(prompt, model=model),
+                            custom_model=self.custom_model,
+                            base_url=get_provider_base_url(self.provider),
+                        )
                     elif self.provider == "Claude":
                         import anthropic
                         self.anthropic_client = anthropic.Anthropic(api_key=key)
-                        translated_text = self._call_claude(prompt, model=self.custom_model)
-                    elif self.provider == "Mistral":
-                        translated_text = self._call_openai_compat(
+                        translated_text = execute_with_model_fallback(
+                            self.provider,
+                            "translation",
                             key,
-                            prompt,
-                            get_provider_base_url(self.provider),
-                            self.custom_model or require_provider_default_model(self.provider, "translation"),
+                            lambda model: self._call_claude(prompt, model=model),
+                            custom_model=self.custom_model,
+                            base_url=get_provider_base_url(self.provider),
                         )
-                    elif self.provider == "Groq":
-                        translated_text = self._call_openai_compat(
+                    elif self.provider in ("Mistral", "Groq", "DeepSeek", "xAI", "HuggingFace"):
+                        base_url = get_provider_base_url(self.provider)
+                        translated_text = execute_with_model_fallback(
+                            self.provider,
+                            "translation",
                             key,
-                            prompt,
-                            get_provider_base_url(self.provider),
-                            self.custom_model or require_provider_default_model(self.provider, "translation"),
-                        )
-                    elif self.provider == "DeepSeek":
-                        translated_text = self._call_openai_compat(
-                            key,
-                            prompt,
-                            get_provider_base_url(self.provider),
-                            self.custom_model or require_provider_default_model(self.provider, "translation"),
-                        )
-                    elif self.provider == "xAI":
-                        translated_text = self._call_openai_compat(
-                            key,
-                            prompt,
-                            get_provider_base_url(self.provider),
-                            self.custom_model or require_provider_default_model(self.provider, "translation"),
+                            lambda model: self._call_openai_compat(
+                                key,
+                                prompt,
+                                base_url,
+                                model,
+                            ),
+                            custom_model=self.custom_model,
+                            base_url=base_url,
                         )
                     elif self.provider == "Ollama":
                         default_host = require_provider_default_host(self.provider)
                         host = key.strip() if key.strip().startswith("http") else default_host
-                        translated_text = self._call_openai_compat(
+                        base_url = host.rstrip("/") + "/v1"
+                        translated_text = execute_with_model_fallback(
+                            self.provider,
+                            "translation",
                             "ollama",
-                            prompt,
-                            host.rstrip("/") + "/v1",
-                            self.custom_model or require_provider_default_model(self.provider, "translation"),
-                        )
-                    elif self.provider == "HuggingFace":
-                        translated_text = self._call_openai_compat(
-                            key,
-                            prompt,
-                            get_provider_base_url(self.provider),
-                            self.custom_model or require_provider_default_model(self.provider, "translation"),
+                            lambda model: self._call_openai_compat(
+                                "ollama",
+                                prompt,
+                                base_url,
+                                model,
+                            ),
+                            custom_model=self.custom_model,
+                            base_url=base_url,
                         )
                     else:
                         raise ValueError(f"Provider non supportato: {self.provider}")

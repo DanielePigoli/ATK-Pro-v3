@@ -13,7 +13,7 @@ riproduzione.
 | Area | Stato | Evidenza |
 | --- | --- | --- |
 | Release pubblicata | PASS | Tag `v3.0.0`, sei asset e digest presenti nella release GitHub. |
-| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 865 test passati e 39 skip attesi. |
+| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 886 test passati e 39 skip attesi. |
 | Portali live con immagini reali | PASS | `python verify_portal_live_smoke.py --fetch-images --strict`: 28/28 capability; immagini di inizio, centro e fine decodificabili e distinte nei documenti multipagina. |
 | Pipeline completa dei portali | PASS | 28/28 portali hanno prodotto da una pagina pubblica PNG, PDF leggibile e JSON; nessun placeholder 800 x 1200 o temporaneo residuo nei casi riusciti. |
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
@@ -21,6 +21,7 @@ riproduzione.
 | Uso pratico locale Windows | PASS avvio e smoke grafico | Portable stabile riscaricato, SHA-256 verificato, avviato prima offscreen e poi visibilmente. Finestra, disclaimer, interfaccia italiana, menu, guida e chiusura sono stati verificati. |
 | Percorsi funzionali utente | PASS | Download, manifest sintetico da HTML, OCR, traduzione, GEDCOM ed errori controllati sono verificati. Il disclaimer del menu Documenti usa ora lo stile ATK-Pro condiviso. |
 | Funzioni IA live | PASS sui provider configurati | Traduzione e ricerca assistita: Gemini, OpenAI, Claude e DeepSeek; OCR multimodale: 4/4 con TXT, DOCX e TEI; genealogia: pipeline completa Gemini verso GEDCOM e due CSV. |
+| Continuita' modelli IA | PASS | In caso di modello ritirato, discovery del catalogo, filtro per funzione/modalita', massimo tre alternative e cache del fallback riuscito; override manuali sempre vincolanti. |
 
 ## Esito del controllo live 2026-09-09
 
@@ -262,6 +263,51 @@ Il PASS live riguarda i quattro provider per cui il caveau locale contiene
 credenziali. Mistral, xAI, Groq, HuggingFace e Transkribus restano coperti dai
 test deterministici ma non sono dichiarati verificati live senza credenziali;
 Ollama richiede inoltre un servizio locale e un modello installato.
+
+## Resilienza alla dismissione dei modelli IA 2026-09-26
+
+ATK-Pro mantiene i default centralizzati come percorso rapido, ma non dipende
+piu' esclusivamente da identificativi statici. Quando il provider segnala in
+modo riconoscibile che il modello predefinito non esiste, e' stato ritirato o
+non e' disponibile per la credenziale, il nuovo resolver:
+
+1. interroga il catalogo modelli del provider;
+2. esclude modelli archiviati, gia' dismessi o specializzati in embedding,
+   moderazione, audio, ricerca e altri compiti estranei;
+3. per OCR e input immagine conserva soltanto modelli con capacita' visiva
+   dichiarata o riconoscibile;
+4. prova al massimo tre alternative generaliste;
+5. memorizza nella sessione il primo fallback riuscito, evitando di ripetere
+   errore e discovery per ogni pagina;
+6. non si attiva per quota, rete, autenticazione o parametri non compatibili;
+7. non sostituisce mai un modello inserito manualmente dall'utente.
+
+La discovery e' collegata a traduzione, OCR, ricerca assistita ed estrazione
+genealogica per OpenAI, Claude, DeepSeek, Mistral, Groq, xAI, HuggingFace e
+Ollama. Gemini conserva la discovery nativa gia' presente. Transkribus resta
+separato perche' usa identificativi di modelli HTR e un protocollo specifico.
+L'endpoint chat HuggingFace e' stato aggiornato al router ufficiale corrente.
+
+### Controprova live forzata
+
+I cataloghi visibili alle credenziali configurate hanno restituito 132 modelli
+OpenAI, 12 Claude e 2 DeepSeek. Simulando la dismissione del default prima
+della chiamata reale:
+
+- OpenAI ha selezionato `gpt-5.6-terra`;
+- Claude ha selezionato `claude-sonnet-5`;
+- DeepSeek ha selezionato `deepseek-v4-pro`.
+
+Tutte e tre le chiamate con il prompt sintetico minimo hanno concluso con
+successo. Il primo passaggio ha inoltre individuato che le famiglie OpenAI
+recenti richiedono `max_completion_tokens` invece di `max_tokens`: il
+trasporto sceglie ora automaticamente il parametro corretto in base alla
+famiglia del modello. Dopo la correzione, anche i percorsi ordinari hanno
+nuovamente superato traduzione 4/4 e OCR multimodale 4/4.
+
+La suite estesa dedicata ha concluso con `118 passed, 2 skipped` attesi. Il
+gate release completo ha concluso con `886 passed, 39 skipped`; tutti gli 11
+step sono stati superati.
 
 ## Attivita' pratica residua
 

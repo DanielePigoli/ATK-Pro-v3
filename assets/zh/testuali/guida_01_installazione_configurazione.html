@@ -600,7 +600,13 @@
 </ul>
 </div>
 </div>
-<div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+    <div class="section-box" data-ai-model-resilience="true">
+        <h3>5. AI 模型连续性</h3>
+        <p>如果默认模型被停用或不再可用，ATK-Pro 会查询当前凭据可见的目录，选择与该功能兼容且在需要时支持图像的通用模型，然后最多尝试三个替代模型。配额、网络或身份验证错误不会触发回退。</p>
+        <p><strong>模型覆盖：</strong>手动输入的模型始终具有约束力，绝不会被自动替换。</p>
+    </div>
+
+    <div style="text-align:center;margin:3rem 0;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
 <a class="nav-button" href="guida.html">🏠 主索引</a>
 <a class="nav-button" href="guida_02_operazioni_base.html">Mod.02 — 基本操作 →</a>
 </div>

@@ -4,10 +4,13 @@ import json
 import base64
 import logging
 import time
+from ai_model_resolver import (
+    execute_with_model_fallback,
+    openai_completion_limit_kwargs,
+)
 from key_manager import (
     get_provider_base_url,
     require_provider_default_host,
-    require_provider_default_model,
 )
 
 try:
@@ -420,8 +423,6 @@ class GeminiHandler(AIProviderHandler):
 class OpenAIHandler(AIProviderHandler):
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI
-        if not model:
-            model = require_provider_default_model("OpenAI", "ai_search")
         client = OpenAI(api_key=self.api_key)
         content = [{"type": "text", "text": prompt}]
         if image_path and os.path.exists(image_path):
@@ -441,13 +442,24 @@ class OpenAIHandler(AIProviderHandler):
                     b64 = base64.b64encode(f.read()).decode("utf-8")
             if b64:
                 content.insert(0, {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}})
-        try:
+        def call(selected_model):
             response = client.chat.completions.create(
-                model=model,
-                max_tokens=16000,
-                messages=[{"role": "user", "content": content}]
+                model=selected_model,
+                messages=[{"role": "user", "content": content}],
+                **openai_completion_limit_kwargs(selected_model, 16000),
             )
-            raw_text = response.choices[0].message.content
+            return response.choices[0].message.content
+
+        try:
+            raw_text = execute_with_model_fallback(
+                "OpenAI",
+                "ai_search",
+                self.api_key,
+                call,
+                custom_model=model,
+                base_url=get_provider_base_url("OpenAI"),
+                require_vision=bool(image_path),
+            )
             if debug_dir:
                 d_path = os.path.join(debug_dir, "DIAGNOSTICA_trascrizione_IA_OPENAI.md")
                 try:
@@ -464,8 +476,6 @@ class OpenAIHandler(AIProviderHandler):
 class ClaudeHandler(AIProviderHandler):
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from anthropic import Anthropic
-        if not model:
-            model = require_provider_default_model("Claude", "ai_search")
         client = Anthropic(api_key=self.api_key)
         content = []
         if image_path and os.path.exists(image_path):
@@ -501,13 +511,24 @@ class ClaudeHandler(AIProviderHandler):
                     }
                 })
         content.append({"type": "text", "text": prompt})
-        try:
+        def call(selected_model):
             with client.messages.stream(
-                model=model,
+                model=selected_model,
                 max_tokens=32000,
                 messages=[{"role": "user", "content": content}]
             ) as stream:
-                raw_text = stream.get_final_text()
+                return stream.get_final_text()
+
+        try:
+            raw_text = execute_with_model_fallback(
+                "Claude",
+                "ai_search",
+                self.api_key,
+                call,
+                custom_model=model,
+                base_url=get_provider_base_url("Claude"),
+                require_vision=bool(image_path),
+            )
             if debug_dir:
                 d_path = os.path.join(debug_dir, "DIAGNOSTICA_trascrizione_IA_CLAUDE.md")
                 try:
@@ -528,8 +549,6 @@ class OpenAICompatibleHandler(AIProviderHandler):
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI
         base_url = get_provider_base_url(self.provider)
-        if not model:
-            model = require_provider_default_model(self.provider, "ai_search")
         client = OpenAI(api_key=self.api_key, base_url=base_url)
         content = [{"type": "text", "text": prompt}]
         if image_path and os.path.exists(image_path) and self.provider not in self._NO_VISION:
@@ -549,13 +568,24 @@ class OpenAICompatibleHandler(AIProviderHandler):
                     b64 = base64.b64encode(f.read()).decode("utf-8")
             if b64:
                 content.insert(0, {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}})
-        try:
+        def call(selected_model):
             response = client.chat.completions.create(
-                model=model,
+                model=selected_model,
                 max_tokens=16000,
                 messages=[{"role": "user", "content": content}]
             )
-            raw_text = response.choices[0].message.content
+            return response.choices[0].message.content
+
+        try:
+            raw_text = execute_with_model_fallback(
+                self.provider,
+                "ai_search",
+                self.api_key,
+                call,
+                custom_model=model,
+                base_url=base_url,
+                require_vision=bool(image_path),
+            )
             if debug_dir:
                 d_path = os.path.join(debug_dir, f"DIAGNOSTICA_trascrizione_IA_{self.provider}.md")
                 try:
@@ -580,8 +610,6 @@ class OllamaHandler(AIProviderHandler):
         default_host = require_provider_default_host("Ollama")
         host = self.api_key.strip() if self.api_key and self.api_key.strip().startswith("http") else default_host
         base_url = host.rstrip("/") + "/v1"
-        if not model:
-            model = require_provider_default_model("Ollama", "ai_search")
         # Ollama accetta qualsiasi stringa come api_key
         client = OpenAI(api_key="ollama", base_url=base_url)
         content = [{"type": "text", "text": prompt}]
@@ -602,12 +630,23 @@ class OllamaHandler(AIProviderHandler):
                     b64 = base64.b64encode(f.read()).decode("utf-8")
             if b64:
                 content.insert(0, {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}})
-        try:
+        def call(selected_model):
             response = client.chat.completions.create(
-                model=model,
+                model=selected_model,
                 messages=[{"role": "user", "content": content}]
             )
-            raw_text = response.choices[0].message.content
+            return response.choices[0].message.content
+
+        try:
+            raw_text = execute_with_model_fallback(
+                "Ollama",
+                "ai_search",
+                "ollama",
+                call,
+                custom_model=model,
+                base_url=base_url,
+                require_vision=bool(image_path),
+            )
             if debug_dir:
                 d_path = os.path.join(debug_dir, "DIAGNOSTICA_trascrizione_IA_OLLAMA.md")
                 try:
@@ -616,7 +655,7 @@ class OllamaHandler(AIProviderHandler):
                 except Exception:
                     pass
             payload = self._parse_genealogy_payload_from_text(raw_text)
-            logging.info("[Ollama:%s] Payload genealogico estratto: %s", model, type(payload).__name__)
+            logging.info("[Ollama] Payload genealogico estratto: %s", type(payload).__name__)
             return payload
         except Exception as e:
             raise e
@@ -636,11 +675,10 @@ class HuggingFaceHandler(AIProviderHandler):
 
     def extract_genealogy(self, prompt, image_path=None, model=None, debug_dir=None):
         from openai import OpenAI
-        if not model:
-            model = require_provider_default_model("HuggingFace", "ai_search")
-        client = OpenAI(api_key=self.api_key, base_url=get_provider_base_url("HuggingFace"))
-        content = [{"type": "text", "text": prompt}]
-        if image_path and os.path.exists(image_path) and self._is_vision_model(model):
+        base_url = get_provider_base_url("HuggingFace")
+        client = OpenAI(api_key=self.api_key, base_url=base_url)
+        image_b64 = None
+        if image_path and os.path.exists(image_path):
             ext = os.path.splitext(image_path)[1].lower()
             if ext in (".tif", ".tiff"):
                 try:
@@ -649,21 +687,34 @@ class HuggingFaceHandler(AIProviderHandler):
                     with Image.open(image_path) as im:
                         buf = io.BytesIO()
                         im.convert("RGB").save(buf, format="JPEG", quality=90)
-                        b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+                        image_b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
                 except Exception:
-                    b64 = None
+                    image_b64 = None
             else:
                 with open(image_path, "rb") as f:
-                    b64 = base64.b64encode(f.read()).decode("utf-8")
-            if b64:
-                content.insert(0, {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}})
-        try:
+                    image_b64 = base64.b64encode(f.read()).decode("utf-8")
+
+        def call(selected_model):
+            content = [{"type": "text", "text": prompt}]
+            if image_b64 and self._is_vision_model(selected_model):
+                content.insert(0, {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{image_b64}"}})
             response = client.chat.completions.create(
-                model=model,
+                model=selected_model,
                 max_tokens=8192,
                 messages=[{"role": "user", "content": content}]
             )
-            raw_text = response.choices[0].message.content
+            return response.choices[0].message.content
+
+        try:
+            raw_text = execute_with_model_fallback(
+                "HuggingFace",
+                "ai_search",
+                self.api_key,
+                call,
+                custom_model=model,
+                base_url=base_url,
+                require_vision=bool(image_path),
+            )
             if debug_dir:
                 d_path = os.path.join(debug_dir, "DIAGNOSTICA_trascrizione_IA_HUGGINGFACE.md")
                 try:
@@ -672,7 +723,7 @@ class HuggingFaceHandler(AIProviderHandler):
                 except Exception:
                     pass
             payload = self._parse_genealogy_payload_from_text(raw_text)
-            logging.info("[HuggingFace:%s] Payload genealogico estratto: %s", model, type(payload).__name__)
+            logging.info("[HuggingFace] Payload genealogico estratto: %s", type(payload).__name__)
             return payload
         except Exception as e:
             raise e

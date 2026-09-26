@@ -139,7 +139,7 @@ PROVIDER_RUNTIME_DEFAULTS = {
         },
     },
     "HuggingFace": {
-        "base_url": "https://api-inference.huggingface.co/v1/",
+        "base_url": "https://router.huggingface.co/v1",
         "default_models": {
             "translation": "Qwen/Qwen2.5-72B-Instruct",
             "ocr": "Qwen/Qwen2.5-VL-7B-Instruct",

@@ -17,6 +17,10 @@ from key_manager import (
     service_supports_provider,
 )
 from ai_error_utils import classify_ai_runtime_error
+from ai_model_resolver import (
+    execute_with_model_fallback,
+    openai_completion_limit_kwargs,
+)
 
 
 class AdvancedOCRWorker:
@@ -360,7 +364,8 @@ class AdvancedOCRWorker:
                 img_path,
                 prompt,
                 get_provider_base_url("Mistral"),
-                self.custom_model or require_provider_default_model("Mistral", "ocr"),
+                self.custom_model,
+                provider="Mistral",
             )
         if "Groq" in provider:
             return self._transcribe_openai_compat(
@@ -368,7 +373,8 @@ class AdvancedOCRWorker:
                 img_path,
                 prompt,
                 get_provider_base_url("Groq"),
-                self.custom_model or require_provider_default_model("Groq", "ocr"),
+                self.custom_model,
+                provider="Groq",
             )
         if "DeepSeek" in provider:
             return self._transcribe_openai_compat(
@@ -376,7 +382,8 @@ class AdvancedOCRWorker:
                 img_path,
                 prompt,
                 get_provider_base_url("DeepSeek"),
-                self.custom_model or require_provider_default_model("DeepSeek", "ocr"),
+                self.custom_model,
+                provider="DeepSeek",
             )
         if "xAI" in provider:
             return self._transcribe_openai_compat(
@@ -384,7 +391,8 @@ class AdvancedOCRWorker:
                 img_path,
                 prompt,
                 get_provider_base_url("xAI"),
-                self.custom_model or require_provider_default_model("xAI", "ocr"),
+                self.custom_model,
+                provider="xAI",
             )
         if "Ollama" in provider:
             default_host = require_provider_default_host("Ollama")
@@ -394,7 +402,8 @@ class AdvancedOCRWorker:
                 img_path,
                 prompt,
                 host.rstrip("/") + "/v1",
-                self.custom_model or require_provider_default_model("Ollama", "ocr"),
+                self.custom_model,
+                provider="Ollama",
             )
         if "Hugging" in provider or "HuggingFace" in provider:
             model = self.custom_model or require_provider_default_model("HuggingFace", "ocr")
@@ -402,7 +411,14 @@ class AdvancedOCRWorker:
             if any(m in model.lower() for m in ("trocr", "got-ocr", "olmocr", "pero-ocr")):
                 return self._transcribe_hf_image_to_text(api_key, img_path, model)
             # Vision-language chat: endpoint OpenAI-compatibile
-            return self._transcribe_openai_compat(api_key, img_path, prompt, get_provider_base_url("HuggingFace"), model)
+            return self._transcribe_openai_compat(
+                api_key,
+                img_path,
+                prompt,
+                get_provider_base_url("HuggingFace"),
+                self.custom_model,
+                provider="HuggingFace",
+            )
         if "Transkribus" in provider:
             return self._transcribe_transkribus(api_key, img_path)
 
@@ -649,79 +665,121 @@ class AdvancedOCRWorker:
         raise Exception(f"[OCR] Nessun modello Gemini disponibile. Ultimo errore: {last_error}")
 
     def _transcribe_openai(self, api_key, b64_img, prompt, model=None):
-        """Trascrizione via OpenAI Vision (gpt-4o)."""
-        if not model:
-            model = require_provider_default_model("OpenAI", "ocr")
-        logging.info(f"[OCR] OpenAI — modello: {model}")
-        url = "https://api.openai.com/v1/chat/completions"
-        payload = {
-            "model": model,
-            "messages": [{
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": prompt},
-                    {"type": "image_url",
-                     "image_url": {"url": f"data:image/jpeg;base64,{b64_img}", "detail": "high"}}
-                ]
-            }],
-            "temperature": 0.1,
-            "max_tokens": 4096
-        }
-        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
-        resp = requests.post(url, headers=headers, json=payload, timeout=120)
-        resp.raise_for_status()
-        res_json = resp.json()
-        try:
-            return res_json["choices"][0]["message"]["content"]
-        except (KeyError, IndexError):
-            raise Exception(f"Risposta OpenAI non valida: {res_json}")
+        """Trascrizione via OpenAI Vision con recupero dei modelli ritirati."""
+        def call(selected_model):
+            logging.info(f"[OCR] OpenAI — modello: {selected_model}")
+            url = "https://api.openai.com/v1/chat/completions"
+            payload = {
+                "model": selected_model,
+                "messages": [{
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {"type": "image_url",
+                         "image_url": {"url": f"data:image/jpeg;base64,{b64_img}", "detail": "high"}}
+                    ]
+                }],
+            }
+            payload.update(openai_completion_limit_kwargs(selected_model, 4096))
+            if "max_tokens" in payload:
+                payload["temperature"] = 0.1
+            headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+            resp = requests.post(url, headers=headers, json=payload, timeout=120)
+            resp.raise_for_status()
+            res_json = resp.json()
+            try:
+                return res_json["choices"][0]["message"]["content"]
+            except (KeyError, IndexError):
+                raise Exception(f"Risposta OpenAI non valida: {res_json}")
+
+        return execute_with_model_fallback(
+            "OpenAI",
+            "ocr",
+            api_key,
+            call,
+            custom_model=model,
+            base_url=get_provider_base_url("OpenAI"),
+            require_vision=True,
+        )
 
     def _transcribe_claude(self, api_key, b64_img, prompt, model=None):
-        """Trascrizione via Anthropic Messages API."""
-        if not model:
-            model = require_provider_default_model("Claude", "ocr")
-        logging.info(f"[OCR] Anthropic — modello: {model}")
-        url = "https://api.anthropic.com/v1/messages"
-        payload = {
-            "model": model,
-            "max_tokens": 4096,
-            "messages": [{
-                "role": "user",
-                "content": [
-                    {"type": "image",
-                     "source": {"type": "base64", "media_type": "image/jpeg", "data": b64_img}},
-                    {"type": "text", "text": prompt}
-                ]
-            }]
-        }
-        headers = {
-            "x-api-key": api_key,
-            "anthropic-version": "2023-06-01",
-            "content-type": "application/json"
-        }
-        resp = requests.post(url, headers=headers, json=payload, timeout=120)
-        resp.raise_for_status()
-        res_json = resp.json()
-        try:
-            return res_json["content"][0]["text"]
-        except (KeyError, IndexError):
-            raise Exception(f"Risposta Anthropic non valida: {res_json}")
+        """Trascrizione via Anthropic Messages API con recupero dei modelli ritirati."""
+        def call(selected_model):
+            logging.info(f"[OCR] Anthropic — modello: {selected_model}")
+            url = "https://api.anthropic.com/v1/messages"
+            payload = {
+                "model": selected_model,
+                "max_tokens": 4096,
+                "messages": [{
+                    "role": "user",
+                    "content": [
+                        {"type": "image",
+                         "source": {"type": "base64", "media_type": "image/jpeg", "data": b64_img}},
+                        {"type": "text", "text": prompt}
+                    ]
+                }]
+            }
+            headers = {
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json"
+            }
+            resp = requests.post(url, headers=headers, json=payload, timeout=120)
+            resp.raise_for_status()
+            res_json = resp.json()
+            try:
+                return res_json["content"][0]["text"]
+            except (KeyError, IndexError):
+                raise Exception(f"Risposta Anthropic non valida: {res_json}")
 
-    def _transcribe_openai_compat(self, api_key, img_path, prompt, base_url, model):
+        return execute_with_model_fallback(
+            "Claude",
+            "ocr",
+            api_key,
+            call,
+            custom_model=model,
+            base_url=get_provider_base_url("Claude"),
+            require_vision=True,
+        )
+
+    def _transcribe_openai_compat(
+        self,
+        api_key,
+        img_path,
+        prompt,
+        base_url,
+        model=None,
+        *,
+        provider=None,
+    ):
         """Trascrizione via endpoint OpenAI-compatibile (Mistral, Groq, xAI, Ollama, HuggingFace chat)."""
         from openai import OpenAI
-        logging.info(f"[OCR] OpenAI-compat — base_url: {base_url} modello: {model}")
         client = OpenAI(api_key=api_key, base_url=base_url)
         content = [{"type": "text", "text": prompt}]
         if img_path and os.path.exists(img_path):
             b64 = self._prepare_image_b64(img_path)
             content.insert(0, {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}})
-        response = client.chat.completions.create(
-            model=model,
-            max_tokens=8192,
-            messages=[{"role": "user", "content": content}]
+
+        def call(selected_model):
+            logging.info(f"[OCR] OpenAI-compat — base_url: {base_url} modello: {selected_model}")
+            response = client.chat.completions.create(
+                model=selected_model,
+                max_tokens=8192,
+                messages=[{"role": "user", "content": content}]
+            )
+            return response.choices[0].message.content
+
+        if not provider:
+            return call(model)
+        return execute_with_model_fallback(
+            provider,
+            "ocr",
+            api_key,
+            call,
+            custom_model=model,
+            base_url=base_url,
+            require_vision=True,
         )
-        return response.choices[0].message.content
 
     def _transcribe_hf_image_to_text(self, api_key, img_path, model):
         """Trascrizione via HuggingFace Inference API image-to-text (TrOCR, GOT-OCR2, ecc.).

@@ -17,6 +17,19 @@ def test_all_ocr_guides_document_current_openai_and_deepseek_models():
         assert "<code>deepseek-flash</code>" in content, language_dir.name
 
 
+def test_all_setup_guides_document_controlled_model_fallback():
+    language_dirs = sorted(
+        path for path in Path("assets").iterdir()
+        if path.is_dir() and path.name != "common"
+    )
+
+    assert len(language_dirs) == 20
+    for language_dir in language_dirs:
+        guide = language_dir / "testuali" / "guida_01_installazione_configurazione.html"
+        content = guide.read_text(encoding="utf-8")
+        assert 'data-ai-model-resilience="true"' in content, language_dir.name
+
+
 def test_danish_guide_uses_current_v3_module_set():
     modules = documents.expected_guide_modules(Path("assets/da"))
 
