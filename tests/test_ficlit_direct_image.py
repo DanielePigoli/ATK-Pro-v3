@@ -54,8 +54,11 @@ def test_save_direct_image_outputs_creates_pdf_and_cleans_temp(tmp_path, monkeyp
 
     pdf_calls = []
 
-    def fake_create_pdf(input_dir, output_pdf):
-        pdf_calls.append((input_dir, output_pdf))
+    def fake_create_pdf(image_paths, output_pdf):
+        assert isinstance(image_paths, list)
+        assert len(image_paths) == 1
+        assert Path(image_paths[0]).is_file()
+        pdf_calls.append((image_paths, output_pdf))
         Path(output_pdf).write_bytes(b"%PDF-1.4\n%%EOF")
         return output_pdf
 

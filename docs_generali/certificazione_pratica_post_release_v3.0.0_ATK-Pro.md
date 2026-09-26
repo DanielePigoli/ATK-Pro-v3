@@ -13,8 +13,9 @@ riproduzione.
 | Area | Stato | Evidenza |
 | --- | --- | --- |
 | Release pubblicata | PASS | Tag `v3.0.0`, sei asset e digest presenti nella release GitHub. |
-| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 850 test passati e 39 skip attesi. |
+| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 861 test passati e 39 skip attesi. |
 | Portali live con immagini reali | PASS | `python verify_portal_live_smoke.py --fetch-images --strict`: 28/28 capability; immagini di inizio, centro e fine decodificabili e distinte nei documenti multipagina. |
+| Pipeline completa dei portali | PASS | 28/28 portali hanno prodotto da una pagina pubblica PNG, PDF leggibile e JSON; nessun placeholder 800 x 1200 o temporaneo residuo nei casi riusciti. |
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
 | Artefatti multipiattaforma | PASS in CI | Smoke post-pubblicazione Windows, Linux e macOS completati sui sei asset esatti, come registrato nella checklist release. |
 | Uso pratico locale Windows | PASS avvio e smoke grafico | Portable stabile riscaricato, SHA-256 verificato, avviato prima offscreen e poi visibilmente. Finestra, disclaimer, interfaccia italiana, menu, guida e chiusura sono stati verificati. |
@@ -169,6 +170,53 @@ Entrambi i difetti IA sono stati corretti e sottoposti a controverifica:
 - la suite mirata ha concluso con `33 passed, 14 skipped`, la suite IA estesa
   con `53 passed` e il gate release completo con `849 passed, 39 skipped`;
   tutti gli 11 step del gate sono stati superati.
+
+## Verifica pratica completa dei 28 portali 2026-09-25
+
+La prova ha attraversato l'intera pipeline di `Elaborazione`, non soltanto la
+risoluzione del manifest o la decodifica di un'immagine campione. Per ciascuno
+dei 28 portali registrati e' stata elaborata una sola pagina pubblica, nel
+rispetto della policy `D`, `R_LIMITED`, `R_OK` o variabile applicabile. Ogni
+PASS richiede contemporaneamente:
+
+- almeno un PNG decodificabile e diverso dal placeholder 800 x 1200;
+- un PDF leggibile di una pagina;
+- il manifest o i metadati JSON attesi;
+- assenza di cartelle temporanee o vuote residue.
+
+La prima diagnosi completa ha concluso con 24/28 PASS e ha individuato quattro
+difetti riproducibili:
+
+1. BNCF Teca espone il documento `D` come JPEG diretto, ma il percorso tentava
+   impropriamente di aggiungere `/info.json`;
+2. Museo Galileo scaricava correttamente il JPEG, ma passava al generatore PDF
+   una stringa di directory invece della lista delle immagini;
+3. Internet Culturale derivava dal riferimento OAI un segmento di percorso non
+   valido su Windows;
+4. PHAIDRA derivava il segmento `o:327971`, non valido su Windows, e dopo il
+   preflight tentava una ricostruzione completa tramite un numero eccessivo di
+   tasselli IIIF.
+
+Le correzioni mantengono rigorosa la validazione dei nomi inseriti dall'utente,
+ma rendono sicuri i soli segmenti generati da identificativi remoti. BNCF usa
+ora il JPEG ufficiale del canvas; Museo Galileo genera il PDF dalla lista
+corretta; Internet Culturale e PHAIDRA usano nomi locali validi; PHAIDRA scarica
+in un'unica richiesta l'immagine IIIF completa dichiarata dal canvas, con host
+ufficiale verificato, invece di richiedere centinaia di tasselli.
+
+La controprova finale ha prodotto 27/28 PASS nel giro unico. Findbuch non ha
+risposto entro il timeout durante la prima acquisizione HTML, poi ha superato
+il retry isolato in 6,94 secondi: l'esito effettivo consolidato e' quindi
+28/28 PASS. Il complesso degli output riusciti occupa circa 305 MB. BDL ha
+prodotto una pagina reale, PNG, PDF e JSON senza placeholder residui; PHAIDRA
+ha concluso in 12,36 secondi usando una singola immagine completa. I report
+locali sono:
+
+- `.codex_tmp/portal_e2e_report_20260925_run4.csv` per il giro completo;
+- `.codex_tmp/portal_e2e_report_20260925_run5.csv` per il retry Findbuch.
+
+La suite mirata ha concluso con `59 passed`. Il gate release completo ha
+concluso con `861 passed, 39 skipped`; tutti gli 11 step sono stati superati.
 
 ## Attivita' pratica residua
 

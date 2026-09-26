@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from io import BytesIO
 import re
 import time
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 import requests
 from PIL import Image
@@ -243,6 +243,12 @@ DIRECT_IMAGE_ADAPTERS_BY_CONTEXT = {
 }
 
 DIRECT_IMAGE_ADAPTERS_BY_PORTAL = {
+    "bncf_teca": DirectImagePortalAdapter(
+        portal_label="BNCF",
+        referer="https://teca.bncf.firenze.sbn.it/",
+        retry_attempts=3,
+        retry_delay=1.0,
+    ),
     "biblioteca_digitale_lombarda": DirectImagePortalAdapter(
         portal_label="BDL",
         referer="https://www.bdl.servizirl.it/",
@@ -253,6 +259,13 @@ DIRECT_IMAGE_ADAPTERS_BY_PORTAL = {
     "dl_ficlit": DirectImagePortalAdapter(
         portal_label="FICLIT",
         referer="https://dl.ficlit.unibo.it/",
+    ),
+    "phaidra_unipd": DirectImagePortalAdapter(
+        portal_label="PHAIDRA",
+        referer="https://phaidra.cab.unipd.it/",
+        timeout=120,
+        retry_attempts=3,
+        retry_delay=2.0,
     ),
 }
 
@@ -344,6 +357,20 @@ def resolve_direct_image_download(portal_key: str | None, canvas: dict, service_
     """Restituisce (adapter, image_url) per i portali a immagine diretta supportati."""
     portal_adapter = DIRECT_IMAGE_ADAPTERS_BY_PORTAL.get(portal_key)
 
+    if portal_adapter and portal_key == "bncf_teca":
+        resource = canvas.get("images", [{}])[0].get("resource", {})
+        image_url = str(resource.get("@id") or resource.get("id") or service_id or "").strip()
+        parsed = urlparse(image_url)
+        query = parse_qs(parsed.query)
+        if (
+            parsed.scheme == "https"
+            and parsed.netloc == "teca.bncf.firenze.sbn.it"
+            and parsed.path == "/ImageViewer/servlet/ImageViewer"
+            and query.get("azione") == ["showImg"]
+        ):
+            return portal_adapter, image_url
+        return None, None
+
     if portal_adapter and portal_key == "biblioteca_digitale_lombarda":
         resource = canvas.get("images", [{}])[0].get("resource", {})
         image_url = str(resource.get("@id") or resource.get("id") or "").strip()
@@ -354,6 +381,21 @@ def resolve_direct_image_download(portal_key: str | None, canvas: dict, service_
     if portal_adapter and portal_key == "dl_ficlit":
         image_url = ficlit_direct_image_url_from_canvas(canvas)
         if image_url:
+            return portal_adapter, image_url
+        return None, None
+
+    if portal_adapter and portal_key == "phaidra_unipd":
+        resource = canvas.get("images", [{}])[0].get("resource", {})
+        image_url = str(resource.get("@id") or resource.get("id") or "").strip()
+        parsed = urlparse(image_url)
+        iiif_value = parsed.query.removeprefix("IIIF=")
+        if (
+            parsed.scheme == "https"
+            and parsed.netloc == "phaidra.unipd.it"
+            and parsed.path == "/api/imageserver"
+            and parsed.query.startswith("IIIF=o:")
+            and iiif_value.endswith("/full/full/0/default.jpg")
+        ):
             return portal_adapter, image_url
         return None, None
 

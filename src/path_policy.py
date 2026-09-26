@@ -22,6 +22,22 @@ RESERVED_WINDOWS_NAMES = frozenset(
 )
 
 
+def sanitize_generated_segment(value: object, fallback: str = "item", max_length: int = 120) -> str:
+    """Rende sicuro un segmento derivato da identificativi remoti, non dall'utente."""
+    text = str(value or "")
+    cleaned = "".join(
+        "_" if char in INVALID_WINDOWS_CHARS or ord(char) < 32 else char
+        for char in text
+    )
+    cleaned = re.sub(r"_+", "_", cleaned).strip(" .")
+    if not cleaned:
+        cleaned = fallback
+    stem = cleaned.split(".", 1)[0].upper()
+    if stem in RESERVED_WINDOWS_NAMES:
+        cleaned = f"id_{cleaned}"
+    return cleaned[:max_length].rstrip(" .") or fallback
+
+
 @dataclass(frozen=True)
 class TargetProfile:
     name: str

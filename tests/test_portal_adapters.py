@@ -70,6 +70,50 @@ def test_resolve_direct_image_download_for_internetculturale_context():
     assert image_url == "https://www.internetculturale.it/jpg.jpg"
 
 
+def test_resolve_direct_image_download_for_bncf_document():
+    from src.portal_adapters import resolve_direct_image_download
+
+    image_url = (
+        "https://teca.bncf.firenze.sbn.it/ImageViewer/servlet/ImageViewer"
+        "?idr=BNCF00004140910&azione=showImg&sequence=1&reduce=0"
+    )
+    canvas = {
+        "images": [{
+            "resource": {
+                "@id": image_url,
+                "format": "image/jpeg",
+                "service": {"@id": image_url},
+            }
+        }]
+    }
+
+    adapter, resolved_url = resolve_direct_image_download(
+        "bncf_teca",
+        canvas,
+        image_url,
+    )
+
+    assert adapter.portal_label == "BNCF"
+    assert resolved_url == image_url
+
+
+def test_resolve_direct_image_download_rejects_nonofficial_bncf_image():
+    image_url = (
+        "https://example.test/ImageViewer/servlet/ImageViewer"
+        "?next=teca.bncf.firenze.sbn.it&azione=showImg"
+    )
+    canvas = {"images": [{"resource": {"@id": image_url}}]}
+
+    adapter, resolved_url = resolve_direct_image_download(
+        "bncf_teca",
+        canvas,
+        image_url,
+    )
+
+    assert adapter is None
+    assert resolved_url is None
+
+
 def test_resolve_direct_image_download_for_archive_org_host():
     canvas = {"images": [{"resource": {"service": {}}}]}
 
@@ -188,6 +232,53 @@ def test_resolve_direct_image_download_for_ficlit_portal():
     assert adapter is not None
     assert adapter.portal_label == "FICLIT"
     assert image_url == "https://dl.ficlit.unibo.it/iiif/2/45498/full/699,800/0/default.jpg"
+
+
+def test_resolve_direct_image_download_for_phaidra_full_canvas_image():
+    image_url = (
+        "https://phaidra.unipd.it/api/imageserver"
+        "?IIIF=o:327971.tif/full/full/0/default.jpg"
+    )
+    canvas = {
+        "images": [{
+            "resource": {
+                "@id": image_url,
+                "format": "image/jpeg",
+                "service": {
+                    "@id": "https://phaidra.unipd.it/api/imageserver?IIIF=o:327971.tif",
+                },
+            }
+        }]
+    }
+
+    adapter, resolved_url = resolve_direct_image_download(
+        "phaidra_unipd",
+        canvas,
+        canvas["images"][0]["resource"]["service"]["@id"],
+    )
+
+    assert adapter is not None
+    assert adapter.portal_label == "PHAIDRA"
+    assert resolved_url == image_url
+
+
+def test_resolve_direct_image_download_rejects_nonofficial_phaidra_image():
+    canvas = {
+        "images": [{
+            "resource": {
+                "@id": "https://example.test/api/imageserver?IIIF=o:327971.tif/full/full/0/default.jpg",
+            }
+        }]
+    }
+
+    adapter, image_url = resolve_direct_image_download(
+        "phaidra_unipd",
+        canvas,
+        "https://phaidra.unipd.it/api/imageserver?IIIF=o:327971.tif",
+    )
+
+    assert adapter is None
+    assert image_url is None
 
 
 def test_resolve_direct_pdf_download_for_bdt_manifest():

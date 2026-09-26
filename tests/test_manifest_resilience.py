@@ -218,6 +218,24 @@ class TestManifestFileSaving:
             assert '<' not in f
             assert '>' not in f
 
+    def test_remote_container_id_is_sanitized_in_filename(self, monkeypatch, tmp_path):
+        resp = Mock()
+        resp.status_code = 200
+        resp.json.return_value = {"sequences": [{"canvases": []}]}
+        monkeypatch.setattr(mu.requests, 'get', lambda *a, **k: resp)
+
+        result = mu.download_manifest(
+            'https://phaidra.unipd.it/api/object/o:327971/iiifmanifest',
+            str(tmp_path),
+            'documento_test',
+        )
+
+        assert result is not None
+        files = list(tmp_path.iterdir())
+        assert [path.name for path in files] == [
+            'manifest_o_327971_documento_test.json'
+        ]
+
 
 class TestManifestRequestException:
     """Test gestione eccezioni requests generiche."""
