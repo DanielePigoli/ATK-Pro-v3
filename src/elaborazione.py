@@ -48,9 +48,9 @@ try:
 except ImportError:
     from src.atk_version import PACKAGE_VERSION as VERSION
 try:
-    from path_policy import PathPreflightError, preflight_record
+    from path_policy import PathPreflightError, preflight_record, sanitize_generated_segment
 except ImportError:
-    from src.path_policy import PathPreflightError, preflight_record
+    from src.path_policy import PathPreflightError, preflight_record, sanitize_generated_segment
 
 
 
@@ -357,7 +357,7 @@ def _save_direct_image_outputs(
         try:
             image.save(tmp_png, format='PNG')
             pdf_out = os.path.join(output_folder, f"{base_filename}.pdf")
-            pdf_created = bool(create_pdf_from_images(tmp_dir, pdf_out))
+            pdf_created = bool(create_pdf_from_images([tmp_png], pdf_out))
         finally:
             _finalize_temp_pdf_workspace(tmp_dir, output_folder, base_filename, pdf_created)
 
@@ -555,6 +555,7 @@ class Elaborazione:
                         container_id = idr_match.group(1)
             else:
                 container_id = manifest_url.strip("/").split("/")[-2]
+            container_id = sanitize_generated_segment(container_id, fallback="SYNTH")
 
             titolo_pulito = re.sub(r'[\\/*?:"<>|]', "", self.nome_file).replace(" ", "_")
             base_folder_name = f"{container_id}_{titolo_pulito}"

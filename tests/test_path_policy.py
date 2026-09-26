@@ -8,7 +8,17 @@ from src.path_policy import (
     detect_profile,
     evaluate_paths,
     preflight_record,
+    sanitize_generated_segment,
 )
+
+
+def test_generated_remote_segment_is_sanitized_without_changing_user_names():
+    assert sanitize_generated_segment("o:327971") == "o_327971"
+    assert (
+        sanitize_generated_segment("iccu.jsp?id=oai:www.example/Teca")
+        == "iccu.jsp_id=oai_www.example_Teca"
+    )
+    assert sanitize_generated_segment("CON") == "id_CON"
 
 
 def test_detects_onedrive_only_when_root_contains_onedrive():

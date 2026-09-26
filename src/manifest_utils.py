@@ -81,6 +81,10 @@ import json
 from logging.handlers import RotatingFileHandler
 import time
 from urllib.parse import parse_qs, quote_plus, unquote_plus, urljoin, urlparse
+try:
+    from path_policy import sanitize_generated_segment
+except ImportError:
+    from src.path_policy import sanitize_generated_segment
 ATKPRO_ENV = os.environ.get("ATKPRO_ENV", "development").lower()
 logger = logging.getLogger(__name__)
 if not logger.hasHandlers():
@@ -2513,7 +2517,10 @@ def download_manifest(manifest_url: str, output_folder: str, titolo_doc: str = "
             os.makedirs(output_folder, exist_ok=True)
 
             # Estrai ID contenitore dall'URL (identico alla v1.4.1)
-            container_id = manifest_url.strip("/").split("/")[-2]
+            container_id = sanitize_generated_segment(
+                manifest_url.strip("/").split("/")[-2],
+                fallback="manifest",
+            )
             titolo_pulito = re.sub(r'[\\/*?:"<>|]', "", titolo_doc).replace(" ", "_")
             manifest_filename = f"manifest_{container_id}_{titolo_pulito}.json"
             manifest_path = os.path.join(output_folder, manifest_filename)
