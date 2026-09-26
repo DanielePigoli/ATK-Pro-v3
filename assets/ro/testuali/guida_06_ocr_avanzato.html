@@ -359,9 +359,9 @@
 <table>
 <thead><tr><th>Furnizor</th><th>Tipul serviciului</th><th>Acreditări</th><th>Note operaționale</th></tr></thead>
 <tbody>
-<tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Servicii de la distanță</td><td>Cheie API a furnizorului</td><td>Modelele și disponibilitatea depind de contul dvs. și de termenii actuali ai furnizorului.</td></tr>
+<tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Servicii de la distanță</td><td>Cheie API a furnizorului</td><td>OCR-ul OpenAI utilizează implicit <code>gpt-4.1</code>; modelele și disponibilitatea depind de cont și de condițiile actuale ale furnizorului.</td></tr>
 <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Endpointuri la distanță compatibile</td><td>Cheie API a furnizorului</td><td>Selectați un model capabil să prelucreze imagini; nu toate modelele text acceptă OCR vizual.</td></tr>
-<tr><td><strong>DeepSeek</strong></td><td>Endpoint la distanță exclusiv text în configurația actuală</td><td>Cheie API a furnizorului</td><td>Nu este potrivit pentru OCR vizual până când nu este configurat un punct final și un model compatibil cu imagini.</td></tr>
+<tr><td><strong>DeepSeek</strong></td><td>Endpoint la distanță multimodal compatibil</td><td>Cheie API a furnizorului</td><td>Modelul implicit <code>deepseek-flash</code> primește direct imaginea; disponibilitatea și calitatea depind de serviciul curent.</td></tr>
 <tr><td><strong>HuggingFace</strong></td><td>API de inferență la distanță</td><td>Token HuggingFace</td><td>Compatibilitatea și rezultatele depind de modelul configurat.</td></tr>
 <tr><td><strong>Transkribus</strong></td><td>Serviciu HTR de la distanță</td><td><code>email:password</code> sau token Bearer</td><td>Necesită un cont și cel puțin o colecție disponibilă.</td></tr>
 <tr><td><strong>Ollama</strong></td><td>Serviciu local</td><td>Nu necesită cheie API la distanță</td><td>Necesită Ollama activ și un model vizual compatibil instalat local.</td></tr>

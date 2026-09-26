@@ -363,9 +363,9 @@
             <table>
                 <thead><tr><th>Fournisseur</th><th>Type de service</th><th>Identifiants</th><th>Notes d’utilisation</th></tr></thead>
                 <tbody>
-                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Services distants</td><td>Clé API du fournisseur</td><td>Les modèles et leur disponibilité dépendent du compte et des conditions actuelles du fournisseur.</td></tr>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Services distants</td><td>Clé API du fournisseur</td><td>L’OCR OpenAI utilise <code>gpt-4.1</code> par défaut ; les modèles et leur disponibilité dépendent du compte et des conditions actuelles du fournisseur.</td></tr>
                     <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Points de terminaison distants compatibles</td><td>Clé API du fournisseur</td><td>Sélectionnez un modèle capable de traiter des images ; tous les modèles textuels ne prennent pas en charge l’OCR visuel.</td></tr>
-                    <tr><td><strong>DeepSeek</strong></td><td>Point de terminaison distant texte uniquement dans la configuration actuelle</td><td>Clé API du fournisseur</td><td>Il ne convient pas à l’OCR visuel tant qu’un point de terminaison et un modèle compatibles avec les images n’ont pas été configurés.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Point de terminaison distant multimodal compatible</td><td>Clé API du fournisseur</td><td>Le modèle par défaut <code>deepseek-flash</code> reçoit directement l’image ; la disponibilité et la qualité dépendent du service actuel.</td></tr>
                     <tr><td><strong>HuggingFace</strong></td><td>API d’inférence distante</td><td>Jeton HuggingFace</td><td>La compatibilité et les résultats dépendent du modèle configuré.</td></tr>
                     <tr><td><strong>Transkribus</strong></td><td>Service HTR distant</td><td><code>email:password</code> ou jeton Bearer</td><td>Nécessite un compte et au moins une collection disponible.</td></tr>
                     <tr><td><strong>Ollama</strong></td><td>Service local</td><td>Aucune clé API distante</td><td>Nécessite qu’Ollama soit actif et qu’un modèle visuel compatible soit installé localement.</td></tr>

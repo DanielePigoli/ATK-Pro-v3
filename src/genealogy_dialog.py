@@ -231,8 +231,14 @@ class GenealogyWorker(QThread):
                         
                     except Exception as e:
                         full_error = str(e)
-                        key_hint = current_key[:6] + "..." if current_key else "None"
-                        logging.error(f"[CAVEAU-FAIL] Chiave {key_hint} fallita: {full_error}")
+                        normalized_provider = normalize_provider_name(current_prov)
+                        key_slot = km.current_indices.get(normalized_provider, 0) + 1
+                        key_hint = f"slot {key_slot}"
+                        logging.error(
+                            "[CAVEAU-FAIL] Chiave %s fallita: %s",
+                            key_hint,
+                            full_error,
+                        )
                         
                         # Messaggio di stato pulito sulla barra
                         self.progress.emit(percent, self.msg("retry_next_key", provider=current_prov))

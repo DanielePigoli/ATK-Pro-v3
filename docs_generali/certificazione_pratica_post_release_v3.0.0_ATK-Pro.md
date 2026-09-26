@@ -1,6 +1,6 @@
 # Certificazione pratica post-release ATK-Pro v3.0.0
 
-Data snapshot: 2026-09-25
+Data snapshot: 2026-09-26
 
 Questo registro separa la validazione tecnica gia' conclusa per la release
 stabile dalle prove pratiche svolte dopo la pubblicazione. Le prove usano solo
@@ -13,13 +13,14 @@ riproduzione.
 | Area | Stato | Evidenza |
 | --- | --- | --- |
 | Release pubblicata | PASS | Tag `v3.0.0`, sei asset e digest presenti nella release GitHub. |
-| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 861 test passati e 39 skip attesi. |
+| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 865 test passati e 39 skip attesi. |
 | Portali live con immagini reali | PASS | `python verify_portal_live_smoke.py --fetch-images --strict`: 28/28 capability; immagini di inizio, centro e fine decodificabili e distinte nei documenti multipagina. |
 | Pipeline completa dei portali | PASS | 28/28 portali hanno prodotto da una pagina pubblica PNG, PDF leggibile e JSON; nessun placeholder 800 x 1200 o temporaneo residuo nei casi riusciti. |
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
 | Artefatti multipiattaforma | PASS in CI | Smoke post-pubblicazione Windows, Linux e macOS completati sui sei asset esatti, come registrato nella checklist release. |
 | Uso pratico locale Windows | PASS avvio e smoke grafico | Portable stabile riscaricato, SHA-256 verificato, avviato prima offscreen e poi visibilmente. Finestra, disclaimer, interfaccia italiana, menu, guida e chiusura sono stati verificati. |
 | Percorsi funzionali utente | PASS | Download, manifest sintetico da HTML, OCR, traduzione, GEDCOM ed errori controllati sono verificati. Il disclaimer del menu Documenti usa ora lo stile ATK-Pro condiviso. |
+| Funzioni IA live | PASS sui provider configurati | Traduzione e ricerca assistita: Gemini, OpenAI, Claude e DeepSeek; OCR multimodale: 4/4 con TXT, DOCX e TEI; genealogia: pipeline completa Gemini verso GEDCOM e due CSV. |
 
 ## Esito del controllo live 2026-09-09
 
@@ -218,9 +219,55 @@ locali sono:
 La suite mirata ha concluso con `59 passed`. Il gate release completo ha
 concluso con `861 passed, 39 skipped`; tutti gli 11 step sono stati superati.
 
+## Certificazione pratica delle funzioni IA 2026-09-26
+
+Le prove live hanno usato esclusivamente un atto sintetico con nomi, luogo e
+data inventati. Gli output e i report sono stati scritti sotto
+`.codex_tmp/ai_certification/`, escluso da Git. Nessuna chiave o risposta
+integrale del provider e' registrata nella certificazione.
+
+| Funzione | Provider/campione | Esito | Evidenza |
+| --- | --- | --- | --- |
+| Traduzione OCR | Gemini, OpenAI, Claude e DeepSeek; italiano verso inglese | PASS 4/4 | Tutti i worker hanno concluso con successo preservando Giovanni Rossi, Trento e 1882. |
+| OCR multimodale | Immagine sintetica 1800 x 1000; Gemini, OpenAI, Claude e DeepSeek | PASS 4/4 dopo correzione | Ogni provider ha trascritto nomi, luogo e data. Per ciascuno sono stati prodotti e riaperti TXT, DOCX e XML TEI-P5 validi. |
+| Ricerca assistita comparativa | Query genealogica sintetica, modalita' `show_all` | PASS 4/4 | Gemini, OpenAI, Claude e DeepSeek hanno restituito ciascuno una riga strutturata; nessun errore del worker. |
+| Estrazione genealogica | Trascrizione sintetica di atto di nascita, Gemini | PASS | GEDCOM UTF-8 con soggetto, genitori e trailer `0 TRLR`; prodotti e riaperti entrambi i CSV; conteggio estratto pari a 1. |
+| Errori e sicurezza | Suite deterministica e ispezione log | PASS | Le chiavi non sono riportate nei log: gli errori genealogici identificano soltanto lo slot. |
+
+La verifica ha individuato e corretto quattro difetti riproducibili:
+
+1. i modelli predefiniti Claude e DeepSeek non erano piu' disponibili presso i
+   rispettivi provider; sono ora `claude-sonnet-4-6` e `deepseek-flash`;
+2. DeepSeek era ancora classificato come solo testo e l'OCR non gli inoltrava
+   l'immagine; il percorso multimodale e' ora attivo anche nell'estrazione
+   genealogica;
+3. `gpt-4o` ha rifiutato l'immagine sintetica nello smoke OCR, mentre
+   `gpt-4.1` ha trascritto correttamente lo stesso input; il default OpenAI e'
+   stato aggiornato soltanto per il servizio OCR;
+4. un errore del worker genealogico riportava nei log i primi caratteri della
+   chiave; ora registra esclusivamente il numero dello slot.
+
+Le prove OpenAI e DeepSeek sono state ripetute con `openai==2.33.0`, la versione
+vincolata dal progetto: il vecchio SDK presente nell'ambiente Python globale
+non rappresenta il runtime previsto dalla build. Le guide OCR italiana e le
+19 traduzioni descrivono ora gli stessi default e la capacita' multimodale
+DeepSeek.
+
+La suite deterministica IA iniziale ha concluso con `108 passed`; la suite
+mirata finale per IA, documenti e localizzazione con `84 passed, 2 skipped`
+attesi. Il gate release completo ha concluso con `865 passed, 39 skipped`;
+tutti gli 11 step sono stati superati.
+
+Il PASS live riguarda i quattro provider per cui il caveau locale contiene
+credenziali. Mistral, xAI, Groq, HuggingFace e Transkribus restano coperti dai
+test deterministici ma non sono dichiarati verificati live senza credenziali;
+Ollama richiede inoltre un servizio locale e un modello installato.
+
 ## Attivita' pratica residua
 
 Nessuna anomalia funzionale o estetica nota resta aperta nelle prove registrate.
+Resta facoltativa una prova live dei provider non configurati quando saranno
+disponibili le relative credenziali o, per Ollama, un modello locale.
 
 ## Confini della certificazione
 

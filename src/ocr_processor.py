@@ -371,10 +371,9 @@ class AdvancedOCRWorker:
                 self.custom_model or require_provider_default_model("Groq", "ocr"),
             )
         if "DeepSeek" in provider:
-            # Solo testo — ignora immagine
             return self._transcribe_openai_compat(
                 api_key,
-                None,
+                img_path,
                 prompt,
                 get_provider_base_url("DeepSeek"),
                 self.custom_model or require_provider_default_model("DeepSeek", "ocr"),

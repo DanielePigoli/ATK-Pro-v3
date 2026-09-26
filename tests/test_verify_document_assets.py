@@ -3,6 +3,20 @@ from pathlib import Path
 import verify_document_assets as documents
 
 
+def test_all_ocr_guides_document_current_openai_and_deepseek_models():
+    language_dirs = sorted(
+        path for path in Path("assets").iterdir()
+        if path.is_dir() and path.name != "common"
+    )
+
+    assert len(language_dirs) == 20
+    for language_dir in language_dirs:
+        guide = language_dir / "testuali" / "guida_06_ocr_avanzato.html"
+        content = guide.read_text(encoding="utf-8")
+        assert "<code>gpt-4.1</code>" in content, language_dir.name
+        assert "<code>deepseek-flash</code>" in content, language_dir.name
+
+
 def test_danish_guide_uses_current_v3_module_set():
     modules = documents.expected_guide_modules(Path("assets/da"))
 

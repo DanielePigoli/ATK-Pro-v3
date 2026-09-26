@@ -363,9 +363,9 @@
             <table>
                 <thead><tr><th>Provider</th><th>Tipo di servizio</th><th>Credenziali</th><th>Note operative</th></tr></thead>
                 <tbody>
-                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Servizi remoti</td><td>API key del provider</td><td>Modelli e disponibilit&agrave; dipendono dall'account e dalle condizioni correnti del provider.</td></tr>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Servizi remoti</td><td>API key del provider</td><td>Per OpenAI l&apos;OCR usa in modo predefinito <code>gpt-4.1</code>; modelli e disponibilit&agrave; dipendono dall&apos;account e dalle condizioni correnti del provider.</td></tr>
                     <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Endpoint remoti compatibili</td><td>API key del provider</td><td>Selezionare un modello capace di elaborare immagini; non tutti i modelli testuali supportano OCR visuale.</td></tr>
-                    <tr><td><strong>DeepSeek</strong></td><td>Endpoint remoto solo testo nella configurazione corrente</td><td>API key del provider</td><td>Non &egrave; adatto all&apos;OCR visuale finch&eacute; non viene configurato un endpoint e un modello compatibili con immagini.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Endpoint remoto multimodale compatibile</td><td>API key del provider</td><td>Il modello predefinito <code>deepseek-flash</code> riceve direttamente l&apos;immagine; disponibilit&agrave; e qualit&agrave; dipendono dal servizio corrente.</td></tr>
                     <tr><td><strong>HuggingFace</strong></td><td>Inference API remota</td><td>Token HuggingFace</td><td>Compatibilit&agrave; e risultati dipendono dal modello configurato.</td></tr>
                     <tr><td><strong>Transkribus</strong></td><td>Servizio HTR remoto</td><td><code>email:password</code> oppure Bearer token</td><td>Richiede un account e almeno una collection disponibile.</td></tr>
                     <tr><td><strong>Ollama</strong></td><td>Servizio locale</td><td>Nessuna API key remota</td><td>Richiede Ollama attivo e un modello visuale compatibile installato localmente.</td></tr>

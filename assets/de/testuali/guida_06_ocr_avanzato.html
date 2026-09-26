@@ -363,9 +363,9 @@
             <table>
                 <thead><tr><th>Anbieter</th><th>Diensttyp</th><th>Zugangsdaten</th><th>Betriebshinweise</th></tr></thead>
                 <tbody>
-                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Remote-Dienste</td><td>API-Schlüssel des Anbieters</td><td>Modelle und Verfügbarkeit hängen vom Konto und von den aktuellen Bedingungen des Anbieters ab.</td></tr>
+                    <tr><td><strong>Gemini, OpenAI, Claude</strong></td><td>Remote-Dienste</td><td>API-Schlüssel des Anbieters</td><td>OpenAI OCR verwendet standardmäßig <code>gpt-4.1</code>; Modelle und Verfügbarkeit hängen vom Konto und von den aktuellen Bedingungen des Anbieters ab.</td></tr>
                     <tr><td><strong>Mistral, Groq, xAI</strong></td><td>Kompatible Remote-Endpunkte</td><td>API-Schlüssel des Anbieters</td><td>Wählen Sie ein Modell aus, das Bilder verarbeiten kann; nicht alle Textmodelle unterstützen visuelle OCR.</td></tr>
-                    <tr><td><strong>DeepSeek</strong></td><td>In der aktuellen Konfiguration ausschließlich textbasierter Remote-Endpunkt</td><td>API-Schlüssel des Anbieters</td><td>Für visuelle OCR ist dieser Dienst nicht geeignet, solange kein mit Bildern kompatibler Endpunkt und kein entsprechendes Modell konfiguriert sind.</td></tr>
+                    <tr><td><strong>DeepSeek</strong></td><td>Kompatibler multimodaler Remote-Endpunkt</td><td>API-Schlüssel des Anbieters</td><td>Das Standardmodell <code>deepseek-flash</code> empfängt das Bild direkt; Verfügbarkeit und Qualität hängen vom aktuellen Dienst ab.</td></tr>
                     <tr><td><strong>HuggingFace</strong></td><td>Remote Inference API</td><td>HuggingFace-Token</td><td>Kompatibilität und Ergebnisse hängen vom konfigurierten Modell ab.</td></tr>
                     <tr><td><strong>Transkribus</strong></td><td>Remote-HTR-Dienst</td><td><code>email:password</code> oder Bearer-Token</td><td>Erfordert ein Konto und mindestens eine verfügbare Collection.</td></tr>
                     <tr><td><strong>Ollama</strong></td><td>Lokaler Dienst</td><td>Kein Remote-API-Schlüssel</td><td>Erfordert einen aktiven Ollama-Dienst und ein kompatibles visuelles Modell, das lokal installiert ist.</td></tr>
