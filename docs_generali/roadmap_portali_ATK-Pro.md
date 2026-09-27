@@ -1,6 +1,6 @@
 # Roadmap portali ATK-Pro
 
-Data snapshot: 2026-06-06
+Data snapshot: 2026-09-27
 
 Questa roadmap traduce la matrice dei portali esistenti in una sequenza pratica
 di lavoro. Non e una consulenza legale: applica al progetto i paletti gia
@@ -956,6 +956,32 @@ ogni chiave della registry e' verificata contro la matrice tecnica/legale e la
 vista `Matrice_portali.xlsx` e' riallineata alle due fonti Markdown. Ulteriori
 portali appartengono a un nuovo ciclo di scouting, non a una riapertura
 implicita della fase 3.
+
+## Destinazioni della prossima release funzionale - 2026-09-27
+
+La candidata `v3.0.1-rc1` e' una release di manutenzione e consolidamento:
+include le correzioni e le verifiche successive a `v3.0.0`, ma non introduce
+nuovi portali. Il nuovo ciclo funzionale e' destinato indicativamente a
+`v3.1.0`, nell'ordine seguente:
+
+1. SAG con adapter `sag_cmi_ais`, PDF originali pubblici e policy iniziale
+   `D_ONLY`;
+2. Biblioteca Statale di Cremona con famiglia `synology_file_station`, un
+   connettore e quattro profili di raccolta, subordinato a TLS valido e
+   condizioni scritte per automazione e riuso;
+3. ASTi mappe catastali Zoomify, quindi fondi fotografici; scopeArchiv e
+   pergamene restano funzioni di discovery finche' non emergono immagini e
+   condizioni compatibili.
+
+Le ottimizzazioni IA sono pianificate nello stesso ciclo funzionale per
+incrementi indipendenti e misurabili. La cassaforte per login e password di
+portali autenticati e' invece rinviata alla release successiva a `v3.1.0`, con
+progettazione di sicurezza multipiattaforma dedicata.
+
+Documenti di dettaglio:
+
+- `docs_generali/candidati_svizzeri_prossima_release_SAG_ASTi.md`;
+- `docs_generali/prossima_release_AI_e_Biblioteca_Cremona.md`.
 
 ## Sequenza tecnica consigliata
 

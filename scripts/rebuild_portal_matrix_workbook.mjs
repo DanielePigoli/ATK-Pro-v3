@@ -2,13 +2,14 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { SpreadsheetFile, Workbook } from "@oai/artifact-tool";
+import { FileBlob, SpreadsheetFile, Workbook } from "@oai/artifact-tool";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const docsDir = path.join(rootDir, "docs_generali");
 const workbookPath = path.join(docsDir, "Matrice_portali.xlsx");
+const qaDir = path.join(rootDir, ".codex_tmp", "portal_matrix_qa");
 
 const sources = [
   {
@@ -146,12 +147,93 @@ async function buildWorkbook() {
   return workbook;
 }
 
+async function savePreview(workbook, sheetName, fileName, range = "A1:G5") {
+  const preview = await workbook.render({
+    sheetName,
+    range,
+    autoCrop: "all",
+    scale: 0.5,
+    format: "png",
+  });
+  const bytes = new Uint8Array(await preview.arrayBuffer());
+  await fs.writeFile(path.join(qaDir, fileName), bytes);
+}
+
+async function inspectExistingWorkbook() {
+  await fs.mkdir(qaDir, { recursive: true });
+  const input = await FileBlob.load(workbookPath);
+  const workbook = await SpreadsheetFile.importXlsx(input);
+  const summary = await workbook.inspect({
+    kind: "workbook,sheet,table",
+    maxChars: 6000,
+    tableMaxRows: 6,
+    tableMaxCols: 7,
+  });
+  await fs.writeFile(
+    path.join(qaDir, "before-inspect.json"),
+    JSON.stringify(summary, null, 2),
+    "utf8",
+  );
+  for (const source of sources) {
+    await savePreview(
+      workbook,
+      source.sheetName,
+      `before-${source.sheetName.replaceAll(" ", "-")}.png`,
+    );
+  }
+  await savePreview(
+    workbook,
+    sources[1].sheetName,
+    "before-candidates-priority-rows.png",
+    "A8:G13",
+  );
+  console.log(`Existing workbook inspected and rendered in: ${qaDir}`);
+}
+
 async function main() {
+  if (process.argv.includes("--inspect-existing")) {
+    await inspectExistingWorkbook();
+    return;
+  }
+
+  await fs.mkdir(qaDir, { recursive: true });
   const workbook = await buildWorkbook();
+  workbook.recalculate();
+  const candidateRows = await readMarkdownTable(
+    sources[1].markdownPath,
+    sources[1].headers,
+  );
+  const inspection = await workbook.inspect({
+    kind: "region,formula",
+    sheetId: sources[1].sheetName,
+    range: `A1:G${candidateRows.length}`,
+    maxChars: 12000,
+    tableMaxRows: candidateRows.length,
+    tableMaxCols: 7,
+  });
+  await fs.writeFile(
+    path.join(qaDir, "after-candidates-inspect.json"),
+    JSON.stringify(inspection, null, 2),
+    "utf8",
+  );
+  for (const source of sources) {
+    await savePreview(
+      workbook,
+      source.sheetName,
+      `after-${source.sheetName.replaceAll(" ", "-")}.png`,
+    );
+  }
+  await savePreview(
+    workbook,
+    sources[1].sheetName,
+    "after-candidates-priority-rows.png",
+    "A8:G13",
+  );
   const output = await SpreadsheetFile.exportXlsx(workbook);
   await fs.rm(workbookPath, { force: true });
   await fs.rm(`${workbookPath}.inspect.ndjson`, { force: true });
   await output.save(workbookPath);
+  await fs.rm(`${workbookPath}.inspect.ndjson`, { force: true });
   console.log(`Workbook rebuilt: ${workbookPath}`);
 }
 

@@ -8,7 +8,7 @@ Workflow automatizzati per build multi-piattaforma di ATK-Pro usando GitHub Acti
 Compila l'applicazione per macOS e crea un installer DMG.
 
 **Trigger:**
-- Tag `v*` (es. `v3.0.0-rc1` o `v3.0.0`)
+- Tag `v*` (es. `v3.0.1-rc1` o `v3.0.1`)
 - Manuale (workflow_dispatch)
 
 **Output:**
@@ -26,7 +26,7 @@ Compila l'applicazione per macOS e crea un installer DMG.
 Compila l'eseguibile Windows e crea installer con Inno Setup.
 
 **Trigger:**
-- Tag `v*` (es. `v3.0.0-rc1` o `v3.0.0`)
+- Tag `v*` (es. `v3.0.1-rc1` o `v3.0.1`)
 - Manuale (workflow_dispatch)
 
 **Output:**
@@ -81,8 +81,8 @@ Per creare una release con installer automatici:
 
 ```bash
 # 1. Tag la versione
-git tag v3.0.0
-git push origin v3.0.0
+git tag v3.0.1-rc1
+git push origin v3.0.1-rc1
 
 # 2. GitHub Actions compilerà automaticamente gli artifact taggati
 # 3. Gli installer saranno allegati alla release su GitHub

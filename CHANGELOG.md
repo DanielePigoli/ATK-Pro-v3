@@ -2,6 +2,36 @@
 
 Tutte le modifiche rilevanti al progetto ATK-Pro saranno documentate in questo file.
 
+## [3.0.1-rc1] - 2026-09-27
+
+### Correzioni e robustezza
+
+- Corretto il recupero multipagina della Biblioteca Digitale Lombarda con
+  BookReader REST, immagini Cantaloupe IIIF, ricostruzione PDF completa e
+  fallback al PDF REST diretto.
+- Rafforzati retry e riconoscimento delle immagini placeholder BDL e il
+  recupero diretto delle immagini IIIF Presentation 3.
+- Corretti i flussi pratici OCR e genealogia e uniformato il disclaimer allo
+  stile grafico ATK-Pro.
+- Migliorata la persistenza della configurazione per evitare perdite o
+  sovrascritture tra sessioni e profili.
+
+### IA e compatibilita' provider
+
+- Ricertificate le integrazioni dei provider IA con test pratici e gestione
+  degli errori aggiornata.
+- Aggiunta discovery resiliente dei modelli, con fallback conservativi e
+  override manuale, per ridurre la dipendenza da identificativi destinati a
+  essere dismessi dai provider.
+
+### Verifiche e release
+
+- Estesi test mirati, smoke pratici dei portali e controlli delle funzioni IA.
+- Rafforzati gate pre-RC, dipendenze fissate, igiene degli artefatti e coerenza
+  del packaging multipiattaforma.
+- Registrati separatamente SAG, Biblioteca Statale di Cremona e ASTi come
+  candidati della prossima release funzionale: non sono inclusi in questa RC.
+
 ## [3.0.0-rc3] - 2026-09-01
 
 ### Funzionalita e compatibilita

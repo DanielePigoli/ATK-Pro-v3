@@ -168,3 +168,8 @@ Fonte:
 
 La destinazione naturale e' una release funzionale successiva, indicativamente
 `v3.1.0`, non una modifica retroattiva della `v3.0.0` stabile.
+
+Nel piano coordinato del 2026-09-27, SAG resta la prima priorita' portali;
+segue la Biblioteca Statale di Cremona, se saranno risolti TLS e condizioni
+d'uso, quindi i rami ASTi sopra indicati. Il quadro complessivo e' registrato
+in `docs_generali/prossima_release_AI_e_Biblioteca_Cremona.md`.
