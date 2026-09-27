@@ -231,6 +231,22 @@ Il gate release e' stato ripetuto dopo l'allineamento di versione,
 documentazione e matrice: 12/12 step verdi, `907 passed` e `3 skipped` attesi.
 La matrice verificata contiene 28 portali supportati e 38 candidati.
 
+## Validazione v3.0.1-rc1
+
+Il tag `v3.0.1-rc1` punta al merge `a189817`. La
+[pre-release](https://github.com/DanielePigoli/ATK-Pro-v3/releases/tag/v3.0.1-rc1)
+e' pubblicata con sei asset e i sidecar SHA-256 Linux.
+
+- build Windows [`36346694309`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/36346694309): PASS;
+- build Linux [`36346694343`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/36346694343): PASS;
+- build macOS [`36346694319`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/36346694319): PASS Intel e Apple Silicon;
+- smoke Windows [`36348107912`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/36348107912): PASS installer e portable;
+- smoke Linux [`36348106596`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/36348106596): PASS DEB e tarball;
+- smoke macOS [`36348106527`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/36348106527): PASS Intel e Apple Silicon.
+
+Decisione: RC tecnicamente pronta per i beta tester. La promozione a stabile
+resta subordinata ai riscontri beta e a una nuova decisione esplicita.
+
 ## Documenti collegati
 
 - `docs_generali/audit_contenuti_guida_v3_ATK-Pro.md`
