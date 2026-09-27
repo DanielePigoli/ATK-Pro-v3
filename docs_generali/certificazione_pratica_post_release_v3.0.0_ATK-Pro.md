@@ -1,6 +1,6 @@
 # Certificazione pratica post-release ATK-Pro v3.0.0
 
-Data snapshot: 2026-09-26
+Data snapshot: 2026-09-27
 
 Questo registro separa la validazione tecnica gia' conclusa per la release
 stabile dalle prove pratiche svolte dopo la pubblicazione. Le prove usano solo
@@ -13,7 +13,7 @@ riproduzione.
 | Area | Stato | Evidenza |
 | --- | --- | --- |
 | Release pubblicata | PASS | Tag `v3.0.0`, sei asset e digest presenti nella release GitHub. |
-| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 886 test passati e 39 skip attesi. |
+| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 904 test passati e 20 skip attesi. |
 | Portali live con immagini reali | PASS | `python verify_portal_live_smoke.py --fetch-images --strict`: 28/28 capability; immagini di inizio, centro e fine decodificabili e distinte nei documenti multipagina. |
 | Pipeline completa dei portali | PASS | 28/28 portali hanno prodotto da una pagina pubblica PNG, PDF leggibile e JSON; nessun placeholder 800 x 1200 o temporaneo residuo nei casi riusciti. |
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
@@ -22,6 +22,7 @@ riproduzione.
 | Percorsi funzionali utente | PASS | Download, manifest sintetico da HTML, OCR, traduzione, GEDCOM ed errori controllati sono verificati. Il disclaimer del menu Documenti usa ora lo stile ATK-Pro condiviso. |
 | Funzioni IA live | PASS sui provider configurati | Traduzione e ricerca assistita: Gemini, OpenAI, Claude e DeepSeek; OCR multimodale: 4/4 con TXT, DOCX e TEI; genealogia: pipeline completa Gemini verso GEDCOM e due CSV. |
 | Continuita' modelli IA | PASS | In caso di modello ritirato, discovery del catalogo, filtro per funzione/modalita', massimo tre alternative e cache del fallback riuscito; override manuali sempre vincolanti. |
+| Persistenza configurazione | PASS | Scrittura atomica, recupero di JSON malformati o non-oggetto con copia `.corrupt`, conservazione delle chiavi valide e test di errore senza perdita del file precedente. |
 
 ## Esito del controllo live 2026-09-09
 
@@ -308,6 +309,34 @@ nuovamente superato traduzione 4/4 e OCR multimodale 4/4.
 La suite estesa dedicata ha concluso con `118 passed, 2 skipped` attesi. Il
 gate release completo ha concluso con `886 passed, 39 skipped`; tutti gli 11
 step sono stati superati.
+
+## Recupero configurazione pre-RC 2026-09-27
+
+La verifica pre-RC ha individuato che il caricamento di un `config.json`
+malformato ricadeva correttamente sui valori predefiniti, ma le successive
+scritture non riuscivano a riparare il file. Preferenze, cartelle, lingua e
+accettazione del disclaimer potevano quindi non essere persistite.
+
+La persistenza condivisa da GUI, lingua, OCR e traduzione ora:
+
+1. conserva tutte le chiavi esistenti quando il JSON e' valido;
+2. considera corrotta anche una radice JSON valida ma diversa da un oggetto;
+3. preserva il file non valido come `config.json.corrupt`, usando suffissi
+   progressivi senza sovrascrivere recuperi precedenti;
+4. scrive un temporaneo nella stessa directory, lo sincronizza e lo pubblica
+   con sostituzione atomica;
+5. lascia intatto il file precedente e rimuove il temporaneo se serializzazione
+   o sostituzione falliscono;
+6. registra soltanto i nomi delle preferenze, senza riportarne i valori.
+
+La vecchia suite `test_config_coverage.py`, che produceva 19 skip riferendosi a
+moduli non piu' esistenti, e' stata sostituita da 18 controlli del runtime
+effettivo. Le verifiche hanno concluso con:
+
+- suite configurazione e compatibilita': `45 passed`;
+- lotto pre-RC su configurazione, percorsi, errori IA e arresto:
+  `131 passed, 14 skipped`;
+- gate release completo: 11/11 step, `904 passed, 20 skipped`.
 
 ## Attivita' pratica residua
 
