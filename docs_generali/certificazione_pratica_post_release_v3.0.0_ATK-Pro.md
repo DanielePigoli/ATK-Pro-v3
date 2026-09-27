@@ -13,7 +13,7 @@ riproduzione.
 | Area | Stato | Evidenza |
 | --- | --- | --- |
 | Release pubblicata | PASS | Tag `v3.0.0`, sei asset e digest presenti nella release GitHub. |
-| Gate completo da sorgente | PASS | `python scripts\quality_gate.py release`: 11/11 step, 904 test passati e 20 skip attesi. |
+| Gate completo da sorgente | PASS | Ambiente pulito dai requisiti fissati: `python scripts\quality_gate.py release`, 12/12 step, 907 test passati e 3 skip attesi. |
 | Portali live con immagini reali | PASS | `python verify_portal_live_smoke.py --fetch-images --strict`: 28/28 capability; immagini di inizio, centro e fine decodificabili e distinte nei documenti multipagina. |
 | Pipeline completa dei portali | PASS | 28/28 portali hanno prodotto da una pagina pubblica PNG, PDF leggibile e JSON; nessun placeholder 800 x 1200 o temporaneo residuo nei casi riusciti. |
 | BDL multipagina | PASS | Item `12404`: 12 canvas; pagine 1, 7 e 12 scaricate e decodificate alle dimensioni attese. |
@@ -23,6 +23,8 @@ riproduzione.
 | Funzioni IA live | PASS sui provider configurati | Traduzione e ricerca assistita: Gemini, OpenAI, Claude e DeepSeek; OCR multimodale: 4/4 con TXT, DOCX e TEI; genealogia: pipeline completa Gemini verso GEDCOM e due CSV. |
 | Continuita' modelli IA | PASS | In caso di modello ritirato, discovery del catalogo, filtro per funzione/modalita', massimo tre alternative e cache del fallback riuscito; override manuali sempre vincolanti. |
 | Persistenza configurazione | PASS | Scrittura atomica, recupero di JSON malformati o non-oggetto con copia `.corrupt`, conservazione delle chiavi valide e test di errore senza perdita del file precedente. |
+| Catena BDL verso IA e documenti | PASS | Pagina pubblica BDL reale verso PNG/PDF/JSON, OCR Gemini, traduzione e riapertura di TXT, DOCX e TEI; fallback automatico del modello verificato live. |
+| Dipendenze e vulnerabilita' | PASS | 74 requisiti esatti risolvibili e coerenti in ambiente isolato; `pip check` pulito e `pip-audit` senza vulnerabilita' note. |
 
 ## Esito del controllo live 2026-09-09
 
@@ -338,11 +340,52 @@ effettivo. Le verifiche hanno concluso con:
   `131 passed, 14 skipped`;
 - gate release completo: 11/11 step, `904 passed, 20 skipped`.
 
+## Chiusura delle verifiche da sorgente pre-RC 2026-09-27
+
+La verifica finale ha eliminato gli ultimi skip convertibili e ha attraversato
+una catena reale dal portale all'output utente:
+
+1. i 14 test placeholder del vecchio `ExportManager`, modulo non piu'
+   esistente, sono stati sostituiti da quattro test dei writer effettivi per
+   immagini PNG/JPEG/TIFF, metadati JSON, PDF, OCR TXT/DOCX/TEI, traduzione
+   TXT/DOCX, GEDCOM e i due CSV genealogici, inclusi annullamento e output
+   vuoto;
+2. tre test canvas precedentemente saltati verificano ora i fallback da HTML e
+   iframe e gli endpoint `info.json`; gli identificativi IIIF contenenti
+   trattini o underscore sono accettati;
+3. una pagina pubblica BDL da 2681 x 3987 pixel e' stata scaricata come PNG,
+   PDF e JSON, senza placeholder; l'OCR Gemini ha prodotto 2.979 caratteri e
+   file TXT, DOCX e TEI validi, quindi la traduzione Gemini ha prodotto 3.060
+   caratteri e file TXT e DOCX validi;
+4. l'indisponibilita' del primo modello Gemini proposto ha attivato con successo
+   il fallback automatico, fornendo una controprova live della resilienza dei
+   modelli;
+5. la ricostruzione dei requisiti in un ambiente Python isolato ha individuato
+   `python-docx`, usato a runtime ma non dichiarato; il pacchetto e' ora fissato
+   esplicitamente e il percorso DOCX e' verificato nello stesso ambiente;
+6. l'audit ha portato alle versioni corrette di `requests`, `urllib3`, `idna`,
+   `anyio`, `Pillow`, `pypdf`, `pytest` e `Pygments`. La risoluzione completa,
+   `pip check`, la verifica dei pin e `pip-audit` sono tutti PASS; nessuna
+   vulnerabilita' nota resta segnalata;
+7. la scansione dei file tracciati non ha rilevato chiavi API accidentali e
+   l'audit di igiene conferma che gli artefatti generati non possono entrare in
+   un commit.
+
+Il gate release finale e' stato eseguito usando l'interprete dell'ambiente
+pulito appena costruito: 12/12 step, `907 passed, 3 skipped`.
+Lo skip POSIX richiede una shell non disponibile su Windows; gli altri due
+richiedono l'installer Windows e saranno trasformati in controlli effettivi
+dopo la compilazione della RC.
+
 ## Attivita' pratica residua
 
-Nessuna anomalia funzionale o estetica nota resta aperta nelle prove registrate.
-Resta facoltativa una prova live dei provider non configurati quando saranno
-disponibili le relative credenziali o, per Ollama, un modello locale.
+Nessuna anomalia funzionale o estetica nota resta aperta nelle prove da
+sorgente. Prima della promozione della nuova candidata restano la compilazione
+degli artefatti RC multipiattaforma e gli smoke sugli artefatti esatti; in tale
+fase diventano eseguibili anche i due controlli ora saltati per assenza
+dell'installer Windows. Resta facoltativa una prova live dei provider non
+configurati quando saranno disponibili le relative credenziali o, per Ollama,
+un modello locale.
 
 ## Confini della certificazione
 

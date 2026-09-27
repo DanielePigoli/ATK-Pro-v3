@@ -30,6 +30,12 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
+      - name: Verify dependency integrity and known vulnerabilities
+        run: |
+          python -m pip check
+          python -m pip install pip-audit==2.10.1
+          python -m pip_audit -r requirements.txt --progress-spinner off
+
       - name: Run pull request smoke gate
         if: github.event_name == 'pull_request'
         run: python scripts/quality_gate.py smoke

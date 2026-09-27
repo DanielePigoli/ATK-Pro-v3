@@ -2,10 +2,35 @@
 Test coverage per resilienza canvas ID extractor
 Verifica fallback: Playwright timeout → HTML parsing → hardcoded fallback
 """
-import pytest
 import re
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock
 from src import canvas_id_extractor as cie
+
+
+def _install_mock_browser(monkeypatch, page):
+    mock_context = Mock()
+    mock_context.new_page.return_value = page
+    mock_context.set_default_timeout = Mock()
+
+    mock_browser = Mock()
+    mock_browser.new_context.return_value = mock_context
+    mock_browser.close = Mock()
+
+    mock_playwright = Mock()
+    mock_playwright.chromium.launch.return_value = mock_browser
+
+    def mock_sync_playwright(*args, **kwargs):
+        class PlaywrightContext:
+            def __enter__(self):
+                return mock_playwright
+
+            def __exit__(self, *args):
+                pass
+
+        return PlaywrightContext()
+
+    monkeypatch.setattr(cie, "sync_playwright", mock_sync_playwright)
+    return mock_context, mock_browser
 
 
 class TestCanvasExtractorPlaywrightFallback:
@@ -57,15 +82,41 @@ class TestCanvasExtractorPlaywrightFallback:
         # Deve trovare CANVAS123 dalla URL intercettata
         assert result == 'CANVAS123'
 
-    @pytest.mark.skip(reason="Implementazione HTML parsing dipende da regex interno")
     def test_canvas_id_from_html_fallback(self, monkeypatch):
         """Fallback 1: Se no XHR intercettato, parsa HTML per IIIF canvas ID."""
-        pass
+        mock_page = Mock()
+        mock_page.goto = Mock()
+        mock_page.on = Mock()
+        mock_page.wait_for_timeout = Mock()
+        mock_page.wait_for_load_state = Mock()
+        mock_page.content.return_value = (
+            '<script src="https://base.example/iiif/2/HTML123/info.json"></script>'
+        )
+        mock_page.frames = []
+        _install_mock_browser(monkeypatch, mock_page)
 
-    @pytest.mark.skip(reason="Implementazione iframe parsing dipende da regex interno")
+        result = cie.extract_ud_canvas_id_from_infojson_xhr("https://example.com")
+
+        assert result == "HTML123"
+
     def test_canvas_id_from_iframe_fallback(self, monkeypatch):
         """Fallback 2: Se HTML principale fallisce, cerca in iframe."""
-        pass
+        mock_frame = Mock()
+        mock_frame.content.return_value = (
+            '{"@id":"https://base.example/iiif/2/FRAME456/full/full/0/default.jpg"}'
+        )
+        mock_page = Mock()
+        mock_page.goto = Mock()
+        mock_page.on = Mock()
+        mock_page.wait_for_timeout = Mock()
+        mock_page.wait_for_load_state = Mock()
+        mock_page.content.return_value = "<html><body>nessun canvas</body></html>"
+        mock_page.frames = [mock_frame]
+        _install_mock_browser(monkeypatch, mock_page)
+
+        result = cie.extract_ud_canvas_id_from_infojson_xhr("https://example.com")
+
+        assert result == "FRAME456"
 
 
 class TestCanvasExtractorTimeout:
@@ -204,7 +255,7 @@ class TestCanvasExtractorErrorHandling:
         result = cie.extract_ud_canvas_id_from_infojson_xhr('https://example.com')
         
         # Non crasha, continua e trova CANVAS_GOOD nel frame2
-        assert result == 'CANVAS_GOOD' or result is None  # Depends on fallback logic
+        assert result == 'CANVAS_GOOD'
 
 
 class TestCanvasExtractorRegexPatterns:
@@ -222,28 +273,32 @@ class TestCanvasExtractorRegexPatterns:
         assert not re.search(pattern, '/iiif/3/CANVAS123/')
         assert not re.search(pattern, '/iiif/2//empty/')
 
-    @pytest.mark.skip(reason="Dipendente da implementazione regex IIIF interna")
     def test_info_json_endpoint_pattern(self):
         """Pattern per info.json endpoint."""
-        pass
+        assert (
+            cie._extract_canvas_id_from_text(
+                "https://base.example/iiif/2/INFO_789-abc/info.json"
+            )
+            == "INFO_789-abc"
+        )
+        assert (
+            cie._extract_canvas_id_from_text(
+                "canvasId: 'https://antenati.example/ark:/12657/ARK123'"
+            )
+            == "ARK123"
+        )
+        assert cie._extract_canvas_id_from_text("") is None
 
     def test_canvas_id_extraction_from_multiple_urls(self):
         """Estrae correttamente canvas ID da varie URL format."""
-        pattern = r"/iiif/2/([A-Za-z0-9]+)/"
-        
         test_cases = [
             ('https://dam.it/iiif/2/ABC123/manifest.json', 'ABC123'),
-            ('https://base/iiif/2/XYZ_789/info.json', None),  # Underscore not in pattern
+            ('https://base/iiif/2/XYZ_789/info.json', 'XYZ_789'),
             ('http://localhost/iiif/2/test/full/0/default.jpg', 'test'),
         ]
-        
+
         for url, expected in test_cases:
-            match = re.search(pattern, url)
-            if expected is None:
-                assert match is None
-            else:
-                assert match is not None
-                assert match.group(1) == expected
+            assert cie._extract_canvas_id_from_text(url) == expected
 
 
 class TestCanvasExtractorBrowserHeadless:
