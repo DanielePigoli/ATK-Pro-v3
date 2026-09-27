@@ -1,9 +1,9 @@
-; ATK-Pro v3.0.0 Installer Script per Inno Setup
+; ATK-Pro v3.0.1 RC1 Installer Script per Inno Setup
 ; Supporta 20 lingue con testi Unicode completi
 ; Legge i disclaimer direttamente da assets/ 
 
 #define MyAppName "ATK-Pro"
-#define MyAppVersion "3.0.0"
+#define MyAppVersion "3.0.1-rc1"
 #define MyAppPublisher "ATK-Pro Project"
 #define MyAppURL "https://github.com/DanielePigoli/ATK-Pro-v3"
 #define MyAppExeName "ATK-Pro.exe"
@@ -495,7 +495,7 @@ begin
   if WizardSilent and not (HasDisclaimerAcceptanceParam() or HasCurrentDisclaimerRevision()) then
   begin
     MsgBox(
-      'ATK-Pro v3.0.0 requires explicit acceptance of the current legal disclaimer before installation.',
+      'ATK-Pro v{#MyAppVersion} requires explicit acceptance of the current legal disclaimer before installation.',
       mbCriticalError,
       MB_OK
     );

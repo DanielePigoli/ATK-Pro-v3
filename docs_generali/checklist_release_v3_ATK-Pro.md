@@ -1,6 +1,6 @@
 # Checklist release ATK-Pro v3.0.0
 
-Data snapshot: 2026-09-09
+Data snapshot: 2026-09-27
 
 Questa checklist raccoglie i criteri minimi per decidere se ATK-Pro puo' passare
 da baseline pre-release a RC tecnica v3.0.0, e distingue quel passaggio da una
@@ -219,6 +219,18 @@ e' stata pubblicata il 9 settembre 2026.
 Decisione: `v3.0.0` stabile pubblicata e ciclo di release chiuso. Gli asset
 pubblicati coincidono con quelli validati e tutti gli smoke finali sono verdi.
 
+## Preparazione manutenzione v3.0.1-rc1
+
+La candidata `v3.0.1-rc1` raccoglie esclusivamente correzioni e hardening gia'
+verificati dopo la stabile: BDL/IIIF, OCR e genealogia, stile del disclaimer,
+integrazioni e discovery dei modelli IA, persistenza della configurazione e
+controlli pre-RC. SAG, Biblioteca di Cremona, ASTi e la futura cassaforte per
+credenziali di portali autenticati non fanno parte di questa candidata.
+
+Il gate release e' stato ripetuto dopo l'allineamento di versione,
+documentazione e matrice: 12/12 step verdi, `907 passed` e `3 skipped` attesi.
+La matrice verificata contiene 28 portali supportati e 38 candidati.
+
 ## Documenti collegati
 
 - `docs_generali/audit_contenuti_guida_v3_ATK-Pro.md`
@@ -236,3 +248,5 @@ pubblicati coincidono con quelli validati e tutti gli smoke finali sono verdi.
 - `docs_generali/note_release_v3.0.0_ATK-Pro.md`
 - `docs_generali/certificazione_pratica_post_release_v3.0.0_ATK-Pro.md`
 - `docs_generali/candidati_svizzeri_prossima_release_SAG_ASTi.md`
+- `docs_generali/prossima_release_AI_e_Biblioteca_Cremona.md`
+- `docs_generali/note_release_v3.0.1-rc1_ATK-Pro.md`

@@ -1,6 +1,6 @@
 # Piano consolidamento post-RC ATK-Pro v3.0.0
 
-Data snapshot: 2026-06-24
+Data snapshot: 2026-09-27
 
 Questo documento raccoglie l'ordine progressivo degli interventi emersi
 dall'analisi delle nuove funzioni v3 e dal primo ciclo di riscontri RC.
@@ -144,3 +144,24 @@ Nota operativa aggiornata:
   generalizzato, ma il passaggio graduale al punto 17 oppure, se emerge un bug
   reale, un intervento chirurgico sui soli rami speciali rimasti fuori dal
   consolidamento.
+
+## Destinazioni dopo v3.0.0
+
+Il ciclo stabile `v3.0.0` e' chiuso. La sequenza successiva e' separata in tre
+perimetri:
+
+1. `v3.0.1-rc1`: candidata di manutenzione con le correzioni BDL/IIIF,
+   robustezza OCR e genealogia, integrazioni IA aggiornate, discovery dinamica
+   dei modelli, persistenza configurazione e verifiche pre-RC; nessun nuovo
+   portale;
+2. prossima release funzionale, indicativamente `v3.1.0`: adapter SAG,
+   valutazione condizionata di Biblioteca di Cremona e ASTi, oltre alle
+   ottimizzazioni IA misurabili;
+3. release seguente: valutazione e progettazione della cassaforte per
+   credenziali utente dei portali autenticati, separata dai segreti dei
+   provider IA.
+
+Riferimenti:
+
+- `docs_generali/candidati_svizzeri_prossima_release_SAG_ASTi.md`;
+- `docs_generali/prossima_release_AI_e_Biblioteca_Cremona.md`.
