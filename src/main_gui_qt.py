@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (
     QProgressDialog
 )
 from atk_version import DISPLAY_VERSION, VERSION, is_newer_version
+from config_utils import _update_config_file
 from logging_utils import get_default_log_level, is_debug_logging_enabled
 from resource_profile import (
     RESOURCE_PROFILE_BALANCED,
@@ -313,19 +314,9 @@ def _read_config_language():
 
 def _write_config_language(lang: str) -> None:
     """Salva la lingua scelta nel file di configurazione utente (Linux/macOS)."""
-    import os as _os
-    import json as _json
     try:
         cfg = _config_file_path()
-        cfg_dir = _os.path.dirname(cfg)
-        _os.makedirs(cfg_dir, exist_ok=True)
-        data = {}
-        if _os.path.exists(cfg):
-            with open(cfg, encoding="utf-8") as fh:
-                data = _json.load(fh)
-        data["language"] = lang
-        with open(cfg, "w", encoding="utf-8") as fh:
-            _json.dump(data, fh, ensure_ascii=False, indent=2)
+        _update_config_file(cfg, {"language": lang})
         logging.debug(f"Lingua salvata in config file: {lang}")
     except Exception as e:
         logging.debug(f"Errore scrittura config file: {e}")
@@ -442,33 +433,27 @@ def _read_config_prefs() -> dict:
     return _clone_config_prefs(prefs)
 
 
-def _write_config_prefs(key: str, value) -> None:
+def _write_config_prefs(key: str, value) -> bool:
     """Aggiorna una singola chiave delle preferenze nel config JSON."""
-    _write_config_prefs_batch({key: value})
+    return _write_config_prefs_batch({key: value})
 
 
-def _write_config_prefs_batch(updates: dict) -> None:
+def _write_config_prefs_batch(updates: dict) -> bool:
     """Aggiorna piu' chiavi delle preferenze in un'unica scrittura del config JSON."""
     global _CONFIG_PREFS_CACHE_PATH, _CONFIG_PREFS_CACHE_SIGNATURE, _CONFIG_PREFS_CACHE_VALUE
-    import os as _os
-    import json as _json
     try:
         cfg = _config_file_path()
-        cfg_dir = _os.path.dirname(cfg)
-        _os.makedirs(cfg_dir, exist_ok=True)
-        data = {}
-        if _os.path.exists(cfg):
-            with open(cfg, encoding="utf-8") as fh:
-                data = _json.load(fh)
-        data.update(updates)
-        with open(cfg, "w", encoding="utf-8") as fh:
-            _json.dump(data, fh, ensure_ascii=False, indent=2)
+        _update_config_file(cfg, updates)
         _CONFIG_PREFS_CACHE_PATH = cfg
         _CONFIG_PREFS_CACHE_SIGNATURE = _config_file_signature(cfg)
-        _CONFIG_PREFS_CACHE_VALUE = _normalize_config_prefs(data)
-        logging.debug(f"Prefs salvate: {updates}")
+        with open(cfg, encoding="utf-8") as fh:
+            saved_data = json.load(fh)
+        _CONFIG_PREFS_CACHE_VALUE = _normalize_config_prefs(saved_data)
+        logging.debug("Preferenze salvate: %s", sorted(updates))
+        return True
     except Exception as e:
         logging.debug(f"Errore scrittura prefs config: {e}")
+        return False
 
 
 def _is_first_run() -> bool:
