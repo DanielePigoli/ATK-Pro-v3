@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PYTHON = sys.executable
 
 STATIC_CHECKS = [
+    [PYTHON, "verify_build_reproducibility.py"],
     [PYTHON, "verify_localization.py"],
     [PYTHON, "validate_glossary.py"],
     [PYTHON, "verify_glossary.py"],

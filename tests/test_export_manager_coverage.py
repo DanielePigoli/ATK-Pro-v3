@@ -1,252 +1,203 @@
-"""
-Test coverage completo per export_manager.py
-Evita regressioni nella gestione output e export risultati
-"""
-import pytest
-import os
+"""Contratti sugli output reali che hanno sostituito il vecchio ExportManager."""
+
 import json
-from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock, call
+import xml.etree.ElementTree as ET
+
+from docx import Document
+from PIL import Image
+from PySide6.QtCore import QCoreApplication
+from pypdf import PdfReader
+
+from src.gedcom_factory import GedcomGenerator
+from src.image_saver import save_image_variants
+from src.ocr_processor import AdvancedOCRWorker
+from src.pdf_utils import create_pdf_from_images
+from src.translation_processor import TranslationWorker
+import src.translation_processor as translation_processor
+import src.translation_dialog as translation_dialog
 
 
-class TestExportManagerInit:
-    """Test inizializzazione ExportManager."""
-    
-    def test_export_manager_exists(self):
-        """ExportManager module carica senza errori."""
-        try:
-            from src.export_manager import ExportManager
-            assert ExportManager is not None
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
-    
-    def test_export_manager_init_creates_output_dir(self, tmp_path):
-        """ExportManager crea directory output se non esiste."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            assert os.path.exists(tmp_path)
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
+class _TextBox:
+    def __init__(self, text):
+        self._text = text
+
+    def toPlainText(self):
+        return self._text
 
 
-class TestExportManagerFileOperations:
-    """Test operazioni file export."""
-    
-    def test_save_image_to_output(self, tmp_path):
-        """ExportManager salva immagini in output dir."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            
-            # Mock immagine
-            from PIL import Image
-            img = Image.new('RGB', (100, 100))
-            img_path = tmp_path / "test.png"
-            img.save(img_path)
-            
-            assert img_path.exists()
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
-    
-    def test_export_multiple_formats(self, tmp_path):
-        """ExportManager esporta stessa immagine in più formati."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            
-            # Dovrebbe supportare PNG, JPEG, TIFF
-            formats = ["PNG", "JPEG", "TIFF"]
-            # Logica di test dipende dall'implementazione
-            assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
+class _TranslationDialogStub:
+    def __init__(self, text):
+        self.txt_dest = _TextBox(text)
+
+    def gm(self, text):
+        return text
 
 
-class TestExportManagerMetadata:
-    """Test salvataggio metadati."""
-    
-    def test_save_genealogico_metadata(self, tmp_path):
-        """ExportManager salva metadati genealogici."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            
-            metadata = {
-                "titolo": "Registro Morti",
-                "comune": "Milano",
-                "anno": 1800,
+def test_current_output_pipeline_image_pdf_ocr_translation(tmp_path, monkeypatch):
+    """Attraversa i writer effettivi senza dipendere da servizi di rete."""
+    QCoreApplication.instance() or QCoreApplication([])
+    source = tmp_path / "registro_sintetico.png"
+    image = Image.new("RGB", (640, 480), "white")
+    image.save(source)
+
+    metadata = {
+        "Title": "Registro sintetico",
+        "_json": json.dumps({"source": "pre-rc", "canvas": 1}),
+    }
+    save_image_variants(
+        image,
+        str(tmp_path),
+        "registro_canvas_1",
+        ["PNG", "JPEG", "TIFF"],
+        meta=metadata,
+    )
+    variants = [
+        tmp_path / "registro_canvas_1.png",
+        tmp_path / "registro_canvas_1.jpg",
+        tmp_path / "registro_canvas_1.tif",
+    ]
+    for path in variants:
+        with Image.open(path) as saved:
+            saved.load()
+            assert saved.size == (640, 480)
+    assert json.loads(
+        (tmp_path / "registro_canvas_1.json").read_text(encoding="utf-8")
+    ) == {"source": "pre-rc", "canvas": 1}
+
+    pdf_path = tmp_path / "registro.pdf"
+    assert create_pdf_from_images([str(variants[0])], str(pdf_path)) == str(pdf_path)
+    assert len(PdfReader(str(pdf_path)).pages) == 1
+    assert not (tmp_path / "registro.pdf.progress.json").exists()
+
+    transcription = (
+        "ATTO DI NASCITA\nGiovanni Rossi, Trento, 4 marzo 1882.\n"
+        "Padre Luigi Rossi. Madre Maria Bianchi."
+    )
+    ocr = AdvancedOCRWorker(
+        "OpenAI",
+        "test-key",
+        ["txt", "docx", "xml"],
+        str(tmp_path),
+    )
+    ocr.api_keys = ["test-key"]
+    monkeypatch.setattr(ocr, "_transcribe_image", lambda *_: transcription)
+    ocr.process_file(str(source))
+
+    ocr_txt = tmp_path / "registro_sintetico_trascrizione.txt"
+    ocr_docx = tmp_path / "registro_sintetico_trascrizione.docx"
+    ocr_xml = tmp_path / "registro_sintetico_trascrizione.xml"
+    assert ocr_txt.read_text(encoding="utf-8") == transcription
+    assert transcription in "\n".join(p.text for p in Document(ocr_docx).paragraphs)
+    assert ET.parse(ocr_xml).getroot().tag.endswith("TEI")
+
+    translated = (
+        "BIRTH RECORD\nGiovanni Rossi, Trento, 4 March 1882.\n"
+        "Father Luigi Rossi. Mother Maria Bianchi."
+    )
+    captured = []
+    worker = TranslationWorker("OpenAI", "test-key", transcription, "English")
+    worker.api_keys = ["test-key"]
+    monkeypatch.setattr(translation_processor.openai, "OpenAI", lambda **_kwargs: object())
+    monkeypatch.setattr(worker, "_call_openai", lambda *_args, **_kwargs: translated)
+    worker.finished.connect(lambda ok, text: captured.append((ok, text)))
+    worker.run()
+    assert captured == [(True, translated)]
+
+    export_paths = iter(
+        [
+            (str(tmp_path / "traduzione.txt"), ""),
+            (str(tmp_path / "traduzione.docx"), ""),
+        ]
+    )
+    monkeypatch.setattr(
+        translation_dialog.QFileDialog,
+        "getSaveFileName",
+        lambda *_args, **_kwargs: next(export_paths),
+    )
+    monkeypatch.setattr(
+        translation_dialog.QMessageBox,
+        "information",
+        lambda *_args, **_kwargs: None,
+    )
+    dialog = _TranslationDialogStub(translated)
+    translation_dialog.TranslationDialog.esporta_risultato(dialog, "txt")
+    translation_dialog.TranslationDialog.esporta_risultato(dialog, "docx")
+
+    assert (tmp_path / "traduzione.txt").read_text(encoding="utf-8") == translated
+    assert translated in "\n".join(
+        p.text for p in Document(tmp_path / "traduzione.docx").paragraphs
+    )
+
+
+def test_semantic_genealogy_exports_gedcom_and_both_csv_files(tmp_path):
+    payload = {
+        "metadata": {"comunita": "Trento", "anno": "1882"},
+        "atti": [
+            {
+                "tipo": "nascita",
+                "soggetto": {
+                    "nome": "Giovanni",
+                    "cognome": "Rossi",
+                    "sesso": "M",
+                    "data_nascita": "4 marzo 1882",
+                    "luogo_nascita": "Trento",
+                },
+                "padre": {"nome": "Luigi", "cognome": "Rossi"},
+                "madre": {"nome": "Maria", "cognome_nubile": "Bianchi"},
             }
-            
-            # Dovrebbe salvare metadata
-            assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
-    
-    def test_save_tecnico_metadata(self, tmp_path):
-        """ExportManager salva metadati tecnici."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            
-            metadata = {
-                "numero_canvas": 29,
-                "canvas_id_list": ["canvas_1", "canvas_2"],
-                "diritti": "Copyright",
-            }
-            
-            # Dovrebbe salvare metadata
-            assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
+        ],
+    }
+    generator = GedcomGenerator(source_system="ATK-Pro_PreRC")
+    assert generator.process_ai_json(payload) is True
+    gedcom_path = tmp_path / "genealogia.ged"
+
+    generator.save_to_file(str(gedcom_path))
+
+    gedcom = gedcom_path.read_text(encoding="utf-8")
+    assert "1 NAME Giovanni /Rossi/" in gedcom
+    assert "1 NAME Luigi /Rossi/" in gedcom
+    assert "1 NAME Maria /Bianchi/" in gedcom
+    assert gedcom.rstrip().endswith("0 TRLR")
+    assert (tmp_path / "genealogia_REVISIONE.csv").exists()
+    assert (tmp_path / "genealogia_REGISTRO_ORIGINALE.csv").exists()
 
 
-class TestExportManagerDirectoryStructure:
-    """Test struttura directory output."""
-    
-    def test_output_structure_has_formats(self, tmp_path):
-        """Output dir ha subdirectory per formati (PNG, JPEG, TIFF)."""
-        # Struttura attesa:
-        # output/
-        #   ├─ PNG/
-        #   ├─ JPEG/
-        #   ├─ TIFF/
-        #   ├─ metadata_genealogico.json
-        #   └─ metadata_tecnico.json
-        
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            
-            # Dovrebbe creare struttura standard
-            assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
-    
-    def test_output_structure_metadata_location(self, tmp_path):
-        """Metadati salvati in root output dir."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            
-            # Metadati non in subdirectory formati
-            assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
+def test_ocr_review_cancellation_does_not_publish_outputs(tmp_path, monkeypatch):
+    source = tmp_path / "annullato.png"
+    Image.new("RGB", (32, 32), "white").save(source)
+    worker = AdvancedOCRWorker(
+        "OpenAI",
+        "test-key",
+        ["txt", "docx", "xml"],
+        str(tmp_path),
+    )
+    worker.api_keys = ["test-key"]
+    monkeypatch.setattr(worker, "_transcribe_image", lambda *_: "testo provvisorio")
+
+    worker.process_file(str(source), review_callback=lambda *_: None)
+
+    assert list(tmp_path.glob("annullato_trascrizione.*")) == []
 
 
-class TestExportManagerErrorHandling:
-    """Test gestione errori."""
-    
-    def test_export_handles_disk_full(self, tmp_path):
-        """ExportManager gestisce errore disco pieno."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            
-            # Mock OSError per disco pieno
-            with patch('builtins.open', side_effect=OSError("No space")):
-                # Deve gestire eccezione
-                assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
-    
-    def test_export_handles_permission_error(self, tmp_path):
-        """ExportManager gestisce permessi negati."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            
-            with patch('os.makedirs', side_effect=PermissionError("Access denied")):
-                # Deve gestire eccezione
-                assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
-    
-    def test_export_handles_invalid_path(self):
-        """ExportManager gestisce path non valido."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir="/invalid/path/nul\\nul")
-            # Deve validare o gestire path
-            assert True
-        except (ImportError, ValueError, OSError):
-            # Acceptable
-            pass
+def test_empty_translation_is_not_exported(tmp_path, monkeypatch):
+    warnings = []
+    monkeypatch.setattr(
+        translation_dialog.QMessageBox,
+        "warning",
+        lambda *_args: warnings.append(True),
+    )
+    monkeypatch.setattr(
+        translation_dialog.QFileDialog,
+        "getSaveFileName",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("Il selettore file non deve aprirsi")
+        ),
+    )
 
+    translation_dialog.TranslationDialog.esporta_risultato(
+        _TranslationDialogStub("   "),
+        "txt",
+    )
 
-class TestExportManagerPathNormalization:
-    """Test normalizzazione path."""
-    
-    def test_normalize_windows_paths(self):
-        """ExportManager normalizza path Windows."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir="C:\\Users\\test\\output")
-            # Deve normalizzare a formato interno
-            assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
-    
-    def test_normalize_relative_paths(self):
-        """ExportManager gestisce path relativi."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir="./output")
-            # Deve convertire a absolute
-            assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
-
-
-class TestExportManagerDuplicates:
-    """Test gestione file duplicati."""
-    
-    def test_avoid_overwrite_existing(self, tmp_path):
-        """ExportManager non sovrascrive file esistenti."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            
-            # Se file esiste, dovrebbe usare backup name
-            # (es: file.png → file_1.png, file_2.png)
-            assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
-    
-    def test_duplicate_naming_convention(self, tmp_path):
-        """ExportManager usa convenzione naming per duplicati."""
-        # Convenzione: nome_1, nome_2, etc.
-        # O: nome.bak, nome.old, etc.
-        assert True
-
-
-class TestExportManagerPerformance:
-    """Test performance e buffering."""
-    
-    def test_batch_export_efficient(self, tmp_path):
-        """ExportManager batch export è efficiente."""
-        try:
-            from src.export_manager import ExportManager
-            manager = ExportManager(output_dir=str(tmp_path))
-            
-            # Se esporta 100 immagini, non deve bloccare UI
-            # Dovrebbe usare batch/buffering
-            assert True
-        except ImportError:
-            pytest.skip("export_manager non ancora implementato")
-
-
-class TestExportManagerIntegration:
-    """Test integrazione con workflow."""
-    
-    def test_export_result_from_elaborazione(self, tmp_path):
-        """ExportManager integra con elaborazione output."""
-        # elaborazione.py produce risultati
-        # ExportManager li salva
-        assert True
-    
-    def test_export_compatible_with_pdf_generator(self, tmp_path):
-        """ExportManager output compatibile con PDF generation."""
-        # PDF generator deve poter leggere output
-        assert True
+    assert warnings == [True]
+    assert list(tmp_path.iterdir()) == []

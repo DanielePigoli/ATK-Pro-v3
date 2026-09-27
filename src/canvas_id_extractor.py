@@ -93,6 +93,23 @@ def extract_ud_canvas_id(driver) -> str | None:
     return None
 
 
+def _extract_canvas_id_from_text(text: str) -> str | None:
+    """Estrae un identificativo canvas dai formati IIIF/Mirador supportati."""
+    if not text:
+        return None
+    patterns = [
+        r"/iiif/2/([^/?#\"']+)/info\.json",
+        r"/iiif/2/([^/?#\"']+)/",
+        r"canvasId:\s*['\"][^'\"]*/([^/'\"?#]+)['\"]",
+        r'"@id"\s*:\s*"[^"]*/iiif/2/([^/?#\"]+)',
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text)
+        if match:
+            return match.group(1)
+    return None
+
+
 def extract_ud_canvas_id_from_infojson_xhr(url: str, timeout_ms: int = 30000) -> str | None:
     """
     Estrae il canvas_id per documenti an_ud usando Playwright.
@@ -101,21 +118,6 @@ def extract_ud_canvas_id_from_infojson_xhr(url: str, timeout_ms: int = 30000) ->
     """
     if getattr(sys, "frozen", False):
         log_to_file("[UD] extract_ud_canvas_id_from_infojson_xhr: Playwright disabilitato nel PyInstaller compilato")
-        return None
-
-    def _extract_from_text(text: str) -> str | None:
-        if not text:
-            return None
-        patterns = [
-            r"/iiif/2/([A-Za-z0-9]+)/info\.json",
-            r"/iiif/2/([A-Za-z0-9]+)/",
-            r"canvasId:\s*['\"][^'\"]*/([A-Za-z0-9]+)['\"]",
-            r'"@id"\s*:\s*"[^"]*/iiif/2/([A-Za-z0-9]+)',
-        ]
-        for pattern in patterns:
-            match = re.search(pattern, text)
-            if match:
-                return match.group(1)
         return None
 
     browser = None
@@ -160,7 +162,7 @@ def extract_ud_canvas_id_from_infojson_xhr(url: str, timeout_ms: int = 30000) ->
                 pass
 
             for response_url in response_urls:
-                canvas_id = _extract_from_text(response_url)
+                canvas_id = _extract_canvas_id_from_text(response_url)
                 if canvas_id:
                     log_to_file(f"[UD] Canvas ID da XHR info.json: {canvas_id}")
                     return canvas_id
@@ -169,7 +171,7 @@ def extract_ud_canvas_id_from_infojson_xhr(url: str, timeout_ms: int = 30000) ->
                 log_to_file("[UD] XHR info.json non intercettato")
 
             try:
-                canvas_id = _extract_from_text(page.content())
+                canvas_id = _extract_canvas_id_from_text(page.content())
                 if canvas_id:
                     log_to_file(f"[UD] Canvas ID da HTML pagina: {canvas_id}")
                     return canvas_id
@@ -178,7 +180,7 @@ def extract_ud_canvas_id_from_infojson_xhr(url: str, timeout_ms: int = 30000) ->
 
             for frame in getattr(page, "frames", []) or []:
                 try:
-                    canvas_id = _extract_from_text(frame.content())
+                    canvas_id = _extract_canvas_id_from_text(frame.content())
                     if canvas_id:
                         log_to_file(f"[UD] Canvas ID da frame: {canvas_id}")
                         return canvas_id

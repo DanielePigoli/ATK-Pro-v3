@@ -22,6 +22,15 @@ QT_MODULES = (
     "PySide6.QtWebEngineWidgets",
 )
 CRITICAL_PINS = {
+    "requests": "2.33.0",
+    "urllib3": "2.7.0",
+    "idna": "3.15",
+    "anyio": "4.14.2",
+    "pillow": "12.3.0",
+    "pypdf": "6.16.1",
+    "python-docx": "1.2.0",
+    "pytest": "9.0.3",
+    "pygments": "2.20.0",
     "google-generativeai": "0.8.3",
     "openai": "2.33.0",
     "anthropic": "0.97.0",
