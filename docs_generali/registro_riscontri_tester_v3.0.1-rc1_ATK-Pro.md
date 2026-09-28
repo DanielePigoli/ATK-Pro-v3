@@ -29,7 +29,7 @@ reali.
 
 | Area | Priorita' | Stato esterno | Evidenza attesa |
 | --- | ---: | --- | --- |
-| Windows installer | Alta | Da eseguire | Installazione, versione, avvio, disclaimer e disinstallazione. |
+| Windows installer | Alta | Parziale | Installazione e avvio riusciti su macchina fisica; disclaimer aperto ma con difformita' estetica `BETA-001`; disinstallazione ancora da verificare. |
 | Windows portable | Alta | Da eseguire | Estrazione, versione, avvio, configurazione portable e chiusura. |
 | Linux DEB o tarball | Media | Da eseguire | Installazione/estrazione, avvio e rimozione. |
 | macOS Intel o Apple Silicon | Media | Da eseguire | Mount, avvio, comportamento Gatekeeper e chiusura. |
@@ -39,7 +39,7 @@ reali.
 | OCR e genealogia assistita | Alta | Da eseguire | Output completo, nessun duplicato o colonna persa. |
 | Provider IA e modelli | Alta | Da eseguire | Discovery/fallback coerenti ed errori comprensibili. |
 | Persistenza configurazione | Alta | Da eseguire | Impostazioni conservate dopo riavvio senza perdita di altri campi. |
-| Interfaccia e documenti | Media | Da eseguire | Disclaimer e documenti coerenti con lo stile ATK-Pro. |
+| Interfaccia e documenti | Media | FAIL non bloccante | Il disclaimer usa il visualizzatore testuale semplice invece del visualizzatore HTML in stile ATK-Pro; vedere `BETA-001`. |
 
 La copertura di ogni piattaforma e' desiderabile ma non costituisce da sola un
 blocco, poiche' gli smoke CI sono gia' passati su runner nativi. Sono invece
@@ -50,7 +50,7 @@ BDL, persistenza configurazione e funzioni IA assistite disponibili.
 
 | ID | Data | Tester | Ambiente/asset | Area | Segnalazione | Severita' | Riproducibilita' | Stato | Esito/azione |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| - | - | - | - | - | Nessun riscontro ancora registrato. | - | - | Aperto | In attesa dei primi test esterni. |
+| BETA-001 | 2026-09-28 | Daniele Pigoli | Windows, installer `v3.0.1-rc1`, macchina fisica | Interfaccia e documenti | Il disclaimer viene visualizzato come testo semplice e non con lo stesso aspetto HTML in stile ATK-Pro degli altri documenti, come la presentazione dell'autore. Due schermate comparative disponibili nel riscontro originale. | Bassa | Riscontrato all'apertura del disclaimer nella build installata | Aperto non bloccante | Feedback registrato nell'[issue #378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-5868836113); nessuna correzione immediata, da valutare insieme agli altri riscontri alla chiusura del ciclo beta. |
 
 ## Regole di triage
 
@@ -75,5 +75,6 @@ La beta puo' essere proposta per la chiusura quando:
 
 ## Prossimo aggiornamento
 
-Registrare il primo esito esterno ricevuto nell'issue #378, aggiornare la
-copertura e avviare il triage soltanto su evidenze riproducibili.
+Continuare la raccolta nell'issue #378. Alla chiusura del ciclo, valutare
+`BETA-001` insieme agli altri riscontri e decidere se includerne la correzione
+nella candidata successiva oppure rinviarla motivatamente.
