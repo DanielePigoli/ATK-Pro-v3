@@ -247,6 +247,14 @@ e' pubblicata con sei asset e i sidecar SHA-256 Linux.
 Decisione: RC tecnicamente pronta per i beta tester. La promozione a stabile
 resta subordinata ai riscontri beta e a una nuova decisione esplicita.
 
+## Ciclo beta v3.0.1-rc1
+
+Aperto il 2026-09-28 nell'issue
+[#378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378). Le istruzioni
+definiscono prove prioritarie, dati minimi del report, severita' e cautele per
+segreti e documenti sensibili. Il registro parte dalla baseline CI verde e
+mantiene separati i riscontri esterni dalle verifiche automatiche.
+
 ## Documenti collegati
 
 - `docs_generali/audit_contenuti_guida_v3_ATK-Pro.md`
@@ -266,3 +274,5 @@ resta subordinata ai riscontri beta e a una nuova decisione esplicita.
 - `docs_generali/candidati_svizzeri_prossima_release_SAG_ASTi.md`
 - `docs_generali/prossima_release_AI_e_Biblioteca_Cremona.md`
 - `docs_generali/note_release_v3.0.1-rc1_ATK-Pro.md`
+- `docs_generali/istruzioni_beta_v3.0.1-rc1_ATK-Pro.md`
+- `docs_generali/registro_riscontri_tester_v3.0.1-rc1_ATK-Pro.md`

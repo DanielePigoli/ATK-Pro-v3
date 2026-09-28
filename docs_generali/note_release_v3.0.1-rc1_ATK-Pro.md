@@ -80,6 +80,15 @@ Esito RC: **go per la distribuzione ai beta tester**. Non e' una promozione a
 `v3.0.1` stabile, che richiedera' la chiusura dei riscontri beta e una nuova
 decisione esplicita.
 
+## Ciclo beta
+
+Il ciclo beta e' aperto dal 2026-09-28. I tester devono usare le
+[`istruzioni beta`](istruzioni_beta_v3.0.1-rc1_ATK-Pro.md) e registrare gli
+esiti nell'issue
+[#378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378). Il tracciamento
+interno e' mantenuto nel
+[`registro riscontri`](registro_riscontri_tester_v3.0.1-rc1_ATK-Pro.md).
+
 ## Limitazioni note
 
 - le build macOS sono firmate ad-hoc e non notarizzate;
