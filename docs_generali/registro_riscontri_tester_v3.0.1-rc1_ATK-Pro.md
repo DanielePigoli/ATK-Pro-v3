@@ -39,7 +39,7 @@ reali.
 | OCR e genealogia assistita | Alta | Da eseguire | Output completo, nessun duplicato o colonna persa. |
 | Provider IA e modelli | Alta | Da eseguire | Discovery/fallback coerenti ed errori comprensibili. |
 | Persistenza configurazione | Alta | Da eseguire | Impostazioni conservate dopo riavvio senza perdita di altri campi. |
-| Interfaccia e documenti | Media | FAIL non bloccante | Il disclaimer usa il visualizzatore testuale semplice invece del visualizzatore HTML in stile ATK-Pro; vedere `BETA-001`. |
+| Interfaccia e documenti | Media | FAIL non bloccante | Il disclaimer usa il visualizzatore testuale semplice (`BETA-001`); la presentazione del progetto, datata 2 agosto 2026, deve essere riesaminata prima della stabile (`BETA-002`). |
 
 La copertura di ogni piattaforma e' desiderabile ma non costituisce da sola un
 blocco, poiche' gli smoke CI sono gia' passati su runner nativi. Sono invece
@@ -51,6 +51,7 @@ BDL, persistenza configurazione e funzioni IA assistite disponibili.
 | ID | Data | Tester | Ambiente/asset | Area | Segnalazione | Severita' | Riproducibilita' | Stato | Esito/azione |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | BETA-001 | 2026-09-28 | Daniele Pigoli | Windows, installer `v3.0.1-rc1`, macchina fisica | Interfaccia e documenti | Il disclaimer viene visualizzato come testo semplice e non con lo stesso aspetto HTML in stile ATK-Pro degli altri documenti, come la presentazione dell'autore. Due schermate comparative disponibili nel riscontro originale. | Bassa | Riscontrato all'apertura del disclaimer nella build installata | Aperto non bloccante | Feedback registrato nell'[issue #378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-5868836113); nessuna correzione immediata, da valutare insieme agli altri riscontri alla chiusura del ciclo beta. |
+| BETA-002 | 2026-09-28 | Daniele Pigoli | Windows, installer `v3.0.1-rc1`, macchina fisica | Documentazione integrata | La presentazione del progetto mostra ancora la data di aggiornamento 2 agosto 2026; contenuto e data potrebbero non rappresentare compiutamente l'evoluzione successiva della serie 3 destinata alla stabile. Una schermata e' disponibile nel riscontro originale. La verifica nel repository conferma la stessa data nelle 20 versioni localizzate. | Bassa | Sempre, aprendo Documenti > Presentazione del progetto | Aperto non bloccante | Feedback registrato nell'[issue #378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-5869104424) e integrato dalla [verifica multilingue](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-5869123753); prima della validazione stabile riesaminare il testo italiano e poi riallineare tutte le traduzioni, senza modificare ora la RC. |
 
 ## Regole di triage
 
@@ -76,5 +77,6 @@ La beta puo' essere proposta per la chiusura quando:
 ## Prossimo aggiornamento
 
 Continuare la raccolta nell'issue #378. Alla chiusura del ciclo, valutare
-`BETA-001` insieme agli altri riscontri e decidere se includerne la correzione
-nella candidata successiva oppure rinviarla motivatamente.
+`BETA-001` e `BETA-002` insieme agli altri riscontri. Prima della stabile,
+decidere se includere le revisioni nella candidata successiva oppure rinviarle
+motivatamente.
