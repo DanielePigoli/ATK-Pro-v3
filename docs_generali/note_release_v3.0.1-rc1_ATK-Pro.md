@@ -83,11 +83,11 @@ decisione esplicita.
 ## Ciclo beta
 
 Il ciclo beta e' aperto dal 2026-09-28. I tester devono usare le
-[`istruzioni beta`](istruzioni_beta_v3.0.1-rc1_ATK-Pro.md) e registrare gli
+[`istruzioni beta`](https://github.com/DanielePigoli/ATK-Pro-v3/blob/main/docs_generali/istruzioni_beta_v3.0.1-rc1_ATK-Pro.md) e registrare gli
 esiti nell'issue
 [#378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378). Il tracciamento
 interno e' mantenuto nel
-[`registro riscontri`](registro_riscontri_tester_v3.0.1-rc1_ATK-Pro.md).
+[`registro riscontri`](https://github.com/DanielePigoli/ATK-Pro-v3/blob/main/docs_generali/registro_riscontri_tester_v3.0.1-rc1_ATK-Pro.md).
 
 ## Limitazioni note
 
