@@ -306,3 +306,5 @@ digest e risultati beta saranno registrati dopo la pubblicazione.
 - `docs_generali/note_release_v3.0.1-rc1_ATK-Pro.md`
 - `docs_generali/istruzioni_beta_v3.0.1-rc1_ATK-Pro.md`
 - `docs_generali/registro_riscontri_tester_v3.0.1-rc1_ATK-Pro.md`
+- `docs_generali/istruzioni_beta_v3.0.1-rc2_ATK-Pro.md`
+- `docs_generali/registro_riscontri_tester_v3.0.1-rc2_ATK-Pro.md`

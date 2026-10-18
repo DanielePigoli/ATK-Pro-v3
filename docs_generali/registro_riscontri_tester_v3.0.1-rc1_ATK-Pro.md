@@ -93,3 +93,17 @@ La promozione a stabile resta sospesa. `BETA-001`, `BETA-002`, `BETA-003`,
 `BETA-004` resta chiuso. Dopo test automatici, gate release e build
 multiplatform, i casi corretti saranno ricertificati su una nuova
 `v3.0.1-rc2` con un ciclo beta separato e mirato.
+
+## Esito correttivo RC1
+
+La PR [#384](https://github.com/DanielePigoli/ATK-Pro-v3/pull/384), integrata
+nel commit `0f46f29`, ha implementato le correzioni per `BETA-001`, `BETA-002`,
+`BETA-003` e `BETA-005`-`BETA-008`. Il gate release locale ha concluso 12/12
+step con 917 test passati e 3 skip attesi; il gate GitHub
+[`39115507721`](https://github.com/DanielePigoli/ATK-Pro-v3/actions/runs/39115507721)
+e' PASS, incluso l'audit delle dipendenze aggiornate.
+
+I riscontri sono pertanto **corretti nel codice e da riconfermare sugli
+artefatti RC2**. Il seguito e' tracciato nell'issue
+[#385](https://github.com/DanielePigoli/ATK-Pro-v3/issues/385) e nel
+[`registro RC2`](https://github.com/DanielePigoli/ATK-Pro-v3/blob/main/docs_generali/registro_riscontri_tester_v3.0.1-rc2_ATK-Pro.md).
