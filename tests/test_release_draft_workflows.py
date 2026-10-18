@@ -36,6 +36,26 @@ def test_build_workflows_use_draft_safe_uploader():
     assert "gh release upload" not in combined
 
 
+def test_macos_workflow_can_rebuild_one_architecture_from_an_exact_release_ref():
+    workflow = BUILD_WORKFLOWS[-1].read_text(encoding="utf-8")
+
+    assert "source_ref:" in workflow
+    assert "build_target:" in workflow
+    assert "ref: ${{ inputs.source_ref || github.ref }}" in workflow
+    assert "inputs.build_target == 'intel'" in workflow
+    assert "inputs.build_target == 'silicon'" in workflow
+    assert "inputs.source_ref || github.ref_name" in workflow
+
+
+def test_macos_intel_dmg_has_non_mounting_fallback_and_is_verified():
+    workflow = BUILD_WORKFLOWS[-1].read_text(encoding="utf-8")
+
+    assert "create-dmg non ha completato lo smontaggio" in workflow
+    assert "-format UDZO" in workflow
+    assert "-srcfolder dist/dmg_intel" in workflow
+    assert 'hdiutil verify "dist/${DMG_NAME}"' in workflow
+
+
 def test_release_smokes_download_assets_through_authenticated_api():
     for workflow in SMOKE_WORKFLOWS:
         text = workflow.read_text(encoding="utf-8")
