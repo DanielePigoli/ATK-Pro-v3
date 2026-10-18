@@ -150,3 +150,50 @@ def test_bdl_register_second_pass_retries_only_failed_placeholders(monkeypatch, 
         assert recovered.size == (4, 4)
         assert recovered.getpixel((0, 0)) == (255, 0, 0)
     assert not list(tmp_path.glob("BDL_12404_canvas_2_rec*.png"))
+    assert elab.get_unresolved_placeholders() == []
+
+
+def test_bdl_register_reports_placeholder_left_after_all_retries(monkeypatch, tmp_path):
+    from PIL import Image
+
+    class PartiallyUnavailableAdapter:
+        portal_label = "BDL"
+
+        def download_image(self, url):
+            if "/iiif/2/2/" in url:
+                return None, 503, 0
+            return Image.new("RGB", (4, 4), "red"), 200, 12
+
+    urls = [
+        "https://www.bdl.servizirl.it/cantaloupe/iiif/2/1/full/full/0/default.jpg",
+        "https://www.bdl.servizirl.it/cantaloupe/iiif/2/2/full/full/0/default.jpg",
+    ]
+    canvases = [
+        {
+            "label": f"Pagina {idx}",
+            "images": [{"resource": {"@id": url, "service": {"@id": url.split("/full/")[0]}}}],
+        }
+        for idx, url in enumerate(urls, 1)
+    ]
+    adapter = PartiallyUnavailableAdapter()
+    monkeypatch.setattr("src.elaborazione.resolve_direct_pdf_download", lambda *args, **kwargs: (None, None))
+    monkeypatch.setattr(
+        "src.elaborazione.resolve_direct_image_download",
+        lambda portal, canvas, service: (adapter, canvas["images"][0]["resource"]["@id"]),
+    )
+
+    elab = Elaborazione("R", BDL_PDF_URL, str(tmp_path), portale="biblioteca_digitale_lombarda")
+    elab.set_nome_file("BDL_12404")
+    elab.formats = ["PDF"]
+    monkeypatch.setattr(
+        elab,
+        "_generate_register_pdf",
+        lambda names, image_dir=None: str(tmp_path / "BDL_12404.pdf"),
+    )
+
+    assert elab._process_register(canvases, {}) is True
+    assert elab.get_unresolved_placeholders() == [{
+        "canvas": "page_2",
+        "label": "Pagina 2",
+        "source_url": urls[1],
+    }]

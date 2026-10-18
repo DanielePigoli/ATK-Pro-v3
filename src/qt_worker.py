@@ -203,13 +203,33 @@ class ElaborazioneWorker(QThread):
                     logger.info("[Worker] Cancellazione richiesta durante il record; rollback del batch")
                     break
 
-                if success:
+                placeholder_images = []
+                if hasattr(elab, 'get_unresolved_placeholders'):
+                    placeholder_images = elab.get_unresolved_placeholders()
+                tiles_missing = list(
+                    getattr(elab, 'tiles_missing_all', None)
+                    or getattr(elab, 'tiles_missing', None)
+                    or []
+                )
+
+                if success and not placeholder_images and not tiles_missing:
                     results.append({
                         'file': nome_file,
                         'modalita': modalita,
                         'output': actual_out_dir,
                         'formati': self.formats,
                         'status': 'SUCCESS'
+                    })
+                elif success:
+                    results.append({
+                        'file': nome_file,
+                        'modalita': modalita,
+                        'output': actual_out_dir,
+                        'formati': self.formats,
+                        'status': 'INCOMPLETE',
+                        'tiles_missing': tiles_missing,
+                        'placeholder_images': placeholder_images,
+                        'placeholder_count': len(placeholder_images),
                     })
                 else:
                     results.append({

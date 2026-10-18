@@ -306,6 +306,33 @@ class TestElaborazioneWorkerIntegration:
         assert (tmp_path / "created.txt").read_text(encoding="utf-8") == "complete"
         assert not list(tmp_path.glob(".atkpro_batch_*"))
 
+    def test_success_with_placeholder_is_reported_as_incomplete(self, monkeypatch, tmp_path):
+        import src.qt_worker as qw
+
+        class FakeElab:
+            def __init__(self, record_type, url, output_dir, *args, **kwargs):
+                self.output_dir = output_dir
+            def set_nome_file(self, name):
+                self.name = name
+            def run(self, formats=None):
+                return True
+            def get_unresolved_placeholders(self):
+                return [{"canvas": "page_3", "label": "Pagina 3"}]
+
+        monkeypatch.setattr(qw, "Elaborazione", FakeElab)
+        worker = ElaborazioneWorker([{
+            "modalita": "R",
+            "url": "https://example.test/register",
+            "nome_file": "registro",
+            "output": str(tmp_path),
+        }], formats=["PDF"])
+
+        worker.run()
+
+        assert worker.results[0]["status"] == "INCOMPLETE"
+        assert worker.results[0]["placeholder_count"] == 1
+        assert worker.results[0]["placeholder_images"][0]["label"] == "Pagina 3"
+
     def test_cancelled_batch_rolls_back_staged_outputs(self, monkeypatch, tmp_path):
         import src.qt_worker as qw
 

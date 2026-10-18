@@ -95,6 +95,30 @@ def test_esegui_elaborazione_passes_resource_profile(tmp_path, monkeypatch):
     assert captured["resource_profile"] == "veloce"
 
 
+def test_esegui_elaborazione_reports_successful_output_with_placeholder_as_incomplete(tmp_path, monkeypatch):
+    class PlaceholderElab(FakeElab):
+        def get_unresolved_placeholders(self):
+            return [{"canvas": "page_7", "label": "Pagina 7"}]
+
+    out = tmp_path / "out"
+    out.mkdir()
+    records = [{"modalita": "R", "url": "ark:/dummy/1", "nome_file": "rec1"}]
+    state = {
+        "records": records,
+        "formats": ["PDF"],
+        "output_folder": str(out),
+        "output_folders_doc": [],
+        "output_folders_reg": [str(out)],
+    }
+    monkeypatch.setattr(elab_mod, "Elaborazione", PlaceholderElab)
+
+    result = elab_mod.esegui_elaborazione(state, records=records, formats=["PDF"])
+
+    assert result[0]["status"] == "INCOMPLETE"
+    assert result[0]["placeholder_count"] == 1
+    assert result[0]["placeholder_images"][0]["label"] == "Pagina 7"
+
+
 
 def test_esegui_elaborazione_detects_record_portal_and_passes_range(tmp_path, monkeypatch):
     captured = {}

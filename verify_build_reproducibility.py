@@ -37,7 +37,7 @@ CRITICAL_PINS = {
     "google-auth": "2.45.0",
     "proto-plus": "1.27.0",
     "protobuf": "5.29.6",
-    "pymupdf": "1.24.12",
+    "pymupdf": "1.27.2.3",
     "pyside6[webengine]": "6.10.1",
     "pyinstaller": "6.16.0",
 }

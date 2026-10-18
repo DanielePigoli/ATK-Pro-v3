@@ -5,6 +5,7 @@ import json
 import time
 import logging
 import concurrent.futures
+import threading
 import requests
 from logging.handlers import RotatingFileHandler
 import shutil
@@ -362,30 +363,88 @@ def _save_direct_image_outputs(
             _finalize_temp_pdf_workspace(tmp_dir, output_folder, base_filename, pdf_created)
 
 
+def _remove_temp_tree_with_retry(path: str, *, attempts: int = 4, base_delay: float = 0.08) -> bool:
+    """Rimuove una directory temporanea verificando l'esito e ritentando su Windows."""
+    if not path or not os.path.exists(path):
+        return True
+
+    last_error = None
+    for attempt in range(max(1, attempts)):
+        try:
+            shutil.rmtree(path)
+        except FileNotFoundError:
+            return True
+        except OSError as exc:
+            last_error = exc
+
+        if not os.path.exists(path):
+            logger.info("[Cleanup] Cartella temporanea eliminata: %s", path)
+            return True
+
+        if attempt + 1 < attempts:
+            time.sleep(base_delay * (attempt + 1))
+
+    logger.warning(
+        "[Cleanup] Impossibile eliminare la cartella temporanea dopo %d tentativi: %s%s",
+        attempts,
+        path,
+        f" ({last_error})" if last_error else "",
+    )
+    return False
+
+
+def _cleanup_empty_temp_workspaces(output_dir: str) -> list[str]:
+    """Elimina solo le aree temporanee note rimaste vuote a fine elaborazione."""
+    if not output_dir or not os.path.isdir(output_dir):
+        return []
+
+    removed = []
+    try:
+        entries = list(os.scandir(output_dir))
+    except OSError as exc:
+        logger.warning("[Cleanup] Impossibile ispezionare la cartella output %s: %s", output_dir, exc)
+        return removed
+
+    for entry in entries:
+        if not entry.is_dir(follow_symlinks=False):
+            continue
+        if entry.name != "_tmp_pdf_images" and not entry.name.startswith("tiles_canvas_"):
+            continue
+        try:
+            with os.scandir(entry.path) as children:
+                is_empty = not any(children)
+        except OSError:
+            is_empty = False
+        if is_empty and _remove_temp_tree_with_retry(entry.path):
+            removed.append(entry.path)
+    return removed
+
+
 def _finalize_temp_pdf_workspace(temp_pdf_dir: str, output_dir: str, base_name: str, pdf_created: bool):
     """Pulisce la cartella temp PDF su successo, altrimenti la conserva come recovery."""
     if not temp_pdf_dir or not os.path.exists(temp_pdf_dir):
         return
 
     try:
-        temp_has_files = any(os.scandir(temp_pdf_dir))
+        with os.scandir(temp_pdf_dir) as children:
+            temp_has_files = any(children)
     except OSError:
         temp_has_files = True
 
     if not temp_has_files:
-        shutil.rmtree(temp_pdf_dir, ignore_errors=True)
-        logger.info(f"[Cleanup] Cartella temp PDF vuota eliminata: {temp_pdf_dir}")
+        _remove_temp_tree_with_retry(temp_pdf_dir)
         return
 
     if pdf_created:
-        shutil.rmtree(temp_pdf_dir, ignore_errors=True)
-        logger.info(f"[Cleanup] Cartella temp PDF eliminata: {temp_pdf_dir}")
+        _remove_temp_tree_with_retry(temp_pdf_dir)
         return
 
     safe_base = re.sub(r'[\\/*?:"<>|]', "_", str(base_name or "output")).strip() or "output"
     recovery_dir = os.path.join(output_dir, f"_{safe_base}_pdf_recovery_images")
     if os.path.exists(recovery_dir):
-        shutil.rmtree(recovery_dir, ignore_errors=True)
+        if not _remove_temp_tree_with_retry(recovery_dir):
+            logger.warning("[PDF] Recovery precedente non eliminabile: %s", recovery_dir)
+            return
     os.replace(temp_pdf_dir, recovery_dir)
     logger.warning(f"[PDF] Generazione non completata: immagini temporanee conservate in {recovery_dir}")
 
@@ -442,6 +501,8 @@ class Elaborazione:
         self.lingua = lingua
         self.portale = portale
         self.resource_profile = resource_profile
+        self._placeholder_lock = threading.Lock()
+        self._unresolved_placeholders = {}
 
     def _default_output_name(self) -> str:
         if self._portal_key() == "biblioteca_digitale_lombarda":
@@ -458,6 +519,31 @@ class Elaborazione:
         """Imposta i formati di output desiderati."""
         self.formats = formats
         return self
+
+    def _mark_placeholder(self, canvas_id, canvas=None, source_url=None):
+        """Registra un placeholder effettivamente scritto nell'output finale."""
+        key = str(canvas_id or "pagina_sconosciuta")
+        label = canvas.get("label") if isinstance(canvas, dict) else None
+        if isinstance(label, dict):
+            label = label.get("it") or label.get("en") or next(iter(label.values()), None)
+        entry = {"canvas": key, "label": str(label or key)}
+        if source_url:
+            entry["source_url"] = str(source_url)
+        with self._placeholder_lock:
+            self._unresolved_placeholders[key] = entry
+        logger.warning("[Placeholder] Pagina non recuperata: %s", entry["label"])
+
+    def _clear_placeholder(self, canvas_id):
+        """Rimuove dal riepilogo un placeholder sostituito con l'immagine reale."""
+        key = str(canvas_id or "pagina_sconosciuta")
+        with self._placeholder_lock:
+            self._unresolved_placeholders.pop(key, None)
+
+    def get_unresolved_placeholders(self):
+        """Restituisce una copia ordinata dei placeholder rimasti dopo tutti i retry."""
+        with self._placeholder_lock:
+            values = [dict(item) for item in self._unresolved_placeholders.values()]
+        return sorted(values, key=lambda item: item.get("canvas", ""))
 
     def _set_manifest_location(self, working_folder: str, manifest_filename: str):
         """Aggiorna i riferimenti runtime al manifest nella cartella di lavoro."""
@@ -906,6 +992,10 @@ class Elaborazione:
 
     def _save_direct_canvas_outputs(self, image, canvas, image_url, canvas_id: str, base_filename: str, formats, image_formats, pdf_in_formats, temp_pdf_dir=None, overwrite=False):
         meta = self._build_direct_canvas_metadata(canvas, canvas_id)
+        if image is None:
+            self._mark_placeholder(canvas_id, canvas, image_url)
+        else:
+            self._clear_placeholder(canvas_id)
         output_image = image if image is not None else _make_placeholder_image(
             image_url,
             glossario_data=self.glossario_data,
@@ -1123,6 +1213,7 @@ class Elaborazione:
             if final_img is None:
                 if pdf_in_formats:
                     logger.warning(f"[PDF] Immagine non ricostruita, genero placeholder per {self.nome_file}")
+                    self._mark_placeholder(target_canvas_id or "page_1", canvas, service_id)
                     final_img = _make_placeholder_image(service_id,
                         glossario_data=self.glossario_data, lingua=self.lingua,
                         canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1178,6 +1269,7 @@ class Elaborazione:
                 logger.warning(f"[Verifica] Mancano immagini finali: {mancanti}. Retry {retry_count+1}/{max_retries}")
                 final_img = rebuild_image(info, tile_dir, source_url=self.ark_url)
                 if final_img is not None:
+                    self._clear_placeholder(target_canvas_id or "page_1")
                     save_image_variants(final_img, self.output_dir, self.nome_file, image_formats, meta=meta)
                 mancanti = [img for img in immagini_attese if not os.path.exists(os.path.join(self.output_dir, img))]
                 retry_count += 1
@@ -1186,8 +1278,7 @@ class Elaborazione:
                 self.immagini_mancanti = mancanti
             else:
                 self.immagini_mancanti = []
-            shutil.rmtree(tile_dir, ignore_errors=True)
-            logger.info(f"[Cleanup] Cartella tiles eliminata: {tile_dir}")
+            _remove_temp_tree_with_retry(tile_dir)
             # Aggiorna metadati manifest con file generati
             if self.manifest_path and os.path.exists(self.manifest_path):
                 _nfmts = [_normalize_format(f) for f in image_formats]
@@ -1400,6 +1491,8 @@ class Elaborazione:
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
                         meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
+                        if final_img is None:
+                            self._mark_placeholder(f"page_{idx}", canvas, _img_url)
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1441,6 +1534,8 @@ class Elaborazione:
                         ark = _parse_ark_from_url(self.ark_url)
                         page_label = canvas.get('label', None)
                         meta = build_image_metadata(ua=ua, ark=ark, canvas_id=f"page_{idx}", page_label=page_label, description=self.nome_file, source_url=self.ark_url, atk_version=VERSION)
+                        if final_img is None:
+                            self._mark_placeholder(f"page_{idx}", canvas, f"{_base}gtpc.php")
                         _use_img = final_img if final_img is not None else _make_placeholder_image(
                             str(_svc.get('@id', '')), glossario_data=self.glossario_data, lingua=self.lingua,
                             canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1457,6 +1552,34 @@ class Elaborazione:
                         logger.error(
                             f"[Error] Canvas {idx} senza Image Service e senza risorsa immagine diretta supportata"
                         )
+                        source_url = resource.get('@id') or resource.get('id') or canvas.get('@id') or canvas.get('id') or self.ark_url
+                        self._mark_placeholder(f"page_{idx}", canvas, source_url)
+                        _ph = _make_placeholder_image(
+                            str(source_url),
+                            glossario_data=self.glossario_data,
+                            lingua=self.lingua,
+                            canvas_url=canvas.get('@id') or canvas.get('id'),
+                        )
+                        meta = build_image_metadata(
+                            canvas_id=f"page_{idx}",
+                            page_label=canvas.get('label'),
+                            description=self.nome_file,
+                            source_url=self.ark_url,
+                            atk_version=VERSION,
+                        )
+                        if image_formats:
+                            save_image_variants(
+                                _ph,
+                                self.output_dir,
+                                nome_base,
+                                image_formats,
+                                meta=meta,
+                            )
+                        if pdf_in_formats:
+                            _ph.save(
+                                os.path.join(temp_pdf_dir, f"{nome_base}_pdftmp.png"),
+                                format='PNG',
+                            )
                         return
                     # --- IIIF normale ---
                     info = download_info_json(image_info_url)
@@ -1492,6 +1615,8 @@ class Elaborazione:
                         source_url=self.ark_url,
                         atk_version=VERSION
                     )
+                    if final_img is None:
+                        self._mark_placeholder(f"page_{idx}", canvas, service_id)
                     _use_img = final_img if final_img is not None else _make_placeholder_image(
                         service_id, glossario_data=self.glossario_data, lingua=self.lingua,
                         canvas_url=canvas.get('@id') or canvas.get('id'))
@@ -1504,12 +1629,12 @@ class Elaborazione:
                         except Exception as _e:
                             logger.error(f"[PDF] Errore salvataggio PNG canvas {idx}: {_e}")
                     # Elimina la cartella dei tile dopo la ricostruzione
-                    shutil.rmtree(tile_dir, ignore_errors=True)
-                    logger.info(f"[Cleanup] Cartella tiles eliminata: {tile_dir}")
+                    _remove_temp_tree_with_retry(tile_dir)
                 except Exception as e:
                     logger.error(f"[Error] Errore canvas {idx}: {e}", exc_info=True)
                     # Genera placeholder per questo canvas e pulisce la cartella tile
                     try:
+                        self._mark_placeholder(f"page_{idx}", canvas, service_id)
                         _ph = _make_placeholder_image(service_id, glossario_data=self.glossario_data, lingua=self.lingua,
                         canvas_url=canvas.get('@id') or canvas.get('id'))
                         if image_formats:
@@ -1520,8 +1645,7 @@ class Elaborazione:
                     except Exception as _ep:
                         logger.error(f"[Error] Errore salvataggio placeholder canvas {idx}: {_ep}")
                     finally:
-                        shutil.rmtree(tile_dir, ignore_errors=True)
-                        logger.info(f"[Cleanup] Cartella tiles eliminata (dopo errore): {tile_dir}")
+                        _remove_temp_tree_with_retry(tile_dir)
 
             # Parallelizzazione automatica: rispetta i portali che richiedono accesso sequenziale.
             max_workers = _canvas_max_workers_for_portal(
@@ -1608,8 +1732,7 @@ class Elaborazione:
                         )
                         save_image_variants(final_img, self.output_dir, nome_base, image_formats, meta=meta)
                         # Elimina la cartella dei tile dopo la ricostruzione anche nei retry
-                        shutil.rmtree(tile_dir, ignore_errors=True)
-                        logger.info(f"[Cleanup] Cartella tiles eliminata (retry): {tile_dir}")
+                        _remove_temp_tree_with_retry(tile_dir)
                     except Exception as e:
                         logger.error(f"[Retry] Errore retry immagine {img}: {e}")
                 mancanti = [img for img in immagini_attese if not os.path.exists(os.path.join(self.output_dir, img))]
@@ -1693,6 +1816,14 @@ class Elaborazione:
             if temp_pdf_dir:
                 _finalize_temp_pdf_workspace(temp_pdf_dir, self.output_dir, self.nome_file, bool(pdf_path))
 
+            unresolved_placeholders = self.get_unresolved_placeholders()
+            if unresolved_placeholders:
+                logger.error(
+                    "[Elaborazione] Output incompleto: %d pagine sostituite da placeholder: %s",
+                    len(unresolved_placeholders),
+                    [item.get("label") for item in unresolved_placeholders],
+                )
+
             if mancanti:
                 logger.error(
                     f"[Elaborazione] Registro incompleto: {len(mancanti)} immagini richieste non generate"
@@ -1717,6 +1848,8 @@ class Elaborazione:
         except Exception as e:
             logger.error(f"[Error] Errore elaborazione registro: {e}", exc_info=True)
             return False
+        finally:
+            _cleanup_empty_temp_workspaces(self.output_dir)
 
     def _get_document_canvas_id(self):
         """Ricava canvas ID per documento (D/d)."""
@@ -1978,7 +2111,11 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
             if hasattr(elab, 'tiles_missing_all') and elab.tiles_missing_all:
                 tiles_missing = elab.tiles_missing_all
 
-            if success and not tiles_missing:
+            placeholder_images = []
+            if hasattr(elab, 'get_unresolved_placeholders'):
+                placeholder_images = elab.get_unresolved_placeholders()
+
+            if success and not tiles_missing and not placeholder_images:
                 risultati.append({
                     "file": nome_file,
                     "modalita": modalita,
@@ -1987,7 +2124,7 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
                     "status": "SUCCESS",
                     "path_warnings": path_warnings,
                 })
-            elif success and tiles_missing:
+            elif success:
                 risultati.append({
                     "file": nome_file,
                     "modalita": modalita,
@@ -1995,6 +2132,8 @@ def esegui_elaborazione(state, glossario_data=None, lingua="IT", records=None, f
                     "formati": formats,
                     "status": "INCOMPLETE",
                     "tiles_missing": tiles_missing,
+                    "placeholder_images": placeholder_images,
+                    "placeholder_count": len(placeholder_images),
                     "path_warnings": path_warnings,
                 })
             else:

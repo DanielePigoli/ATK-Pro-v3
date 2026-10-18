@@ -2,7 +2,9 @@
 
 Data di apertura: 2026-09-28
 
-Stato: **beta aperta**.
+Data di chiusura acquisizione: 2026-10-18
+
+Stato: **raccolta RC1 chiusa; ciclo correttivo RC2 avviato**.
 
 Canale centrale:
 [#378 - Beta testing ATK-Pro v3.0.1-rc1](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378).
@@ -33,10 +35,10 @@ reali.
 | Windows portable | Alta | Da eseguire | Estrazione, versione, avvio, configurazione portable e chiusura. |
 | Linux DEB o tarball | Media | Da eseguire | Installazione/estrazione, avvio e rimozione. |
 | macOS Intel o Apple Silicon | Media | Da eseguire | Mount, avvio, comportamento Gatekeeper e chiusura. |
-| BDL multipagina | Alta | Da eseguire | Tutte le pagine attese, contenuti distinti, placeholder quantificati. |
+| BDL multipagina | Alta | FAIL | Gli item reali `10527` e `10530` hanno prodotto PDF con 7/8 placeholder non segnalati nel riepilogo finale (`BETA-005`). |
 | IIIF v3 | Alta | Da eseguire | Immagine o sequenza corretta senza fallback improprio. |
 | Altri portali abituali | Media | Da eseguire | Almeno un campione pubblico riproducibile. |
-| OCR e genealogia assistita | Alta | Da eseguire | Output completo, nessun duplicato o colonna persa. |
+| OCR e genealogia assistita | Alta | FAIL sul percorso PDF Windows | Calibrazione PDF incompatibile (`BETA-007`) e import PyMuPDF 1.24.12 bloccato nella build senza console (`BETA-008`). |
 | Provider IA e modelli | Alta | Da eseguire | Discovery/fallback coerenti ed errori comprensibili. |
 | Persistenza configurazione | Alta | Da eseguire | Impostazioni conservate dopo riavvio senza perdita di altri campi. |
 | Interfaccia e documenti | Media | FAIL non bloccante | Il disclaimer usa il visualizzatore testuale semplice (`BETA-001`); la presentazione del progetto, datata 2 agosto 2026, deve essere riesaminata prima della stabile (`BETA-002`); la guida espone metadati editoriali interni e riferimenti alla `v3.0.0` da aggiornare (`BETA-003`). |
@@ -54,6 +56,10 @@ BDL, persistenza configurazione e funzioni IA assistite disponibili.
 | BETA-002 | 2026-09-28 | Daniele Pigoli | Windows, installer `v3.0.1-rc1`, macchina fisica | Documentazione integrata | La presentazione del progetto mostra ancora la data di aggiornamento 2 agosto 2026; contenuto e data potrebbero non rappresentare compiutamente l'evoluzione successiva della serie 3 destinata alla stabile. Una schermata e' disponibile nel riscontro originale. La verifica nel repository conferma la stessa data nelle 20 versioni localizzate. | Bassa | Sempre, aprendo Documenti > Presentazione del progetto | Aperto non bloccante | Feedback registrato nell'[issue #378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-5869104424) e integrato dalla [verifica multilingue](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-5869123753); prima della validazione stabile riesaminare il testo italiano e poi riallineare tutte le traduzioni, senza modificare ora la RC. |
 | BETA-003 | 2026-09-28 | Daniele Pigoli | Windows, installer `v3.0.1-rc1`, macchina fisica | Guida integrata | Nell'indice della guida l'evidenza "Stato guida v3" descrive il flusso editoriale interno (fonte italiana canonica e approvazione delle localizzazioni), anziche' fornire un'informazione utile all'utente. L'indice continua inoltre a presentarsi come guida e perimetro della `v3.0.0`. La verifica nel repository rileva riferimenti analoghi nelle 20 lingue e, in diverse localizzazioni, testo italiano residuo o formulazioni non uniformi. | Bassa | Sempre, aprendo Documenti > Guida | Aperto non bloccante | Feedback registrato nell'[issue #378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-5869225893). Prima della stabile eseguire un audit mirato della guida italiana, rimuovere o sostituire il riquadro con una semplice indicazione utente di versione/aggiornamento, verificare le novita' effettive della `v3.0.1` e riallineare le 19 traduzioni; nessuna modifica immediata alla RC. |
 | BETA-004 | 2026-09-28 | Daniele Pigoli | Pagina GitHub della pre-release `v3.0.1-rc1` | Distribuzione beta | I collegamenti "istruzioni beta" e "registro riscontri" nella descrizione della pre-release restituivano documento inesistente. I file sono stati aggiunti dopo il tag RC e si trovano sotto `docs_generali` nel ramo `main`, quindi non possono essere referenziati nel contenuto immutabile del tag. | Bassa | Sempre, seguendo i due collegamenti dalla pre-release | Risolto | Correzione registrata nell'[issue #378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-5875945168). Collegamenti sostituiti con URL assoluti ai documenti correnti in `main/docs_generali`; tag e artefatti RC invariati. |
+| BETA-005 | 2026-10-03 | Daniele Pigoli | Windows, installer `v3.0.1-rc1`, BDL item `10527` e `10530` | Affidabilita' output | I PDF sono stati salvati, ma contenevano rispettivamente 7/8 immagini placeholder non recuperate dopo i retry. Il riepilogo finale indicava apparentemente il successo e non segnalava l'incompletezza. | Media | Riprodotto su due item reali BDL | In correzione RC2 | Riscontro registrato nell'[issue #378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-5970090289). La correzione deve generalizzare a tutti i portali: stato `INCOMPLETE`, conteggio/elenco delle pagine non recuperate, conservazione dell'output parziale e azzeramento del conteggio se un retry successivo recupera la pagina. |
+| BETA-006 | 2026-10-13 | Daniele Pigoli | Windows, installer `v3.0.1-rc1`, elaborazione di due registri | Pulizia temporanei | Dopo l'elaborazione restavano una cartella `_tmp_pdf_images` e piu' cartelle `tiles_canvas_nn`, tutte vuote. | Bassa | Riscontrato dopo due elaborazioni | In correzione RC2 | Riscontro registrato nell'[issue #378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-6148389364). Introdurre pulizia centralizzata delle directory temporanee note, retry con backoff e verifica effettiva della rimozione, senza cancellare cartelle di recovery contenenti file. |
+| BETA-007 | 2026-10-15 | Daniele Pigoli | Windows, installer `v3.0.1-rc1`, Servizi > OCR Avanzato, Gemini | OCR PDF con calibrazione | Con calibrazione assistita attiva, un PDF viene passato direttamente a Pillow e produce `cannot identify image file`. Il flusso OCR normale rasterizza invece correttamente le pagine con PyMuPDF. | Media | Sempre con PDF e calibrazione attiva | In correzione RC2 | Riscontro registrato nell'[issue #378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-6189320401). Rasterizzare la prima pagina prima del ritaglio, pulire i temporanei e distinguere gli errori locali da quelli del provider IA. |
+| BETA-008 | 2026-10-15 | Daniele Pigoli | Windows, installer `v3.0.1-rc1`, Servizi > OCR Avanzato, calibrazione disattivata | OCR PDF nella build frozen | La build Windows senza console mostra `No output specified.` importando PyMuPDF 1.24.12. Il PDF reale di 172 pagine e' stato verificato integro e rasterizzabile con PyMuPDF 1.27.2.3. | Alta | Sempre nella build RC1 Windows `console=False` | In correzione RC2; blocca la stabile | Riscontro registrato nell'[issue #378](https://github.com/DanielePigoli/ATK-Pro-v3/issues/378#issuecomment-6189423186), con riferimento al difetto upstream [PyMuPDF #3981](https://github.com/pymupdf/PyMuPDF/issues/3981). Aggiornare il pin e aggiungere smoke sul pacchetto Windows realmente costruito. |
 
 ## Regole di triage
 
@@ -76,10 +82,14 @@ La beta puo' essere proposta per la chiusura quando:
 5. note di release, checklist e registro sono aggiornati;
 6. viene assunta una decisione esplicita separata sulla release `v3.0.1`.
 
-## Prossimo aggiornamento
+## Chiusura acquisizione RC1
 
-Continuare la raccolta nell'issue #378. Alla chiusura del ciclo, valutare
-`BETA-001`, `BETA-002` e `BETA-003` insieme agli altri riscontri; `BETA-004`
-e' stato risolto correggendo i collegamenti pubblicati. Prima della stabile,
-decidere se includere le revisioni nella candidata successiva oppure rinviarle
-motivatamente.
+La raccolta dei riscontri sulla `v3.0.1-rc1` e' stata congelata il 18 ottobre
+2026. Sono stati ricevuti soltanto i riscontri sopra elencati; l'assenza di
+ulteriori segnalazioni non equivale a certificazione delle aree non provate.
+
+La promozione a stabile resta sospesa. `BETA-001`, `BETA-002`, `BETA-003`,
+`BETA-005`, `BETA-006`, `BETA-007` e `BETA-008` entrano nel ciclo correttivo;
+`BETA-004` resta chiuso. Dopo test automatici, gate release e build
+multiplatform, i casi corretti saranno ricertificati su una nuova
+`v3.0.1-rc2` con un ciclo beta separato e mirato.

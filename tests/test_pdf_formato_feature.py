@@ -18,11 +18,52 @@ from PIL import Image
 
 import src.elaborazione as elab_mod
 from src.elaborazione import (
+    _cleanup_empty_temp_workspaces,
     _normalize_format,
     _make_placeholder_image,
+    _remove_temp_tree_with_retry,
     Elaborazione,
 )
 import src.user_prompts as up
+
+
+def test_remove_temp_tree_retries_after_transient_windows_lock(tmp_path, monkeypatch):
+    temp_dir = tmp_path / "tiles_canvas_12"
+    temp_dir.mkdir()
+    real_rmtree = elab_mod.shutil.rmtree
+    calls = []
+
+    def flaky_rmtree(path):
+        calls.append(str(path))
+        if len(calls) == 1:
+            raise PermissionError("temporary lock")
+        real_rmtree(path)
+
+    monkeypatch.setattr(elab_mod.shutil, "rmtree", flaky_rmtree)
+    monkeypatch.setattr(elab_mod.time, "sleep", lambda _seconds: None)
+
+    assert _remove_temp_tree_with_retry(str(temp_dir)) is True
+    assert len(calls) == 2
+    assert not temp_dir.exists()
+
+
+def test_final_cleanup_removes_only_known_empty_workspaces(tmp_path):
+    empty_pdf = tmp_path / "_tmp_pdf_images"
+    empty_tiles = tmp_path / "tiles_canvas_7"
+    recovery = tmp_path / "_registro_pdf_recovery_images"
+    nonempty_tiles = tmp_path / "tiles_canvas_8"
+    unrelated = tmp_path / "altra_cartella"
+    for folder in (empty_pdf, empty_tiles, recovery, nonempty_tiles, unrelated):
+        folder.mkdir()
+    (recovery / "pagina.png").write_bytes(b"recovery")
+    (nonempty_tiles / "tile.jpg").write_bytes(b"tile")
+
+    removed = _cleanup_empty_temp_workspaces(str(tmp_path))
+
+    assert set(removed) == {str(empty_pdf), str(empty_tiles)}
+    assert recovery.exists()
+    assert nonempty_tiles.exists()
+    assert unrelated.exists()
 
 
 # =============================================================================
@@ -336,6 +377,7 @@ class TestProcessDocumentPDF:
         result = elab._process_document(tiles_info, {})
         assert result is True
         assert len(placeholder_called) == 1
+        assert len(elab.get_unresolved_placeholders()) == 1
 
     def test_no_pdf_with_failed_rebuild_returns_false(self, tmp_path, monkeypatch):
         """Se rebuild_image restituisce None senza PDF nei formati => False."""
@@ -526,3 +568,6 @@ class TestProcessRegisterPDF:
         result = elab._process_register(tiles_info, {})
         assert result is True
         assert calls_count['placeholder'] == 1  # solo il secondo canvas usa placeholder
+        placeholders = elab.get_unresolved_placeholders()
+        assert len(placeholders) == 1
+        assert placeholders[0]['canvas'] == 'page_2'
