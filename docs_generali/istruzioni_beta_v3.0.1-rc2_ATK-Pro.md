@@ -2,10 +2,12 @@
 
 Data di preparazione: 2026-10-18
 
+Stato: **ciclo beta aperto il 2026-10-18; smoke multipiattaforma PASS**.
+
 Questa beta verifica la candidata correttiva `v3.0.1-rc2` prima di una
-eventuale release stabile. Usare gli asset soltanto dopo che l'issue
-[#385](https://github.com/DanielePigoli/ATK-Pro-v3/issues/385) dichiara
-esplicitamente aperto il ciclo e riporta gli smoke multipiattaforma verdi.
+eventuale release stabile. L'issue
+[#385](https://github.com/DanielePigoli/ATK-Pro-v3/issues/385) e' il canale
+centrale per gli esiti e i nuovi riscontri.
 
 ## Download verificato
 
