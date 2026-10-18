@@ -67,3 +67,11 @@ def test_release_smokes_download_assets_through_authenticated_api():
         assert "releases?per_page=100" in text
         assert "Accept: application/octet-stream" in text
         assert "gh release download" not in text
+
+
+def test_windows_smoke_stops_all_matching_app_processes_before_uninstall():
+    workflow = SMOKE_WORKFLOWS[0].read_text(encoding="utf-8")
+
+    assert workflow.count("Get-CimInstance Win32_Process -Filter \"Name='ATK-Pro.exe'\"") >= 6
+    assert workflow.count("Equals($exePath, [StringComparison]::OrdinalIgnoreCase)") >= 4
+    assert "Installed smoke left an ATK-Pro process running." in workflow

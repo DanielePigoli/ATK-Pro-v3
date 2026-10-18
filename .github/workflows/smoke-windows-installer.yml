@@ -167,9 +167,21 @@ jobs:
             Write-Host "Installed application remained running for 20 seconds (PID $($process.Id))."
           }
           finally {
-            if (-not $process.HasExited) {
-              Stop-Process -Id $process.Id -Force
-              Wait-Process -Id $process.Id -ErrorAction SilentlyContinue
+            $exePath = [IO.Path]::GetFullPath($app)
+            Get-CimInstance Win32_Process -Filter "Name='ATK-Pro.exe'" -ErrorAction SilentlyContinue |
+              Where-Object {
+                $_.ExecutablePath -and
+                [IO.Path]::GetFullPath($_.ExecutablePath).Equals($exePath, [StringComparison]::OrdinalIgnoreCase)
+              } |
+              ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+            Start-Sleep -Seconds 2
+            $remaining = Get-CimInstance Win32_Process -Filter "Name='ATK-Pro.exe'" -ErrorAction SilentlyContinue |
+              Where-Object {
+                $_.ExecutablePath -and
+                [IO.Path]::GetFullPath($_.ExecutablePath).Equals($exePath, [StringComparison]::OrdinalIgnoreCase)
+              }
+            if ($remaining) {
+              throw 'Installed smoke left an ATK-Pro process running.'
             }
           }
 
