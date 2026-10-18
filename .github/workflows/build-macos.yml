@@ -19,6 +19,11 @@ on:
           - both
           - intel
           - silicon
+      upload_app_bundle:
+        description: "Carica anche il bundle .app come artefatto del workflow"
+        required: true
+        default: true
+        type: boolean
 
 permissions:
   contents: write
@@ -146,21 +151,28 @@ jobs:
           --volname "ATK-Pro v${{ steps.ver.outputs.version }} — Intel" \
           --eula /tmp/atk-disclaimer.txt \
           --no-internet-enable \
+          --hdiutil-retries 1 \
           "dist/${DMG_NAME}" \
           dist/dmg_intel/; then
-          echo "::warning::create-dmg non ha completato lo smontaggio; creo un DMG compresso senza montaggio"
+          echo "::warning::create-dmg non ha completato lo smontaggio; creo un DMG ULFO compresso senza montaggio"
           rm -f "dist/${DMG_NAME}"
           hdiutil create \
             -ov \
-            -format UDZO \
+            -format ULFO \
             -volname "ATK-Pro v${{ steps.ver.outputs.version }} — Intel" \
             -srcfolder dist/dmg_intel \
             "dist/${DMG_NAME}"
         fi
         hdiutil verify "dist/${DMG_NAME}"
+        DMG_SIZE=$(stat -f%z "dist/${DMG_NAME}")
+        if [ "$DMG_SIZE" -ge 2147483648 ]; then
+          echo "::error::DMG Intel troppo grande per GitHub Release: ${DMG_SIZE} byte"
+          exit 1
+        fi
         echo "✓ $(du -sh dist/${DMG_NAME})"
 
     - name: Upload artifact (Intel app)
+      if: github.event_name != 'workflow_dispatch' || inputs.upload_app_bundle
       uses: actions/upload-artifact@v4
       with:
         name: ATK-Pro-macOS-Intel-app
@@ -313,6 +325,7 @@ jobs:
         echo "✓ $(du -sh dist/${DMG_NAME})"
 
     - name: Upload artifact (Apple Silicon app)
+      if: github.event_name != 'workflow_dispatch' || inputs.upload_app_bundle
       uses: actions/upload-artifact@v4
       with:
         name: ATK-Pro-macOS-AppleSilicon-app

@@ -51,9 +51,12 @@ def test_macos_intel_dmg_has_non_mounting_fallback_and_is_verified():
     workflow = BUILD_WORKFLOWS[-1].read_text(encoding="utf-8")
 
     assert "create-dmg non ha completato lo smontaggio" in workflow
-    assert "-format UDZO" in workflow
+    assert "--hdiutil-retries 1" in workflow
+    assert "-format ULFO" in workflow
     assert "-srcfolder dist/dmg_intel" in workflow
     assert 'hdiutil verify "dist/${DMG_NAME}"' in workflow
+    assert 'if [ "$DMG_SIZE" -ge 2147483648 ]' in workflow
+    assert "DMG Intel troppo grande per GitHub Release" in workflow
 
 
 def test_release_smokes_download_assets_through_authenticated_api():
