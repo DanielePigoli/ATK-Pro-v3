@@ -4,7 +4,21 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:  # Esecuzione manuale o su tag release
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: "Tag o ref sorgente da compilare (vuoto = ref del workflow)"
+        required: false
+        type: string
+      build_target:
+        description: "Architettura da compilare"
+        required: true
+        default: both
+        type: choice
+        options:
+          - both
+          - intel
+          - silicon
 
 permissions:
   contents: write
@@ -23,11 +37,14 @@ jobs:
   # JOB 1 — Intel x86_64 (runner Intel nativo)
   # ═══════════════════════════════════════════════════════════════════════════
   build-macos-intel:
+    if: github.event_name != 'workflow_dispatch' || inputs.build_target == 'both' || inputs.build_target == 'intel'
     runs-on: macos-15-intel
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v5
+      with:
+        ref: ${{ inputs.source_ref || github.ref }}
 
     - name: Install Python 3.12 universal2 da python.org
       run: |
@@ -123,25 +140,24 @@ jobs:
             hdiutil detach "$mount" -force || true
           done
         }
-        create_dmg_with_retry() {
-          for attempt in 1 2; do
-            cleanup_dmg_mounts
-            rm -f "dist/${DMG_NAME}" dist/rw.*."${DMG_NAME}"
-            if create-dmg \
-              --volname "ATK-Pro v${{ steps.ver.outputs.version }} — Intel" \
-              --eula /tmp/atk-disclaimer.txt \
-              --no-internet-enable \
-              "dist/${DMG_NAME}" \
-              dist/dmg_intel/; then
-              return 0
-            fi
-            cleanup_dmg_mounts
-            echo "create-dmg fallito sul tentativo ${attempt}/2"
-            sleep 10
-          done
-          return 1
-        }
-        create_dmg_with_retry
+        cleanup_dmg_mounts
+        rm -f "dist/${DMG_NAME}" dist/rw.*."${DMG_NAME}"
+        if ! create-dmg \
+          --volname "ATK-Pro v${{ steps.ver.outputs.version }} — Intel" \
+          --eula /tmp/atk-disclaimer.txt \
+          --no-internet-enable \
+          "dist/${DMG_NAME}" \
+          dist/dmg_intel/; then
+          echo "::warning::create-dmg non ha completato lo smontaggio; creo un DMG compresso senza montaggio"
+          rm -f "dist/${DMG_NAME}"
+          hdiutil create \
+            -ov \
+            -format UDZO \
+            -volname "ATK-Pro v${{ steps.ver.outputs.version }} — Intel" \
+            -srcfolder dist/dmg_intel \
+            "dist/${DMG_NAME}"
+        fi
+        hdiutil verify "dist/${DMG_NAME}"
         echo "✓ $(du -sh dist/${DMG_NAME})"
 
     - name: Upload artifact (Intel app)
@@ -159,9 +175,9 @@ jobs:
         retention-days: 30
 
     - name: Upload to GitHub Release (Intel)
-      if: startsWith(github.ref, 'refs/tags/v')
+      if: startsWith(github.ref, 'refs/tags/v') || startsWith(inputs.source_ref, 'v')
       run: |
-        bash .github/scripts/upload_release_assets.sh "${{ github.ref_name }}" \
+        bash .github/scripts/upload_release_assets.sh "${{ inputs.source_ref || github.ref_name }}" \
           dist/ATK-Pro-macOS-Intel-v${{ steps.ver.outputs.version }}.dmg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -170,11 +186,14 @@ jobs:
   # JOB 2 — Apple Silicon arm64 (nativo, M1/M2/M3/M4)
   # ═══════════════════════════════════════════════════════════════════════════
   build-macos-silicon:
+    if: github.event_name != 'workflow_dispatch' || inputs.build_target == 'both' || inputs.build_target == 'silicon'
     runs-on: macos-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v5
+      with:
+        ref: ${{ inputs.source_ref || github.ref }}
 
     - name: Install Python 3.12 universal2 da python.org
       run: |
@@ -308,9 +327,9 @@ jobs:
         retention-days: 30
 
     - name: Upload to GitHub Release (Apple Silicon)
-      if: startsWith(github.ref, 'refs/tags/v')
+      if: startsWith(github.ref, 'refs/tags/v') || startsWith(inputs.source_ref, 'v')
       run: |
-        bash .github/scripts/upload_release_assets.sh "${{ github.ref_name }}" \
+        bash .github/scripts/upload_release_assets.sh "${{ inputs.source_ref || github.ref_name }}" \
           dist/ATK-Pro-macOS-AppleSilicon-v${{ steps.ver.outputs.version }}.dmg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
