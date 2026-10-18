@@ -2,6 +2,33 @@
 
 Tutte le modifiche rilevanti al progetto ATK-Pro saranno documentate in questo file.
 
+## [3.0.1-rc2] - 2026-10-18
+
+### Correzioni emerse dalla beta RC1
+
+- Gli output che contengono anche una sola pagina placeholder sono ora
+  classificati come `INCOMPLETE`: il riepilogo finale indica conteggio e pagine
+  non recuperate, conservando il PDF o le immagini parziali per la verifica.
+- La pulizia finale rimuove con retry le directory temporanee vuote
+  `_tmp_pdf_images` e `tiles_canvas_*`, senza eliminare recovery o cartelle che
+  contengono file.
+- La calibrazione OCR accetta i PDF rasterizzandone la prima pagina e distingue
+  gli errori locali di lettura dagli errori del provider IA.
+- PyMuPDF e' aggiornato a `1.27.2.3`; build e smoke Windows verificano la
+  rasterizzazione PDF nell'eseguibile frozen senza console.
+- Aggiornati `urllib3` e `pypdf` alle versioni correttive indicate dall'audit
+  delle dipendenze eseguito dal quality gate.
+- Il disclaimer aperto dal menu Documenti usa il visualizzatore HTML nello
+  stile ATK-Pro, con fallback al testo canonico se l'asset non e' disponibile.
+
+### Documentazione integrata
+
+- Guida e presentazione del progetto sono aggiornate alla `v3.0.1 RC2` e
+  riallineate nelle 20 lingue supportate.
+- Rimossi dall'indice della guida i riferimenti al processo editoriale interno;
+  chiarito nel Modulo 02 che il download automatico riguarda solo le fonti
+  elencate nella tabella di compatibilita'.
+
 ## [3.0.1-rc1] - 2026-09-27
 
 ### Correzioni e robustezza

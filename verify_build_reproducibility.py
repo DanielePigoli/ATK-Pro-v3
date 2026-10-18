@@ -23,11 +23,11 @@ QT_MODULES = (
 )
 CRITICAL_PINS = {
     "requests": "2.33.0",
-    "urllib3": "2.7.0",
+    "urllib3": "2.8.0",
     "idna": "3.15",
     "anyio": "4.14.2",
     "pillow": "12.3.0",
-    "pypdf": "6.16.1",
+    "pypdf": "6.19.0",
     "python-docx": "1.2.0",
     "pytest": "9.0.3",
     "pygments": "2.20.0",
@@ -37,7 +37,7 @@ CRITICAL_PINS = {
     "google-auth": "2.45.0",
     "proto-plus": "1.27.0",
     "protobuf": "5.29.6",
-    "pymupdf": "1.24.12",
+    "pymupdf": "1.27.2.3",
     "pyside6[webengine]": "6.10.1",
     "pyinstaller": "6.16.0",
 }

@@ -255,6 +255,36 @@ definiscono prove prioritarie, dati minimi del report, severita' e cautele per
 segreti e documenti sensibili. Il registro parte dalla baseline CI verde e
 mantiene separati i riscontri esterni dalle verifiche automatiche.
 
+## Preparazione v3.0.1-rc2
+
+Il 18 ottobre 2026 la raccolta dei riscontri RC1 e' stata congelata. Sono
+entrati nel ciclo correttivo RC2 i difetti `BETA-001`, `BETA-002`, `BETA-003`
+e `BETA-005`-`BETA-008`; `BETA-004` era gia' chiuso.
+
+Correzioni verificate localmente:
+
+- segnalazione generalizzata degli output con placeholder come `INCOMPLETE`,
+  con conteggio e dettaglio delle pagine non recuperate;
+- pulizia verificata delle directory temporanee vuote con retry;
+- calibrazione OCR su PDF tramite rasterizzazione della prima pagina;
+- aggiornamento PyMuPDF e smoke dedicato nell'eseguibile Windows frozen;
+- visualizzazione HTML del disclaimer dal menu Documenti;
+- aggiornamento e allineamento della guida e della presentazione del progetto
+  nelle 20 lingue supportate.
+
+Evidenza pre-PR:
+
+- suite mirata: `111 passed`;
+- `python scripts/quality_gate.py release`: PASS, 12/12 step,
+  `917 passed` e `3 skipped` attesi;
+- glossario, asset documentali, guida italiana, matrice portali, policy,
+  compilazione Python e igiene release: PASS.
+
+La candidata non puo' essere distribuita ai tester finche' il commit non e'
+stato integrato, i sei pacchetti non sono stati ricostruiti dal tag
+`v3.0.1-rc2` e gli smoke non sono verdi sugli artefatti esatti. I relativi run,
+digest e risultati beta saranno registrati dopo la pubblicazione.
+
 ## Documenti collegati
 
 - `docs_generali/audit_contenuti_guida_v3_ATK-Pro.md`

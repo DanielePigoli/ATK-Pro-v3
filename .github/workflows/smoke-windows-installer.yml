@@ -139,6 +139,17 @@ jobs:
           }
           Write-Host "Installed ATK-Pro $($registration.Version) in $($registration.InstallDir)"
 
+      - name: Smoke PDF OCR runtime in installed executable
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $app = Join-Path $env:INSTALL_DIR 'ATK-Pro.exe'
+          $process = Start-Process -FilePath $app -ArgumentList '--smoke-pdf-ocr' -Wait -PassThru
+          if ($process.ExitCode -ne 0) {
+            throw "Installed PDF OCR runtime smoke failed with code $($process.ExitCode)"
+          }
+          Write-Host 'Installed executable imported PyMuPDF and rasterized a PDF page.'
+
       - name: Launch installed application
         shell: pwsh
         run: |
@@ -312,6 +323,16 @@ jobs:
             "PORTABLE_STDERR=$(Join-Path $smokeRoot 'portable.stderr.log')"
           ) | Add-Content -LiteralPath $env:GITHUB_ENV -Encoding utf8
           Write-Host "Verified portable SHA-256 and $($languages.Count) languages/locales."
+
+      - name: Smoke PDF OCR runtime in portable executable
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $process = Start-Process -FilePath $env:PORTABLE_EXE -ArgumentList '--smoke-pdf-ocr' -Wait -PassThru
+          if ($process.ExitCode -ne 0) {
+            throw "Portable PDF OCR runtime smoke failed with code $($process.ExitCode)"
+          }
+          Write-Host 'Portable executable imported PyMuPDF and rasterized a PDF page.'
 
       - name: Launch portable application
         shell: pwsh

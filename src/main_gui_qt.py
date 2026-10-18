@@ -107,8 +107,25 @@ def show_operation_completed_dialog(parent, glossario_data, lingua, risultati=No
     except ImportError:
         from main_gui_qt import get_msg, asset_path
 
+    def gm(key, fallback=None):
+        return get_msg(glossario_data, key, lingua.upper()) or fallback or key
+
+    placeholder_incomplete = any(
+        rec.get("status") == "INCOMPLETE" and rec.get("placeholder_images")
+        for rec in (risultati or [])
+    )
+    incomplete_has_pdf = any(
+        "PDF" in [str(fmt).upper() for fmt in (rec.get("formati") or [])]
+        for rec in (risultati or [])
+        if rec.get("status") == "INCOMPLETE" and rec.get("placeholder_images")
+    )
+    completed_title = gm("Operazione completata")
+    if placeholder_incomplete:
+        title_key = "PDF incompleto" if incomplete_has_pdf else "Attenzione"
+        completed_title = gm(title_key)
+
     dlg = QDialog(parent)
-    dlg.setWindowTitle(get_msg(glossario_data, "Operazione completata", lingua.upper()))
+    dlg.setWindowTitle(completed_title)
     try:
         dlg.setWindowIcon(QIcon(get_pixmap_cached(asset_path("assets/common/grafici/ATK-Pro.ico"))))
     except Exception:
@@ -137,7 +154,7 @@ def show_operation_completed_dialog(parent, glossario_data, lingua, risultati=No
     layout = QVBoxLayout()
     layout.setContentsMargins(30, 25, 30, 25)
     layout.setSpacing(18)
-    msg = QLabel(get_msg(glossario_data, "Operazione completata", lingua.upper()))
+    msg = QLabel(completed_title)
     msg.setAlignment(Qt.AlignCenter)
     msg.setStyleSheet("QLabel { background: transparent; color: #fff; font-size: 20px; font-weight: bold; }")
     # Effetto ombra su QLabel
@@ -174,7 +191,39 @@ def show_operation_completed_dialog(parent, glossario_data, lingua, risultati=No
                         f"<span style='font-size:12px;'>{html.escape(str(rec['errore']))}</span>"
                     )
             if rec.get("status") == "INCOMPLETE":
-                report_lines.append(f"<b>{rec.get('file','?')}</b> - <span style='color:#ffb347;'>IMMAGINI MANCANTI</span>")
+                placeholders = rec.get("placeholder_images") or []
+                if placeholders:
+                    count = rec.get("placeholder_count") or len(placeholders)
+                    incomplete_label = gm(
+                        "Output incompleto: {count} pagine sostituite da placeholder"
+                    ).format(count=count)
+                    report_lines.append(
+                        f"<b>{html.escape(str(rec.get('file','?')))}</b> - "
+                        f"<span style='color:#ff6b6b;'>{html.escape(incomplete_label)}</span>"
+                    )
+                    report_lines.append(
+                        "<span style='font-size:12px;'>"
+                        f"{html.escape(gm('Il PDF o le immagini sono stati salvati, ma non contengono tutte le pagine originali.'))}"
+                        "</span>"
+                    )
+                    for item in placeholders[:10]:
+                        label = item.get("label") or item.get("canvas") or "?"
+                        missing_page = gm("Pagina non recuperata: {page}").format(page=label)
+                        report_lines.append(
+                            f"<span style='font-size:12px;'>{html.escape(missing_page)}</span>"
+                        )
+                    if len(placeholders) > 10:
+                        remaining = gm("...e altre {count} pagine.").format(
+                            count=len(placeholders) - 10
+                        )
+                        report_lines.append(
+                            f"<span style='font-size:12px;'>{html.escape(remaining)}</span>"
+                        )
+                else:
+                    report_lines.append(
+                        f"<b>{html.escape(str(rec.get('file','?')))}</b> - "
+                        f"<span style='color:#ffb347;'>{html.escape(gm('Immagini mancanti'))}</span>"
+                    )
                 tiles = rec.get("tiles_missing") or []
                 for t in tiles[:10]:
                     report_lines.append(f"<span style='font-size:12px;'>{t}</span>")
@@ -893,6 +942,24 @@ def _current_disclaimer_txt_path() -> str:
         DISCLAIMER_SOURCE_LANGUAGE,
         "testuali",
         "disclaimer_legale_ATK-Pro.txt",
+    )
+
+
+def _localized_disclaimer_html_path(language: str) -> str:
+    normalized = str(language or DISCLAIMER_SOURCE_LANGUAGE).strip().lower()
+    localized = os.path.join(
+        ASSET_LANG,
+        normalized,
+        "testuali",
+        "disclaimer_legale_ATK-Pro.html",
+    )
+    if os.path.exists(localized):
+        return localized
+    return os.path.join(
+        ASSET_LANG,
+        DISCLAIMER_SOURCE_LANGUAGE,
+        "testuali",
+        "disclaimer_legale_ATK-Pro.html",
     )
 
 
@@ -2291,11 +2358,15 @@ class MainWindow(QMainWindow):
         )
 
     def mostra_disclaimer(self):
+        percorso_html = _localized_disclaimer_html_path(self.lingua)
         percorso_txt = _current_disclaimer_txt_path()
         try:
+            titolo = get_msg(self.glossario_data, "Disclaimer", self.lingua) or "Disclaimer"
+            if os.path.exists(percorso_html):
+                self._mostra_html(titolo, percorso_html)
+                return
             msg = get_msg(self.glossario_data, "Disclaimer non disponibile", self.lingua)
             testo = carica_testo_asset(percorso_txt) or msg or "Disclaimer non disponibile."
-            titolo = get_msg(self.glossario_data, "Disclaimer", self.lingua) or "Disclaimer"
             self._mostra_testo_lungo(titolo, testo)
         except Exception as e:
             from PySide6.QtWidgets import QMessageBox
@@ -3748,9 +3819,36 @@ def mostra_banner_chiusura(glossario_data, lingua, banner_path, paypal_url_path,
     dlg.exec()
 
 
+def _run_pdf_ocr_runtime_smoke():
+    """Verifica PyMuPDF e rasterizzazione PDF nel runtime realmente impacchettato."""
+    import tempfile
+    from pathlib import Path
+
+    import fitz
+
+    with tempfile.TemporaryDirectory(prefix="atk_pdf_smoke_") as temp_dir:
+        pdf_path = Path(temp_dir) / "smoke.pdf"
+        doc = fitz.open()
+        page = doc.new_page(width=200, height=200)
+        page.insert_text((24, 48), "ATK-Pro PDF OCR smoke")
+        doc.save(pdf_path)
+        doc.close()
+
+        with fitz.open(pdf_path) as check_doc:
+            if len(check_doc) != 1:
+                raise RuntimeError("PDF smoke: numero pagine inatteso")
+            pix = check_doc[0].get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
+            if pix.width <= 0 or pix.height <= 0 or not pix.samples:
+                raise RuntimeError("PDF smoke: rasterizzazione non valida")
+
+
 def main():
     logging.info("Test log avvio")
     logging.debug("Avvio main_gui_qt.py")
+
+    if "--smoke-pdf-ocr" in sys.argv:
+        _run_pdf_ocr_runtime_smoke()
+        return 0
 
     # Su Linux, disabilita il sandbox Chromium solo in ambienti CI/headless
     # (dove il kernel non supporta user namespaces per il renderer QtWebEngine).
@@ -3857,8 +3955,8 @@ def main():
         mostra_banner_chiusura(glossario_data, lingua_norm, banner_path, paypal_url_path, parent=window)
 
     app.aboutToQuit.connect(on_close)
-    sys.exit(app.exec())
+    return app.exec()
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

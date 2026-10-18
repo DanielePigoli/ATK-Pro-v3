@@ -159,6 +159,73 @@ def test_ocr_preview_worker_formats_provider_error_for_user(monkeypatch):
     assert "Quota o limite richieste esaurito" in captured["error"]
 
 
+def test_ocr_calibration_rasterizes_first_pdf_page(monkeypatch, tmp_path):
+    import fitz
+    from PIL import Image
+    from src.ocr_processor import AdvancedOCRWorker
+
+    source = tmp_path / "registro.pdf"
+    doc = fitz.open()
+    page = doc.new_page(width=360, height=600)
+    page.insert_text((36, 72), "Pagina di prova")
+    doc.save(source)
+    doc.close()
+
+    worker = object.__new__(AdvancedOCRWorker)
+    worker.custom_model = None
+    monkeypatch.setattr(worker, "_transcribe_gemini", lambda *args, **kwargs: "testo")
+
+    preview_path, text = worker.transcribe_top_preview(
+        str(source), "fake-key", "Trascrivi"
+    )
+    try:
+        with Image.open(preview_path) as preview:
+            assert preview.width > 0
+            assert preview.height > 0
+            assert preview.height < preview.width * 3
+        assert text == "testo"
+    finally:
+        Path(preview_path).unlink(missing_ok=True)
+
+
+def test_ocr_calibration_reports_invalid_pdf_as_local_input_error(monkeypatch, tmp_path):
+    import src.ocr_dialog as ocr_dialog
+
+    source = tmp_path / "non_valido.pdf"
+    source.write_bytes(b"non e' un pdf")
+
+    class FakeWorker:
+        api_keys = ["fake-key"]
+
+        def __init__(self, *args, **kwargs):
+            self.current_key_idx = 0
+
+        def _current_key(self):
+            return self.api_keys[0]
+
+        def _rotate_key(self):
+            return False
+
+        def transcribe_top_preview(self, *args, **kwargs):
+            raise ValueError("[OCR] Impossibile leggere la prima pagina del PDF per la calibrazione")
+
+    monkeypatch.setattr(ocr_dialog, "AdvancedOCRWorker", FakeWorker)
+    thread = ocr_dialog.CalibrationThread(str(source), "Gemini", "fake-key", "prompt")
+    captured = {}
+    thread.error.connect(lambda value: captured.setdefault("error", value))
+
+    thread.run()
+
+    assert captured["error"].startswith("[OCR] Impossibile leggere")
+    assert "Errore AI con Gemini" not in captured["error"]
+
+
+def test_pdf_ocr_runtime_smoke_imports_and_rasterizes():
+    from src.main_gui_qt import _run_pdf_ocr_runtime_smoke
+
+    assert _run_pdf_ocr_runtime_smoke() is None
+
+
 def test_ai_search_result_log_summary_avoids_payload_dump():
     from src.RicercaAssistitaAI import _summarize_ai_result_payload
 

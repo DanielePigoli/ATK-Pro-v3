@@ -1,6 +1,4 @@
 from io import BytesIO
-from pathlib import Path
-
 from PIL import Image
 
 from src.elaborazione import Elaborazione
@@ -58,7 +56,7 @@ def test_register_downloads_direct_image_without_iiif_service(monkeypatch, tmp_p
     assert not (tmp_path / "_direct_v3_pdf_recovery_images").exists()
 
 
-def test_register_returns_false_and_removes_empty_pdf_workspace_when_no_image_source(tmp_path):
+def test_register_preserves_partial_output_and_reports_placeholder_when_no_image_source(tmp_path):
     canvas = _direct_image_canvas("https://example.test/page-1.bin")
     canvas["images"][0]["resource"]["format"] = "application/octet-stream"
 
@@ -67,8 +65,14 @@ def test_register_returns_false_and_removes_empty_pdf_workspace_when_no_image_so
     elab.formats = ["PNG", "PDF"]
     elab.manifest = {"sequences": [{"canvases": [canvas]}]}
 
-    assert elab._process_register([canvas], {}) is False
-    assert not list(Path(tmp_path).glob("*.png"))
+    assert elab._process_register([canvas], {}) is True
+    assert (tmp_path / "missing_direct_canvas_1.png").is_file()
+    assert (tmp_path / "missing_direct.pdf").is_file()
+    assert elab.get_unresolved_placeholders() == [{
+        "canvas": "page_1",
+        "label": "Pagina 1",
+        "source_url": "https://example.test/page-1.bin",
+    }]
     assert not (tmp_path / "_tmp_pdf_images").exists()
     assert not (tmp_path / "_missing_direct_pdf_recovery_images").exists()
     assert not (tmp_path / "missing_direct").exists()

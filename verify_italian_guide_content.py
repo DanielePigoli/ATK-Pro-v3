@@ -68,7 +68,10 @@ STALE_PATTERNS = [
 ]
 
 REQUIRED_GUIDE_MARKERS = {
-    "guida.html": ["fonte editoriale canonica"],
+    "guida.html": [
+        "ATK-Pro v3.0.1",
+        "l'interfaccia e la guida integrata sono disponibili in 20 lingue",
+    ],
     "guida_01_installazione_configurazione.html": ["Profilo risorse"],
     "guida_02_operazioni_base.html": [
         "Archivio Storico UniBO",
@@ -152,6 +155,12 @@ def check_guide_index() -> list[str]:
         issues.append(f"{path.relative_to(ROOT)}: module links are not in the expected guide order")
 
     text = visible_body_text(html)
+    for internal_marker in ("fonte editoriale canonica", "Stato guida v3"):
+        if internal_marker.lower() in text.lower():
+            issues.append(
+                f"{path.relative_to(ROOT)}: internal editorial marker is user-visible: "
+                f"'{internal_marker}'"
+            )
     if len(text) > 9000:
         issues.append(
             f"{path.relative_to(ROOT)}: guide index is too long ({len(text)} visible chars); "

@@ -60,6 +60,14 @@ jobs:
           Write-Host "✗ Build failed - no .exe found"
           exit 1
         }
+
+    - name: Smoke PyMuPDF in frozen no-console executable
+      run: |
+        $process = Start-Process -FilePath "dist\ATK-Pro\ATK-Pro.exe" -ArgumentList "--smoke-pdf-ocr" -Wait -PassThru
+        if ($process.ExitCode -ne 0) {
+          throw "Frozen PDF OCR smoke failed with exit code $($process.ExitCode)"
+        }
+        Write-Host "✓ Frozen executable imported PyMuPDF and rasterized a PDF page"
         
     - name: Install Inno Setup
       run: |

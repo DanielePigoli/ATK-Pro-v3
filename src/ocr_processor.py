@@ -294,9 +294,43 @@ class AdvancedOCRWorker:
         Ritorna (tmp_image_path, text). Il chiamante deve eliminare tmp_image_path."""
         import tempfile
 
-        with Image.open(img_path) as img:
-            w, h = img.size
-            top_pil = img.crop((0, 0, w, int(h * 0.60))).copy()
+        source = None
+        top_pil = None
+        try:
+            if os.path.splitext(img_path)[1].lower() == ".pdf":
+                try:
+                    import fitz  # PyMuPDF
+                except ImportError as exc:
+                    raise RuntimeError(
+                        "[OCR] PyMuPDF non installato: impossibile preparare il PDF per la calibrazione."
+                    ) from exc
+
+                try:
+                    with fitz.open(img_path) as doc:
+                        if len(doc) < 1:
+                            raise ValueError("il documento non contiene pagine")
+                        page = doc[0]
+                        mat = fitz.Matrix(200 / 72, 200 / 72)
+                        pix = page.get_pixmap(matrix=mat, colorspace=fitz.csRGB, alpha=False)
+                        source = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+                except Exception as exc:
+                    raise ValueError(
+                        f"[OCR] Impossibile leggere la prima pagina del PDF per la calibrazione: {exc}"
+                    ) from exc
+            else:
+                try:
+                    with Image.open(img_path) as img:
+                        source = img.copy()
+                except Exception as exc:
+                    raise ValueError(
+                        f"[OCR] Impossibile leggere l'immagine per la calibrazione: {exc}"
+                    ) from exc
+
+            w, h = source.size
+            top_pil = source.crop((0, 0, w, max(1, int(h * 0.60)))).copy()
+        finally:
+            if source is not None:
+                source.close()
 
         # Ridimensiona e prepara b64
         max_size = 4096
@@ -312,40 +346,49 @@ class AdvancedOCRWorker:
         # Salva crop come JPEG temporaneo (per mostrarlo nel dialog di revisione)
         tmp_fd, tmp_path = tempfile.mkstemp(suffix=".jpg", prefix="atk_calib_")
         os.close(tmp_fd)
-        top_pil.save(tmp_path, format="JPEG", quality=95)
+        try:
+            top_pil.save(tmp_path, format="JPEG", quality=95)
 
-        buf = io.BytesIO()
-        top_pil.save(buf, format="JPEG", quality=95)
-        b64_top = base64.b64encode(buf.getvalue()).decode("utf-8")
+            buf = io.BytesIO()
+            top_pil.save(buf, format="JPEG", quality=95)
+            b64_top = base64.b64encode(buf.getvalue()).decode("utf-8")
 
-        fmt_examples = (
-            "\nESEMPIO FORMATO (RISPETTA ESATTAMENTE):"
-            "\n  capofamiglia Ammogliato:  1 | 1 | 1 | Acciaj | Gaspero | 60 |  | 1 |  |  |  |  | Cattolico |  | Possidente | "
-            "\n  moglie Maritata:          |  | 2 | \" | Rosa | 62 |  |  |  |  | 1 |  | \" |  |  | "
-            "\n  figlio Celibe (età 3):    |  | 5 | \" | Giuseppe | 3 | 1 |  |  |  |  |  | \" |  |  | "
-            "\n  figlia Nubile (età 4):    |  | 7 | \" | Rosa | 4 |  |  |  | 1 |  |  | \" |  |  | "
-            "\n  figlia Nubile (età 1):    |  | 8 | \" | Tina | 1 |  |  |  | 1 |  |  | \" |  |  | "
-            "\n  → ATTENZIONE: un bambino/a di 1 anno può essere sia maschio (Celibe, col.1) sia femmina (Nubile, col.4)."
-            "\n  → LEGGI SEMPRE IL NOME ESATTAMENTE come scritto: non correggere 'Tina' in 'Pietro'."
-            "\n  → Col.1 e Col.2 BLANK nelle righe di continuazione."
-            "\n  → Il progressivo crescente va SEMPRE in Col.3."
-            "\n⚠ STATO CIVILE — 6 caselle da sinistra: [1]Celibe [2]Ammogliato [3]Vedovo"
-            " [4]Nubile [5]Maritata [6]Vedova. Segno in [1]=maschio Celibe; in [4]=femmina Nubile."
-            " NON confondere casella [1] con [4]."
-        )
+            fmt_examples = (
+                "\nESEMPIO FORMATO (RISPETTA ESATTAMENTE):"
+                "\n  capofamiglia Ammogliato:  1 | 1 | 1 | Acciaj | Gaspero | 60 |  | 1 |  |  |  |  | Cattolico |  | Possidente | "
+                "\n  moglie Maritata:          |  | 2 | \" | Rosa | 62 |  |  |  |  | 1 |  | \" |  |  | "
+                "\n  figlio Celibe (età 3):    |  | 5 | \" | Giuseppe | 3 | 1 |  |  |  |  |  | \" |  |  | "
+                "\n  figlia Nubile (età 4):    |  | 7 | \" | Rosa | 4 |  |  |  | 1 |  |  | \" |  |  | "
+                "\n  figlia Nubile (età 1):    |  | 8 | \" | Tina | 1 |  |  |  | 1 |  |  | \" |  |  | "
+                "\n  → ATTENZIONE: un bambino/a di 1 anno può essere sia maschio (Celibe, col.1) sia femmina (Nubile, col.4)."
+                "\n  → LEGGI SEMPRE IL NOME ESATTAMENTE come scritto: non correggere 'Tina' in 'Pietro'."
+                "\n  → Col.1 e Col.2 BLANK nelle righe di continuazione."
+                "\n  → Il progressivo crescente va SEMPRE in Col.3."
+                "\n⚠ STATO CIVILE — 6 caselle da sinistra: [1]Celibe [2]Ammogliato [3]Vedovo"
+                " [4]Nubile [5]Maritata [6]Vedova. Segno in [1]=maschio Celibe; in [4]=femmina Nubile."
+                " NON confondere casella [1] con [4]."
+            )
 
-        prompt_top = (
-            base_prompt
-            + "\n\nNOTA OPERATIVA — METÀ SUPERIORE (primo ~60% del foglio aperto):"
-            " Trascrivi TUTTE le righe visibili, inclusa la riga di intestazione."
-            " Le due pagine fisiche affiancate formano UN'UNICA RIGA: unisci le colonne con ' | '."
-            "\n⚠ NON inventare righe non visibili nell'immagine."
-            + fmt_examples
-        )
+            prompt_top = (
+                base_prompt
+                + "\n\nNOTA OPERATIVA — METÀ SUPERIORE (primo ~60% del foglio aperto):"
+                " Trascrivi TUTTE le righe visibili, inclusa la riga di intestazione."
+                " Le due pagine fisiche affiancate formano UN'UNICA RIGA: unisci le colonne con ' | '."
+                "\n⚠ NON inventare righe non visibili nell'immagine."
+                + fmt_examples
+            )
 
-        text = self._transcribe_gemini(api_key, b64_top, prompt_top, model=self.custom_model)
-        logging.info(f"[OCR] Calibrazione: anteprima TOP estratta — {len(text.splitlines())} righe")
-        return tmp_path, text
+            text = self._transcribe_gemini(api_key, b64_top, prompt_top, model=self.custom_model)
+            logging.info(f"[OCR] Calibrazione: anteprima TOP estratta — {len(text.splitlines())} righe")
+            return tmp_path, text
+        except Exception:
+            try:
+                os.remove(tmp_path)
+            except OSError:
+                pass
+            raise
+        finally:
+            top_pil.close()
 
     def _transcribe_image(self, img_path, api_key):
         """Dispatcher: instrada al provider corretto.

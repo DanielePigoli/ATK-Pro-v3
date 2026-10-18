@@ -1,9 +1,9 @@
-; ATK-Pro v3.0.1 RC1 Installer Script per Inno Setup
+; ATK-Pro v3.0.1 RC2 Installer Script per Inno Setup
 ; Supporta 20 lingue con testi Unicode completi
 ; Legge i disclaimer direttamente da assets/ 
 
 #define MyAppName "ATK-Pro"
-#define MyAppVersion "3.0.1-rc1"
+#define MyAppVersion "3.0.1-rc2"
 #define MyAppPublisher "ATK-Pro Project"
 #define MyAppURL "https://github.com/DanielePigoli/ATK-Pro-v3"
 #define MyAppExeName "ATK-Pro.exe"

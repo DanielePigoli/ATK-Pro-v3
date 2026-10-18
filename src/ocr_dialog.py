@@ -303,7 +303,11 @@ class CalibrationThread(QThread):
                         raise e
             self.error.emit(classify_ai_runtime_error(self.provider, last_error))
         except Exception as e:
-            self.error.emit(classify_ai_runtime_error(self.provider, e))
+            message = str(e)
+            if message.startswith("[OCR]"):
+                self.error.emit(message)
+            else:
+                self.error.emit(classify_ai_runtime_error(self.provider, e))
 
 
 class AdvancedOCRDialog(QDialog):
