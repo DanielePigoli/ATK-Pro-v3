@@ -16,6 +16,8 @@ Tutte le modifiche rilevanti al progetto ATK-Pro saranno documentate in questo f
   gli errori locali di lettura dagli errori del provider IA.
 - PyMuPDF e' aggiornato a `1.27.2.3`; build e smoke Windows verificano la
   rasterizzazione PDF nell'eseguibile frozen senza console.
+- Aggiornati `urllib3` e `pypdf` alle versioni correttive indicate dall'audit
+  delle dipendenze eseguito dal quality gate.
 - Il disclaimer aperto dal menu Documenti usa il visualizzatore HTML nello
   stile ATK-Pro, con fallback al testo canonico se l'asset non e' disponibile.
 

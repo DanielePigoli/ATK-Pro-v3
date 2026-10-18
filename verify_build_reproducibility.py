@@ -23,11 +23,11 @@ QT_MODULES = (
 )
 CRITICAL_PINS = {
     "requests": "2.33.0",
-    "urllib3": "2.7.0",
+    "urllib3": "2.8.0",
     "idna": "3.15",
     "anyio": "4.14.2",
     "pillow": "12.3.0",
-    "pypdf": "6.16.1",
+    "pypdf": "6.19.0",
     "python-docx": "1.2.0",
     "pytest": "9.0.3",
     "pygments": "2.20.0",
